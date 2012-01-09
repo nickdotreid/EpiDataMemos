@@ -1,5 +1,10 @@
 {% extends 'layout.html' %}
 
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="{{url_for('.static',filename='barchart.js')}}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="chart" class="chart" data-src="{{filename}}"></div>
 <div id="memos"></div>

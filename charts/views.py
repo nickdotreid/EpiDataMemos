@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, jsonify, abort, redirect
 import os, csv, xlrd, glob
 from parse_data import *
 
-charts_app = Blueprint('charts_app', __name__, static_folder='static', template_folder='templates')
+charts_app = Blueprint('charts', __name__, static_folder='static', template_folder='templates')
 
 charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
 
