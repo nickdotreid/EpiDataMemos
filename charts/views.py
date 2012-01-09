@@ -14,8 +14,7 @@ def get_chart(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
 		return 'no file'
-	data = parse_data_file(filename)
-	return jsonify({'data':data})
+	return jsonify(parse_data_file(filename))
 	
 def parse_data_file(file_location):
 	data = {}
