@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<ul>
+{% for chart in charts %}
+<li><a href="/{{chart}}">{{chart}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
