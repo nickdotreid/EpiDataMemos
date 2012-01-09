@@ -2,12 +2,12 @@
 	<head>
 		<title>{{title}}</title>
 		{% block styles %}
-		<link rel="stylesheet" href="/static/css/normalize.css" />
-		<link rel="stylesheet" href="/static/css/styles.css" />
+		<link rel="stylesheet" href="{{ url_for('.static', filename='css/normalize.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('.static', filename='css/styles.css') }}" />
 		{% endblock %}
 		{% block scripts %}
-		<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-		<script type="text/javascript" src="/static/js/jquery.address-1.4.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('.static', filename='js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('.static', filename='js/jquery.address-1.4.min.js') }}"></script>
 		{% endblock %}
 	</head>
 	<body>
