@@ -18,7 +18,7 @@ class Memo(Base):
 		self.weight = 5
 
 	def __repr__(self):
-		return '<Test %r>' % (self.id)
+		return '<Memo %r>' % (self.id)
 		
 class Tag(Base):
 	__tablename__ = 'tags'
