@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, jsonify, abort
-import os, csv, xlrd
+from flask import Blueprint, render_template, jsonify, abort, redirect
+import os, csv, xlrd, glob
 
 charts_app = Blueprint('charts_app', __name__, static_folder='static', template_folder='templates')
 
@@ -34,10 +34,16 @@ def parse_data_file(file_location):
 			data[keys[cellnum]][row[0]] = value
 	return data
 	
-@charts_app.route('/',defaults={'chart':'foo'})
+@charts_app.route('/')
+def home_page():
+	charts = []
+	for xls in glob.glob(os.path.join(charts_dir,'*.xls')):
+		charts.append(xls.replace(charts_dir,''))
+	return render_template("index.html",charts=charts,title="Charts")
+	 
 @charts_app.route('/<chart>')
 def show_page(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
-		return 'list of all charts'
+		return redirect("/")
 	return render_template('chart.html',filename=chart,title=chart)
