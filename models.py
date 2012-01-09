@@ -1,5 +1,10 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy.orm import relationship, backref
 from database import Base
+
+memo_to_tag = Table('memo_to_tag',Base.metadata,
+	Column('memos_id',Integer,ForeignKey('memos.id')),
+	Column('tags_id',Integer,ForeignKey('tags.id')))
 
 class Memo(Base):
 	__tablename__ = 'memos'
@@ -10,6 +15,10 @@ class Memo(Base):
 	author = Column(String(120))
 	weight = Column(Integer)
 	public = Column(Integer)
+	
+	tags = relationship("Tag",
+		secondary=memo_to_tag,
+		backref="memos")
 
 	def __init__(self, graph, message, author):
 		self.graph = graph
