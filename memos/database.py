@@ -2,11 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from flask import Flask
-app = Flask(__name__)
-app.config.from_envvar('SFHIV_DATAMEMO_SETTINGS')
+import os
 
-engine = create_engine(app.config['DATABASE_URI'], convert_unicode=True)
+engine = create_engine(os.environ['SFHIV_DATAMEMOS_DATABASE_URI'], convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
