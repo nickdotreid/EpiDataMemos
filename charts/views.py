@@ -5,15 +5,12 @@ charts_app = Blueprint('sharts_app', __name__)
 
 charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
 
-@charts_app.route('/')
-def index():
-	return 'i am a page'
-
-@charts_app.route('/read/<chart>')
+@charts_app.route('/',defaults={'chart':'foo'})
+@charts_app.route('/<chart>')
 def get_chart(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
-		return 'no file'
+		return jsonify({})
 	return jsonify(parse_data_file(filename))
 	
 def parse_data_file(file_location):
