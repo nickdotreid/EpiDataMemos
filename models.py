@@ -25,7 +25,14 @@ class Memo(Base):
 		self.message = message
 		self.author = author
 		self.weight = 5
-
+		self.key = self.make_short()
+	
+	def make_short(self):
+		key = make_random_string(10)
+		if Memo.query.filter_by(key=key).first() is not None:
+			return make_short(self)
+		return key
+	
 	def __repr__(self):
 		return '<Memo %r>' % (self.id)
 		
@@ -39,3 +46,7 @@ class Tag(Base):
 	
 	def __repr__(self):
 		return '<Tag %r>' % (self.text)
+		
+def make_random_string(length):
+	import string,random
+	return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(length))
