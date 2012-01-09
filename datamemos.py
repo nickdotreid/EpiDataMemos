@@ -8,13 +8,5 @@ app = Flask(__name__)
 
 charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
 
-app.register_blueprint(charts_app,url_prefix='/charts')
 app.register_blueprint(memos_app,url_prefix='/memos')
-
-@app.route('/',defaults={'chart':'foo'})
-@app.route('/<chart>')
-def show_page(chart):
-	filename = charts_dir+chart
-	if not os.path.exists(filename):
-		return 'list of all charts'
-	return render_template('chart.html',filename=chart,title=chart)
+app.register_blueprint(charts_app)

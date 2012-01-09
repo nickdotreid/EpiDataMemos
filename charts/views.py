@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, jsonify, abort
 import os, csv, xlrd
 
-charts_app = Blueprint('sharts_app', __name__)
+charts_app = Blueprint('charts_app', __name__, static_folder='static', template_folder='templates')
 
 charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
 
-@charts_app.route('/',defaults={'chart':'foo'})
-@charts_app.route('/<chart>')
+@charts_app.route('/json/<chart>')
 def get_chart(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
@@ -34,3 +33,11 @@ def parse_data_file(file_location):
 				value = int(value)
 			data[keys[cellnum]][row[0]] = value
 	return data
+	
+@charts_app.route('/',defaults={'chart':'foo'})
+@charts_app.route('/<chart>')
+def show_page(chart):
+	filename = charts_dir+chart
+	if not os.path.exists(filename):
+		return 'list of all charts'
+	return render_template('chart.html',filename=chart,title=chart)
