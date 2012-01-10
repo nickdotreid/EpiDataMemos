@@ -6,6 +6,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="chart" class="chart" data-src="{{filename}}"></div>
+<div id="chart" class="chart" data-src="{{url_for('charts_app.get_data',chart=filename)}}"></div>
 <div id="memos"></div>
 {% endblock %}

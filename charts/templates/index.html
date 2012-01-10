@@ -3,7 +3,7 @@
 {% block content %}
 <ul>
 {% for chart in charts %}
-<li><a href="/{{chart}}">{{chart}}</a></li>
+<li><a href="{{url_for('charts_app.view',chart=chart)}}">{{chart}}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}
