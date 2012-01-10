@@ -3,21 +3,31 @@ import xlrd
 def parse_data_file(file_location):
 	data = {}
 	wb = xlrd.open_workbook(file_location)
-	sh = wb.sheet_by_index(0)
-	keys = []
-	raw_keys = sh.row_values(0)
-	for num in range(len(raw_keys)-1):
-		value = raw_keys[num+1]
-		if type(value) is float:
-			value = int(value)
-		keys.append(str(value))
-	for key in keys:
-		data[key] = {}
-	for rownum in range(sh.nrows-1):
-		row = sh.row_values(rownum+1)
-		for cellnum in range(len(row)-1):
-			value = row[cellnum+1]
-			if type(value) is float:
-				value = int(value)
-			data[keys[cellnum]][row[0]] = value
+	sh = wb.sheet_by_index(0)	
+	
+	groups = []
+	for num in range(sh.nrows):
+		row = sh.row_values(num)
+		if row[0] not in groups and num is not 0:
+			groups.append(row[0])
+	
+	columns = {}
+	for rownum in range(sh.nrows):
+		row = sh.row_values(rownum)
+		for cellnum in range(len(row)):
+			if cellnum>0:
+				value = row[cellnum]
+				if type(value) is float:
+					value = int(value)
+				if cellnum not in columns:
+					columns[cellnum] = {}
+				if rownum > 0:
+					columns[cellnum][row[0]] = value
+				else:
+					columns[cellnum]['Label'] = value
+	list_column = []
+	for col in columns:
+		list_column.append(columns[col])
+	data['columns'] = list_column
+	data['filters'] = groups
 	return data
