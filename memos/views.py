@@ -14,13 +14,13 @@ def get_memos():
 
 @memos_app.route('/create',methods=['GET', 'POST'])
 def create():
-	if request.method == "POST":
+	if request.method == "POST" and 'graph' in request.form:
 		memo = save_memo()
 		if memo:
 			return format_response(render_template("memo/view.html",memo=memo))
-	return format_response(render_template("memo/form.html",request.form))
+	return format_response(render_template("memo/form.html",memo=request.form))
 
-@memos_app.route('/<key>')
+@memos_app.route('/<key>',methods=['GET', 'POST'])
 def read(key):
 	memo = Memo.query.filter_by(key=key).first()
 	if memo is None:
@@ -32,21 +32,21 @@ def update(key):
 	memo = Memo.query.filter_by(key=key).first()
 	if memo is None:
 		abort(404)
-	if request.method == "POST":
+	if request.method == "POST" and 'graph' in request.form:
 		memo = save_memo(memo.key)
 		if memo:
 			return format_response(render_template("memo/view.html",memo=memo))
 		return format_response(render_template("memo/form.html",memo=request.form))
 	return format_response(render_template("memo/form.html",memo=memo))
 	
-@memos_app.route('/<key>/delete')
+@memos_app.route('/<key>/delete',methods=['GET', 'POST'])
 def delete(key):
 	memo = Memo.query.filter_by(key=key).first()
 	if memo is None:
 		abort(404)
 	db_session.delete(memo)
 	db_session.commit()
-	return "deleted"
+	return format_response("deleted")
 	
 def save_memo(key=None):
 	memo = Memo.query.filter_by(key=key).first()

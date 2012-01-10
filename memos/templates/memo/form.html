@@ -1,4 +1,7 @@
-<form action="{% if memo.key %}update{% else %}create{% endif %}" method="post">
+<form class="memo" id="{% if memo.key %}{{memo.key}}{% else %}new{% endif %}" action="{% if memo.key %}{{url_for('memos_app.update',key=memo.key)}}{% else %}{{url_for('memos_app.create')}}{% endif %}" method="post">
+	{% if request.form['ajax'] %}
+	<a class="close" href="{{url_for('memos_app.read',key=memo.key)}}">Close</a>
+	{% endif %}
 	<label for="memo_message">Message</label>
 	<textarea id="memo_message" name="message">{{memo['message']}}</textarea>
 	
@@ -12,6 +15,6 @@
 	
 	<input class="button save" type="submit" value="Save" />
 	{% if memo.key %}
-	<a href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
+	<a class="delete" href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
 	{% endif %}
 </form>

@@ -2,7 +2,7 @@
 	<li><a href="#">Public Memos</a></li>
 	<li><a href="#">All Memos</a></li>
 </ul>
-<a href="#">Create Memo</a>
+<a class="create" href="{{url_for('memos_app.create')}}">Create Memo</a>
 <ul class="memos">
 	{% for memo in memos%}
 	<li>{{memo|safe}}</li>

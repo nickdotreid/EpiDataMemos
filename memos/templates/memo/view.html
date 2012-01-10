@@ -4,5 +4,5 @@
 	</div>
 	<a class="author" href="mailto:{{memo.author}}">{{memo.author}}</a>
 	<div class="graph">{{memo.graph}}</div>
-	<a href="{{url_for('memos_app.update',key=memo.key)}}">Update</a>
+	<a class="update" href="{{url_for('memos_app.update',key=memo.key)}}">Update</a>
 </div>
