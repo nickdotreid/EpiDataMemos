@@ -3,9 +3,10 @@
 {% block scripts %}
 {{super()}}
 <script type="text/javascript" src="{{url_for('.static',filename='barchart.js')}}"></script>
+<script type="text/javascript" src="{{url_for('memos_app.static',filename='memos.js')}}"></script>
 {% endblock %}
 
 {% block content %}
-<div id="chart" class="chart" data-src="{{url_for('charts_app.get_data',chart=filename)}}"></div>
-<div id="memos"></div>
+<div id="chart" class="chart" data-name="{{filename}}" data-src="{{url_for('charts_app.get_data',chart=filename)}}"></div>
+<div id="memos" data-src="{{url_for('memos_app.get_memos')}}"></div>
 {% endblock %}

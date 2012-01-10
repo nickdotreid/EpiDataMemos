@@ -5,7 +5,7 @@ from models import *
 
 memos_app = Blueprint('memos_app', __name__, static_folder='static', template_folder='templates')
 
-@memos_app.route('/')
+@memos_app.route('/',methods=['GET', 'POST'])
 def get_memos():
 	memos = []
 	for memo in Memo.query.all():
