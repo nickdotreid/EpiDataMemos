@@ -18,7 +18,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:create_button.attr("href"),
 			type:"POST",
-			data:{ajax:true},
+			data:{ajax:true,graph:$("#chart").data("name")},
 			success:function(data){
 				create_button.hide().next("ul").prepend('<li>'+data['content']+'</li>');
 			}

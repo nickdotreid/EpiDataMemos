@@ -14,7 +14,7 @@ def get_memos():
 
 @memos_app.route('/create',methods=['GET', 'POST'])
 def create():
-	if request.method == "POST" and 'graph' in request.form:
+	if request.method == "POST" and 'message' in request.form:
 		memo = save_memo()
 		if memo:
 			return format_response(render_template("memo/view.html",memo=memo))
@@ -32,7 +32,7 @@ def update(key):
 	memo = Memo.query.filter_by(key=key).first()
 	if memo is None:
 		abort(404)
-	if request.method == "POST" and 'graph' in request.form:
+	if request.method == "POST" and 'message' in request.form:
 		memo = save_memo(memo.key)
 		if memo:
 			return format_response(render_template("memo/view.html",memo=memo))
