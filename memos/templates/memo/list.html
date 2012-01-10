@@ -1,0 +1,8 @@
+<a href="#">Public Memos</a>
+<a href="#">All Memos</a>
+<a href="#">Create Memo</a>
+<ul class="memos">
+	{% for memo in memos%}
+	<li>{{memo|safe}}</li>
+	{% endfor %}
+</ul>

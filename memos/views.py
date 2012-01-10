@@ -9,13 +9,8 @@ memos_app = Blueprint('memos_app', __name__, static_folder='static', template_fo
 def get_memos():
 	memos = []
 	for memo in Memo.query.all():
-		memos.append({
-			'key':memo.key,
-			'message':memo.message,
-			'author':memo.author,
-			'weight':memo.weight
-		})
-	return jsonify({'memos':memos})
+		memos.append(render_template("memo/view.html",memo=memo))
+	return format_response(render_template("memo/list.html",memos=memos))
 
 @memos_app.route('/create',methods=['GET', 'POST'])
 def create():
