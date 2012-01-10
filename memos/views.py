@@ -57,8 +57,24 @@ def save_memo(key=None):
 		memo.public=True
 	else:
 		memo.public=False
+	if 'graph' in request.form and 'graph' is not '':
+		tag = get_tag(request.form['graph'],'graph')
+		if memo not in tag.memos:
+			tag.memos.append(memo)
+	if 'filter' in request.form and 'filter' is not '':
+		tag = get_tag(request.form['filter'],'filter')
+		if memo not in tag.memos:
+			tag.memos.append(memo)
 	db_session.commit()
 	return memo
+
+def get_tag(text,typer):
+	tag = Tag.query.filter_by(text=text).filter_by(type=typer).first()
+	if tag is None:
+		tag = Tag(text,typer)
+		db_session.add(tag)
+		db_session.commit()
+	return tag
 
 def format_response(response):
 	if request.method == "POST" and 'ajax' in request.form:
