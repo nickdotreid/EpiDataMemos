@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$("#chart").bind("draw",function(){
 		$("#memos").trigger("loadr");
+		
 	});
 	
 	$("#memos").bind("loadr",function(){
@@ -11,7 +12,7 @@ $(document).ready(function(){
 			success:function(data){
 				$("#memos").html(data['content']);
 			}
-		})
+		});
 	}).delegate(".create","click",function(event){
 		event.preventDefault();
 		create_button = $(this);

@@ -2,6 +2,7 @@ body{
 	font-family:verdana,arial,sans-serif;
 	font-size:14px;
 	background:#CCC;
+	width:100%;
 }
 
 a,a:visited{
@@ -34,7 +35,7 @@ a,a:visited{
 	padding:10px 25px 45px;
 }
 
-.footer{
+.footer,#foot{
 	clear:both;
 	font-size:0.9em;
 }
@@ -46,12 +47,27 @@ form input,form textarea{
 form label.radio,form label.checkbox{
 	display:block;
 	position:relative;
-	padding-left:30px;
 }
 form .radio input,form .checkbox input{
-	position:absolute;
-	top:0px;
-	left:0px;
+	display:block;
+	float:left;
+	margin:3px;
 	width:auto;
 	height:auto;
+}
+
+
+#chart,#memo{
+	display:block;
+	float:left;
+	overflow:hidden;
+}
+#chart{
+	width:400px;
+}
+#memo{
+	width:250px;
+	position:absolute;
+	top:0px;
+	right:0px;
 }

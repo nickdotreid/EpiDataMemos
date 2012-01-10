@@ -1,0 +1,46 @@
+ul.chart{
+	margin:0px;
+	padding:0px;
+	height:300px;
+	padding:0px 0px 25px 0px;
+}
+ul.chart li.column{
+	list-style-type:none;
+	margin:0px 5px;
+	padding:0px;
+	width:80px;
+	height:300px;
+	display:block;
+	float:left;
+	position:relative;
+	top:0px;
+	left:0px;
+}
+
+.chart .column .bar{
+	position:absolute;
+	height:0px;
+	width:60px;
+	background:#679ad9;
+}
+
+.chart .column .label{
+	display:block;
+	position:absolute;
+	top:300px;
+	left:0px;
+	width:80px;
+	text-align:center;
+}
+
+
+form.filters{
+	display:block;
+	clear:both;
+}
+form.filters label{
+	width:auto;
+	display:block;
+	float:left;
+	margin:0px 7px 0px 0px;
+}

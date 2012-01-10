@@ -18,10 +18,43 @@ $(document).ready(function(){
 		data = $(this).data("data");
 		for(index in data){
 			$(".chart",$(this)).append('<li class="column"><div class="bar"></div><div class="label">'+data[index]['Label']+'</div></li>');
+			$(".chart .column:last",$(this)).data("data",data[index]);
 		}
-	}).bind("redraw",function(event){
+		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
 		
+		if(!$.address.parameter("filter")){
+			$(".filters input:first").click()
+		}
+		$(this).trigger("redraw");
+	}).bind("redraw",function(event){
+		var chart = $(".chart",$(this));
+		$(".chart .column",$(this)).each(function(){
+			column = $(this);
+			data = column.data("data");
+			percent = data[$.address.parameter("filter")]/data['Total'];
+			height = chart.height()*percent;
+			$(".bar",column).animate({
+				height:height+'px',
+				top:(chart.height()-height)+'px'
+			},{
+				duration:500
+			});
+		});
 	});
 	
 	$("#chart").trigger("loadr");
+	
+	$.address.change(function(event){
+		$("#chart").trigger("redraw");
+	});
+	
+	$("#chart").delegate(".filters input","click",function(){
+		$.address.parameter("filter",this.value);
+	});
+	$.address.change(function(event){
+		if($.address.parameter("filter")){
+			$(".filters input:checked").attr("checked",false);
+			$(".filters input[value='"+$.address.parameter("filter")+"']").attr("checked",true);
+		}
+	});
 });
