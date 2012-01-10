@@ -51,7 +51,7 @@ def delete(key):
 def save_memo(key=None):
 	memo = Memo.query.filter_by(key=key).first()
 	if key is None or memo is None:
-		memo = Memo(request.form['graph'],request.form['message'],request.form['author'])
+		memo = Memo(request.form['message'],request.form['author'])
 		db_session.add(memo)
 	if 'public' in request.form:
 		memo.public=True

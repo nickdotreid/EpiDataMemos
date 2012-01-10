@@ -10,7 +10,6 @@ class Memo(Base):
 	__tablename__ = 'memos'
 	id = Column(Integer, primary_key=True)
 	key = Column(String(12))
-	graph = Column(String(50))
 	message = Column(String(500))
 	author = Column(String(120))
 	weight = Column(Integer)
@@ -20,8 +19,7 @@ class Memo(Base):
 		secondary=memo_to_tag,
 		backref="memos")
 
-	def __init__(self, graph, message, author):
-		self.graph = graph
+	def __init__(self, message, author):
 		self.message = message
 		self.author = author
 		self.weight = 5
@@ -34,14 +32,15 @@ class Memo(Base):
 		return key
 	
 	def __repr__(self):
-		return '<Memo %r>' % (self.id)
+		return '<Memo %r>' % (self.key)
 		
 class Tag(Base):
 	__tablename__ = 'tags'
 	id = Column(Integer,primary_key=True)
 	text = Column(String(50))
+	type = Column(String(50))
 	
-	def __init__(self,text):
+	def __init__(self,text,type):
 		self.text = text
 	
 	def __repr__(self):
