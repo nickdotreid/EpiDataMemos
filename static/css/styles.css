@@ -8,7 +8,7 @@ a,a:visited{
 	color:#00F;
 }
 
-#templates{
+.template{
 	display:none;
 }
 
@@ -34,111 +34,24 @@ a,a:visited{
 	padding:10px 25px 45px;
 }
 
-#content{
-	clear:both;
-}
-
 .footer{
 	clear:both;
 	font-size:0.9em;
 }
 
-.navigation{
-	
-}
-.navigation ul{
-	margin:0px;
-	padding:0px;
-}
-.navigation ul li{
-	margin:0px 7px 0px 0px;
-	padding:0px;
-	list-style-type:none;
+form input,form textarea{
 	display:block;
-	float:left;
+	clear:both;
 }
-.navigation .label .color{
+form label.radio,form label.checkbox{
 	display:block;
-	width:30px;
-	height:15px;
-	float:left;
-	margin:2px 5px;
-}
-.navigation .positive{
-	background-color:#7fc4da;
-}
-.navigation .negative{
-	background-color:#badaba;
-}
-
-.control.selected{
-	color:#000;
-	text-decoration:none;
-}
-
-.description{
-	float:left;
-	width:300px;
-	margin:7px 15px;
-	font-size:1.3em;
-	text-align:center;
-}
-.description .numerator{
-	border-bottom:2px #000 solid;
-}
-
-.legend{
-	margin:13px 0px 4px;
-	border:1px #CCC solid;
-}
-
-
-.legend .label{
 	position:relative;
-	padding:0px;
-	margin:3px;
+	padding-left:30px;
 }
-.legend .label .color{
-	margin:0px 5px 0px 0px;
-	width:25px;
-	height:20px;
-	display:block;
-	float:left;
-}
-
-.legend .label.Population .color{
-	background-color:#c1f2ff;
-}
-.legend .label.Incidence .color{
-	background-color:#6eff94;
-}
-
-.chart{
+form .radio input,form .checkbox input{
+	position:absolute;
+	top:0px;
+	left:0px;
 	width:auto;
-	margin:0px auto;
-}
-
-.chart ul{
-	display:block;
-	float:left;
-	width:auto;
-	padding:0px;
-	margin:0px 7px 7px 0px;
-}
-
-.chart ul li{
-	list-style:none;
-	padding:0px;
-	margin:0px 0px 0px 4px;
-	display:block;
-}
-
-.chart ul li a.selected{
-	display:block;
-	color:#000;
-	text-decoration:none;
-}
-
-.number{
-	font-weight:bold;
+	height:auto;
 }

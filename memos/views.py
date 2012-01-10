@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request, redirect, abort, url_for
 
 from database import db_session
 from models import *
 
-memos_app = Blueprint('memos_app', __name__)
+memos_app = Blueprint('memos_app', __name__, static_folder='static', template_folder='templates')
 
 @memos_app.route('/')
 def get_memos():
@@ -16,3 +16,51 @@ def get_memos():
 			'weight':memo.weight
 		})
 	return jsonify({'memos':memos})
+
+@memos_app.route('/create',methods=['GET', 'POST'])
+def create():
+	if request.method == "POST":
+		memo = save_memo()
+		if memo:
+			return redirect(url_for('memos_app.read',memo=memo.key))
+	return render_template("memo/form.html",request.form)
+
+@memos_app.route('/<key>')
+def read(key):
+	memo = Memo.query.filter_by(key=key).first()
+	if memo is None:
+		abort(404)
+	return render_template("memo/view.html",memo=memo)
+
+@memos_app.route('/<key>/update',methods=['GET', 'POST'])
+def update(key):
+	memo = Memo.query.filter_by(key=key).first()
+	if memo is None:
+		abort(404)
+	if request.method == "POST":
+		memo = save_memo(memo.key)
+		if memo:
+			return redirect(url_for('memos_app.read',memo=memo.key))
+		return render_template("memo/form.html",memo=request.form)
+	return render_template("memo/form.html",memo=memo)
+	
+@memos_app.route('/<key>/delete')
+def delete(key):
+	memo = Memo.query.filter_by(key=key).first()
+	if memo is None:
+		abort(404)
+	db_session.delete(memo)
+	db_session.commit()
+	return "deleted"
+	
+def save_memo(key=None):
+	memo = Memo.query.filter_by(key=key).first()
+	if key is None or memo is None:
+		memo = Memo(request.form['graph'],request.form['message'],request.form['author'])
+		db_session.add(memo)
+	if 'public' in request.form:
+		memo.public=True
+	else:
+		memo.public=False
+	db_session.commit()
+	return memo

@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="memo">
+	<div class="message">
+		{{memo.message}}
+	</div>
+	<a class="author" href="mailto:{{memo.author}}">{{memo.author}}</a>
+	<div class="graph">{{memo.graph}}</div>
+	<a href="{{url_for('memos_app.update',key=memo.key)}}">Update</a>
+</div>
+{% endblock %}

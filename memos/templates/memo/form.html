@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="{% if memo.key %}update{% else %}create{% endif %}" method="post">
+	<label for="memo_message">Message</label>
+	<textarea id="memo_message" name="message">{{memo['message']}}</textarea>
+	
+	<label for="memo_author">Your E-Mail</label>
+	<input type="text" id="memo_author" name="author" value="{{memo['author']}}" />
+	
+	<label for="memo_graph">Graph</label>
+	<input type="text" id="memo_graph" name="graph" value="{{memo['graph']}}" />
+	
+	<label class="checkbox"><input type="checkbox" name="public" value="true" /> Public</label>
+	
+	<input class="button save" type="submit" value="Save" />
+	{% if memo.key %}
+	<a href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
+	{% endif %}
+</form>
+{% endblock %}
