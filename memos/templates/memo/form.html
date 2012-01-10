@@ -1,6 +1,3 @@
-{% extends 'layout.html' %}
-
-{% block content %}
 <form action="{% if memo.key %}update{% else %}create{% endif %}" method="post">
 	<label for="memo_message">Message</label>
 	<textarea id="memo_message" name="message">{{memo['message']}}</textarea>
@@ -18,4 +15,3 @@
 	<a href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
 	{% endif %}
 </form>
-{% endblock %}

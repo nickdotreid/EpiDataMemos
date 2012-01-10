@@ -22,15 +22,15 @@ def create():
 	if request.method == "POST":
 		memo = save_memo()
 		if memo:
-			return redirect(url_for('memos_app.read',memo=memo.key))
-	return render_template("memo/form.html",request.form)
+			return format_response(render_template("memo/view.html",memo=memo))
+	return format_response(render_template("memo/form.html",request.form))
 
 @memos_app.route('/<key>')
 def read(key):
 	memo = Memo.query.filter_by(key=key).first()
 	if memo is None:
 		abort(404)
-	return render_template("memo/view.html",memo=memo)
+	return format_response(render_template("memo/view.html",memo=memo))
 
 @memos_app.route('/<key>/update',methods=['GET', 'POST'])
 def update(key):
@@ -40,9 +40,9 @@ def update(key):
 	if request.method == "POST":
 		memo = save_memo(memo.key)
 		if memo:
-			return redirect(url_for('memos_app.read',memo=memo.key))
-		return render_template("memo/form.html",memo=request.form)
-	return render_template("memo/form.html",memo=memo)
+			return format_response(render_template("memo/view.html",memo=memo))
+		return format_response(render_template("memo/form.html",memo=request.form))
+	return format_response(render_template("memo/form.html",memo=memo))
 	
 @memos_app.route('/<key>/delete')
 def delete(key):
@@ -64,3 +64,8 @@ def save_memo(key=None):
 		memo.public=False
 	db_session.commit()
 	return memo
+
+def format_response(response):
+	if request.method == "POST" and 'ajax' in request.form:
+		return jsonify({'content':response})
+	return render_template("page.html",content=response)
