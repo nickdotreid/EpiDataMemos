@@ -1,4 +1,4 @@
-<div class="memo">
+<div class="memo {% for tag in memo.tags%}{% if tag.type != 'graph' %}{{tag.text}} {% endif %}{% endfor %}">
 	<div class="message">
 		{{memo.message}}
 	</div>
