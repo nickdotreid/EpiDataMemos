@@ -8,12 +8,9 @@
 	<label for="memo_author">Your E-Mail</label>
 	<input type="text" id="memo_author" name="author" value="{{memo['author']}}" />
 	
-	{% if request.form['graph'] or memo.graph %}
-	<input type="hidden" name="graph" value="{{memo['graph']}}" />
-	{% else %}
-	<label for="memo_graph">Graph</label>
-	<input type="text" id="memo_graph" name="graph" value="{{memo['graph']}}" />
-	{% endif %}
+	{% for tag in memo.tags %}
+	<input type="hidden" name="{{tag.type}}" value="{{tag.text}}" />
+	{% endfor %}
 	
 	<label class="checkbox"><input type="checkbox" name="public" value="true" {% if memo['public'] %}checked="true"{% endif %} /> Public</label>
 	
