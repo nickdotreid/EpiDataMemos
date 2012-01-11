@@ -11,6 +11,7 @@ $(document).ready(function(){
 			data:{ajax:true,graph:$("#chart").data("name")},
 			success:function(data){
 				$("#memos").html(data['content']);
+				$("#memos").trigger("loaded");
 			}
 		});
 	}).delegate(".create","click",function(event){
