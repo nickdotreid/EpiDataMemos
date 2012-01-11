@@ -27,10 +27,14 @@ $(document).ready(function(){
 	}).delegate("form.memo","submit",function(event){
 		event.preventDefault();
 		form = $(this);
+		query_string = '&ajax=true';
+		if($.address.parameter('filter') && $('input[name=form]',form).length<1){
+			query_string += '&filter='+$.address.parameter('filter');
+		}
 		$.ajax({
 			url:form.attr("action"),
 			type:form.attr("method"),
-			data:form.serialize()+'&ajax=true',
+			data:form.serialize()+query_string,
 			success:function(data){
 				form.after(data['content']);
 				$("#memos .create").show();
