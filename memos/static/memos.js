@@ -28,6 +28,9 @@ $(document).ready(function(){
 		event.preventDefault();
 		form = $(this);
 		query_string = '&ajax=true';
+		if($('input[name=graph]',form).length<1){
+			query_string += '&graph='+$("#chart").data("name");
+		}
 		if($.address.parameter('filter') && $('input[name=form]',form).length<1){
 			query_string += '&filter='+$.address.parameter('filter');
 		}
