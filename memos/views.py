@@ -18,6 +18,25 @@ def get_memos():
 						memos.append(render_template("memo/view.html",memo=memo))
 	return format_response(render_template("memo/list.html",memos=memos))
 
+@memos_app.route('/load/<key>')
+def load_memo(key):
+	memo = Memo.query.filter_by(key=key).first()
+	if memo is None:
+		abort(404)
+	graph = None
+	filter = None
+	for tag in memo.tags:
+		if tag.type == 'graph':
+			graph = tag.text
+		if tag.type == 'filter':
+			filter = tag.text
+	if graph is None:
+		abort(404)
+	url = url_for('charts_app.view',chart=graph)
+	if filter is not None:
+		url += '#?filter='+filter
+	return redirect(url)
+
 @memos_app.route('/create',methods=['GET', 'POST'])
 def create():
 	if request.method == "POST" and 'message' in request.form:
