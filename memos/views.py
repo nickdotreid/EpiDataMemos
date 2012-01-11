@@ -8,8 +8,14 @@ memos_app = Blueprint('memos_app', __name__, static_folder='static', template_fo
 @memos_app.route('/',methods=['GET', 'POST'])
 def get_memos():
 	memos = []
-	for memo in Memo.query.all():
-		memos.append(render_template("memo/view.html",memo=memo))
+	if request.method=="POST" and 'graph' in request.form:
+		for tag in Tag.query.filter_by(type='graph').filter_by(text=request.form['graph']).all():
+			for memo in tag.memos:
+				if 'all' in request.form:
+					memos.append(render_template("memo/view.html",memo=memo))
+				else:
+					if memo.public:
+						memos.append(render_template("memo/view.html",memo=memo))
 	return format_response(render_template("memo/list.html",memos=memos))
 
 @memos_app.route('/create',methods=['GET', 'POST'])
