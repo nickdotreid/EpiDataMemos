@@ -57,14 +57,12 @@ def save_memo(key=None):
 		memo.public=True
 	else:
 		memo.public=False
-	if 'graph' in request.form and 'graph' is not '':
-		tag = get_tag(request.form['graph'],'graph')
-		if memo not in tag.memos:
-			tag.memos.append(memo)
-	if 'filter' in request.form and 'filter' is not '':
-		tag = get_tag(request.form['filter'],'filter')
-		if memo not in tag.memos:
-			tag.memos.append(memo)
+	tag_keys = ['graph','filter','hover']
+	for key in tag_keys:
+		if key in request.form and request.form[key] is not '':
+			tag = get_tag(request.form[key],key)
+			if memo not in tag.memos:
+				tag.memos.append(memo)
 	db_session.commit()
 	return memo
 
