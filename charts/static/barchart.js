@@ -53,7 +53,6 @@ $(document).ready(function(){
 			$(".highlight .number",column).html(data[$.address.parameter("filter")]);
 			$(".highlight .total",column).html('of '+data['Total']);
 			$(".highlight .qualify",column).html($.address.parameter("filter")+' people');
-			$(".highlight",column).css("top",(graph.height()-height-$(".hightlight").height())+'px');
 			
 		});
 		ticks = make_ticks(0,chart_max,5);
@@ -78,12 +77,21 @@ $(document).ready(function(){
 			});
 		});
 	}).delegate(".column","mouseenter",function(event){
-		column = $(this);
-		$(".highlight",column).show();
+		$.address.parameter("highlight",false);
+		$(this).trigger("highlight");
 	}).delegate(".column","mouseleave",function(event){
 			column = $(this);
-			$(".highlight",column).hide();
-		});
+			if($.address.parameter("highlight")!=column.data("data")['Label']){
+				$(".highlight",column).hide();
+			}
+	}).delegate(".column","click",function(event){
+		$.address.parameter("highlight",$(this).data("data")['Label']);
+	}).delegate(".column","highlight",function(event){
+		column = $(this);
+		$(".highlight",column).show();
+		bar_top = Number($(".bar",column).css("top").replace("px",""));
+		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height())+'px');
+	});
 	
 	$("#chart").trigger("loadr");
 	
