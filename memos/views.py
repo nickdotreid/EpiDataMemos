@@ -78,6 +78,9 @@ def save_memo(key=None):
 	if key is None or memo is None:
 		memo = Memo(request.form['message'],request.form['author'])
 		db_session.add(memo)
+	else:
+		memo.message = request.form['message']
+		memo.author = request.form['author']
 	if 'public' in request.form:
 		memo.public=True
 	else:
