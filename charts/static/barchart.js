@@ -31,19 +31,20 @@ $(document).ready(function(){
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
 		var chart = $(this);
+		var graph = $(".chart",chart);
 		chart_max = array_max(chart.data("data"),get_value);
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
 			if($.address.parameter("percent")){
-				percent = data[$.address.parameter("filter")]/100;
+				percent = data[$.address.parameter("filter")]/data['Total'];
 			}else{
 				percent = data[$.address.parameter("filter")]/chart_max;
 			}
-			height = chart.height()*percent;
+			height = graph.height()*percent;
 			$(".bar",column).animate({
 				height:height+'px',
-				top:(chart.height()-height)+'px'
+				top:(graph.height()-height)+'px'
 			},{
 				duration:500
 			});
