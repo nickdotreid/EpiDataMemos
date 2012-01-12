@@ -84,6 +84,19 @@ function get_value(item){
 	return item[$.address.parameter("filter")];
 }
 
+function make_ticks(min,max,amount){
+	ticks = [];
+	range = max - min;
+	step = range/amount;
+	num = min;
+	while(num<=max || amount>0){
+		ticks.push(num);
+		num += step;
+		amount--;
+	}
+	return ticks;
+}
+
 function array_max(arr,value_function){
 	max = 0;
 	for(index in arr){
