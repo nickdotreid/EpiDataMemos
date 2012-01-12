@@ -2,6 +2,12 @@
 	{% if request.form['ajax'] %}
 	<a class="close" href="{{url_for('memos_app.read',key=memo.key)}}">Close</a>
 	{% endif %}
+	
+	{% if memo.key %}
+	<a class="delete" href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
+	{% endif %}
+	
+	
 	<label for="memo_message">Message</label>
 	<textarea id="memo_message" name="message">{{memo['message']}}</textarea>
 	
@@ -15,7 +21,4 @@
 	<label class="checkbox"><input type="checkbox" name="public" value="true" {% if memo['public'] %}checked="true"{% endif %} /> Public</label>
 	
 	<input class="button save" type="submit" value="Save" />
-	{% if memo.key %}
-	<a class="delete" href="{{url_for('memos_app.delete',key=memo.key)}}">Delete</a>
-	{% endif %}
 </form>

@@ -35,3 +35,41 @@
 	font-size:0.8em;
 	text-align:right;
 }
+
+
+#memos form.memo label{
+	display:block;
+	clear:both;
+	font-size:0.9em;
+	margin-top:7px;
+}
+#memos form.memo input,#memos form.memo textarea{
+	display:block;
+	width:270px;
+	margin:0px auto;
+	padding:3px 4px;
+}
+
+#memos form.memo label.checkbox{
+	font-size:1em;
+}
+#memos form.memo .checkbox input{
+	width:auto;
+	padding:0px;
+	margin:3px;
+}
+
+#memos form.memo input.button{
+	margin-top:7px;
+}
+
+#memos .memo a.close,#memos form.memo a.delete{
+	font-size:0.8em;
+	display:block;
+	margin:0px;
+	float:left;
+}
+#memos form.memo a.delete{
+	float:right;
+	color:#AA0000;
+}
