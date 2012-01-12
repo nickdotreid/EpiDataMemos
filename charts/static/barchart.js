@@ -72,6 +72,9 @@ $(document).ready(function(){
 			$(".filters input:checked").attr("checked",false);
 			$(".filters input[value='"+$.address.parameter("filter")+"']").attr("checked",true);
 		}
+		if($.address.parameter("percent")){
+			$("#chart input.percent").attr("checked",true);
+		}
 	});
 });
 
