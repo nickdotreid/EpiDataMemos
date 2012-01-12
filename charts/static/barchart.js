@@ -132,9 +132,9 @@ function get_value(item){
 function make_ticks(min,max,amount){
 	ticks = [];
 	range = max - min;
-	step = range/amount;
+	step = range/(amount-1);
 	num = min;
-	while(step && num<=max && amount>0){
+	while(step && num<=max && amount>=0){
 		ticks.push(num);
 		num += step;
 		amount--;
