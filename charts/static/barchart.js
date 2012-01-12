@@ -56,6 +56,15 @@ $(document).ready(function(){
 		$("#chart").trigger("redraw");
 	});
 	
+	$("#chart").delegate("input.percent","click",function(){
+		if(this.checked){
+			$.address.parameter("percent",this.value);
+		}else{
+			$.address.parameter("percent",false);
+		}
+		
+	})
+	
 	$("#chart").delegate(".filters input","click",function(){
 		$.address.parameter("filter",this.value);
 	});
