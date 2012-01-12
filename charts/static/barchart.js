@@ -54,6 +54,13 @@ $(document).ready(function(){
 			$(".highlight .total",column).html('of '+data['Total']);
 			$(".highlight .qualify",column).html($.address.parameter("filter")+' people');
 			
+			highlight_top = graph.height()-height-$(".highlight",column).height();
+			$(".highlight",column).animate({
+				top:highlight_top+'px'
+			},{
+				duration:500
+			})
+			
 		});
 		ticks = make_ticks(0,chart_max,5);
 		for(index in ticks){
