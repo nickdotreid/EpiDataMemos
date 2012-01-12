@@ -88,3 +88,13 @@ function array_max(arr,value_function){
 	}
 	return max;
 }
+function array_sum(arr,value_function){
+	total = 0;
+	for(index in arr){
+		value = value_function(arr[index]);
+		if(value){
+			total += value;
+		}
+	}
+	return total;
+}
