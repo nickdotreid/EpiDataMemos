@@ -29,10 +29,7 @@ a,a:visited{
 
 .wrapper{
 	width:850px;
-	background:#FFF;
-	border:#000 1px solid;
 	margin:12px auto;
-	padding:10px 25px 45px;
 }
 
 .footer,#foot{
@@ -61,13 +58,4 @@ form .radio input,form .checkbox input{
 	display:block;
 	float:left;
 	overflow:hidden;
-}
-#chart{
-	width:400px;
-}
-#memo{
-	width:250px;
-	position:absolute;
-	top:0px;
-	right:0px;
 }

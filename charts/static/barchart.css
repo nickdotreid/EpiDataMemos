@@ -1,10 +1,20 @@
-ul.chart{
-	margin:0px;
+#chart{
+	background:#FFF;
+	border-left:1px #333 solid;
+	border-top:1px #333 solid;
+	width:425px;
+	margin:0px 10px 10px 0px;
+	overflow:hidden;
+}
+
+.chart{
+	width:400px;
+	margin:0px auto;
 	padding:0px;
 	height:300px;
 	padding:0px 0px 25px 0px;
 }
-ul.chart li.column{
+.chart .column{
 	list-style-type:none;
 	margin:0px 5px;
 	padding:0px;
