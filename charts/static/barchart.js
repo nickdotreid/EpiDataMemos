@@ -9,7 +9,6 @@ $(document).ready(function(){
 		})
 	}).bind("draw",function(event){
 		var chart = $(this);
-		$(this).append('<h2 class="title"></h2><form class="filters"></form><ul class="chart"></ul><div class="foot"></div>')
 		
 		$(".title",chart).html(chart.data("name").replace('.xls',"").replace(/_/gi," "));
 		

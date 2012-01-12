@@ -14,6 +14,18 @@
 {% endblock %}
 
 {% block content %}
-<div id="chart" data-name="{{filename}}" data-src="{{url_for('charts_app.get_data',chart=filename)}}"></div>
+<div id="chart" data-name="{{filename}}" data-src="{{url_for('charts_app.get_data',chart=filename)}}">
+	<h2 class="title">{{title}}</h2>
+	<form>
+		<fieldset class="filters">
+			<legend><span>Select axis to view</span></legend>
+		</fieldset>
+		<fieldset class="layout">
+			<legend><span>Change layout of graph</span></legend>
+		</fieldset>
+	</form>
+	<div class="chart"></div>
+	<div class="foot"></div>
+</div>
 <div id="memos" data-src="{{url_for('memos_app.get_memos')}}"></div>
 {% endblock %}
