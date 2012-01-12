@@ -1,8 +1,37 @@
 #memos{
 	display:block;
 	float:left;
+	width:300px;
+	font-size:1.1em;
 }
 
 #memos .navigation{
 	display:none;
+}
+
+#memos .memo{
+	background:#FFF;
+	border-left:1px #333 solid;
+	border-top:1px #333 solid;
+	width:auto;
+	padding:7px;
+	margin:7px 0px 0px;
+}
+
+#memos .memo .message,#memos .memo .author,#memos .memo .update{
+	display:block;
+}
+
+#memos .memo .message{
+	font-size:1em;
+}
+
+#memos .memo .author{
+	font-size:0.95em;
+	padding:0px 0px 0px 15px;
+}
+
+#memos .memo .update{
+	font-size:0.8em;
+	text-align:right;
 }
