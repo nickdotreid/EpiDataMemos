@@ -74,6 +74,8 @@ $(document).ready(function(){
 		}
 		if($.address.parameter("percent")){
 			$("#chart input.percent").attr("checked",true);
+		}else{
+			$("#chart input.percent").attr("checked",false);
 		}
 	});
 });
