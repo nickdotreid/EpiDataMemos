@@ -2,18 +2,22 @@
 	background:#FFF;
 	border-left:1px #333 solid;
 	border-top:1px #333 solid;
-	width:425px;
+	width:600px;
 	margin:0px 10px 10px 0px;
 	overflow:hidden;
 }
 
+#chart .title,#chart fieldset{
+	padding:0px;
+	margin:7px 13px 0px;
+}
+
 .chart{
 	clear:both;
-	width:400px;
-	margin:0px auto;
+	margin:65px 13px 15px;
 	padding:0px;
 	height:300px;
-	padding:0px 0px 25px 0px;
+	padding:0px 30px 25px;
 	position:relative;
 }
 .chart .column{
@@ -31,6 +35,8 @@
 
 .chart .column .bar{
 	position:absolute;
+	z-index:7;
+	left:10px;
 	height:0px;
 	width:60px;
 	background:#679ad9;
@@ -54,6 +60,7 @@
 	top:0px;
 	left:0px;
 	z-index:15;
+	padding:7px;
 }
 .chart .column .highlight span{
 	display:block;
@@ -87,9 +94,13 @@
 	position:absolute;
 	top:0px;
 	left:0px;
+	width:100%;
 }
 .grid .tick{
 	position:absolute;
 	top:0px;
 	left:0px;
+	border-top:1px solid #333;
+	width:100%;
+	font-size:0.8em;
 }
