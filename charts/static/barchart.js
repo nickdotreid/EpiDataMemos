@@ -8,7 +8,7 @@ $(document).ready(function(){
 			}
 		})
 	}).bind("draw",function(event){
-		chart = $(this);
+		var chart = $(this);
 		$(this).append('<h2 class="title"></h2><form class="filters"></form><ul class="chart"></ul><div class="foot"></div>')
 		
 		$(".title",chart).html(chart.data("name").replace('.xls',"").replace(/_/gi," "));
@@ -30,11 +30,16 @@ $(document).ready(function(){
 		}
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
-		var chart = $(".chart",$(this));
+		var chart = $(this);
+		chart_max = array_max(chart.data("data"),get_value);
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
-			percent = data[$.address.parameter("filter")]/data['Total'];
+			if($.address.parameter("percent")){
+				percent = data[$.address.parameter("filter")]/100;
+			}else{
+				percent = data[$.address.parameter("filter")]/chart_max;
+			}
 			height = chart.height()*percent;
 			$(".bar",column).animate({
 				height:height+'px',
@@ -61,3 +66,18 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function get_value(item){
+	return item[$.address.parameter("filter")];
+}
+
+function array_max(arr,value_function){
+	max = 0;
+	for(index in arr){
+		value = value_function(arr[index]);
+		if(value > max){
+			max = value;
+		}
+	}
+	return max;
+}
