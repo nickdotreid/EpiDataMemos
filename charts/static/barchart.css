@@ -44,12 +44,19 @@
 	text-align:center;
 }
 
+#chart fieldset{
+	border:0px;
+}
+#chart fieldset legend{
+	font-size:0.8em;
+	font-style:italic;
+}
 
-form.filters{
+.filters{
 	display:block;
 	clear:both;
 }
-form.filters label{
+.filters label{
 	width:auto;
 	display:block;
 	float:left;
