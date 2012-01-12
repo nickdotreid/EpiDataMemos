@@ -25,4 +25,4 @@ def view(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
 		return redirect("/")
-	return render_template('chart.html',filename=chart,title=chart)
+	return render_template('chart.html',filename=chart)

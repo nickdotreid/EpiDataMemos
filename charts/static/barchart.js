@@ -8,7 +8,10 @@ $(document).ready(function(){
 			}
 		})
 	}).bind("draw",function(event){
-		$(this).append('<ul class="chart"></ul><form class="filters"></form>')
+		chart = $(this);
+		$(this).append('<h2 class="title"></h2><form class="filters"></form><ul class="chart"></ul><div class="foot"></div>')
+		
+		$(".title",chart).html(chart.data("name").replace('.xls',"").replace(/_/gi," "));
 		
 		filters = $(this).data("filters");
 		for(index in filters){
