@@ -6,7 +6,7 @@ $(document).ready(function(){
 			success:function(data){
 				chart.data("data",data['columns']).data("filters",data['filters']).trigger("draw");
 			}
-		})
+		});
 	}).bind("draw",function(event){
 		var chart = $(this);
 		
@@ -22,7 +22,7 @@ $(document).ready(function(){
 			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
-		
+		$(".chart",$(this)).append('<div class="grid"></div>');
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
@@ -45,6 +45,27 @@ $(document).ready(function(){
 				top:(graph.height()-height)+'px'
 			},{
 				duration:500
+			});
+		});
+		// make ticks
+		ticks = make_ticks(0,100,5);
+		for(index in ticks){
+			tick = ticks[index];
+			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
+				$(".grid").append('<div class="tick" data-value="'+tick+'">'+tick+'</div>')
+			}
+		}
+		$(".grid .tick",graph).each(function(){
+			tick = $(this);
+			opacity = 1;
+			if(ticks.indexOf(tick.data("value"))==-1){
+				opacity = 0;
+			}
+			tick.animate({
+				top:(graph.height()-(graph.height()*(tick.data("value")/100)))+'px',
+				opacity:opacity
+			},{
+				duration:100
 			});
 		});
 	});
