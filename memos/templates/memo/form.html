@@ -1,4 +1,4 @@
-<form class="memo" id="{% if memo.key %}{{memo.key}}{% else %}new{% endif %}" action="{% if memo.key %}{{url_for('memos_app.update',key=memo.key)}}{% else %}{{url_for('memos_app.create')}}{% endif %}" method="post">
+<form class="memo" id="{% if memo.key %}{{memo.key}}{% else %}new{% endif %}" {% for tag in memo.tags%}data-{{tag.type}}="{{tag.text}}" {% endfor %} action="{% if memo.key %}{{url_for('memos_app.update',key=memo.key)}}{% else %}{{url_for('memos_app.create')}}{% endif %}" method="post">
 	{% if request.form['ajax'] %}
 	<a class="close" href="{{url_for('memos_app.read',key=memo.key)}}">Close</a>
 	{% endif %}
