@@ -17,8 +17,9 @@ $(document).ready(function(){
 		
 		data = $(this).data("data");
 		for(index in data){
-			$(".chart",$(this)).append('<li class="column"><div class="bar"></div><div class="label">'+data[index]['Label']+'</div></li>');
+			$(".chart",$(this)).append($("#templates .column").clone());
 			$(".chart .column:last",$(this)).data("data",data[index]);
+			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
 		

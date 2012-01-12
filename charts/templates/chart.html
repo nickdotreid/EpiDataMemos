@@ -30,3 +30,11 @@
 </div>
 <div id="memos" data-src="{{url_for('memos_app.get_memos')}}"></div>
 {% endblock %}
+
+{% block templates %}
+{{super()}}
+<div class="column">
+	<div class="bar"></div>
+	<div class="label"></div>
+</div>
+{% endblock %}

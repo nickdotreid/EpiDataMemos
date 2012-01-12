@@ -9,7 +9,7 @@ a,a:visited{
 	color:#00F;
 }
 
-.template{
+.template,#templates{
 	display:none;
 }
 
