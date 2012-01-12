@@ -25,4 +25,5 @@ def view(chart):
 	filename = charts_dir+chart
 	if not os.path.exists(filename):
 		return redirect("/")
-	return render_template('chart.html',filename=chart)
+	title = chart.replace("_"," ").replace(".xls","")
+	return render_template('chart.html',filename=chart,title=title)

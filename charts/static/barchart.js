@@ -10,8 +10,6 @@ $(document).ready(function(){
 	}).bind("draw",function(event){
 		var chart = $(this);
 		
-		$(".title",chart).html(chart.data("name").replace('.xls',"").replace(/_/gi," "));
-		
 		filters = $(this).data("filters");
 		for(index in filters){
 			$(".filters",$(this)).append('<label class="radio"><input type="radio" name="filter" value="'+filters[index]+'" />'+filters[index]+'</label>');
