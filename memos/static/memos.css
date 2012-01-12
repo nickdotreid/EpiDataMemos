@@ -37,17 +37,18 @@
 }
 
 
-#memos form.memo label{
+
+#memos form.memo input,#memos form.memo textarea, #memos form.memo label{
 	display:block;
 	clear:both;
-	font-size:0.9em;
-	margin-top:7px;
-}
-#memos form.memo input,#memos form.memo textarea{
-	display:block;
 	width:270px;
 	margin:0px auto;
 	padding:3px 4px;
+}
+#memos form.memo label{
+	font-size:0.9em;
+	margin-top:7px;
+	padding:0px;
 }
 
 #memos form.memo label.checkbox{
