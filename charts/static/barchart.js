@@ -54,7 +54,7 @@ $(document).ready(function(){
 			$(".highlight .total",column).html('of '+data['Total']);
 			$(".highlight .qualify",column).html($.address.parameter("filter")+' people');
 			
-			highlight_top = graph.height()-height-$(".highlight",column).height();
+			highlight_top = graph.height()-height-$(".highlight",column).height()-$(".highlight .bottom",column).height();
 			$(".highlight",column).animate({
 				top:highlight_top+'px'
 			},{
@@ -98,7 +98,7 @@ $(document).ready(function(){
 		$(".highlight").hide();
 		$(".highlight",column).show();
 		bar_top = Number($(".bar",column).css("top").replace("px",""));
-		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height())+'px');
+		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height()-$(".highlight .bottom",column).height())+'px');
 	});
 	
 	$("#chart").trigger("loadr");
