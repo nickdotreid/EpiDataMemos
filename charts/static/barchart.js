@@ -31,6 +31,9 @@ $(document).ready(function(){
 		var chart = $(this);
 		var graph = $(".chart",chart);
 		chart_max = array_max(chart.data("data"),get_value);
+		if($.address.parameter("percent")){
+			chart_max = 100
+		}
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
@@ -47,12 +50,11 @@ $(document).ready(function(){
 				duration:500
 			});
 		});
-		// make ticks
-		ticks = make_ticks(0,100,5);
+		ticks = make_ticks(0,chart_max,5);
 		for(index in ticks){
 			tick = ticks[index];
 			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
-				$(".grid").append('<div class="tick" data-value="'+tick+'">'+tick+'</div>')
+				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick)+'</div>')
 			}
 		}
 		$(".grid .tick",graph).each(function(){
@@ -62,10 +64,10 @@ $(document).ready(function(){
 				opacity = 0;
 			}
 			tick.animate({
-				top:(graph.height()-(graph.height()*(tick.data("value")/100)))+'px',
+				top:(graph.height()-(graph.height()*(tick.data("value")/chart_max)))+'px',
 				opacity:opacity
 			},{
-				duration:100
+				duration:1000
 			});
 		});
 	});
@@ -110,7 +112,7 @@ function make_ticks(min,max,amount){
 	range = max - min;
 	step = range/amount;
 	num = min;
-	while(num<=max || amount>0){
+	while(step && num<=max && amount>0){
 		ticks.push(num);
 		num += step;
 		amount--;
@@ -126,7 +128,7 @@ function array_max(arr,value_function){
 			max = value;
 		}
 	}
-	return max;
+	return Number(max);
 }
 function array_sum(arr,value_function){
 	total = 0;
@@ -137,4 +139,8 @@ function array_sum(arr,value_function){
 		}
 	}
 	return total;
+}
+
+function format_number(num){
+	return Math.round(num);
 }
