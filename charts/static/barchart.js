@@ -54,7 +54,8 @@ $(document).ready(function(){
 		for(index in ticks){
 			tick = ticks[index];
 			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
-				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick)+'</div>')
+				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick)+'</div>');
+				$(".grid .tick:last").css("top",graph.height()+'px').css("opacity",0);
 			}
 		}
 		$(".grid .tick",graph).each(function(){
@@ -67,7 +68,7 @@ $(document).ready(function(){
 				top:(graph.height()-(graph.height()*(tick.data("value")/chart_max)))+'px',
 				opacity:opacity
 			},{
-				duration:1000
+				duration:700
 			});
 		});
 	});
