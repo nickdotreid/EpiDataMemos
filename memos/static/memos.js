@@ -50,7 +50,7 @@ $(document).ready(function(){
 		button = $(this);
 		memo = button.parents(".memo:first");
 		if(memo.attr("id")=="new"){
-			memo.parent().remove();
+			memo.remove();
 			$("#memos .create").show();
 			return false;
 		}
