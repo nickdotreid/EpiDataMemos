@@ -88,6 +88,7 @@ $(document).ready(function(){
 		$.address.parameter("highlight",$(this).data("data")['Label']);
 	}).delegate(".column","highlight",function(event){
 		column = $(this);
+		$(".highlight").hide();
 		$(".highlight",column).show();
 		bar_top = Number($(".bar",column).css("top").replace("px",""));
 		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height())+'px');
