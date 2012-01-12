@@ -45,6 +45,25 @@
 	text-align:center;
 }
 
+.chart .column .highlight{
+	display:none;
+	background:#FFF;
+	border:1px #000 solid;
+	font-size:0.8em;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:15;
+}
+.chart .column .highlight span{
+	display:block;
+	text-align:center;
+}
+.chart .column .highlight span.number{
+	font-size:1.2em;
+	font-weight:bold;
+}
+
 #chart fieldset{
 	border:0px;
 }

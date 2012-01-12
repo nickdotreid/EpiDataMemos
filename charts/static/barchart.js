@@ -49,6 +49,12 @@ $(document).ready(function(){
 			},{
 				duration:500
 			});
+			
+			$(".highlight .number",column).html(data[$.address.parameter("filter")]);
+			$(".highlight .total",column).html('of '+data['Total']);
+			$(".highlight .qualify",column).html($.address.parameter("filter")+' people');
+			$(".highlight",column).css("top",(graph.height()-height-$(".hightlight").height())+'px');
+			
 		});
 		ticks = make_ticks(0,chart_max,5);
 		for(index in ticks){
@@ -71,7 +77,13 @@ $(document).ready(function(){
 				duration:700
 			});
 		});
-	});
+	}).delegate(".column","mouseenter",function(event){
+		column = $(this);
+		$(".highlight",column).show();
+	}).delegate(".column","mouseleave",function(event){
+			column = $(this);
+			$(".highlight",column).hide();
+		});
 	
 	$("#chart").trigger("loadr");
 	
