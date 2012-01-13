@@ -25,16 +25,22 @@ def load_memo(key):
 		abort(404)
 	graph = None
 	filter = None
+	highlight = None
 	for tag in memo.tags:
 		if tag.type == 'graph':
 			graph = tag.text
 		if tag.type == 'filter':
 			filter = tag.text
+		if tag.type == 'highlight':
+			highlight = tag.text
 	if graph is None:
 		abort(404)
 	url = url_for('charts_app.view',chart=graph)
+	url += '#?memo='+memo.key
 	if filter is not None:
-		url += '#?filter='+filter
+		url += '&filter='+filter
+	if highlight is not None:
+		url += '&highlight='+highlight
 	return redirect(url)
 
 @memos_app.route('/create',methods=['GET', 'POST'])
