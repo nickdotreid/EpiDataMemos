@@ -26,6 +26,7 @@ $(document).ready(function(){
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
+		set_button_state();
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
 		var chart = $(this);
@@ -119,18 +120,20 @@ $(document).ready(function(){
 	$("#chart").delegate(".filters input","click",function(){
 		$.address.parameter("filter",this.value);
 	});
-	$.address.change(function(event){
-		if($.address.parameter("filter")){
-			$(".filters input:checked").attr("checked",false);
-			$(".filters input[value='"+$.address.parameter("filter")+"']").attr("checked",true);
-		}
-		if($.address.parameter("percent")){
-			$("#chart input.percent").attr("checked",true);
-		}else{
-			$("#chart input.percent").attr("checked",false);
-		}
-	});
+	$.address.change(set_button_state);
 });
+
+function set_button_state(){
+	if($.address.parameter("filter")){
+		$(".filters input:checked").attr("checked",false);
+		$(".filters input[value='"+$.address.parameter("filter")+"']").attr("checked",true);
+	}
+	if($.address.parameter("percent")){
+		$("#chart input.percent").attr("checked",true);
+	}else{
+		$("#chart input.percent").attr("checked",false);
+	}	
+}
 
 function get_value(item){
 	return item[$.address.parameter("filter")];
