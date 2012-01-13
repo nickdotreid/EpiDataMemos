@@ -28,6 +28,7 @@ function filter_memos(obj){
 	sorted_memos = memos.sort(function(a,b){
 		a = $(a);
 		b = $(b);
+		/*
 		if(highlight && a.data("hightlight")!=b.data("highlight")){
 			if(a.data("highlight") == highlight){
 				return true;
@@ -50,6 +51,7 @@ function filter_memos(obj){
 		if(a.data("id")!=b.data("id")){
 			return a.data("id")<b.data("id");
 		}
+		*/
 		return true;
 	});
 	for(var i=0;i<sorted_memos.length;i++){

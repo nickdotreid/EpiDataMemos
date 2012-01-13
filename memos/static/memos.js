@@ -87,7 +87,6 @@ $(document).ready(function(){
 			filter:$.address.parameter("filter")
 		});
 	});
-	
 });
 
 function highlight_memos(obj){
