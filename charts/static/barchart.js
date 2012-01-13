@@ -63,7 +63,7 @@ $(document).ready(function(){
 			})
 			
 		});
-		ticks = make_ticks(0,chart_max,5);
+		var ticks = make_ticks(0,chart_max,5);
 		for(index in ticks){
 			tick = ticks[index];
 			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
@@ -72,10 +72,10 @@ $(document).ready(function(){
 			}
 		}
 		$(".grid .tick",graph).each(function(){
-			tick = $(this);
-			opacity = 1;
-			if(ticks.indexOf(tick.data("value"))==-1){
-				opacity = 0;
+			var tick = $(this);
+			var opacity = 1;
+			if(!in_array(ticks,tick.data("value"))){
+				var opacity = 0;
 			}
 			tick.animate({
 				top:(graph.height()-(graph.height()*(tick.data("value")/chart_max)))+'px',
@@ -175,4 +175,13 @@ function array_sum(arr,value_function){
 
 function format_number(num){
 	return Math.round(num);
+}
+
+function in_array(arr,value){
+	for(var i=0;i<arr.length;i++){
+		if(arr[i]==value){
+			return true;
+		}
+	}
+	return false;
 }
