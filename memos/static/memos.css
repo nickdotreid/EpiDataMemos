@@ -50,6 +50,10 @@
 	margin-top:7px;
 	padding:0px;
 }
+#memos form.memo label.description{
+	font-size:0.70em;
+	margin-top:3px;
+}
 
 #memos form.memo label.checkbox{
 	font-size:1em;
