@@ -12,6 +12,7 @@ $(document).ready(function(){
 			success:function(data){
 				$("#memos").html(data['content']);
 				$("#memos").trigger("loaded");
+				$("#memos").trigger("highlight");
 			}
 		});
 	}).delegate(".create","click",function(event){
@@ -67,4 +68,40 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	$.address.change(function(){
+		$("#memos").trigger("highlight");
+	});
+	$("#memos").bind("highlight",function(){
+		highlight_memos({
+			focus:$.address.parameter("memo"),
+			highlight:$.address.parameter("highlight"),
+			filter:$.address.parameter("filter")
+		});
+	});
+	$("#chart").delegate(".column","highlight",function(){
+		column = $(this);
+		highlight_memos({
+			focus:$.address.parameter("memo"),
+			highlight:column.data("data")['Label'],
+			filter:$.address.parameter("filter")
+		});
+	});
+	
 });
+
+function highlight_memos(obj){
+	$("#memos .memo").each(function(){
+		var memo = $(this);
+		memo.removeClass("focus").removeClass("relivant");
+		if(obj['highlight'] && obj['highlight']==memo.data("highlight")){
+			memo.addClass("relivant");
+		}
+		if(obj['filter'] && obj['filter']==memo.data("filter")){
+			memo.addClass("relivant");
+		}
+		if(obj['focus'] && obj['focus']==memo.attr("id").replace("memo-","")){
+			memo.addClass("focus");
+		}
+	})
+}

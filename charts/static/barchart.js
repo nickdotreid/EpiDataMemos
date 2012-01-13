@@ -84,10 +84,10 @@ $(document).ready(function(){
 				duration:700
 			});
 		});
-	}).delegate(".column","mouseenter",function(event){
+	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
 		$(this).trigger("highlight");
-	}).delegate(".column","mouseleave",function(event){
+	}).delegate(".column .bar","mouseleave",function(event){
 			column = $(this);
 			if($.address.parameter("highlight")!=column.data("data")['Label']){
 				$(".highlight",column).hide();
@@ -100,6 +100,9 @@ $(document).ready(function(){
 		$(".highlight",column).show();
 		bar_top = Number($(".bar",column).css("top").replace("px",""));
 		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height()-$(".highlight .bottom",column).height())+'px');
+	}).delegate(".column .highlight .highlink","click",function(event){
+		event.preventDefault();
+		$(this).parents(".column:first").trigger("highlight");
 	});
 	
 	$("#chart").trigger("loadr");

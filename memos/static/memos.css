@@ -10,12 +10,23 @@
 }
 
 #memos .memo{
-	background:#FFF;
+	background:#DDD;
 	border-left:1px #333 solid;
 	border-top:1px #333 solid;
 	width:auto;
 	padding:7px;
 	margin:7px 0px 0px;
+}
+#memos .memo.relivant{
+	background:#FFF;
+}
+#memos .memo.focus{
+	border-width:3px;
+	background:#daedff;
+}
+
+#memos form.memo{
+	background:#FFF;
 }
 
 #memos .memo .message,#memos .memo .author,#memos .memo .update{
