@@ -32,8 +32,11 @@ $(document).ready(function(){
 		if($('input[name=graph]',form).length<1){
 			query_string += '&graph='+$("#chart").data("name");
 		}
-		if($.address.parameter('filter') && $('input[name=form]',form).length<1){
+		if($.address.parameter('filter') && $('input[name=filter]',form).length<1){
 			query_string += '&filter='+$.address.parameter('filter');
+		}
+		if($.address.parameter('highlight') && $('input[name=highlight]',form).length<1){
+			query_string += '&highlight='+$.address.parameter('highlight');
 		}
 		$.ajax({
 			url:form.attr("action"),

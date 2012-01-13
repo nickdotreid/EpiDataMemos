@@ -85,7 +85,7 @@ def save_memo(key=None):
 		memo.public=True
 	else:
 		memo.public=False
-	tag_keys = ['graph','filter','hover']
+	tag_keys = ['graph','filter','highlight']
 	for key in tag_keys:
 		if key in request.form and request.form[key] is not '':
 			tag = get_tag(request.form[key],key)
