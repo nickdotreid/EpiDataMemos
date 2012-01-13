@@ -87,7 +87,7 @@ $(document).ready(function(){
 	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
 		$(this).trigger("highlight");
-	}).delegate(".column .bar","mouseleave",function(event){
+	}).delegate(".column","mouseleave",function(event){
 			column = $(this);
 			if($.address.parameter("highlight")!=column.data("data")['Label']){
 				$(".highlight",column).hide();
