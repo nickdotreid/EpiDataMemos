@@ -24,7 +24,7 @@
 	list-style-type:none;
 	margin:0px 5px;
 	padding:0px;
-	width:80px;
+	width:90px;
 	height:300px;
 	display:block;
 	float:left;
@@ -36,7 +36,7 @@
 .chart .column .bar{
 	position:absolute;
 	z-index:7;
-	left:10px;
+	left:15px;
 	height:0px;
 	width:60px;
 	background:#679ad9;
@@ -48,7 +48,7 @@
 	position:absolute;
 	top:300px;
 	left:0px;
-	width:80px;
+	width:90px;
 	text-align:center;
 }
 
@@ -62,6 +62,7 @@
 	left:0px;
 	z-index:15;
 	padding:7px;
+	width:110px;
 }
 .chart .column .highlight span,.chart .column .highlight a{
 	display:block;
