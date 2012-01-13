@@ -14,10 +14,10 @@ function filter_memos(obj){
 		obj = {};
 	}
 	if(!obj['filter']){
-		obj['filter'] = $.address.parameter("filter")
+		obj['filter'] = $.address.parameter("filter");
 	}
 	if(!obj['highlight']){
-		obj['highlight'] = $.address.parameter("highlight")
+		obj['highlight'] = $.address.parameter("highlight");
 	}
 	var memos = $("#memos .memo");
 	if(memos.length<1){
