@@ -1,4 +1,4 @@
-<div class="memo" data-weight="{{memo.weight}}" {% for tag in memo.tags%}data-{{tag.type}}="{{tag.text}}" {% endfor %}>
+<div id="memo-{{memo.key}}" class="memo" data-weight="{{memo.weight}}" data-id="{{memo.id}}" {% for tag in memo.tags%}data-{{tag.type}}="{{tag.text}}" {% endfor %}>
 	<div class="message">
 		{{memo.message}}
 	</div>
