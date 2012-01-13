@@ -4,5 +4,6 @@
 	</div>
 	<a class="author" href="mailto:{{memo.author}}">{{memo.author}}</a>
 	<div class="graph">{{memo.graph}}</div>
+	<a class="permalink" href="{{url_for('memos_app.load_memo',key=memo.key)}}">Permanent Link</a>
 	<a class="update" href="{{url_for('memos_app.update',key=memo.key)}}">Update</a>
 </div>
