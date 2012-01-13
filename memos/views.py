@@ -81,6 +81,8 @@ def save_memo(key=None):
 	else:
 		memo.message = request.form['message']
 		memo.author = request.form['author']
+	if 'weight' in request.form:
+		memo.weight = int(request.form['weight'])
 	if 'public' in request.form:
 		memo.public=True
 	else:
