@@ -27,7 +27,7 @@ $(document).ready(function(){
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
-		set_button_state();
+		set_button_state({});
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
 		var chart = $(this);
@@ -144,12 +144,18 @@ $(document).ready(function(){
 	$.address.change(set_button_state);
 });
 
-function set_button_state(){
-	if($.address.parameter("filter")){
-		$(".filters input:checked").attr("checked",false);
-		$(".filters input[value='"+$.address.parameter("filter")+"']").attr("checked",true);
+function set_button_state(obj){
+	if(!obj['filter']){
+		obj['filter'] = $.address.parameter("filter");
 	}
-	if($.address.parameter("percent")){
+	if(!obj['percent']){
+		obj['percent'] = $.address.parameter("percent");
+	}
+	if(obj['filter']){
+		$(".filters input:checked").attr("checked",false);
+		$(".filters input[value='"+obj['filter']+"']").attr("checked",true);
+	}
+	if(obj['percent']){
 		$("#chart input.percent").attr("checked",true);
 	}else{
 		$("#chart input.percent").attr("checked",false);
