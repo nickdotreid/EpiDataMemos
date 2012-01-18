@@ -49,7 +49,8 @@ $(document).ready(function(){
 				height:height+'px',
 				top:(graph.height()-height)+'px'
 			},{
-				duration:500
+				duration:500,
+				queue:false
 			});
 			
 			$(".highlight .number",column).html(data[$.address.parameter("filter")]);
@@ -60,7 +61,8 @@ $(document).ready(function(){
 			$(".highlight",column).animate({
 				top:highlight_top+'px'
 			},{
-				duration:500
+				duration:500,
+				queue:false
 			})
 			
 		});
@@ -82,7 +84,8 @@ $(document).ready(function(){
 				top:(graph.height()-(graph.height()*(tick.data("value")/chart_max)))+'px',
 				opacity:opacity
 			},{
-				duration:700
+				duration:700,
+				queue:false
 			});
 		});
 	}).delegate(".column .bar","mouseenter",function(event){
