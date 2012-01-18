@@ -38,15 +38,23 @@ $(document).ready(function(){
 		if(!event.highlight){
 			event.highlight = $.address.parameter("highlight");
 		}
+		if(!event.percent){
+			event.percent = $.address.parameter("percent");
+		}
+		
+		set_button_state({
+			filter:event.filter
+		});
+		
 		chart_max = array_max(chart.data("data"),get_value);
-		if($.address.parameter("percent")){
+		if(event.percent){
 			chart_max = 100
 		}
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
 			column.addClass(String(data['Label']));
-			if($.address.parameter("percent")){
+			if(event.percent){
 				percent = data[event.filter]/data['Total'];
 			}else{
 				percent = data[event.filter]/chart_max;
