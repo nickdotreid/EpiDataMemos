@@ -32,6 +32,12 @@ $(document).ready(function(){
 	}).bind("redraw",function(event){
 		var chart = $(this);
 		var graph = $(".chart",chart);
+		if(!event.filter){
+			event.filter = $.address.parameter("filter");
+		}
+		if(!event.highlight){
+			event.highlight = $.address.parameter("highlight");
+		}
 		chart_max = array_max(chart.data("data"),get_value);
 		if($.address.parameter("percent")){
 			chart_max = 100
@@ -39,10 +45,11 @@ $(document).ready(function(){
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
+			column.addClass(String(data['Label']));
 			if($.address.parameter("percent")){
-				percent = data[$.address.parameter("filter")]/data['Total'];
+				percent = data[event.filter]/data['Total'];
 			}else{
-				percent = data[$.address.parameter("filter")]/chart_max;
+				percent = data[event.filter]/chart_max;
 			}
 			height = graph.height()*percent;
 			$(".bar",column).animate({
@@ -53,9 +60,9 @@ $(document).ready(function(){
 				queue:false
 			});
 			
-			$(".highlight .number",column).html(data[$.address.parameter("filter")]);
+			$(".highlight .number",column).html(data[event.filter]);
 			$(".highlight .total",column).html('of '+data['Total']);
-			$(".highlight .qualify",column).html($.address.parameter("filter")+' people');
+			$(".highlight .qualify",column).html(event.filter+' people');
 			
 			highlight_top = graph.height()-height-$(".highlight",column).height()-$(".highlight .bottom",column).height();
 			$(".highlight",column).animate({
@@ -88,6 +95,13 @@ $(document).ready(function(){
 				queue:false
 			});
 		});
+		
+		if(event.highlight){
+			$(".column."+event.highlight,$(this)).trigger("highlight");
+		}else{
+			$(".column").trigger("mouseleave");
+		}
+		
 	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
 		$(this).trigger("highlight");
