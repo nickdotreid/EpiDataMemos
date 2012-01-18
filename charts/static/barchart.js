@@ -46,7 +46,9 @@ $(document).ready(function(){
 			filter:event.filter
 		});
 		
-		chart_max = array_max(chart.data("data"),get_value);
+		chart_max = array_max(chart.data("data"),function(item){
+			return item[event.filter];
+		});
 		if(event.percent){
 			chart_max = 100
 		}
@@ -171,10 +173,6 @@ function set_button_state(obj){
 	}else{
 		$("#chart input.percent").attr("checked",false);
 	}	
-}
-
-function get_value(item){
-	return item[$.address.parameter("filter")];
 }
 
 function make_ticks(min,max,amount){
