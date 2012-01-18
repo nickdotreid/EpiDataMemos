@@ -27,7 +27,7 @@ $(document).ready(function(){
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
-		set_button_state({});
+		set_button_state();
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
 		var chart = $(this);
@@ -145,6 +145,9 @@ $(document).ready(function(){
 });
 
 function set_button_state(obj){
+	if(!obj){
+		obj = {};
+	}
 	if(!obj['filter']){
 		obj['filter'] = $.address.parameter("filter");
 	}
