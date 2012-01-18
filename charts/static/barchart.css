@@ -20,6 +20,13 @@
 	padding:0px 30px 25px;
 	position:relative;
 }
+.chart div.canvas{
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:3;
+	padding:0px 25px;
+}
 .chart .column{
 	list-style-type:none;
 	margin:0px 5px;
@@ -31,6 +38,7 @@
 	position:relative;
 	top:0px;
 	left:0px;
+	z-index:3;
 }
 
 .chart .column .bar{
@@ -104,6 +112,7 @@
 	position:absolute;
 	top:0px;
 	left:0px;
+	z-index:1;
 	width:100%;
 }
 .grid .tick{
