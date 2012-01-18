@@ -1,6 +1,10 @@
 $(document).ready(function(){
 	$.address.change(filter_memos);
-	$("#memos").bind("loaded",filter_memos);
+	$("#memos").bind("loaded",filter_memos).bind("mouseenter",function(){
+		$(this).addClass("hover");
+	}).bind("mouseleave",function(){
+		$(this).removeClass("hover");
+	});
 	$("#chart").delegate(".column","highlight",function(){
 		column = $(this);
 		filter_memos({highlight:column.data("data")['Label']});
@@ -18,6 +22,9 @@ function filter_memos(obj){
 	}
 	if(!obj['highlight']){
 		obj['highlight'] = $.address.parameter("highlight");
+	}
+	if($("#memos").hasClass("hover")){
+		return false;
 	}
 	var memos = $("#memos .memo");
 	if(memos.length<1){
