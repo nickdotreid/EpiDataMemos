@@ -26,6 +26,7 @@ function filter_memos(obj){
 	if($("#memos").hasClass("hover")){
 		return false;
 	}
+	return false;
 	var memos = $("#memos .memo");
 	if(memos.length<1){
 		return false;
