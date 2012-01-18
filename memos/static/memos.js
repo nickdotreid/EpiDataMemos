@@ -69,6 +69,17 @@ $(document).ready(function(){
 		});
 	});
 	
+	$("#memos").delegate(".memo","mouseenter",function(){
+		var memo = $(this);
+		$("#chart").trigger({
+			type:"redraw",
+			filter:memo.data("filter"),
+			highlight:memo.data("highlight")
+		});
+	}).delegate(".memo","mouseleave",function(){
+		$("#chart").trigger("redraw");
+	});
+	
 	$.address.change(function(){
 		$("#memos").trigger("highlight");
 	});
