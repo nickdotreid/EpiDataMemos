@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="chart" data-name="{{filename}}" data-src="{{url_for('charts_app.get_data',chart=filename)}}">
+<div id="chart" data-name="{{filename}}" data-src="{{url_for('data_api.get_data',chart=filename)}}">
 	<h2 class="title">{{title}}</h2>
 	<form>
 		<fieldset class="filters">
