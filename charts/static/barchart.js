@@ -228,7 +228,10 @@ $(document).ready(function(){
 		}
 	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
+		$(this).addClass("hover");
 //		$(this).trigger("highlight");
+	}).delegate(".column .bar","mouseleave",function(event){
+		$(this).removeClass("hover");
 	}).delegate(".column","mouseenter",function(event){
 		$(this).trigger("expand");
 	}).delegate(".column","mouseleave",function(event){

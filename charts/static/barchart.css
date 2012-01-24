@@ -45,7 +45,7 @@
 .chart .column .bar{
 	position:absolute;
 	z-index:7;
-	left:15px;
+	left:0px;
 	height:0px;
 	width:60px;
 	background:#679ad9;
@@ -55,6 +55,20 @@
 }
 .chart .column .bar.sibling{
 	background:#cde1f9;
+}
+
+.chart .column .bar.hover{
+	background:#86ea9c;
+}
+
+.chart .column .bar .amount{
+	display:block;
+	font-size:0.8em;
+	position:absolute;
+	top:2px;
+	left:0px;
+	width:60px;
+	text-align:center;
 }
 
 
