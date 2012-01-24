@@ -289,6 +289,18 @@ function set_button_state(obj){
 		$(".filters input:checked").attr("checked",false);
 		$(".filters input[value='"+obj['filter']+"']").attr("checked",true);
 	}
+	$(".filters .row.child").hide();
+	if(obj['filter']){
+		$(".filters .row.child").each(function(){
+			row = $(this);
+			if(row.data("parent")==obj['filter']){
+				row.show();
+			}
+			if($("input[value='"+obj['filter']+"']",row).length>0){
+				row.show();
+			}
+		});
+	}
 	if(obj['percent']){
 		$("#chart input.percent").attr("checked",true);
 	}else{
