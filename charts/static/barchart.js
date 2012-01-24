@@ -28,16 +28,18 @@ $(document).ready(function(){
 		
 		$(".chart",chart).append('<div class="canvas"></div>');
 		for(index in data){
+			var col_data = data[index]
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
 			$(".chart .column:last",$(this)).data("data",data[index]);
 			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
 			// add bar for each value
-			items = flatten(data[index]);
-			for(index in items){
-				$(".chart .column:last",$(this)).append($("#templates .bar").clone());
-				$(".chart .column:last .bar:last",$(this)).data("name",index).data("amount",items[index]);
-				$(".chart .column:last .bar:last .amount",$(this)).html(items[index]);
-			}
+			find_values(col_data,function(value,name,parent){
+				if(value != col_data['Label']){
+					$(".chart .column:last",chart).append($("#templates .bar").clone());
+					$(".chart .column:last .bar:last",chart).data("name",name).data("amount",value).data("parent",parent);
+					$(".chart .column:last .bar:last .amount",chart).html(value);
+				}
+			});
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
 		$(".chart",$(this)).prepend('<div class="grid"></div>');
@@ -56,7 +58,7 @@ $(document).ready(function(){
 			event.highlight = unescape($.address.parameter("highlight"));
 		}
 		if(!event.percent){
-			event.percent = unescape($.address.parameter("percent"));
+			event.percent = $.address.parameter("percent");
 		}
 		
 		set_button_state({
@@ -64,8 +66,13 @@ $(document).ready(function(){
 		});
 		
 		chart_max = array_max(chart.data("data"),function(item){
-			flat = flatten(item)
-			return flat[event.filter];
+			var biggest_number = 0;
+			find_values(item,function(value,index,parent){
+				if((event.filter == index || event.filter == parent) && value>biggest_number){
+					biggest_number = value;
+				}
+			});
+			return biggest_number;
 		});
 		if(event.percent){
 			chart_max = 100
@@ -74,10 +81,11 @@ $(document).ready(function(){
 			column = $(this);
 			data = column.data("data");
 			column.addClass(String(data['Label']));
+
 			
 			$(".bar",column).each(function(){
 				bar = $(this);
-				if(bar.data("name") != event.filter){
+				if(bar.data("name") != event.filter && bar.data("parent") != event.filter){
 					bar.animate({
 							height:'0px',
 							top:graph.height()+'px',
@@ -150,7 +158,7 @@ $(document).ready(function(){
 		
 	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
-		$(this).trigger("highlight");
+//		$(this).trigger("highlight");
 	}).delegate(".column","mouseleave",function(event){
 			column = $(this);
 			if($.address.parameter("highlight")!=column.data("data")['Label']){
@@ -278,4 +286,17 @@ function flatten(obj, includePrototype, into, prefix) {
     }
 
     return into;
+}
+
+function find_values(obj,action,parent){
+	for(index in obj){
+		value = obj[index];
+		if(value && typeof value == "object" && 
+			!(value instanceof Date || value instanceof RegExp)){
+				find_values(obj[index],action,index);
+		}
+		else if(action){
+			action(value,index,parent);
+		}
+	}
 }
