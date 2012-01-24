@@ -18,6 +18,7 @@ $(document).ready(function(){
 				$('.filters .row:first .filter:last .name',chart).html(label);
 				$('.filters .row:first .filter:last input',chart).val(label);
 				$('.filters',chart).append("<div class='row child'></div>");
+				$(".filters .row:last",chart).data("parent",label);
 				for(child in data[0][label]){
 					$('.filters .row:last',chart).append($("#templates .filter").clone());
 					$('.filters .filter:last .name',chart).html(child);
