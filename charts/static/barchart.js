@@ -130,8 +130,10 @@ $(document).ready(function(){
 					return true;
 				}
 			});
+			$(".bar",column).removeClass("active");
 			for(i in active_bars){
 				bar = $(active_bars[i]);
+				bar.addClass("active");
 				value = bar.data("amount");
 				if(event.percent){
 					percent = value/data['Total'];
@@ -192,11 +194,46 @@ $(document).ready(function(){
 			$(".column").trigger("mouseleave");
 		}
 		
+	}).delegate(".column","expand",function(){
+		column = $(this);
+		if($(".bar.active",column).length>1){
+			bars = $(".bar.active",column);
+			bars = bars.sort(function(a,b){
+				if($(a).data("amount")>$(b).data("amount")){
+					return true;
+				}
+				return false;
+			});
+			for(var i=0;i<bars.length;i++){
+				bar = $(bars[i]);
+				bar.animate({
+					left:(i*10)+'px'
+				},{
+					duration:250,
+					queue:false
+				});
+			}
+		}
+	}).delegate(".column","collapse",function(event){
+		column = $(this);
+		if($(".bar",column).length>1){
+			$(".bar",column).each(function(i){
+				$(this).animate({
+					left:'0px'
+				},{
+					duration:250,
+					queue:false
+				})
+			});
+		}
 	}).delegate(".column .bar","mouseenter",function(event){
 		$.address.parameter("highlight",false);
 //		$(this).trigger("highlight");
+	}).delegate(".column","mouseenter",function(event){
+		$(this).trigger("expand");
 	}).delegate(".column","mouseleave",function(event){
 			column = $(this);
+			column.trigger("collapse");
 			if($.address.parameter("highlight")!=column.data("data")['Label']){
 				$(".highlight",column).hide();
 			}
