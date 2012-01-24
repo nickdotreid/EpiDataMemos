@@ -279,7 +279,7 @@ function set_button_state(obj){
 		obj = {};
 	}
 	if(!obj['filter']){
-		obj['filter'] = $.address.parameter("filter");
+		obj['filter'] = unescape($.address.parameter("filter"));
 	}
 	if(!obj['percent']){
 		obj['percent'] = $.address.parameter("percent");
