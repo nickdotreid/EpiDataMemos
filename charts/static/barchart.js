@@ -241,8 +241,8 @@ $(document).ready(function(){
 			if($.address.parameter("highlight")!=column.data("data")['Label']){
 				$(".highlight",column).hide();
 			}
-	}).delegate(".column","click",function(event){
-		$.address.parameter("highlight",$(this).data("data")['Label']);
+	}).delegate(".column .bar","click",function(event){
+		$.address.parameter("filter",$(this).data("name"));
 	}).delegate(".column","highlight",function(event){
 		column = $(this);
 		$(".highlight").hide();
