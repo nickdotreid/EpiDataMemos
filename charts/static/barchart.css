@@ -19,6 +19,7 @@
 	height:300px;
 	padding:0px 30px 25px;
 	position:relative;
+	overflow:hidden;
 }
 .chart div.canvas{
 	position:absolute;
@@ -49,6 +50,11 @@
 	width:60px;
 	background:#679ad9;
 	cursor:pointer;
+	border-top:1px #000 solid;
+	border-right:1px #000 solid;
+}
+.chart .column .bar.sibling{
+	background:#cde1f9;
 }
 
 .chart .column .label{

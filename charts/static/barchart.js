@@ -81,11 +81,44 @@ $(document).ready(function(){
 			column = $(this);
 			data = column.data("data");
 			column.addClass(String(data['Label']));
-
 			
+			// get all active bars
+			active_bars = [];
 			$(".bar",column).each(function(){
 				bar = $(this);
-				if(bar.data("name") != event.filter && bar.data("parent") != event.filter){
+				if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
+					active_bars.push(this)
+				}
+			});
+			// get active bars sibilings?
+			$(".bar.sibling",column).removeClass("sibling");
+			$(".bar",column).each(function(){
+				bar = $(this);
+				add = false;
+				for(index_bar in active_bars){
+					active = $(active_bars[index_bar]);
+					if(active.data("parent")==bar.data("parent")){
+						add = true;
+					}
+				}
+				if(add && !in_array(active_bars,this)){
+					bar.addClass("sibling");
+					active_bars.push(this);
+				}
+			});
+			
+			// sort active bars
+			active_bars = active_bars.sort(function(a,b){
+				if($(a).data("amount")>$(b).data("amount")){
+					return true;
+				}
+				return false;
+			});
+			// animate bars
+			height=0;
+			$(".bar",column).each(function(){
+				bar = $(this);
+				if(!in_array(active_bars,this)){
 					bar.animate({
 							height:'0px',
 							top:graph.height()+'px',
@@ -96,6 +129,9 @@ $(document).ready(function(){
 					});
 					return true;
 				}
+			});
+			for(i in active_bars){
+				bar = $(active_bars[i]);
 				value = bar.data("amount");
 				if(event.percent){
 					percent = value/data['Total'];
@@ -106,12 +142,13 @@ $(document).ready(function(){
 				bar.animate({
 						height:height+'px',
 						top:(graph.height()-height)+'px',
+						'z-index':10-i,
 						opacity:1
 					},{
 						duration:500,
 						queue:false					
 				});
-			});
+			}
 			
 			
 			$(".highlight .number",column).html(data[event.filter]);
