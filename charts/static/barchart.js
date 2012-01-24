@@ -50,13 +50,13 @@ $(document).ready(function(){
 		var chart = $(this);
 		var graph = $(".chart",chart);
 		if(!event.filter){
-			event.filter = $.address.parameter("filter");
+			event.filter = unescape($.address.parameter("filter"));
 		}
 		if(!event.highlight){
-			event.highlight = $.address.parameter("highlight");
+			event.highlight = unescape($.address.parameter("highlight"));
 		}
 		if(!event.percent){
-			event.percent = $.address.parameter("percent");
+			event.percent = unescape($.address.parameter("percent"));
 		}
 		
 		set_button_state({
@@ -80,7 +80,8 @@ $(document).ready(function(){
 				if(bar.data("name") != event.filter){
 					bar.animate({
 							height:'0px',
-							top:graph.height()+'px'
+							top:graph.height()+'px',
+							opacity:0
 						},{
 							duration:500,
 							queue:false					
@@ -96,7 +97,8 @@ $(document).ready(function(){
 				height = graph.height()*percent;
 				bar.animate({
 						height:height+'px',
-						top:(graph.height()-height)+'px'
+						top:(graph.height()-height)+'px',
+						opacity:1
 					},{
 						duration:500,
 						queue:false					
