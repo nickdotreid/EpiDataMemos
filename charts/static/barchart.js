@@ -150,7 +150,6 @@ $(document).ready(function(){
 				});
 			}
 			
-			
 			$(".highlight .number",column).html(data[event.filter]);
 			$(".highlight .total",column).html('of '+data['Total']);
 			$(".highlight .qualify",column).html(event.filter+' people');
