@@ -4,23 +4,40 @@ $(document).ready(function(){
 		$.ajax({
 			url:chart.data('src'),
 			success:function(data){
-				chart.data("data",data['columns']).data("filters",data['filters']).trigger("draw");
+				chart.data("data",data['columns']).trigger("draw");
 			}
 		});
 	}).bind("draw",function(event){
 		var chart = $(this);
+		data = $(this).data("data");
 		
-		filters = $(this).data("filters");
-		for(index in filters){
-			$(".filters",$(this)).append('<label class="radio"><input type="radio" name="filter" value="'+filters[index]+'" />'+filters[index]+'</label>');
+		$(".filters",chart).append("<div class='row'></div>");
+		for(label in data[0]){
+			if(data[0][label]!=data[0]['Label']){
+				$('.filters .row:first',chart).append($("#templates .filter").clone());
+				$('.filters .row:first .filter:last .name',chart).html(label);
+				$('.filters .row:first .filter:last input',chart).val(label);
+				$('.filters',chart).append("<div class='row child'></div>");
+				for(child in data[0][label]){
+					$('.filters .row:last',chart).append($("#templates .filter").clone());
+					$('.filters .filter:last .name',chart).html(child);
+					$('.filters .filter:last input',chart).val(child);
+				}
+			}
 		}
 		
-		data = $(this).data("data");
 		$(".chart",chart).append('<div class="canvas"></div>');
 		for(index in data){
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
 			$(".chart .column:last",$(this)).data("data",data[index]);
 			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
+			// add bar for each value
+			items = flatten(data[index]);
+			for(index in items){
+				$(".chart .column:last",$(this)).append($("#templates .bar").clone());
+				$(".chart .column:last .bar:last",$(this)).data("name",index).data("amount",items[index]);
+				$(".chart .column:last .bar:last .amount",$(this)).html(items[index]);
+			}
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
 		$(".chart",$(this)).prepend('<div class="grid"></div>');
@@ -47,7 +64,8 @@ $(document).ready(function(){
 		});
 		
 		chart_max = array_max(chart.data("data"),function(item){
-			return item[event.filter];
+			flat = flatten(item)
+			return flat[event.filter];
 		});
 		if(event.percent){
 			chart_max = 100
@@ -56,19 +74,35 @@ $(document).ready(function(){
 			column = $(this);
 			data = column.data("data");
 			column.addClass(String(data['Label']));
-			if(event.percent){
-				percent = data[event.filter]/data['Total'];
-			}else{
-				percent = data[event.filter]/chart_max;
-			}
-			height = graph.height()*percent;
-			$(".bar",column).animate({
-				height:height+'px',
-				top:(graph.height()-height)+'px'
-			},{
-				duration:500,
-				queue:false
+			
+			$(".bar",column).each(function(){
+				bar = $(this);
+				if(bar.data("name") != event.filter){
+					bar.animate({
+							height:'0px',
+							top:graph.height()+'px'
+						},{
+							duration:500,
+							queue:false					
+					});
+					return true;
+				}
+				value = bar.data("amount");
+				if(event.percent){
+					percent = value/data['Total'];
+				}else{
+					percent = value/chart_max;
+				}
+				height = graph.height()*percent;
+				bar.animate({
+						height:height+'px',
+						top:(graph.height()-height)+'px'
+					},{
+						duration:500,
+						queue:false					
+				});
 			});
+			
 			
 			$(".highlight .number",column).html(data[event.filter]);
 			$(".highlight .total",column).html('of '+data['Total']);
@@ -220,4 +254,26 @@ function in_array(arr,value){
 		}
 	}
 	return false;
+}
+
+
+function flatten(obj, includePrototype, into, prefix) {
+    /* FROM http://stackoverflow.com/questions/963607/compressing-object-hierarchies-in-javascript */
+	into = into || {};
+    prefix = prefix || "";
+
+    for (var k in obj) {
+        if (includePrototype || obj.hasOwnProperty(k)) {
+            var prop = obj[k];
+            if (prop && typeof prop === "object" &&
+                !(prop instanceof Date || prop instanceof RegExp)) {
+                flatten(prop, includePrototype, into, prefix + k + "_");
+            }
+            else {
+                into[k] = prop;// did read // into[prefix + k] = prop;
+            }
+        }
+    }
+
+    return into;
 }
