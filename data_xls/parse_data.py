@@ -38,6 +38,7 @@ def parse_data_file(file_location):
 				else:
 					columns[colnum][name] = value
 					columns[colnum]['Label'] = value
+					colnum += 1
 	list_column = []
 	for col in columns:
 		list_column.append(columns[col])
