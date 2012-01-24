@@ -3,31 +3,55 @@ import xlrd
 def parse_data_file(file_location):
 	data = {}
 	wb = xlrd.open_workbook(file_location)
-	sh = wb.sheet_by_index(0)	
-	
-	groups = []
-	for num in range(sh.nrows):
-		row = sh.row_values(num)
-		if row[0] not in groups and num is not 0:
-			groups.append(row[0])
+	sh = wb.sheet_by_index(0)
 	
 	columns = {}
 	for rownum in range(sh.nrows):
-		row = sh.row_values(rownum)
-		for cellnum in range(len(row)):
-			if cellnum>0:
+		if rownum > 0:
+			row = sh.row_values(rownum)
+			colnum = 0
+			keys = []
+			for cellnum in range(len(row)):
 				value = row[cellnum]
 				if type(value) is float:
 					value = int(value)
-				if cellnum not in columns:
-					columns[cellnum] = {}
-				if rownum > 0:
-					columns[cellnum][row[0]] = value
+					if colnum not in columns:
+						columns[colnum] = {}
+					fake_keys = keys[:]
+					fake_keys.reverse()
+					columns[colnum] = add_keys_to_obj(columns[colnum],fake_keys,value)
+					colnum += 1
 				else:
-					columns[cellnum]['Label'] = value
+					if value is not '':
+						keys.append(value)
+	if sh.nrows > 1:
+		row = sh.row_values(0)
+		name = False
+		colnum = 0
+		for cellnum in range(len(row)):
+			value = row[cellnum]
+			if value is not '':
+				if type(value) is float:
+					value = str(int(value))
+				if not name:
+					name = value
+				else:
+					columns[colnum][name] = value
+					columns[colnum]['Label'] = value
 	list_column = []
 	for col in columns:
 		list_column.append(columns[col])
 	data['columns'] = list_column
-	data['filters'] = groups
 	return data
+	
+def add_keys_to_obj(obj,keys,value):
+	if keys is None or len(keys)<1:
+		return obj
+	key = keys.pop()
+	if key not in obj:
+		obj[key] = {}
+	if len(keys)>0:
+		obj[key] = add_keys_to_obj(obj[key],keys,value)
+	else:
+		obj[key] = value
+	return obj
