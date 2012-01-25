@@ -107,14 +107,6 @@ $(document).ready(function(){
 					active_bars.push(this);
 				}
 			});
-			if(!total_inserted){
-				$(".bar",column).each(function(){
-					if($(this).data("name")=="Total"){
-						active_bars.push(this);
-						$(this).addClass("sibling").addClass("total");
-					}
-				});
-			}
 			
 			// sort active bars
 			active_bars = active_bars.sort(function(a,b){
@@ -140,6 +132,8 @@ $(document).ready(function(){
 				}
 			});
 			$(".bar",column).removeClass("active");
+			
+			ypos = 0;
 			for(i in active_bars){
 				bar = $(active_bars[i]);
 				bar.addClass("active");
@@ -150,15 +144,22 @@ $(document).ready(function(){
 					percent = value/chart_max;
 				}
 				height = graph.height()*percent;
+				y = graph.height() - height;
+				z = 10-i;
+				if(event.percent){
+					y = ypos;
+					z = 5+i;
+				}
 				bar.animate({
 						height:height+'px',
-						top:(graph.height()-height)+'px',
-						'z-index':10-i,
+						top:y+'px',
+						'z-index':z,
 						opacity:1
 					},{
 						duration:500,
 						queue:false					
 				});
+				ypos += height;
 			}
 			
 			$(".highlight .number",column).html(data[event.filter]);
