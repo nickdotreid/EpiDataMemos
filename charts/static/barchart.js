@@ -296,27 +296,3 @@ function set_button_state(obj){
 		$("#chart input.percent").attr("checked",false);
 	}	
 }
-
-
-
-function flatten(obj, includePrototype, into, prefix) {
-    /* FROM http://stackoverflow.com/questions/963607/compressing-object-hierarchies-in-javascript */
-	into = into || {};
-    prefix = prefix || "";
-
-    for (var k in obj) {
-        if (includePrototype || obj.hasOwnProperty(k)) {
-            var prop = obj[k];
-            if (prop && typeof prop === "object" &&
-                !(prop instanceof Date || prop instanceof RegExp)) {
-                flatten(prop, includePrototype, into, prefix + k + "_");
-            }
-            else {
-                into[k] = prop;// did read // into[prefix + k] = prop;
-            }
-        }
-    }
-
-    return into;
-}
-
