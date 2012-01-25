@@ -146,13 +146,15 @@ $(document).ready(function(){
 				height = graph.height()*percent;
 				y = graph.height() - height;
 				z = 10-i;
+				x = i*5;
 				if(event.percent){
 					y = ypos;
-					z = 5+i;
+					x=0;
 				}
 				bar.animate({
 						height:height+'px',
 						top:y+'px',
+						left:x+'px',
 						'z-index':z,
 						opacity:1
 					},{
@@ -229,7 +231,7 @@ $(document).ready(function(){
 		if($(".bar",column).length>1){
 			$(".bar",column).each(function(i){
 				$(this).animate({
-					left:'0px'
+					left:(i*5)+'px'
 				},{
 					duration:250,
 					queue:false
