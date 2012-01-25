@@ -43,11 +43,11 @@ $(document).ready(function(){
 			});
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
-		$(".chart",$(this)).prepend('<div class="grid"></div>');
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
 		set_button_state();
+		$(this).trigger("ext-draw");
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
 		var chart = $(this);
@@ -78,6 +78,7 @@ $(document).ready(function(){
 		if(event.percent){
 			chart_max = 100
 		}
+		chart.data("max",chart_max);
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
@@ -176,30 +177,7 @@ $(document).ready(function(){
 				queue:false
 			})
 			
-		});
-		var ticks = make_ticks(0,chart_max,5);
-		for(index in ticks){
-			tick = ticks[index];
-			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
-				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick)+'</div>');
-				$(".grid .tick:last").css("top",graph.height()+'px').css("opacity",0);
-			}
-		}
-		$(".grid .tick",graph).each(function(){
-			var tick = $(this);
-			var opacity = 1;
-			if(!in_array(ticks,tick.data("value"))){
-				var opacity = 0;
-			}
-			tick.animate({
-				top:(graph.height()-(graph.height()*(tick.data("value")/chart_max)))+'px',
-				opacity:opacity
-			},{
-				duration:700,
-				queue:false
-			});
-		});
-		
+		});		
 		if(event.highlight){
 			$(".column."+event.highlight,$(this)).trigger("highlight");
 		}else{
