@@ -56,6 +56,9 @@
 .chart .column .bar.sibling{
 	background:#cde1f9;
 }
+.chart .column .bar.sibling.total{
+	background:#eee;
+}
 
 .chart .column .bar.hover{
 	background:#86ea9c;

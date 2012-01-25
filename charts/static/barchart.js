@@ -107,6 +107,14 @@ $(document).ready(function(){
 					active_bars.push(this);
 				}
 			});
+			if(!total_inserted){
+				$(".bar",column).each(function(){
+					if($(this).data("name")=="Total"){
+						active_bars.push(this);
+						$(this).addClass("sibling").addClass("total");
+					}
+				});
+			}
 			
 			// sort active bars
 			active_bars = active_bars.sort(function(a,b){
