@@ -25,6 +25,18 @@ $(document).ready(function(){
 	}).bind("redraw",function(){
 		
 	});
+	$("#chart").delegate("input.percent","click",function(){
+		if(this.checked){
+			$.address.parameter("percent",this.value);
+		}else{
+			$.address.parameter("percent",false);
+		}
+		
+	});
+	$("#chart").delegate(".filters input","click",function(){
+		$.address.parameter("filter",this.value);
+	});
+	$.address.change(set_button_state);
 });
 
 function set_button_state(obj){
