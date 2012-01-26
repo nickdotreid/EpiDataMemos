@@ -25,6 +25,8 @@ $(document).ready(function(){
 			items = items.sort(function(a,b){
 				a_value = $("input",$(a)).val();
 				b_value = $("input",$(b)).val();
+				if(a_value == 'Total'){ return false; }
+				if(b_value == 'Total'){ return true; }
 				if(order.indexOf(a_value)>order.indexOf(b_value)){
 					return true;
 				}
