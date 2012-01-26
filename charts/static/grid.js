@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	$("#chart").bind("ext-draw",function(){
 		$(".chart",$(this)).prepend('<div class="grid"></div>');
-	}).bind("redraw",function(){
+	}).bind("redraw",function(event){
+		event = fill_in_values(event);
 		var chart = $(this);
 		var graph = $(".chart",chart);
 		var chart_max = chart.data("max");
@@ -9,7 +10,7 @@ $(document).ready(function(){
 		for(index in ticks){
 			tick = ticks[index];
 			if($(".grid .tick[data-value='"+tick+"']",graph).length<1){
-				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick)+'</div>');
+				$(".grid").append('<div class="tick" data-value="'+tick+'">'+format_number(tick,event.percent)+'</div>');
 				$(".grid .tick:last").css("top",graph.height()+'px').css("opacity",0);
 			}
 		}

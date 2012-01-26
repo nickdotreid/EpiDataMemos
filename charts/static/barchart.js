@@ -42,7 +42,11 @@ $(document).ready(function(){
 		has_children = false;
 		chart_max = array_max(chart.data("data"),function(item){
 			var biggest_number = 0;
+			var total = item['Total'];
 			find_values(item,function(value,index,parent){
+				if(event.percent){
+					value = value/total;
+				}
 				if(event.filter == index && value>biggest_number){
 					biggest_number = value;
 				}else if(event.filter == parent){
@@ -51,9 +55,6 @@ $(document).ready(function(){
 			});
 			return biggest_number;
 		});
-		if(event.percent){
-			chart_max = 100
-		}
 		chart.data("max",chart_max);
 		
 		
@@ -99,10 +100,9 @@ $(document).ready(function(){
 				
 				value = bar.data("amount");
 				if(event.percent){
-					percent = value/data['Total'];
-				}else{
-					percent = value/chart_max;
+					value = value/data['Total'];
 				}
+				percent = value/chart_max;
 				height = graph.height()*percent;
 				
 				y = graph.height() - height;
