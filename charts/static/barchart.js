@@ -83,7 +83,7 @@ $(document).ready(function(){
 			$(".bar",column).each(get_active_bars);
 			$(".bar",column).each(get_active_bars); // twice to catch them all
 			
-			// sort active bars
+
 			active_bars = active_bars.sort(function(a,b){
 				if($(a).data("amount")>$(b).data("amount")){
 					return true;
@@ -91,22 +91,7 @@ $(document).ready(function(){
 				return false;
 			});
 			
-			// animate bars
-			$(".bar",column).each(function(){
-				bar = $(this);
-				if(!in_array(active_bars,this)){
-					bar.animate({
-							height:'0px',
-							top:graph.height()+'px',
-							opacity:0
-						},{
-							duration:500,
-							queue:false					
-					});
-				}
-			});
 			$(".bar",column).removeClass("active");
-			
 			ypos = graph.height();
 			for(i in active_bars){
 				bar = $(active_bars[i]);
@@ -140,9 +125,34 @@ $(document).ready(function(){
 					},{
 						duration:500,
 						queue:false					
-				});
+				}).trigger({type:"format",percent:event.percent});
 			}
+			$(".bar:not(.active)",column).each(function(){
+				bar = $(this);
+				if(!in_array(active_bars,this)){
+					bar.animate({
+							height:'0px',
+							top:graph.height()+'px',
+							opacity:0
+						},{
+							duration:500,
+							queue:false					
+					});
+				}
+			});
 		});
+	});
+	
+	$("#chart").delegate(".bar","format",function(event){
+		var bar = $(this);
+		event = fill_in_values(event);
+		
+		$(".amount",bar).html(format_number(bar.data("amount")));
+		if(event.percent){
+			total = bar.parents(".column:first").data("data")['Total'];
+			$(".amount",bar).html(format_number((bar.data("amount")/total),event.percent));
+		}
+		
 	});
 	
 	$("#chart").trigger("loadr");
