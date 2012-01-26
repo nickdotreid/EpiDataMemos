@@ -40,15 +40,7 @@ $(document).ready(function(){
 });
 
 function set_button_state(obj){
-	if(!obj){
-		obj = {};
-	}
-	if(!obj['filter']){
-		obj['filter'] = unescape($.address.parameter("filter"));
-	}
-	if(!obj['percent']){
-		obj['percent'] = $.address.parameter("percent");
-	}
+	obj = fill_in_values(obj);
 	if(obj['filter']){
 		$(".filters input:checked").attr("checked",false);
 		$(".filters input[value='"+obj['filter']+"']").attr("checked",true);

@@ -59,6 +59,9 @@ function find_values(obj,action,parent){
 }
 
 function fill_in_values(obj){
+	if(!obj){
+		obj = {};
+	}
 	if(!obj.filter){
 		obj.filter = unescape($.address.parameter("filter"));
 	}
