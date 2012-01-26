@@ -136,20 +136,6 @@ $(document).ready(function(){
 				});
 				ypos += height;
 			}
-			
-			/*  MOVE HIGHLIGHT */
-			$(".highlight .number",column).html(data[event.filter]);
-			$(".highlight .total",column).html('of '+data['Total']);
-			$(".highlight .qualify",column).html(event.filter+' people');
-			
-			highlight_top = graph.height()-height-$(".highlight",column).height()-$(".highlight .bottom",column).height();
-			$(".highlight",column).animate({
-				top:highlight_top+'px'
-			},{
-				duration:500,
-				queue:false
-			})
-			
 		});
 	}).delegate(".column","expand",function(){
 		column = $(this);
@@ -183,31 +169,13 @@ $(document).ready(function(){
 				})
 			});
 		}
-	}).delegate(".column .bar","mouseenter",function(event){
-		$.address.parameter("highlight",false);
-		$(this).addClass("hover");
-//		$(this).trigger("highlight");
-	}).delegate(".column .bar","mouseleave",function(event){
-		$(this).removeClass("hover");
 	}).delegate(".column","mouseenter",function(event){
 		$(this).trigger("expand");
 	}).delegate(".column","mouseleave",function(event){
 			column = $(this);
 			column.trigger("collapse");
-			if($.address.parameter("highlight")!=column.data("data")['Label']){
-				$(".highlight",column).hide();
-			}
 	}).delegate(".column .bar","click",function(event){
 		$.address.parameter("filter",$(this).data("name"));
-	}).delegate(".column","highlight",function(event){
-		column = $(this);
-		$(".highlight").hide();
-		$(".highlight",column).show();
-		bar_top = Number($(".bar",column).css("top").replace("px",""));
-		$(".highlight",column).css("top",(bar_top-$(".highlight",column).height()-$(".highlight .bottom",column).height())+'px');
-	}).delegate(".column .highlight .highlink","click",function(event){
-		event.preventDefault();
-		$(this).parents(".column:first").trigger("highlight");
 	});
 	
 	$("#chart").trigger("loadr");
