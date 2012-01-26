@@ -38,12 +38,15 @@ $(document).ready(function(){
 		set_button_state({
 			filter:event.filter
 		});
-		/* DEFINE MAX VALUE */
+		
+		has_children = false;
 		chart_max = array_max(chart.data("data"),function(item){
 			var biggest_number = 0;
 			find_values(item,function(value,index,parent){
-				if((event.filter == index || event.filter == parent) && value>biggest_number){
+				if(event.filter == index && value>biggest_number){
 					biggest_number = value;
+				}else if(event.filter == parent){
+					biggest_number += value;
 				}
 			});
 			return biggest_number;
@@ -54,7 +57,6 @@ $(document).ready(function(){
 		chart.data("max",chart_max);
 		
 		
-		/* DRAW BARS  */
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");

@@ -14,12 +14,11 @@
 
 .chart{
 	clear:both;
-	margin:65px 13px 15px;
+	margin:65px 13px 40px;
 	padding:0px;
 	height:300px;
-	padding:0px 30px 25px;
+	padding:0px 30px;
 	position:relative;
-	overflow:hidden;
 }
 .chart div.canvas{
 	position:absolute;
