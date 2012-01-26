@@ -4,7 +4,7 @@ $(document).ready(function(){
 		$.ajax({
 			url:chart.data('src'),
 			success:function(data){
-				chart.data("data",data['columns']).trigger("draw");
+				chart.data("data",data['columns']).data("order",data['order']).trigger("draw");
 			}
 		});
 	}).bind("draw",function(event){
