@@ -92,7 +92,7 @@ $(document).ready(function(){
 				return false;
 			});
 			
-			$(".bar",column).removeClass("active");
+			$(".bar",column).removeClass("active").removeClass("selected");
 			ypos = graph.height();
 			for(i in active_bars){
 				bar = $(active_bars[i]);
@@ -125,7 +125,7 @@ $(document).ready(function(){
 					},{
 						duration:500,
 						queue:false					
-				}).trigger({type:"format",percent:event.percent});
+				}).trigger({type:"format",percent:event.percent,filter:event.filter});
 			}
 			$(".bar:not(.active)",column).each(function(){
 				bar = $(this);
@@ -146,7 +146,9 @@ $(document).ready(function(){
 	$("#chart").delegate(".bar","format",function(event){
 		var bar = $(this);
 		event = fill_in_values(event);
-		
+		if(bar.data("name")==event.filter){
+			bar.addClass("selected");
+		}
 		$(".amount",bar).html(format_number(bar.data("amount")));
 		if(event.percent){
 			total = bar.parents(".column:first").data("data")['Total'];
