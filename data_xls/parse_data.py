@@ -43,6 +43,17 @@ def parse_data_file(file_location):
 	for col in columns:
 		list_column.append(columns[col])
 	data['columns'] = list_column
+	order = []
+	for colnum in range(sh.ncols):
+		col = sh.col_values(colnum)
+		for cellnum in range(len(col)):
+			value = col[cellnum]
+			if cellnum == 0 or type(value) is not float:
+				if type(value) is float:
+					value = int(value)
+				if value is not "" and value not in order:
+					order.append(str(value))
+	data['order'] = order
 	return data
 	
 def add_keys_to_obj(obj,keys,value):
