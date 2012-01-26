@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	$("#chart").bind("ext-draw",function(){
 		var chart = $(this);
-		var data = chart.data(data);
+		var data = chart.data("data");
 		
 		$(".filters",chart).append("<div class='row'></div>");
 		for(label in data[0]){
