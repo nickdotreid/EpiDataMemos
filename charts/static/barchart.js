@@ -88,8 +88,8 @@ $(document).ready(function(){
 				}
 				return false;
 			});
+			
 			// animate bars
-			height=0;
 			$(".bar",column).each(function(){
 				bar = $(this);
 				if(!in_array(active_bars,this)){
@@ -101,15 +101,16 @@ $(document).ready(function(){
 							duration:500,
 							queue:false					
 					});
-					return true;
 				}
 			});
 			$(".bar",column).removeClass("active");
 			
+			height=0;
 			ypos = 0;
 			for(i in active_bars){
 				bar = $(active_bars[i]);
 				bar.addClass("active");
+				
 				value = bar.data("amount");
 				if(event.percent){
 					percent = value/data['Total'];
@@ -117,11 +118,12 @@ $(document).ready(function(){
 					percent = value/chart_max;
 				}
 				height = graph.height()*percent;
+				
 				y = graph.height() - height;
 				z = 10-i;
 				x = i*5;
-				if(event.percent){
-					y = ypos;
+				if(bar.data("parent")==event.filter){
+					y = graph.height()-height-ypos;
 					x=0;
 				}
 				bar.animate({
