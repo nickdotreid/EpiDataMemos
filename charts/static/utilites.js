@@ -32,7 +32,10 @@ function array_sum(arr,value_function){
 	return total;
 }
 
-function format_number(num){
+function format_number(num,percent){
+	if(percent){
+		return Math.round(num*100)+'%';
+	}
 	return Math.round(num);
 }
 
