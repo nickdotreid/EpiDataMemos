@@ -33,20 +33,12 @@ $(document).ready(function(){
 	}).bind("redraw",function(event){
 		var chart = $(this);
 		var graph = $(".chart",chart);
-		if(!event.filter){
-			event.filter = unescape($.address.parameter("filter"));
-		}
-		if(!event.highlight){
-			event.highlight = unescape($.address.parameter("highlight"));
-		}
-		if(!event.percent){
-			event.percent = $.address.parameter("percent");
-		}
+		event = fill_in_values(event);
 		
 		set_button_state({
 			filter:event.filter
 		});
-		
+		/* DEFINE MAX VALUE */
 		chart_max = array_max(chart.data("data"),function(item){
 			var biggest_number = 0;
 			find_values(item,function(value,index,parent){
@@ -60,6 +52,9 @@ $(document).ready(function(){
 			chart_max = 100
 		}
 		chart.data("max",chart_max);
+		
+		
+		/* DRAW BARS  */
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
@@ -146,6 +141,7 @@ $(document).ready(function(){
 				ypos += height;
 			}
 			
+			/*  MOVE HIGHLIGHT */
 			$(".highlight .number",column).html(data[event.filter]);
 			$(".highlight .total",column).html('of '+data['Total']);
 			$(".highlight .qualify",column).html(event.filter+' people');
@@ -158,13 +154,7 @@ $(document).ready(function(){
 				queue:false
 			})
 			
-		});		
-		if(event.highlight){
-			$(".column."+event.highlight,$(this)).trigger("highlight");
-		}else{
-			$(".column").trigger("mouseleave");
-		}
-		
+		});
 	}).delegate(".column","expand",function(){
 		column = $(this);
 		if($(".bar.active",column).length>1){
@@ -229,18 +219,4 @@ $(document).ready(function(){
 	$.address.change(function(event){
 		$("#chart").trigger("redraw");
 	});
-	
-	$("#chart").delegate("input.percent","click",function(){
-		if(this.checked){
-			$.address.parameter("percent",this.value);
-		}else{
-			$.address.parameter("percent",false);
-		}
-		
-	})
-	
-	$("#chart").delegate(".filters input","click",function(){
-		$.address.parameter("filter",this.value);
-	});
-	$.address.change(set_button_state);
 });

@@ -57,3 +57,16 @@ function find_values(obj,action,parent){
 		}
 	}
 }
+
+function fill_in_values(obj){
+	if(!obj.filter){
+		obj.filter = unescape($.address.parameter("filter"));
+	}
+	if(!obj.highlight){
+		obj.highlight = unescape($.address.parameter("highlight"));
+	}
+	if(!obj.percent){
+		obj.percent = $.address.parameter("percent");
+	}
+	return obj;
+}
