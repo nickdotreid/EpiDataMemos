@@ -105,8 +105,7 @@ $(document).ready(function(){
 			});
 			$(".bar",column).removeClass("active");
 			
-			height=0;
-			ypos = 0;
+			ypos = graph.height();
 			for(i in active_bars){
 				bar = $(active_bars[i]);
 				bar.addClass("active");
@@ -123,7 +122,11 @@ $(document).ready(function(){
 				z = 10-i;
 				x = i*5;
 				if(bar.data("parent")==event.filter){
-					y = graph.height()-height-ypos;
+					ypos -= height;
+					y = ypos;
+					if(y<1){
+						y=0;
+					}
 					x=0;
 				}
 				bar.animate({
@@ -136,7 +139,6 @@ $(document).ready(function(){
 						duration:500,
 						queue:false					
 				});
-				ypos += height;
 			}
 		});
 	});
