@@ -18,6 +18,22 @@ $(document).ready(function(){
 				}
 			}
 		}
+		order = chart.data("order");
+		$(".filters .row").each(function(){
+			row = $(this);
+			items = $(".filter",row);
+			items = items.sort(function(a,b){
+				a_value = $("input",$(a)).val();
+				b_value = $("input",$(b)).val();
+				if(order.indexOf(a_value)>order.indexOf(b_value)){
+					return true;
+				}
+				return false;
+			});
+			for(var i=0;i<items.length;i++){
+				row.append(items[i]);
+			}
+		})
 		set_button_state();
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
