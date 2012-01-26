@@ -60,30 +60,26 @@ $(document).ready(function(){
 			data = column.data("data");
 			column.addClass(String(data['Label']));
 			
-			// get all active bars
-			active_bars = [];
-			$(".bar",column).each(function(){
-				bar = $(this);
-				if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
-					active_bars.push(this)
-				}
-			});
-			// get active bars sibilings?
-			$(".bar.sibling",column).removeClass("sibling");
-			$(".bar",column).each(function(){
+			get_active_bars = function(){
 				bar = $(this);
 				add = false;
-				for(index_bar in active_bars){
-					active = $(active_bars[index_bar]);
-					if(active.data("parent")==bar.data("parent")){
+				if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
+					add = true;
+				}
+				if(!add){
+				for(index in active_bars){
+					if($(active_bars[index]).data("parent")==bar.data("parent")){
 						add = true;
 					}
 				}
+				}
 				if(add && !in_array(active_bars,this)){
-					bar.addClass("sibling");
 					active_bars.push(this);
 				}
-			});
+			}
+			active_bars = [];
+			$(".bar",column).each(get_active_bars);
+			$(".bar",column).each(get_active_bars); // twice to catch them all
 			
 			// sort active bars
 			active_bars = active_bars.sort(function(a,b){
