@@ -137,45 +137,6 @@ $(document).ready(function(){
 				ypos += height;
 			}
 		});
-	}).delegate(".column","expand",function(){
-		column = $(this);
-		if($(".bar.active",column).length>1){
-			bars = $(".bar.active",column);
-			bars = bars.sort(function(a,b){
-				if($(a).data("amount")>$(b).data("amount")){
-					return true;
-				}
-				return false;
-			});
-			for(var i=0;i<bars.length;i++){
-				bar = $(bars[i]);
-				bar.animate({
-					left:(i*10)+'px'
-				},{
-					duration:250,
-					queue:false
-				});
-			}
-		}
-	}).delegate(".column","collapse",function(event){
-		column = $(this);
-		if($(".bar",column).length>1){
-			$(".bar",column).each(function(i){
-				$(this).animate({
-					left:(i*5)+'px'
-				},{
-					duration:250,
-					queue:false
-				})
-			});
-		}
-	}).delegate(".column","mouseenter",function(event){
-		$(this).trigger("expand");
-	}).delegate(".column","mouseleave",function(event){
-			column = $(this);
-			column.trigger("collapse");
-	}).delegate(".column .bar","click",function(event){
-		$.address.parameter("filter",$(this).data("name"));
 	});
 	
 	$("#chart").trigger("loadr");
