@@ -114,14 +114,8 @@ $(document).ready(function(){
 					}
 					x=0;
 				}
-				bar.animate({
-						height:height+'px',
-						top:y+'px',
-						left:x+'px'
-					},{
-						duration:500,
-						queue:false					
-				}).trigger({type:"format",percent:event.percent,filter:event.filter});
+				bar.data("_height",height).data("_top",y).data("_left",x);
+				bar.trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 			}
 			var z_pos = active_bars.length + 10;
 			var above = false;
@@ -146,15 +140,8 @@ $(document).ready(function(){
 				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
 			$(".bar:not(.active)",column).each(function(){
-				bar = $(this);
 				if(!in_array(active_bars,this)){
-					bar.animate({
-							height:'0px',
-							top:graph.height()+'px'
-						},{
-							duration:500,
-							queue:false					
-					});
+					$(this).data("_top",graph.height()).data("_height",0).trigger("animate");
 				}
 			});
 		});
@@ -174,8 +161,25 @@ $(document).ready(function(){
 			percent = format_number((bar.data("amount")/total),event.percent);
 			$(".amount",bar).html(percent);
 		}
+		highlight = $(".highlight",bar);
+		highlight.css({
+			top:(0-highlight.height())+'px',
+			left:'0px'
+		});
+		
+	}).delegate(".bar","animate",function(event){
+		bar = $(this);
+		bar.animate({
+				height:bar.data("_height")+'px',
+				top:bar.data("_top")+'px',
+				left:bar.data("_left")+'px'
+			},{
+				duration:500,
+				queue:false					
+		})
 	}).delegate(".bar","highlight",function(event){
 		$(".highlight",$(this)).show();
+		$(this).trigger("format");
 	}).delegate(".bar","unhighlight",function(event){
 		$(".highlight",$(this)).hide();
 	});
