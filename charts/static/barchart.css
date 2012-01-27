@@ -91,27 +91,30 @@
 	text-align:center;
 }
 
-.chart .column .highlight{
-	display:none;
+.chart .highlight{
+	display:block;
 	background:#FFF;
 	border:3px #000 solid;
 	font-size:0.8em;
 	position:absolute;
 	top:0px;
 	left:0px;
-	z-index:15;
+	z-index:40;
 	padding:7px;
 	width:110px;
 }
-.chart .column .highlight span,.chart .column .highlight a{
+.chart .bar .highlight{
+	display:none;
+}
+.chart .highlight span,.chart .highlight a{
 	display:block;
 	text-align:center;
 }
-.chart .column .highlight span.number{
+.chart .highlight span.number{
 	font-size:1.2em;
 	font-weight:bold;
 }
-.chart .column .highlight .bottom{
+.chart .highlight .bottom{
 	position:absolute;
 	width:34px;
 	height:20px;
