@@ -52,6 +52,13 @@
 	cursor:pointer;
 	border-top:1px #000 solid;
 	border-right:1px #000 solid;
+	border-left:1px #000 solid;
+}
+.chart .column .bar.left{
+	border-right:0px;
+}
+.chart .column .bar.right{
+	border-left:0px;
 }
 .chart .column .bar.sibling{
 	background:#cde1f9;

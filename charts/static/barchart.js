@@ -84,17 +84,17 @@ $(document).ready(function(){
 			$(".bar",column).each(get_active_bars); // twice to catch them all
 			
 
-			active_bars = active_bars.sort(function(a,b){
+			sorted_active_bars = active_bars.sort(function(a,b){
 				if($(a).data("amount")>$(b).data("amount")){
-					return true;
+					return 1;
 				}
-				return false;
+				return -1;
 			});
 			
 			$(".bar",column).removeClass("active").removeClass("selected");
 			ypos = graph.height();
-			for(i in active_bars){
-				bar = $(active_bars[i]);
+			for(i in sorted_active_bars){
+				bar = $(sorted_active_bars[i]);
 				bar.addClass("active");
 				
 				value = bar.data("amount");
@@ -105,7 +105,6 @@ $(document).ready(function(){
 				height = graph.height()*percent;
 				
 				y = graph.height() - height;
-				z = 10-i;
 				x = i*5;
 				if(bar.data("parent")==event.filter){
 					ypos -= height;
@@ -118,12 +117,30 @@ $(document).ready(function(){
 				bar.animate({
 						height:height+'px',
 						top:y+'px',
-						left:x+'px',
-						'z-index':z
+						left:x+'px'
 					},{
 						duration:500,
 						queue:false					
 				}).trigger({type:"format",percent:event.percent,filter:event.filter});
+			}
+			var z_pos = active_bars.length + 10;
+			var above = false;
+			$(".bar",column).removeClass("left").removeClass("right");
+			for(i in sorted_active_bars){
+				bar = $(sorted_active_bars[i]);
+				
+				if(above){
+					z_pos = z_pos-1;
+					bar.addClass("right");
+				}else{
+					z_pos = z_pos+1;
+					bar.addClass("left");
+				}
+				bar.css("z-index",z_pos);
+				if(bar.data("name")==event.filter){
+					above = true;
+					bar.removeClass("left").removeClass("right");
+				}
 			}
 			$(".bar:not(.active)",column).each(function(){
 				bar = $(this);
