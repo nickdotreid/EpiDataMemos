@@ -27,7 +27,6 @@ $(document).ready(function(){
 			});
 		}
 		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
-		
 		$(this).trigger("ext-draw");
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
@@ -120,8 +119,7 @@ $(document).ready(function(){
 						height:height+'px',
 						top:y+'px',
 						left:x+'px',
-						'z-index':z,
-						opacity:1
+						'z-index':z
 					},{
 						duration:500,
 						queue:false					
@@ -132,8 +130,7 @@ $(document).ready(function(){
 				if(!in_array(active_bars,this)){
 					bar.animate({
 							height:'0px',
-							top:graph.height()+'px',
-							opacity:0
+							top:graph.height()+'px'
 						},{
 							duration:500,
 							queue:false					

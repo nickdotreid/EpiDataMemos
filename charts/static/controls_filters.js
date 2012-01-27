@@ -23,14 +23,16 @@ $(document).ready(function(){
 			row = $(this);
 			items = $(".filter",row);
 			items = items.sort(function(a,b){
-				a_value = $("input",$(a)).val();
-				b_value = $("input",$(b)).val();
-				if(a_value == 'Total'){ return false; }
-				if(b_value == 'Total'){ return true; }
-				if(order.indexOf(a_value)>order.indexOf(b_value)){
-					return true;
+				a1 = a;
+				b1 = b;
+				var a_value = $("input",$(a1)).val();
+				var b_value = $("input",$(b1)).val();
+				if(a_value == 'Total'){ return -1; }
+				if(b_value == 'Total'){ return 1; }
+				if(in_array_position(order,a_value)>=in_array_position(order,b_value)){
+					return 1;
 				}
-				return false;
+				return -1;
 			});
 			for(var i=0;i<items.length;i++){
 				row.append(items[i]);

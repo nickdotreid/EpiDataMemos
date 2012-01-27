@@ -40,12 +40,19 @@ function format_number(num,percent){
 }
 
 function in_array(arr,value){
-	for(var i=0;i<arr.length;i++){
-		if(arr[i]==value){
-			return true;
-		}
+	if(in_array_position(arr,value)>=0){
+		return true
 	}
 	return false;
+}
+
+function in_array_position(arr,value){
+	for(var i=0;i<arr.length;i++){
+		if(arr[i]==value){
+			return i;
+		}
+	}
+	return -1;
 }
 
 function find_values(obj,action,parent){
