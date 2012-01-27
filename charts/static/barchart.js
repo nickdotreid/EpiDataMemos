@@ -93,7 +93,7 @@ $(document).ready(function(){
 			
 			$(".bar",column).removeClass("active").removeClass("selected");
 			ypos = graph.height();
-			for(i in sorted_active_bars){
+			for(i=sorted_active_bars.length-1;i>=0;i--){
 				bar = $(sorted_active_bars[i]);
 				bar.addClass("active");
 				
