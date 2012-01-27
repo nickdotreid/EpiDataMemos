@@ -125,7 +125,7 @@ $(document).ready(function(){
 			}
 			var z_pos = active_bars.length + 10;
 			var above = false;
-			$(".bar",column).removeClass("left").removeClass("right");
+			$(".bar",column).removeClass("left").removeClass("right").addClass("sibling");
 			for(i in sorted_active_bars){
 				bar = $(sorted_active_bars[i]);
 				
@@ -139,8 +139,11 @@ $(document).ready(function(){
 				bar.css("z-index",z_pos);
 				if(bar.data("name")==event.filter){
 					above = true;
-					bar.removeClass("left").removeClass("right");
+					bar.removeClass("left").removeClass("right").removeClass("sibling");
 				}
+			}
+			if(!above){
+				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
 			$(".bar:not(.active)",column).each(function(){
 				bar = $(this);
