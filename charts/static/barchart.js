@@ -166,12 +166,18 @@ $(document).ready(function(){
 		if(bar.data("name")==event.filter){
 			bar.addClass("selected");
 		}
+		total = bar.parents(".column:first").data("data")['Total'];
+		$(".total",bar).html(format_number(total));
+		
 		$(".amount",bar).html(format_number(bar.data("amount")));
 		if(event.percent){
-			total = bar.parents(".column:first").data("data")['Total'];
-			$(".amount",bar).html(format_number((bar.data("amount")/total),event.percent));
+			percent = format_number((bar.data("amount")/total),event.percent);
+			$(".amount",bar).html(percent);
 		}
-		
+	}).delegate(".bar","highlight",function(event){
+		$(".highlight",$(this)).show();
+	}).delegate(".bar","unhighlight",function(event){
+		$(".highlight",$(this)).hide();
 	});
 	
 	$("#chart").trigger("loadr");

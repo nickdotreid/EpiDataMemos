@@ -4,6 +4,10 @@ $(document).ready(function(){
 			return true;
 		}
 		$.address.parameter("filter",$(this).data("name"));
+	}).delegate(".bar","mouseenter",function(event){
+		$(this).trigger("highlight");
+	}).delegate(".bar","mouseleave",function(event){
+		$(this).trigger("unhighlight");
 	}).delegate(".chart","dblclick",function(event){
 		if(event.target!=this){
 			return true;
