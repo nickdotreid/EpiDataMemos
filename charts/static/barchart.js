@@ -183,11 +183,11 @@ $(document).ready(function(){
 		bar.data("highlight",highlight);
 		canvas = bar.parents(".canvas:first");
 		canvas.append(highlight);
-		y = bar.data("_top")-bar.data("_height");
+		y = bar.data("_top")-highlight.height();
 		if(!y || y<0){
 			y = 0;
 		}
-		x = column.position().left+bar.data("_left");
+		x = column.position().left+bar.data("_left")+(bar.width()/2)-(highlight.width()/2);
 		highlight.css({
 			top:y+'px',
 			left:x+'px'
