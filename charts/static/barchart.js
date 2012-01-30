@@ -118,11 +118,45 @@ $(document).ready(function(){
 				}
 			});
 		});
+		$(".chart",$(this)).trigger({
+			type:"sort_columns",
+			filter:event.filter,
+			highlight:event.highlight
+			});
 	});
 	
-	$("#chart").delegate(".column","expand",function(event){
+	$("#chart").delegate(".chart","sort_columns",function(event){
+		event = fill_in_values(event);
+		xpos = 0;
+		$(".column",$(this)).each(function(){
+			column = $(this);
+			xpos += Number(column.css("margin-left").replace("px",''));
+			column.animate({
+					left:xpos+'px'
+				},{
+					duration:500,
+					queue:false
+				});
+			// get right most point
+			right_most = $(".label",column).width();
+			bars = get_sorted_active_bars(column,event);
+			for(var i=0;i<bars.length;i++){
+				bar = $(bars[i]);
+				if(bar.data("_left")){
+					bar_right = bar.width()+bar.data("_left");
+					if(bar_right>right_most){
+						 right_most = bar_right;
+					}
+				}
+			}
+			// add right most point to xpos
+			xpos += right_most;
+			// add margin-right to xpos
+			xpos += Number(column.css("margin-left").replace("px",''));
+		});
+	}).delegate(".column","expand",function(event){
 		column = $(this);
-		event = fill_in_values(event)
+		event = fill_in_values(event);
 		bars = get_sorted_active_bars(column,event);
 		for(var i=0;i<bars.length;i++){
 			bar = $(bars[i]);
@@ -131,6 +165,7 @@ $(document).ready(function(){
 			}
 		}
 		$(".bar",column).trigger("animate");
+		column.parents(".chart:first").trigger("sort_columns");
 	}).delegate(".column","collapse",function(event){
 		column = $(this);
 		event = fill_in_values(event)
@@ -142,6 +177,7 @@ $(document).ready(function(){
 			}
 		}
 		$(".bar",column).trigger("animate");
+		column.parents(".chart:first").trigger("sort_columns");
 	});
 	
 	$("#chart").delegate(".bar","format",function(event){

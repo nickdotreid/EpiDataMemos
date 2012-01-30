@@ -35,8 +35,8 @@
 	width:90px;
 	height:300px;
 	display:block;
-	float:left;
-	position:relative;
+	float:none;
+	position:absolute;
 	top:0px;
 	left:0px;
 	z-index:3;
