@@ -19,5 +19,9 @@ $(document).ready(function(){
 				$.address.parameter("filter",parent);
 			}
 		});
+	}).delegate(".column","mouseenter",function(event){
+		$(this).trigger("expand");
+	}).delegate(".column","mouseleave",function(event){
+		$(this).trigger("collapse");
 	});
 });

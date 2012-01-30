@@ -62,34 +62,7 @@ $(document).ready(function(){
 			data = column.data("data");
 			column.addClass(String(data['Label']));
 			
-			get_active_bars = function(){
-				bar = $(this);
-				add = false;
-				if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
-					add = true;
-				}
-				if(!add){
-				for(index in active_bars){
-					if($(active_bars[index]).data("parent")==bar.data("parent")){
-						add = true;
-					}
-				}
-				}
-				if(add && !in_array(active_bars,this)){
-					active_bars.push(this);
-				}
-			}
-			active_bars = [];
-			$(".bar",column).each(get_active_bars);
-			$(".bar",column).each(get_active_bars); // twice to catch them all
-			
-
-			sorted_active_bars = active_bars.sort(function(a,b){
-				if($(a).data("amount")>$(b).data("amount")){
-					return 1;
-				}
-				return -1;
-			});
+			sorted_active_bars = get_sorted_active_bars(column,event);
 			
 			$(".bar",column).removeClass("active").removeClass("selected");
 			ypos = graph.height();
@@ -147,6 +120,30 @@ $(document).ready(function(){
 		});
 	});
 	
+	$("#chart").delegate(".column","expand",function(event){
+		column = $(this);
+		event = fill_in_values(event)
+		bars = get_sorted_active_bars(column,event);
+		for(var i=0;i<bars.length;i++){
+			bar = $(bars[i]);
+			if(event.filter != bar.data("parent")){
+				bar.data("_left",i*20);
+			}
+		}
+		$(".bar",column).trigger("animate");
+	}).delegate(".column","collapse",function(event){
+		column = $(this);
+		event = fill_in_values(event)
+		bars = get_sorted_active_bars(column,event);
+		for(var i=0;i<bars.length;i++){
+			bar = $(bars[i]);
+			if(event.filter != bar.data("parent")){
+				bar.data("_left",i*5);
+			}
+		}
+		$(".bar",column).trigger("animate");
+	});
+	
 	$("#chart").delegate(".bar","format",function(event){
 		var bar = $(this);
 		event = fill_in_values(event);
@@ -202,3 +199,36 @@ $(document).ready(function(){
 		$("#chart").trigger("redraw");
 	});
 });
+
+function get_sorted_active_bars(column,event){
+	event = fill_in_values(event);
+	get_active_bars = function(){
+		bar = $(this);
+		add = false;
+		if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
+			add = true;
+		}
+		if(!add){
+		for(index in active_bars){
+			if($(active_bars[index]).data("parent")==bar.data("parent")){
+				add = true;
+			}
+		}
+		}
+		if(add && !in_array(active_bars,this)){
+			active_bars.push(this);
+		}
+	}
+	active_bars = [];
+	$(".bar",column).each(get_active_bars);
+	$(".bar",column).each(get_active_bars); // twice to catch them all
+	
+
+	sorted_active_bars = active_bars.sort(function(a,b){
+		if($(a).data("amount")>$(b).data("amount")){
+			return 1;
+		}
+		return -1;
+	});
+	return sorted_active_bars;
+}
