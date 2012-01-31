@@ -76,16 +76,14 @@ $(document).ready(function(){
 				height = graph.height()*percent;
 				
 				y = graph.height() - height;
-				x = i*5;
 				if(bar.data("parent")==event.filter){
 					ypos -= height;
 					y = ypos;
 					if(y<1){
 						y=0;
 					}
-					x=0;
 				}
-				bar.data("_height",height).data("_top",y).data("_left",x);
+				bar.data("_height",height).data("_top",y);
 				bar.trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 			}
 			var z_pos = active_bars.length + 10;
@@ -158,24 +156,27 @@ $(document).ready(function(){
 		});
 	}).delegate(".column","expand",function(event){
 		column = $(this);
-		event = fill_in_values(event);
-		bars = get_sorted_active_bars(column,event);
-		for(var i=0;i<bars.length;i++){
-			bar = $(bars[i]);
-			if(event.filter != bar.data("parent")){
-				bar.data("_left",i*20);
-			}
-		}
-		$(".bar",column).trigger("animate");
-		column.parents(".chart:first").trigger("sort_columns");
+		event = fill_in_values(event)
+		event.stagger_width = 25;
+		event.type = "stagger_bars";
+		column.trigger(event);
 	}).delegate(".column","collapse",function(event){
 		column = $(this);
 		event = fill_in_values(event)
+		event.stagger_width = 5;
+		event.type = "stagger_bars";
+		column.trigger(event);
+	}).delegate(".column","stagger_bars",function(event){
+		column = $(this);
+		event = fill_in_values(event);
+		if(!event.stagger_width){
+			stagger_width = 10;
+		}
 		bars = get_sorted_active_bars(column,event);
 		for(var i=0;i<bars.length;i++){
 			bar = $(bars[i]);
 			if(event.filter != bar.data("parent")){
-				bar.data("_left",i*5);
+				bar.data("_left",i*event.stagger_width);
 			}
 		}
 		$(".bar",column).trigger("animate");
@@ -188,9 +189,12 @@ $(document).ready(function(){
 		if(bar.data("name")==event.filter){
 			bar.addClass("selected");
 		}
-		$(".amount",bar).html(format_number(bar.data("amount"))).show();
+		$(".amount",bar).css("top",'0px').html(format_number(bar.data("amount"))).show();
 		if(!bar.data("_height") || bar.data("_height")<1){
 			$(".amount",bar).hide();
+		}
+		if(bar.data("_top") && bar.data("_top")<0){
+			$(".amount",bar).css("top",(0-bar.data("_top"))+'px')
 		}
 		
 		total = bar.parents(".column:first").data("data")['Total'];
