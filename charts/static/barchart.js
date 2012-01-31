@@ -188,6 +188,7 @@ $(document).ready(function(){
 		if(bar.data("name")==event.filter){
 			bar.addClass("selected");
 		}
+		$(".amount",bar).html(format_number(bar.data("amount"))).show();
 		if(!bar.data("_height") || bar.data("_height")<1){
 			$(".amount",bar).hide();
 		}
@@ -197,7 +198,6 @@ $(document).ready(function(){
 		
 		$(".qualify",bar).html(bar.data("name"));
 		
-		$(".amount",bar).html(format_number(bar.data("amount")));
 		if(event.percent){
 			percent = format_number((bar.data("amount")/total),event.percent);
 			$(".amount",bar).html(percent);
