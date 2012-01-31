@@ -133,7 +133,7 @@ $(document).ready(function(){
 		$(".column",$(this)).each(function(){
 			var column = $(this);
 			xpos += Number(column.css("margin-left").replace("px",''));
-			column.animate({
+			column.data("_left",xpos).animate({
 					left:xpos+'px'
 				},{
 					duration:500,
@@ -193,7 +193,9 @@ $(document).ready(function(){
 		}
 		
 		total = bar.parents(".column:first").data("data")['Total'];
-		$(".total",bar).html(format_number(total));
+		$(".total",bar).html("of " + format_number(total));
+		
+		$(".qualify",bar).html(bar.data("name"));
 		
 		$(".amount",bar).html(format_number(bar.data("amount")));
 		if(event.percent){
@@ -210,6 +212,7 @@ $(document).ready(function(){
 		if(bar.data("_top")){
 			_top = bar.data("_top");
 		}
+		var _left = 0;
 		if(bar.data("_left")){
 			_left = bar.data("_left")
 		}
@@ -229,11 +232,17 @@ $(document).ready(function(){
 		bar.data("highlight",highlight);
 		canvas = bar.parents(".canvas:first");
 		canvas.append(highlight);
-		y = bar.data("_top")-highlight.height();
+		var column_left = 0;
+		if(column.data("_left")){
+			column_left = column.data("_left");
+		}
+		x = column_left+bar.data("_left")+bar.width();
+//		x = column.position().left+bar.data("_left")+(bar.width()/2)-(highlight.width()/2);
+		y = bar.data("_top")-(highlight.height()/2);
 		if(!y || y<0){
 			y = 0;
 		}
-		x = column.position().left+bar.data("_left")+(bar.width()/2)-(highlight.width()/2);
+		
 		highlight.css({
 			top:y+'px',
 			left:x+'px'

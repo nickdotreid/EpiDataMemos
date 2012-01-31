@@ -114,13 +114,20 @@
 	font-size:1.2em;
 	font-weight:bold;
 }
-.chart .highlight .bottom{
+.chart .highlight .arrow{
 	position:absolute;
+	width:20px;
+	height:34px;
+	top:17px;
+	left:-17px;
+	background:transparent url('i/horiz_hover_right.png') center center no-repeat;
+}
+.chart .highlight .arrow.bottom{
 	width:34px;
 	height:20px;
 	bottom:-17px;
 	left:45px;
-	background:transparent url('i/horiz_hover_bottom.png') center center no-repeat;
+	background-image:url('i/horiz_hover_bottom.png');
 }
 
 #chart fieldset{
