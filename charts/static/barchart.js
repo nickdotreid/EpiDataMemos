@@ -113,7 +113,10 @@ $(document).ready(function(){
 			
 			column.trigger({
 				type:"stagger_bars",
-				stagger_width:5
+				stagger_width:5,
+				filter:event.filter,
+				highlight:event.highlight,
+				percent:event.percent
 			});
 			
 			$(".bar:not(.active)",column).each(function(){
@@ -160,6 +163,20 @@ $(document).ready(function(){
 			// add margin-right to xpos
 			xpos += Number(column.css("margin-left").replace("px",''));
 		});
+		// center canvas
+		var graph = $(this);
+		var canvas = $(".canvas",graph);
+		var canvas_pos = 0;
+		if(xpos<graph.width()){
+			canvas_pos = (graph.width()/2) - (xpos/2);
+		}
+		$(".canvas",$(this)).animate({
+			left:canvas_pos+'px'
+		},{
+			duration:500,
+			queue:false
+		})
+		
 	}).delegate(".column","expand",function(event){
 		column = $(this);
 		event = fill_in_values(event)
