@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$("#chart").delegate(".bar","dblclick",function(event){
+	$("#chart").delegate(".bar","click",function(event){
 		if(event.target!=this){
 			return true;
 		}
@@ -8,7 +8,7 @@ $(document).ready(function(){
 		$(this).trigger("highlight");
 	}).delegate(".bar","mouseleave",function(event){
 		$(this).trigger("unhighlight");
-	}).delegate(".chart","dblclick",function(event){
+	}).delegate(".chart","click",function(event){
 		if(event.target!=this){
 			return true;
 		}
