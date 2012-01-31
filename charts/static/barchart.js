@@ -86,6 +86,7 @@ $(document).ready(function(){
 				bar.data("_height",height).data("_top",y);
 				bar.trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 			}
+
 			var z_pos = active_bars.length + 10;
 			var above = false;
 			$(".bar",column).removeClass("left").removeClass("right").addClass("sibling");
@@ -109,6 +110,11 @@ $(document).ready(function(){
 			if(!above){
 				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
+			
+			column.trigger({
+				type:"stagger_bars",
+				stagger_width:5
+			});
 			
 			$(".bar:not(.active)",column).each(function(){
 				if(!in_array(active_bars,this)){
@@ -177,6 +183,8 @@ $(document).ready(function(){
 			bar = $(bars[i]);
 			if(event.filter != bar.data("parent")){
 				bar.data("_left",i*event.stagger_width);
+			}else{
+				bar.data("_left",0);
 			}
 		}
 		$(".bar",column).trigger("animate");
