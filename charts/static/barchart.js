@@ -56,14 +56,12 @@ $(document).ready(function(){
 		});
 		chart.data("max",chart_max);
 		
-		
 		$(".chart .column",$(this)).each(function(){
 			column = $(this);
 			data = column.data("data");
 			column.addClass(String(data['Label']));
 			
 			sorted_active_bars = get_sorted_active_bars(column,event);
-			
 			$(".bar",column).removeClass("active").removeClass("selected");
 			ypos = graph.height();
 			for(i=sorted_active_bars.length-1;i>=0;i--){
@@ -109,12 +107,16 @@ $(document).ready(function(){
 					bar.removeClass("left").removeClass("right").removeClass("sibling");
 				}
 			}
+			
 			if(!above){
 				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
+			
 			$(".bar:not(.active)",column).each(function(){
 				if(!in_array(active_bars,this)){
-					$(this).data("_top",graph.height()).data("_height",0).trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
+					$(this).data("_top",graph.height()).data("_height",0);
+					$(this).trigger("animate");
+					$(this).trigger({type:"format",percent:event.percent,filter:event.filter});
 				}
 			});
 		});
@@ -122,14 +124,14 @@ $(document).ready(function(){
 			type:"sort_columns",
 			filter:event.filter,
 			highlight:event.highlight
-			});
+		});
 	});
 	
 	$("#chart").delegate(".chart","sort_columns",function(event){
 		event = fill_in_values(event);
-		xpos = 0;
+		var xpos = 0;
 		$(".column",$(this)).each(function(){
-			column = $(this);
+			var column = $(this);
 			xpos += Number(column.css("margin-left").replace("px",''));
 			column.animate({
 					left:xpos+'px'
@@ -138,12 +140,12 @@ $(document).ready(function(){
 					queue:false
 				});
 			// get right most point
-			right_most = $(".label",column).width();
-			bars = get_sorted_active_bars(column,event);
+			var right_most = $(".label",column).width();
+			var bars = get_sorted_active_bars(column,event);
 			for(var i=0;i<bars.length;i++){
-				bar = $(bars[i]);
+				var bar = $(bars[i]);
 				if(bar.data("_left")){
-					bar_right = bar.width()+bar.data("_left");
+					var bar_right = bar.width()+bar.data("_left");
 					if(bar_right>right_most){
 						 right_most = bar_right;
 					}
@@ -200,10 +202,21 @@ $(document).ready(function(){
 		}
 	}).delegate(".bar","animate",function(event){
 		bar = $(this);
+		var _height = 0;
+		if(bar.data("_height")){
+			_height = bar.data("_height");
+		}
+		var _top = 0;
+		if(bar.data("_top")){
+			_top = bar.data("_top");
+		}
+		if(bar.data("_left")){
+			_left = bar.data("_left")
+		}
 		bar.animate({
-				height:bar.data("_height")+'px',
-				top:bar.data("_top")+'px',
-				left:bar.data("_left")+'px'
+				height:_height+'px',
+				top:_top+'px',
+				left:_left+'px'
 			},{
 				duration:500,
 				queue:false					
