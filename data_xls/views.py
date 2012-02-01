@@ -8,10 +8,14 @@ charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
 
 @data_api.route('/')
 def index():
+	charts = list_all_charts()
+	return jsonify(charts=charts)
+	
+def list_all_charts():
 	charts = []
 	for xls in glob.glob(os.path.join(charts_dir,'*.xls')):
 		charts.append(xls.replace(charts_dir,''))
-	return jsonify(charts=charts)
+	return charts
 
 @data_api.route('/<chart>')
 def get_data(chart):
