@@ -12,6 +12,7 @@ $(document).ready(function(){
 		data = $(this).data("data");
 		
 		$(".chart",chart).append('<div class="canvas"></div>');
+		$(".chart .canvas",chart).css("top",$(".chart",chart).css("padding-top"));
 		for(index in data){
 			var col_data = data[index]
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
@@ -172,7 +173,8 @@ $(document).ready(function(){
 			canvas_pos = (graph.width()/2) - (xpos/2);
 		}
 		$(".canvas",$(this)).animate({
-			left:canvas_pos+'px'
+			left:canvas_pos+'px',
+			top:graph.css("padding-top")
 		},{
 			duration:500,
 			queue:false

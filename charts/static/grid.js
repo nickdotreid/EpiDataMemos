@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$("#chart").bind("ext-draw",function(){
 		$(".chart",$(this)).prepend('<div class="grid"></div>');
+		$(".chart .grid",$(this)).css("top",$(".chart",$(this)).css("padding-top"));
 	}).bind("redraw",function(event){
 		event = fill_in_values(event);
 		var chart = $(this);
