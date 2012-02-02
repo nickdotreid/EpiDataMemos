@@ -60,15 +60,17 @@
 .chart .column .bar.right{
 	border-left:0px;
 }
+/*
 .chart .column .bar.sibling{
 	background:#cde1f9;
 }
 .chart .column .bar.selected{
 	background:#79b5ff;
 }
-
+*/
 .chart .column .bar.hover{
 	background:#86ea9c;
+	z-index:50;
 }
 
 .chart .column .bar .amount{
@@ -106,6 +108,9 @@
 }
 .chart .bar .highlight{
 	display:none;
+}
+.highlight .total{
+	background-color:transparent;
 }
 .chart .highlight span,.chart .highlight a{
 	display:block;
@@ -152,6 +157,16 @@
 	display:block;
 	float:left;
 	margin:0px 7px 0px 0px;
+	position:relative;
+	background-color:transparent;
+}
+
+.filters .color{
+	width:auto;
+	height:20px;
+	clear:both;
+	display:block;
+	background-color:#CCC;
 }
 
 .grid{

@@ -3,6 +3,7 @@
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static',filename='barchart.css')}}">
+<link rel="stylesheet" href="{{url_for('.static',filename='chart_colors.css')}}">
 <link rel="stylesheet" href="{{url_for('memos_app.static',filename='memos.css')}}">
 {% endblock %}
 
@@ -54,5 +55,6 @@
 	<input type="radio" name="filter" value="" />
 	<span class="name"></span>
 	<span class="description"></span>
+	<span class="color"></span>
 </label>
 {% endblock %}

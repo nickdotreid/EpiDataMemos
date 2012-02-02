@@ -1,0 +1,27 @@
+.total,.total .color,.column .bar.total{
+	background-color:#79b5ff;
+}
+
+.white,.white .color,.column .bar.white{
+	background-color:#5985bc;
+}
+
+.african_american,.african_american .color,.column .bar.african_american{
+	background-color:#7ba6db;
+}
+
+.latino,.latino .color,.column .bar.latino{
+	background-color:#96b8e2;
+}
+
+.asian_pacific_islander,.asian_pacific_islander .color,.column .bar.asian_pacific_islander{
+	background-color:#a2c7f6;
+}
+
+.native_american,.native_american .color,.column .bar.native_american{
+	background-color:#b7cae3;
+}
+
+.other_race,.other_race .color,.column .bar.other_race{
+	background-color:#AAA;
+}

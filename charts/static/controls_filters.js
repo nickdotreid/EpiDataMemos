@@ -39,7 +39,12 @@ $(document).ready(function(){
 			for(var i=0;i<items.length;i++){
 				row.append(items[i]);
 			}
-		})
+		});
+		$(".filters .color").each(function(){
+			var color = $(this);
+			var parent = color.parents(".filter:first");
+			color.width(parent.width());
+		});
 		set_button_state();
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
