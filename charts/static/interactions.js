@@ -4,6 +4,7 @@ $(document).ready(function(){
 			return true;
 		}
 		$.address.parameter("filter",$(this).data("name"));
+		$.address.parameter("highlight",$(this).parents(".column:first").data("name"));
 	}).delegate(".bar","mouseenter",function(event){
 		$(this).trigger("highlight").trigger("over");
 	}).delegate(".bar","mouseleave",function(event){

@@ -16,7 +16,7 @@ $(document).ready(function(){
 		for(index in data){
 			var col_data = data[index]
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
-			$(".chart .column:last",$(this)).data("data",data[index]);
+			$(".chart .column:last",$(this)).data("data",data[index]).data("name",data[index]['Label']);
 			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
 			// add bar for each value
 			find_values(col_data,function(value,name,parent){
