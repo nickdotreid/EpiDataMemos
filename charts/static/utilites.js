@@ -100,5 +100,5 @@ function name_to_class(name){
 	if(!name){
 		return "";
 	}
-	return name.replace(" ","_").replace("/","_").toLowerCase();
+	return name.replace(" ","_").replace("/","_").replace("-","_").toLowerCase();
 }
