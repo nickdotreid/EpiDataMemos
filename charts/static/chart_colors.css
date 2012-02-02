@@ -47,3 +47,48 @@
 .other_race,.other_race .color,.column .bar.other_race{
 	background-color:#AAA;
 }
+
+
+.age,.age .color,.column .bar.age{
+	background-color:#8b5f00;
+}
+
+.zero_onetwo,.zero_onetwo .color,.column .bar.zero_onetwo{
+	background-color:#ffe09e;
+}
+
+.onethree_onenine,.onethree_onenine .color,.column .bar.onethree_onenine{
+	background-color:#ffd479;
+}
+.twozero_twonine,.twozero_twonine .color,.column .bar.twozero_twonine{
+	background-color:#e0bb6b;
+}
+.threezero_threenine,.threezero_threenine .color,.column .bar.threezero_threenine{
+	background-color:#d8b364;
+}
+.fourzero_fournine,.fourzero_fournine .color,.column .bar.fourzero_fournine{
+	background-color:#bd943c;
+}
+.fivezero_,.fivezero_ .color,.column .bar.fivezero_{
+	background-color:#a99260;
+}
+
+
+.exposure,.exposure .color,.column .bar.exposure{
+	background-color:#85008b;
+}
+.msm,.msm .color,.column .bar.msm{
+	background-color:#9a799c;
+}
+.idu,.idu .color,.column .bar.idu{
+	background-color:#b078b2;
+}
+.msm_idu,.msm_idu .color,.column .bar.msm_idu{
+	background-color:#bc6ec0;
+}
+.heterosexual,.heterosexual .color,.column .bar.heterosexual{
+	background-color:#d467d9;
+}
+.other_exposure,.other_exposure .color,.column .bar.other_exposure{
+	background-color:#fb9eff;
+}
