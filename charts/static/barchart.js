@@ -102,7 +102,7 @@ $(document).ready(function(){
 					z_pos = z_pos+1;
 					bar.addClass("left");
 				}
-				bar.css("z-index",z_pos);
+				bar.css("z-index",z_pos).data("z-index",z_pos);
 				if(bar.data("name")==event.filter){
 					above = true;
 					bar.removeClass("left").removeClass("right").removeClass("sibling");
@@ -113,13 +113,8 @@ $(document).ready(function(){
 				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
 			
-			col_stagger_width = 5;
-			if(column.data("name")==event.highlight){
-				col_stagger_width = 20;
-			}
 			column.trigger({
 				type:"stagger_bars",
-				stagger_width:col_stagger_width,
 				filter:event.filter,
 				highlight:event.highlight,
 				percent:event.percent
@@ -187,20 +182,22 @@ $(document).ready(function(){
 	}).delegate(".column","expand",function(event){
 		column = $(this);
 		event = fill_in_values(event)
-		event.stagger_width = 25;
+		event.stagger_width = 20;
 		event.type = "stagger_bars";
 		column.trigger(event);
 	}).delegate(".column","collapse",function(event){
 		column = $(this);
 		event = fill_in_values(event)
-		event.stagger_width = 5;
 		event.type = "stagger_bars";
 		column.trigger(event);
 	}).delegate(".column","stagger_bars",function(event){
 		column = $(this);
 		event = fill_in_values(event);
 		if(!event.stagger_width){
-			stagger_width = 10;
+			event.stagger_width = 5;
+		}
+		if(column.data("name") == event.highlight && event.stagger_width<20){
+			event.stagger_width = 20;
 		}
 		bars = get_sorted_active_bars(column,event);
 		for(var i=0;i<bars.length;i++){
