@@ -1,8 +1,5 @@
 $(document).ready(function(){
 	$("#chart").delegate(".bar","click",function(event){
-		if(event.target!=this){
-			return true;
-		}
 		$.address.parameter("filter",$(this).data("name"));
 		$.address.parameter("highlight",$(this).parents(".column:first").data("name"));
 	}).delegate(".bar","mouseenter",function(event){
