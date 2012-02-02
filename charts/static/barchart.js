@@ -22,6 +22,7 @@ $(document).ready(function(){
 				if(value != col_data['Label']){
 					$(".chart .column:last",chart).append($("#templates .bar").clone());
 					$(".chart .column:last .bar:last",chart).data("name",name).data("amount",value).data("parent",parent);
+					$(".chart .column:last .bar:last",chart).addClass(name_to_class(parent)).addClass(name_to_class(name));
 					$(".chart .column:last .bar:last .amount",chart).html(value);
 				}
 			});

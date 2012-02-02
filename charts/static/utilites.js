@@ -95,3 +95,10 @@ function fill_in_values(obj){
 	}
 	return obj;
 }
+
+function name_to_class(name){
+	if(!name){
+		return "";
+	}
+	return name.replace(" ","_").replace("/","_").toLowerCase();
+}
