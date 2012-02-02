@@ -15,6 +15,12 @@ $(document).ready(function(){
 				$("#memos").trigger("highlight");
 			}
 		});
+	}).delegate(".permalink","click",function(event){
+		event.preventDefault();
+		
+		// show memo state
+		
+		// copy link to clip board
 	}).delegate(".create","click",function(event){
 		event.preventDefault();
 		create_button = $(this);
@@ -48,7 +54,7 @@ $(document).ready(function(){
 				$("#memos .create").show();
 				form.remove();
 			}
-		})
+		});
 	}).delegate(".memo a.update,.memo a.close,.memo a.delete","click",function(event){
 		event.preventDefault();
 		button = $(this);
@@ -83,35 +89,30 @@ $(document).ready(function(){
 	$.address.change(function(){
 		$("#memos").trigger("highlight");
 	});
-	$("#memos").bind("highlight",function(){
-		highlight_memos({
-			focus:$.address.parameter("memo"),
-			highlight:$.address.parameter("highlight"),
-			filter:$.address.parameter("filter")
+	$("#memos").bind("highlight",function(event){
+		event = fill_in_values(event);
+		$("#memos .memo").each(function(){
+			var memo = $(this);
+			memo.removeClass("focus").removeClass("relivant");
+			if(event.highlight && event.highlight == memo.data("highlight")){
+				memo.addClass("relivant");
+			}
+			if(event.filter && event.filter == memo.data("filter")){
+				memo.addClass("relivant");
+			}
 		});
 	});
-	$("#chart").delegate(".column","highlight",function(){
-		column = $(this);
-		highlight_memos({
-			focus:$.address.parameter("memo"),
-			highlight:column.data("data")['Label'],
-			filter:$.address.parameter("filter")
+	$("#chart").delegate(".bar","highlight",function(){
+		bar = $(this);
+		column = bar.parents(".column:first");
+		$("#memos").trigger({
+			type:"highlight",
+			filter:bar.data("name"),
+			highlight:column.data("name")
+		}).trigger({
+			type:"filter",
+			filter:bar.data("name"),
+			highlight:column.data("name")
 		});
 	});
 });
-
-function highlight_memos(obj){
-	$("#memos .memo").each(function(){
-		var memo = $(this);
-		memo.removeClass("focus").removeClass("relivant");
-		if(obj['highlight'] && obj['highlight']==memo.data("highlight")){
-			memo.addClass("relivant");
-		}
-		if(obj['filter'] && obj['filter']==memo.data("filter")){
-			memo.addClass("relivant");
-		}
-		if(obj['focus'] && obj['focus']==memo.attr("id").replace("memo-","")){
-			memo.addClass("focus");
-		}
-	})
-}
