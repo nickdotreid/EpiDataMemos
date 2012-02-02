@@ -70,7 +70,11 @@
 */
 .filters .filter.hover .color,.chart .column .bar.hover{
 	background:#86ea9c;
+}
+.chart .column .bar.hover{
 	z-index:50;
+	border-right:1px #000 solid;
+	border-left:1px #000 solid;
 }
 
 .chart .column .bar .amount{
