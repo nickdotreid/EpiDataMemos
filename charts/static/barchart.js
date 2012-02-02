@@ -113,9 +113,13 @@ $(document).ready(function(){
 				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
 			}
 			
+			col_stagger_width = 5;
+			if(column.data("name")==event.highlight){
+				col_stagger_width = 20;
+			}
 			column.trigger({
 				type:"stagger_bars",
-				stagger_width:5,
+				stagger_width:col_stagger_width,
 				filter:event.filter,
 				highlight:event.highlight,
 				percent:event.percent
