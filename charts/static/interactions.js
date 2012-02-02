@@ -5,9 +5,9 @@ $(document).ready(function(){
 		}
 		$.address.parameter("filter",$(this).data("name"));
 	}).delegate(".bar","mouseenter",function(event){
-		$(this).trigger("highlight");
+		$(this).trigger("highlight").trigger("over");
 	}).delegate(".bar","mouseleave",function(event){
-		$(this).trigger("unhighlight");
+		$(this).trigger("unhighlight").trigger("out");
 	}).delegate(".chart","click",function(event){
 		if(event.target!=this){
 			return true;
@@ -23,5 +23,9 @@ $(document).ready(function(){
 		$(this).trigger("expand");
 	}).delegate(".column","mouseleave",function(event){
 		$(this).trigger("collapse");
+	}).delegate(".filter","mouseenter",function(){
+		$(this).trigger("over");
+	}).delegate(".filter","mouseleave",function(){
+		$(this).trigger("out");
 	});
 });

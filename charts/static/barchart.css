@@ -68,7 +68,7 @@
 	background:#79b5ff;
 }
 */
-.chart .column .bar.hover{
+.filters .filter.hover .color,.chart .column .bar.hover{
 	background:#86ea9c;
 	z-index:50;
 }
