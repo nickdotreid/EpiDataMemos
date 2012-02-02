@@ -2,6 +2,28 @@
 	background-color:#79b5ff;
 }
 
+
+.gender,.gender .color,.column .bar.gender{
+	background-color:#666;
+}
+
+.male,.male .color,.column .bar.male{
+	background-color:#8c8c8c;
+}
+
+.female,.female .color,.column .bar.female{
+	background-color:#bdbdbd;
+}
+
+.trans,.trans .color,.column .bar.trans{
+	background-color:#d9d9d9;
+}
+
+
+.ethnicity,.ethnicity .color,.column .bar.ethnicity{
+	background-color:#125ebc;
+}
+
 .white,.white .color,.column .bar.white{
 	background-color:#5985bc;
 }
