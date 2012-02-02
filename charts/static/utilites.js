@@ -100,5 +100,14 @@ function name_to_class(name){
 	if(!name){
 		return "";
 	}
-	return name.replace(" ","_").replace("/","_").replace("-","_").toLowerCase();
+	name = number_to_string(name);
+	return name.replace(" ","_").replace("/","_").replace("-","_").replace("+","_").toLowerCase();
+}
+function number_to_string(text){
+	new_text = ""
+	for(var i=0;i<text.length;i++){
+		letter = text[i];
+		new_text += letter.replace("1","one").replace("2","two").replace("3","three").replace("4","four").replace("5","five").replace("6","six").replace("7","seven").replace("8","eight").replace("9","nine").replace("0","zero");
+	}
+	return new_text;
 }
