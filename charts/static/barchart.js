@@ -222,8 +222,11 @@ $(document).ready(function(){
 		if(!bar.data("_height") || bar.data("_height")<1){
 			$(".amount",bar).hide();
 		}
-		if(bar.data("_top") && bar.data("_top")<0){
-			$(".amount",bar).css("top",(0-bar.data("_top"))+'px')
+		graph = bar.parents(".chart:first");
+		graph_padding_top = Number(graph.css("padding-top").replace("px",""))
+		graph_top = graph.height()+graph_padding_top;
+		if(bar.data("_top") && bar.data("_top")<(graph.height()+graph_padding_top)){
+			$(".amount",bar).css("top",0+'px')
 		}
 		
 		total = bar.parents(".column:first").data("data")['Total'];
@@ -256,7 +259,10 @@ $(document).ready(function(){
 			},{
 				duration:500,
 				queue:false					
-		})
+		});
+		if(bar.data("highlight")){
+			bar.trigger("highlight");
+		}
 	}).delegate(".bar,.filter","over",function(event){
 		var bar = $(this);
 		var cmp = function(){
@@ -279,25 +285,29 @@ $(document).ready(function(){
 		$(".filter").each(cmp);
 	}).delegate(".bar","highlight",function(event){
 		bar = $(this);
+		if(bar.data("highlight")){
+			bar.data("highlight").remove();
+		}
 		column = bar.parents(".column:first");
 		bar.trigger("format");
 		highlight = $(".highlight",bar).clone();
 		bar.data("highlight",highlight);
 		canvas = bar.parents(".canvas:first");
 		canvas.append(highlight);
+		graph = bar.parents(".chart:first");
 		var column_left = 0;
 		if(column.data("_left")){
 			column_left = column.data("_left");
 		}
 		x = column_left+bar.data("_left")+bar.width();
-		if(x+highlight.width()>canvas.parent().width()){
+		if(x+highlight.width()>graph.width()){
 			x = column_left+bar.data("_left")-highlight.width();
 			highlight.addClass("left");
 		}
 //		x = column.position().left+bar.data("_left")+(bar.width()/2)-(highlight.width()/2);
 		y = bar.data("_top")-(highlight.height()/2);
-		if(!y || y<0){
-			y = 0;
+		if(!y || y<0-Number(graph.css("padding-top").replace("px",""))){
+			y = 0-Number(graph.css("padding-top").replace("px",""));
 		}
 		
 		highlight.css({
@@ -306,6 +316,7 @@ $(document).ready(function(){
 		})
 	}).delegate(".bar","unhighlight",function(event){
 		$(this).data("highlight").remove();
+		$(this).data("highlight",false);
 	});
 	
 	$("#chart").trigger("loadr");
