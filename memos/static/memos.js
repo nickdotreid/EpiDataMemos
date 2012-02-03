@@ -76,14 +76,22 @@ $(document).ready(function(){
 	});
 	
 	$("#memos").delegate(".memo","mouseenter",function(){
+		$(this).data("highlight",setTimeout('$("#'+this.id+'").trigger("draw_chart")',1000));
+	}).delegate(".memo","mouseleave",function(){
+		if($(this).data("highlight")){
+			clearTimeout($(this).data("highlight"));
+			$(this).data("highlight",false);
+		}else{
+			$("#chart").trigger("redraw");
+		}
+	}).delegate(".memo","draw_chart",function(){
 		var memo = $(this);
+		$(this).data("highlight",false);
 		$("#chart").trigger({
 			type:"redraw",
 			filter:memo.data("filter"),
 			highlight:memo.data("highlight")
 		});
-	}).delegate(".memo","mouseleave",function(){
-		$("#chart").trigger("redraw");
 	});
 	
 	$.address.change(function(){
