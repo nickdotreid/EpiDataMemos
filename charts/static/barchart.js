@@ -290,6 +290,10 @@ $(document).ready(function(){
 			column_left = column.data("_left");
 		}
 		x = column_left+bar.data("_left")+bar.width();
+		if(x+highlight.width()>canvas.parent().width()){
+			x = column_left+bar.data("_left")-highlight.width();
+			highlight.addClass("left");
+		}
 //		x = column.position().left+bar.data("_left")+(bar.width()/2)-(highlight.width()/2);
 		y = bar.data("_top")-(highlight.height()/2);
 		if(!y || y<0){
