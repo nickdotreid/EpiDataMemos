@@ -17,13 +17,25 @@ $(document).ready(function(){
 				$.address.parameter("filter",parent);
 			}
 		});
-	}).delegate(".column","mouseenter",function(event){
-		$(this).trigger("expand");
-	}).delegate(".column","mouseleave",function(event){
-		$(this).trigger("collapse");
 	}).delegate(".filter","mouseenter",function(){
 		$(this).trigger("over");
 	}).delegate(".filter","mouseleave",function(){
 		$(this).trigger("out");
+	});
+	
+	$("#chart").delegate(".column","mouseenter",function(event){
+		column = $(this);
+		column.data("expand_timeout",setTimeout(function(){
+			column.trigger("expand");
+			if($.address.parameter("highlight")!=column.data("name")){
+				$.address.parameter("highlight",false);
+			}
+		},500));
+	}).delegate(".column","mouseleave",function(event){
+		column = $(this);
+		if(column.data("expand_timeout")){
+			clearTimeout(column.data("expand_timeout"));
+		}
+		$(this).trigger("collapse");
 	});
 });
