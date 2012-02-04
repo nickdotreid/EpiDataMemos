@@ -102,7 +102,11 @@ $(document).ready(function(){
 			left:x+'px'
 		})
 	}).delegate(".bar","unhighlight",function(event){
-		$(this).data("highlight").remove();
-		$(this).data("highlight",false);
+		bar = $(this);
+		column = bar.parents(".column:first");
+		if($.address.parameter("filter")!=bar.data("name") || $.address.parameter("highlight")!= column.data("name")){
+			bar.data("highlight").remove();
+			bar.data("highlight",false);
+		}
 	});
 });
