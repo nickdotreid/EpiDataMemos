@@ -10,7 +10,12 @@
 {% block scripts %}
 {{super()}}
 <script type="text/javascript" src="{{url_for('.static',filename='utilites.js')}}"></script>
+
+<script type="text/javascript" src="{{url_for('.static',filename='column.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static',filename='bar.js')}}"></script>
+<script type="text/javascript" src="{{url_for('.static',filename='highlight.js')}}"></script>
 <script type="text/javascript" src="{{url_for('.static',filename='barchart.js')}}"></script>
+
 <script type="text/javascript" src="{{url_for('.static',filename='controls_filters.js')}}"></script>
 <script type="text/javascript" src="{{url_for('.static',filename='interactions.js')}}"></script>
 <script type="text/javascript" src="{{url_for('.static',filename='grid.js')}}"></script>
