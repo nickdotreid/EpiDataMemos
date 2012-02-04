@@ -58,75 +58,9 @@ $(document).ready(function(){
 		});
 		chart.data("max",chart_max);
 		
-		$(".chart .column",$(this)).each(function(){
-			column = $(this);
-			data = column.data("data");
-			column.addClass(String(data['Label']));
-			
-			sorted_active_bars = get_sorted_active_bars(column,event);
-			$(".bar",column).removeClass("active").removeClass("selected");
-			ypos = graph.height();
-			for(i=sorted_active_bars.length-1;i>=0;i--){
-				bar = $(sorted_active_bars[i]);
-				bar.addClass("active");
-				
-				value = bar.data("amount");
-				if(event.percent){
-					value = value/data['Total'];
-				}
-				percent = value/chart_max;
-				height = graph.height()*percent;
-				
-				y = graph.height() - height;
-				if(bar.data("parent")==event.filter){
-					ypos -= height;
-					y = ypos;
-					if(y<1){
-						y=0;
-					}
-				}
-				bar.data("_height",height).data("_top",y);
-				bar.trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
-			}
-
-			var z_pos = active_bars.length + 10;
-			var above = false;
-			$(".bar",column).removeClass("left").removeClass("right").addClass("sibling");
-			for(i in sorted_active_bars){
-				bar = $(sorted_active_bars[i]);
-				
-				if(above){
-					z_pos = z_pos-1;
-					bar.addClass("right");
-				}else{
-					z_pos = z_pos+1;
-					bar.addClass("left");
-				}
-				bar.css("z-index",z_pos).data("z-index",z_pos);
-				if(bar.data("name")==event.filter){
-					above = true;
-					bar.removeClass("left").removeClass("right").removeClass("sibling");
-				}
-			}
-			
-			if(!above){
-				$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
-			}
-			
-			column.trigger({
-				type:"stagger_bars",
-				filter:event.filter,
-				highlight:event.highlight,
-				percent:event.percent
-			});
-			
-			$(".bar:not(.active)",column).each(function(){
-				if(!in_array(active_bars,this)){
-					$(this).data("_top",graph.height()).data("_height",0);
-					$(this).trigger("animate");
-					$(this).trigger({type:"format",percent:event.percent,filter:event.filter});
-				}
-			});
+		$(".chart .column",$(this)).trigger({
+			type:"draw_column",
+			chart_max:chart_max
 		});
 		$(".chart",$(this)).trigger({
 			type:"sort_columns",
