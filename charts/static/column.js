@@ -108,7 +108,6 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 			}
 		}
 		bar.data("_height",height).data("_top",y);
-		bar.trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 	}
 
 	var z_pos = active_bars.length + 10;
@@ -145,11 +144,9 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	$(".bar:not(.active)",column).each(function(){
 		if(!in_array(active_bars,this)){
 			$(this).data("_top",graph.height()).data("_height",0);
-			$(this).trigger("animate");
-			$(this).trigger({type:"format",percent:event.percent,filter:event.filter});
 		}
 	});
-	
+	$(".bar",column).trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 });
 });
 function get_sorted_active_bars(column,event){
