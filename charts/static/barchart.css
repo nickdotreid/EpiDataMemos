@@ -42,7 +42,7 @@
 	z-index:3;
 }
 
-.chart .column .bar{
+.chart .bar{
 	position:absolute;
 	z-index:7;
 	left:0px;
@@ -60,15 +60,8 @@
 .chart .column .bar.right{
 	border-left:0px;
 }
-/*
-.chart .column .bar.sibling{
-	background:#cde1f9;
-}
-.chart .column .bar.selected{
-	background:#79b5ff;
-}
-*/
-.filters .filter.hover .color,.chart .column .bar.hover{
+
+.filters .filter.hover .color,.chart .bar.hover{
 	background:#86ea9c;
 }
 .chart .column .bar.hover{
@@ -98,97 +91,10 @@
 	text-align:center;
 }
 
-.chart .highlight{
-	display:block;
-	background:#FFF;
-	border:3px #000 solid;
-	font-size:0.8em;
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:40;
-	padding:7px;
-	width:110px;
-}
-.chart .bar .highlight{
-	display:none;
-}
-.highlight .total{
-	background-color:transparent;
-}
-.chart .highlight span,.chart .highlight a{
-	display:block;
-	text-align:center;
-}
-.chart .highlight span.number{
-	font-size:1.2em;
-	font-weight:bold;
-}
-.chart .highlight .arrow{
-	position:absolute;
-	width:20px;
-	height:34px;
-	top:17px;
-	left:-17px;
-	background:transparent url('i/horiz_hover_right.png') center center no-repeat;
-}
-.chart .highlight.left .arrow{
-	width:34px;
-	height:20px;
-	bottom:-17px;
-	left:45px;
-	background-image:url('i/horiz_hover_bottom.png');
-}
-.chart .highlight.left .arrow{
-	left:110px;
-	background-image:url('i/horiz_hover_left.png');
-}
-
 #chart fieldset{
 	border:0px;
 }
 #chart fieldset legend{
 	font-size:0.8em;
 	font-style:italic;
-}
-
-.filters{
-	display:block;
-	clear:both;
-}
-.filters .row{
-	display:block;
-	clear:both;
-}
-.filters label{
-	width:auto;
-	display:block;
-	float:left;
-	margin:0px 7px 0px 0px;
-	position:relative;
-	background-color:transparent;
-}
-
-.filters .color{
-	width:auto;
-	height:20px;
-	clear:both;
-	display:block;
-	background-color:#CCC;
-}
-
-.grid{
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:1;
-	width:100%;
-}
-.grid .tick{
-	position:absolute;
-	top:0px;
-	left:0px;
-	border-top:1px solid #333;
-	width:100%;
-	font-size:0.8em;
 }
