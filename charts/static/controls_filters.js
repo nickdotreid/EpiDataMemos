@@ -49,8 +49,14 @@ $(document).ready(function(){
 		if(!$.address.parameter("filter")){
 			$(".filters input:first").click()
 		}
-	}).bind("redraw",function(){
-		
+	}).bind("redraw",function(event){
+		event = fill_in_values(event);
+		$(".filter").removeClass("sibling").each(function(){
+			filter = $(this);
+			if(filter.data("name") != event.filter){
+				filter.addClass("sibling");
+			}
+		});
 	});
 	$("#chart").delegate("input.percent","click",function(){
 		if(this.checked){

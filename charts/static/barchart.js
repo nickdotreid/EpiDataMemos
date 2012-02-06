@@ -60,6 +60,8 @@ $(document).ready(function(){
 		
 		$(".chart .column",$(this)).trigger({
 			type:"draw_column",
+			filter:event.filter,
+			highlight:event.highlight, 
 			chart_max:chart_max
 		});
 		$(".chart",$(this)).trigger({

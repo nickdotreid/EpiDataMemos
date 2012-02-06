@@ -110,13 +110,13 @@
 		background-color:@color;
 	}
 	&.sibling{
-		background-color:lighten(@color,20%);
+		background-color:desaturate(lighten(@color,20%),40%);
 		.color{
-			background-color:lighten(@color,20%);
+			background-color:desaturate(lighten(@color,20%),40%);
 		}
 	}
 	&.hover,&.hover.sibling{
-		background-color:darken(@color,10%);
+		background-color:@color;
 	}
 }
 
@@ -150,7 +150,7 @@
 }
 
 #chart .filters{
-	.filter,.filter.hover,.filter.sibling{
+	.filter,.filter.hover,.filter.sibling,.filter.sibling.hover{
 		background-color:transparent;
 	}
 }

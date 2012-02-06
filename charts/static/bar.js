@@ -58,8 +58,7 @@ $(document).ready(function(){
 //				$(this).data("z-index",$(this).css("z-index")).css("z-index",500);
 			}
 		}
-		$(".bar").each(cmp);
-		$(".filter").each(cmp);
+		$(".bar,.filter").each(cmp);
 	}).delegate(".bar,.filter","out",function(event){
 		var bar = $(this);
 		var cmp = function(){
@@ -68,8 +67,7 @@ $(document).ready(function(){
 //				$(this).css("z-index",$(this).data("z-index"));
 			}
 		}
-		$(".bar").each(cmp);
-		$(".filter").each(cmp);
+		$(".bar,.filter").each(cmp);
 	}).delegate(".bar","highlight",function(event){
 		bar = $(this);
 		if(bar.data("highlight")){
