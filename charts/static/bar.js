@@ -55,7 +55,7 @@ $(document).ready(function(){
 		var cmp = function(){
 			if($(this).data("name") == bar.data("name")){
 				$(this).addClass("hover");
-				$(this).data("z-index",$(this).css("z-index")).css("z-index",500);
+//				$(this).data("z-index",$(this).css("z-index")).css("z-index",500);
 			}
 		}
 		$(".bar").each(cmp);
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		var cmp = function(){
 			if($(this).data("name") == bar.data("name")){
 				$(this).removeClass("hover");
-				$(this).css("z-index",$(this).data("z-index"));
+//				$(this).css("z-index",$(this).data("z-index"));
 			}
 		}
 		$(".bar").each(cmp);
