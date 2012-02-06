@@ -35,7 +35,6 @@ $(document).ready(function(){
 		var chart = $(this);
 		var graph = $(".chart",chart);
 		event = fill_in_values(event);
-		
 		set_button_state({
 			filter:event.filter
 		});
@@ -56,6 +55,7 @@ $(document).ready(function(){
 			});
 			return biggest_number;
 		});
+		
 		chart.data("max",chart_max);
 		
 		$(".chart .column",$(this)).trigger({

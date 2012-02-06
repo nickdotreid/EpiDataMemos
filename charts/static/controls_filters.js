@@ -20,10 +20,10 @@ $(document).ready(function(){
 				}
 			}
 		}
-		order = chart.data("order");
+		var order = chart.data("order");
 		$(".filters .row").each(function(){
-			row = $(this);
-			items = $(".filter",row);
+			var row = $(this);
+			var items = $(".filter",row);
 			items = items.sort(function(a,b){
 				a1 = a;
 				b1 = b;
@@ -52,7 +52,7 @@ $(document).ready(function(){
 	}).bind("redraw",function(event){
 		event = fill_in_values(event);
 		$(".filter").removeClass("sibling").each(function(){
-			filter = $(this);
+			var filter = $(this);
 			if(filter.data("name") != event.filter){
 				filter.addClass("sibling");
 			}

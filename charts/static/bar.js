@@ -22,7 +22,7 @@ $(document).ready(function(){
 		$(".qualify",bar).html(bar.data("name"));
 		
 		if(event.percent){
-			percent = format_number((bar.data("amount")/total),event.percent);
+			var percent = format_number((bar.data("amount")/total),event.percent);
 			$(".amount",bar).html(percent);
 		}
 	}).delegate(".bar","animate",function(event){

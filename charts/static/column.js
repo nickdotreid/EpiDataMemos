@@ -63,8 +63,9 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	if(column.data("name") == event.highlight && event.stagger_width<20){
 		event.stagger_width = 20;
 	}
-	bars = get_sorted_active_bars(column,event);
+	var bars = get_sorted_active_bars(column,event);
 	var xpos = 0;
+	var bar_pos = 0;
 	var center_bar = false
 	if($(".bar.hover",column).length>0){
 		center_bar = $(".bar.hover:first",column);
@@ -72,7 +73,7 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 		xpos = Number(center_bar.css("left").replace("px",""));
 	}
 	for(var i=0;i<bars.length;i++){
-		bar = $(bars[i]);
+		var bar = $(bars[i]);
 		if(event.filter != bar.data("parent")){
 			bar.data("_left",i*event.stagger_width);
 			if(center_bar){
@@ -94,31 +95,29 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	$(".bar",column).trigger("animate");
 	column.parents(".chart:first").trigger("sort_columns");
 }).delegate(".column","draw_column",function(event){
-	column = $(this);
-	data = column.data("data");
-	
-	graph = column.parents(".chart:first");
+	var column = $(this);
+	var data = column.data("data");
+	var graph = column.parents(".chart:first");
 	
 	event = fill_in_values(event);
 	if(!event.chart_max){
 		event.chart_max = data['Total'];
 	}
-	
-	sorted_active_bars = get_sorted_active_bars(column,event);
+	var sorted_active_bars = get_sorted_active_bars(column,event);
 	$(".bar",column).removeClass("active").removeClass("selected");
-	ypos = graph.height();
-	for(i=sorted_active_bars.length-1;i>=0;i--){
-		bar = $(sorted_active_bars[i]);
+	var ypos = graph.height();
+	for(var i=sorted_active_bars.length-1;i>=0;i--){
+		var bar = $(sorted_active_bars[i]);
 		bar.addClass("active");
 		
-		value = bar.data("amount");
+		var value = bar.data("amount");
 		if(event.percent){
 			value = value/data['Total'];
 		}
-		percent = value/event.chart_max;
-		height = graph.height()*percent;
+		var percent = value/event.chart_max;
+		var height = graph.height()*percent;
 		
-		y = graph.height() - height;
+		var y = graph.height() - height;
 		if(bar.data("parent")==event.filter){
 			ypos -= height;
 			y = ypos;
@@ -128,12 +127,11 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 		}
 		bar.data("_height",height).data("_top",y);
 	}
-
 	var z_pos = active_bars.length + 10;
 	var above = false;
 	$(".bar",column).removeClass("left").removeClass("right").addClass("sibling");
 	for(i in sorted_active_bars){
-		bar = $(sorted_active_bars[i]);
+		var bar = $(sorted_active_bars[i]);
 		
 		if(above){
 			z_pos = z_pos-1;
