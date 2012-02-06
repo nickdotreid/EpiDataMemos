@@ -64,10 +64,29 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 		event.stagger_width = 20;
 	}
 	bars = get_sorted_active_bars(column,event);
+	var xpos = 0;
+	var center_bar = false
+	if($(".bar.hover",column).length>0){
+		center_bar = $(".bar.hover:first",column);
+		bar_pos = in_array_position(bars,center_bar[0]);
+		xpos = Number(center_bar.css("left").replace("px",""));
+	}
 	for(var i=0;i<bars.length;i++){
 		bar = $(bars[i]);
 		if(event.filter != bar.data("parent")){
 			bar.data("_left",i*event.stagger_width);
+			if(center_bar){
+				if(bar.data("amount")<center_bar.data("amount")){
+					//xpos -= event.stagger_width;
+					bar.data("_left",xpos-((bar_pos-i)*event.stagger_width));
+				}else{
+					xpos += event.stagger_width;
+					if(center_bar.data("name")==bar.data("name")){
+						xpos = Number(center_bar.css("left").replace("px",""));
+					}
+					bar.data("_left",xpos);
+				}
+			}
 		}else{
 			bar.data("_left",0);
 		}
