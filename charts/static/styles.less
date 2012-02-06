@@ -1,0 +1,157 @@
+@highlight_color:#AAA;
+
+
+/* GRID */
+.grid{
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:1;
+	width:100%;
+	.tick{
+		position:absolute;
+		top:0px;
+		left:0px;
+		border-top:1px solid #333;
+		width:100%;
+		font-size:0.8em;
+	}
+}
+
+.filters{
+	display:block;
+	clear:both;
+	label{
+		width:auto;
+		display:block;
+		float:left;
+		margin:0px 7px 0px 0px;
+		position:relative;
+		.color{
+			width:auto;
+			height:20px;
+			clear:both;
+			display:block;
+			background-color:#CCC;
+		}
+	}
+	.row{
+		display:block;
+		clear:both;
+		label .color{
+			display:none;
+		}
+	}
+}
+.filters .row.child label .color{
+	display:block;
+}
+
+
+
+
+.chart{
+	.highlight{
+		display:block;
+		background:#FFF;
+		border:3px #000 solid;
+		font-size:0.8em;
+		position:absolute;
+		top:0px;
+		left:0px;
+		z-index:40;
+		padding:7px;
+		width:110px;
+		.total{
+			background-color:transparent;
+		}
+		span,a{
+			display:block;
+			text-align:center;
+		}
+		span.number{
+			font-size:1.2em;
+			font-weight:bold;
+		}
+		
+		.arrow{
+			position:absolute;
+			width:20px;
+			height:34px;
+			top:17px;
+			left:-17px;
+			background:transparent url('i/horiz_hover_right.png') center center no-repeat;
+		}
+	}
+	.highlight.above{
+		.arrow{
+			width:34px;
+			height:20px;
+			bottom:-17px;
+			left:45px;
+			background-image:url('i/horiz_hover_bottom.png');			
+		}
+	}
+	.highlight.left{
+		.arrow{
+			left:110px;
+			background-image:url('i/horiz_hover_left.png');
+		}
+	}
+}
+.bar .highlight{
+	display:none;
+}
+
+
+.bar_mix(@color){
+	background-color:@color;
+	.color{
+		background-color:@color;
+	}
+	&.sibling{
+		background-color:lighten(@color,20%);
+		.color{
+			background-color:lighten(@color,20%);
+		}
+	}
+	&.hover,&.hover.sibling{
+		background-color:darken(@color,10%);
+	}
+}
+
+#chart .bar{
+	.bar_mix(#444)
+}
+
+/*  Define Colors */
+
+#chart{
+	.column,.filters{
+		.total,.male,.white,.zero_onetwo,.msm{
+			.bar_mix(#6666ff)
+		}
+		.female,.african_american,.onethree_onenine,.idu{
+			.bar_mix(#ff8000)
+		}
+		.trans,.latino,.twozero_twonine,.msm_idu{
+			.bar_mix(#ff66ff)
+		}
+		.asian_pacific_islander,.threezero_threenine,.heterosexual{
+			.bar_mix(#8000ff)
+		}
+		.native_american,.fourzero_fournine,.other_exposure{
+			.bar_mix(#66ffff)
+		}
+		.other_race,.fivezero_{
+			.bar_mix(#ff0000)
+		}
+	}
+}
+
+#chart .filters{
+	.filter,.filter.hover,.filter.sibling{
+		background-color:transparent;
+	}
+}
+
