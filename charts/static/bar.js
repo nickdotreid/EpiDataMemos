@@ -26,7 +26,11 @@ $(document).ready(function(){
 			$(".amount",bar).html(percent);
 		}
 	}).delegate(".bar","animate",function(event){
-		bar = $(this);
+		var bar = $(this);
+		if(bar.data("animation_delay")){
+			clearTimeout(bar.data("animation_delay"));
+			bar.data("animation_delay",false);
+		}
 		var _height = 0;
 		if(bar.data("_height")){
 			_height = bar.data("_height");
@@ -39,17 +43,20 @@ $(document).ready(function(){
 		if(bar.data("_left")){
 			_left = bar.data("_left")
 		}
-		bar.animate({
-				height:_height+'px',
-				top:_top+'px',
-				left:_left+'px'
-			},{
-				duration:500,
-				queue:false					
-		});
-		if(bar.data("highlight")){
-			bar.trigger("highlight");
-		}
+		bar.data("animation_delay",setTimeout(function(){
+			bar.animate({
+					height:_height+'px',
+					top:_top+'px',
+					left:_left+'px'
+				},{
+					duration:500,
+					queue:false					
+			});
+			if(bar.data("highlight")){
+				bar.trigger("highlight");
+			}
+			bar.data("animation_delay",false);			
+		},100));
 	}).delegate(".bar,.filter","over",function(event){
 		var bar = $(this);
 		var cmp = function(){
