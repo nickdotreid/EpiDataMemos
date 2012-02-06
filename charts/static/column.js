@@ -131,7 +131,7 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	}
 	
 	if(!above){
-		$(".bar",column).removeClass("sibling").removeClass("left").removeClass("right");
+		$(".bar",column).removeClass("left").removeClass("right");
 	}
 	
 	column.trigger({
