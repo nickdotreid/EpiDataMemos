@@ -11,7 +11,9 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 				duration:500,
 				queue:false
 			});
+		
 		// get right most point
+		
 		var right_most = $(".label",column).width();
 		var bars = get_sorted_active_bars(column,event);
 		for(var i=0;i<bars.length;i++){
@@ -28,6 +30,7 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 		// add margin-right to xpos
 		xpos += Number(column.css("margin-left").replace("px",''));
 	});
+	
 	// center canvas
 	var graph = $(this);
 	var canvas = $(".canvas",graph);
@@ -41,7 +44,7 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	},{
 		duration:500,
 		queue:false
-	})
+	});
 	
 }).delegate(".column","expand",function(event){
 	column = $(this);
@@ -103,8 +106,10 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	if(!event.chart_max){
 		event.chart_max = data['Total'];
 	}
+	
 	var sorted_active_bars = get_sorted_active_bars(column,event);
 	$(".bar",column).removeClass("active").removeClass("selected");
+	
 	var ypos = graph.height();
 	for(var i=sorted_active_bars.length-1;i>=0;i--){
 		var bar = $(sorted_active_bars[i]);
@@ -127,10 +132,12 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 		}
 		bar.data("_height",height).data("_top",y);
 	}
-	var z_pos = active_bars.length + 10;
+	
+	var z_pos = sorted_active_bars.length + 10;
 	var above = false;
 	$(".bar",column).removeClass("left").removeClass("right").addClass("sibling");
-	for(i in sorted_active_bars){
+	
+	for(var i=0;i<sorted_active_bars.length;i++){
 		var bar = $(sorted_active_bars[i]);
 		
 		if(above){
@@ -146,7 +153,6 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 			bar.removeClass("left").removeClass("right").removeClass("sibling");
 		}
 	}
-	
 	if(!above){
 		$(".bar",column).removeClass("left").removeClass("right");
 	}
@@ -159,33 +165,38 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	});
 	
 	$(".bar:not(.active)",column).each(function(){
-		if(!in_array(active_bars,this)){
+		if(!in_array(sorted_active_bars,this)){
 			$(this).data("_top",graph.height()).data("_height",0);
 		}
 	});
+	
 	$(".bar",column).trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
+	
 });
 });
 function get_sorted_active_bars(column,event){
 	event = fill_in_values(event);
+	var active_bars = [];
 	get_active_bars = function(){
 		bar = $(this);
 		add = false;
+		
 		if(bar.data("name") == event.filter || bar.data("parent") == event.filter){
 			add = true;
 		}
+		
 		if(!add){
-		for(index in active_bars){
-			if($(active_bars[index]).data("parent")==bar.data("parent")){
-				add = true;
+			for(var i=0;i<active_bars.length;i++){
+				if($(active_bars[i]).data("parent")==bar.data("parent")){
+					add = true;
+				}
 			}
-		}
 		}
 		if(add && !in_array(active_bars,this)){
 			active_bars.push(this);
 		}
 	}
-	active_bars = [];
+	
 	$(".bar",column).each(get_active_bars);
 	$(".bar",column).each(get_active_bars); // twice to catch them all
 	

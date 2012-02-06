@@ -28,7 +28,7 @@ $(document).ready(function(){
 				}
 			});
 		}
-		$(".chart .column .bar",$(this)).height("0px").css("top",$(".chart",$(this)).height());
+		$(".chart .column .bar",chart).height("0px").css("top",$(".chart",chart).height());
 		$(this).trigger("ext-draw");
 		$(this).trigger("redraw");
 	}).bind("redraw",function(event){
@@ -39,8 +39,8 @@ $(document).ready(function(){
 			filter:event.filter
 		});
 		
-		has_children = false;
-		chart_max = array_max(chart.data("data"),function(item){
+		var has_children = false;
+		var chart_max = array_max(chart.data("data"),function(item){
 			var biggest_number = 0;
 			var total = item['Total'];
 			find_values(item,function(value,index,parent){
@@ -56,18 +56,24 @@ $(document).ready(function(){
 			return biggest_number;
 		});
 		
-		chart.data("max",chart_max);
-		
 		$(".chart .column",$(this)).trigger({
 			type:"draw_column",
 			filter:event.filter,
 			highlight:event.highlight, 
 			chart_max:chart_max
 		});
+		
 		$(".chart",$(this)).trigger({
 			type:"sort_columns",
 			filter:event.filter,
 			highlight:event.highlight
+		});
+		$(".grid",$(this)).trigger({
+			type:"grid_redraw",
+			filter:event.filter,
+			highlight:event.highlight,
+			percent:event.percent,
+			chart_max:chart_max
 		});
 	});
 	$.address.change(function(event){
