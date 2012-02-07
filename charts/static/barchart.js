@@ -17,7 +17,7 @@ $(document).ready(function(){
 			var col_data = data[i]
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
 			$(".chart .column:last",$(this)).data("data",data[i]).data("name",data[i]['Label']);
-			$(".chart .column:last .label",$(this)).html(data[i]['Label']);
+			$(".chart .column:last .label",$(this)).html(data[i]['Label']+'<span class="total">'+data[i]['Total']+' People Total</span>');
 			find_values(col_data,function(value,name,parent){
 				if(value != col_data['Label']){
 					$(".chart .column:last",chart).append($("#templates .bar").clone());

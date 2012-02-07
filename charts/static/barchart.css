@@ -42,6 +42,13 @@
 	z-index:3;
 }
 
+#chart .chart .column .label .total{
+	font-size:0.9em;
+	background-color:transparent;
+	display:block;
+	text-align:center;
+}
+
 .chart .bar{
 	position:absolute;
 	z-index:7;
