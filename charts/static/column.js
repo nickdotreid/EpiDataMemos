@@ -172,6 +172,16 @@ $("#chart").delegate(".chart","sort_columns",function(event){
 	
 	$(".bar",column).trigger("animate").trigger({type:"format",percent:event.percent,filter:event.filter});
 	
+}).delegate(".chart","pad_column_labels",function(){
+	var graph = $(this);
+	height = 0;
+	$(".column .label:not(.bar .label)",graph).each(function(){
+		var label = $(this);
+		if(label.height()>height){
+			height = label.height();
+		}
+	});
+	graph.css("padding-bottom",height+"px");
 });
 });
 function get_sorted_active_bars(column,event){

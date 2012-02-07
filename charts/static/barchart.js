@@ -66,7 +66,7 @@ $(document).ready(function(){
 			type:"sort_columns",
 			filter:event.filter,
 			highlight:event.highlight
-		});
+		}).trigger("pad_column_labels");
 		$(".grid",$(this)).trigger({
 			type:"grid_redraw",
 			filter:event.filter,
