@@ -9,16 +9,15 @@ $(document).ready(function(){
 		});
 	}).bind("draw",function(event){
 		var chart = $(this);
-		data = $(this).data("data");
+		var data = $(this).data("data");
 		
 		$(".chart",chart).append('<div class="canvas"></div>');
 		$(".chart .canvas",chart).css("top",$(".chart",chart).css("padding-top"));
-		for(index in data){
-			var col_data = data[index]
+		for(var i=0;i<data.length;i++){
+			var col_data = data[i]
 			$(".chart .canvas",$(this)).append($("#templates .column").clone());
-			$(".chart .column:last",$(this)).data("data",data[index]).data("name",data[index]['Label']);
-			$(".chart .column:last .label",$(this)).html(data[index]['Label']);
-			// add bar for each value
+			$(".chart .column:last",$(this)).data("data",data[i]).data("name",data[i]['Label']);
+			$(".chart .column:last .label",$(this)).html(data[i]['Label']);
 			find_values(col_data,function(value,name,parent){
 				if(value != col_data['Label']){
 					$(".chart .column:last",chart).append($("#templates .bar").clone());

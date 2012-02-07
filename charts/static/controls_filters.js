@@ -57,6 +57,7 @@ $(document).ready(function(){
 				filter.addClass("sibling");
 			}
 		});
+		set_button_state(event);
 	});
 	$("#chart").delegate("input.percent","click",function(){
 		if(this.checked){
