@@ -4,7 +4,11 @@
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static',filename='barchart.css')}}">
 <link rel="stylesheet" href="{{url_for('memos_app.static',filename='memos.css')}}">
+<link rel="stylesheet" href="{{url_for('.static',filename='styles_less.css')}}">
+<!--
 <link rel="stylesheet/less" type="text/css" href="{{url_for('.static',filename='styles.less')}}">
+<script type="text/javascript" src="{{url_for('.static',filename='less.min.js')}}"></script>
+-->
 {% endblock %}
 
 {% block scripts %}
@@ -21,7 +25,6 @@
 <script type="text/javascript" src="{{url_for('memos_app.static',filename='memos.js')}}"></script>
 <script type="text/javascript" src="{{url_for('memos_app.static',filename='filter_memos.js')}}"></script>
 
-<script type="text/javascript" src="{{url_for('.static',filename='less.min.js')}}"></script>
 {% endblock %}
 
 {% block content %}
