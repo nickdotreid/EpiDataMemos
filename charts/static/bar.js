@@ -5,7 +5,7 @@ $(document).ready(function(){
 		if(bar.data("name")==event.filter){
 			bar.addClass("selected");
 		}
-		$(".amount",bar).css("top",'0px').html(format_number(bar.data("amount"))).show();
+		$(".amount:not(.highlight .amount)",bar).css("top",'0px').html(format_number(bar.data("amount"))).show();
 		if(!bar.data("_height") || bar.data("_height")<1){
 			$(".amount",bar).hide();
 		}
@@ -18,6 +18,12 @@ $(document).ready(function(){
 		
 		total = bar.parents(".column:first").data("data")['Total'];
 		$(".total",bar).html("of " + format_number(total));
+		$(".highlight .amount",bar).html(format_number(bar.data("amount")));
+		percent = bar.data("amount")/total;
+		if($(".highlight .amount .percent",bar).length<1){
+			$(".highlight .amount",bar).append('<span class="percent"></span>');
+		}
+		$(".highlight .percent",bar).html("("+format_number(percent,true)+")");
 		
 		$(".qualify",bar).html(bar.data("name"));
 		
