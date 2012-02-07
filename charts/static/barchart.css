@@ -43,10 +43,15 @@
 }
 
 #chart .chart .column .label .total{
-	font-size:0.9em;
+	font-size:0.8em;
 	background-color:transparent;
 	display:block;
 	text-align:center;
+}
+#chart .chart .column .label .total .percent{
+	display:block;
+	font-size:1.1em;
+	font-style:italic;
 }
 
 .chart .bar{
