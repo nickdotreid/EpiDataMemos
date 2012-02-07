@@ -108,7 +108,9 @@ $(document).ready(function(){
 		bar = $(this);
 		column = bar.parents(".column:first");
 		if($.address.parameter("filter")!=bar.data("name") || $.address.parameter("highlight")!= column.data("name")){
-			bar.data("highlight").remove();
+			if(bar.data("highlight")){
+				bar.data("highlight").remove();
+			}
 			bar.data("highlight",false);
 		}
 	});
