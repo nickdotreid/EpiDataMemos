@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$("#chart").delegate(".bar","highlight",function(event){
 		bar = $(this);
+		$(".highlight:not(.bar .highlight)").remove();
 		if(bar.data("highlight")){
 			bar.data("highlight").remove();
 		}
@@ -33,11 +34,9 @@ $(document).ready(function(){
 	}).delegate(".bar","unhighlight",function(event){
 		bar = $(this);
 		column = bar.parents(".column:first");
-		if($.address.parameter("filter")!=bar.data("name") || $.address.parameter("highlight")!= column.data("name")){
-			if(bar.data("highlight")){
-				bar.data("highlight").remove();
-			}
-			bar.data("highlight",false);
+		if(bar.data("highlight")){
+			bar.data("highlight").remove();
 		}
+		bar.data("highlight",false);
 	});
 });

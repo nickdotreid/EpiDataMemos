@@ -74,6 +74,19 @@ $(document).ready(function(){
 			percent:event.percent,
 			chart_max:chart_max
 		});
+		if(event.filter && event.highlight){
+			$(".column",chart).each(function(){
+				var column = $(this);
+				if(column.data("name")==event.highlight){
+					$(".bar",column).each(function(){
+						var bar = $(this);
+						if(bar.data("name")==event.filter){
+							bar.trigger("highlight");
+						}
+					});
+				}
+			});
+		}
 	});
 	$.address.change(function(event){
 		$("#chart").trigger("redraw");
