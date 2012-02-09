@@ -26,6 +26,14 @@ $(document).ready(function(){
 					$(".chart .column:last .bar:last .amount",chart).html(value);
 				}
 			});
+			for(var index in col_data){
+				value = col_data[index];
+				if(index.toLowerCase() != 'label'){
+					if(col_data['Label'] == value){
+						$(".column_name",chart).html(index.toLowerCase());
+					}
+				}
+			}
 		}
 		$(".chart .column .bar",chart).height("0px").css("top",$(".chart",chart).height());
 		$(this).trigger("ext-draw");
