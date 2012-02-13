@@ -19,6 +19,7 @@ $(document).ready(function(){
 		total = bar.parents(".column:first").data("data")['Total'];
 		$(".total",bar).html("of " + format_number(total));
 		$(".highlight .amount",bar).html(format_number(bar.data("amount")));
+		
 		percent = bar.data("amount")/total;
 		if($(".highlight .amount .percent",bar).length<1){
 			$(".highlight .amount",bar).append('<span class="percent"></span>');

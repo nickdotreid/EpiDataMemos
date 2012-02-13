@@ -6,12 +6,16 @@ $(document).ready(function(){
 			bar.data("highlight").remove();
 		}
 		column = bar.parents(".column:first");
-		bar.trigger("format");
+//		bar.trigger("format");
+		
 		highlight = $(".highlight",bar).clone();
 		bar.data("highlight",highlight);
 		canvas = bar.parents(".canvas:first");
 		canvas.append(highlight);
 		graph = bar.parents(".chart:first");
+		
+		$(".amount",highlight).show()
+		
 		var column_left = 0;
 		if(column.data("_left")){
 			column_left = column.data("_left");
