@@ -1,0 +1,12 @@
+{% extends 'page.html' %}
+
+{% block content %}
+<a href="{{url_for('definitions_app.view_all')}}">Back to all definitions</a>
+<div class="definition">
+	<h1>{{definition.name}}</h1>
+	<p>{{definition.text}}</p>
+	<a href="{{url_for('definitions_app.update',id=definition.id)}}">edit</a>
+	<a href="{{url_for('definitions_app.delete',id=definition.id)}}">delete</a>
+</div>
+
+{% endblock %}
