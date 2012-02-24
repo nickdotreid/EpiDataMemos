@@ -1,8 +1,0 @@
-<ul class="navigation">
-	<li><a href="#">Public Memos</a></li>
-	<li><a href="#">All Memos</a></li>
-</ul>
-<a class="create" href="{{url_for('memos_app.create')}}">Create Memo</a>
-{% for memo in memos%}
-{{memo|safe}}
-{% endfor %}

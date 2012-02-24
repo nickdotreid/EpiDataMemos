@@ -1,9 +1,0 @@
-<div id="memo-{{memo.key}}" class="memo" data-weight="{{memo.weight}}" data-id="{{memo.id}}" {% for tag in memo.tags%}data-{{tag.type}}="{{tag.text}}" {% endfor %}>
-	<div class="message">
-		{{memo.message}}
-	</div>
-	<a class="author" href="mailto:{{memo.author}}">{{memo.author}}</a>
-	<div class="graph">{{memo.graph}}</div>
-	<a class="permalink" href="{{url_for('memos_app.load_memo',key=memo.key)}}">Permanent Link</a>
-	<a class="update" href="{{url_for('memos_app.update',key=memo.key)}}">Update</a>
-</div>

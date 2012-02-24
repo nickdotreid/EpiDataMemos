@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>{{ note.text }}</p>
+<ul>
+	{% for stat in note.statistic_set.all %}
+	<li>{{ stat.id }}</li>
+	{% empty %}
+	<li>No references</li>
+	{% endfor %}
+</ul>
+{% endblock %}
