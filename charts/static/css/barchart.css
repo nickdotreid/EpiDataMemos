@@ -1,9 +1,4 @@
 #chart{
-	background:#FFF;
-	border-left:1px #333 solid;
-	border-top:1px #333 solid;
-	width:600px;
-	margin:0px 10px 10px 0px;
 	overflow:hidden;
 }
 

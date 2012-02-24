@@ -1,14 +1,11 @@
-from flask import Blueprint, render_template, jsonify, abort, redirect
-import os, csv, xlrd, glob
+from data_xls.models import Xls
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 
-charts_app = Blueprint('charts_app', __name__, static_folder='static', template_folder='templates')
+from django.template import RequestContext
 
-charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
+import json
 
-@charts_app.route('/<chart>')
-def view(chart):
-	filename = charts_dir+chart
-	if not os.path.exists(filename):
-		return render_template('index.html')
-	title = chart.replace("_"," ").replace(".xls","")
-	return render_template('chart.html',filename=chart,title=title)
+def load_chart(request,xls_id):
+	xls = get_object_or_404(Xls,pk=xls_id)
+	return render_to_response('charts/chart.html',{'xls':xls},context_instance=RequestContext(request))

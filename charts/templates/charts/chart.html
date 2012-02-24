@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{{block.super}}
+
+<link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}css/barchart.less" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/barchart.css" />
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.address.min.js"></script>
+
+<script type="text/javascript" src="{{STATIC_URL}}js/utilites.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/highlight.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/interactions.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/bar.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/column.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/grid.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/controls_filters.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/barchart/barchart.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div id="chart" data-name="{{xls.xls.name}}" data-src="/xls/{{xls.id}}/">
+	<h2 class="title">{{xls.title}}</h2>
+	<div class="description">
+		<p>{{xls.description}}</p>
+	</div>
+	<form>
+		<fieldset class="filters">
+			<legend><span>Select axis to view</span></legend>
+		</fieldset>
+		<fieldset class="layout">
+			<legend><span>Change layout of graph</span></legend>
+			<label class="checkbox"><input class="percent" type="checkbox" name="percent" value="on" />View as percent per <span class="column_name">column</span></label>
+		</fieldset>
+	</form>
+	<div class="chart"></div>
+	<div class="foot"></div>
+</div>
+{% endblock %}
+
+{% block templates %}
+{{block.super}}
+<div class="column">
+	<div class="label"></div>
+</div>
+<div class="bar">
+	<div class="amount"></div>
+	<div class="highlight">
+		<span class="amount"></span>
+		<span class="total"></span>
+		<span class="qualify"></span>
+		<a href="#" class="highlink">Click To Highlight</a>
+		<div class="arrow"></div>
+	</div>
+</div>
+<label class="filter radio">
+	<input type="radio" name="filter" value="" />
+	<span class="name"></span>
+	<span class="description"></span>
+	<span class="color"></span>
+</label>
+{% endblock %}
