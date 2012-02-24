@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>{% block title %}Shiv'd{% endblock %}</title>
+	
+	{% block styles %}
+	<link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}css/styles.less" />
+	{% endblock %}
+	
+	{% block scripts %}
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/page.js"></script>
+	
+	<script type="text/javascript" src="{{STATIC_URL}}js/less.min.js"></script>
+	{% endblock %}
+</head>
+<body>
+	<div class="wrapper">
+	{% block content %}
+	
+	{% endblock %}
+	</div>
+	<div id="templates">
+	{% block templates %}
+	
+	{% endblock %}
+	</div>
+</body>
+</html>
