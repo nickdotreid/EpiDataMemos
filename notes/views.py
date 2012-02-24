@@ -1,95 +1,32 @@
-from flask import Blueprint, render_template, jsonify, request, redirect, abort, url_for
+from notes.models import Note
+from django.template import Context, loader
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+import datetime
 
-from database import db_session
-from models import *
+from django import forms
 
-from memo import *
+from django.template import RequestContext
 
-memos_app = Blueprint('memos_app', __name__, static_folder='static', template_folder='templates')
+def detail(request, note_id):
+	note = get_object_or_404(Note,pk=note_id)
+	return render_to_response('notes/detail.html',{'note':note})
 
-@memos_app.route('/',methods=['GET', 'POST'])
-def get_memos():
-	memos = []
-	if request.method=="POST" and 'graph' in request.form:
-		for tag in Tag.query.filter_by(type='graph').filter_by(text=request.form['graph']).all():
-			for memo in tag.memos:
-				if 'all' in request.form:
-					memos.append(render_template("memo/view.html",memo=memo))
-				else:
-					if memo.public:
-						memos.append(render_template("memo/view.html",memo=memo))
-	return format_response(render_template("memo/list.html",memos=memos))
+class NoteForm(forms.Form):
+	text = forms.CharField(400)
+	public = forms.BooleanField(required=False)
 
-@memos_app.route('/load/<key>')
-def load_memo(key):
-	memo = Memo.query.filter_by(key=key).first()
-	if memo is None:
-		abort(404)
-	graph = None
-	filter = None
-	highlight = None
-	for tag in memo.tags:
-		if tag.type == 'graph':
-			graph = tag.text
-		if tag.type == 'filter':
-			filter = tag.text
-		if tag.type == 'highlight':
-			highlight = tag.text
-	if graph is None:
-		abort(404)
-	url = url_for('charts_app.view',chart=graph)
-	url += '#?memo='+memo.key
-	if filter is not None:
-		url += '&filter='+filter
-	if highlight is not None:
-		url += '&highlight='+highlight
-	return redirect(url)
-
-@memos_app.route('/create',methods=['GET', 'POST'])
-def create():
-	if request.method == "POST" and 'message' in request.form:
-		memo = save_memo()
-		if memo:
-			return format_response(render_template("memo/view.html",memo=memo))
-	return format_response(render_template("memo/form.html",memo=request.form))
-
-@memos_app.route('/<key>',methods=['GET', 'POST'])
-def read(key):
-	memo = Memo.query.filter_by(key=key).first()
-	if memo is None:
-		abort(404)
-	return format_response(render_template("memo/view.html",memo=memo))
-
-@memos_app.route('/<key>/update',methods=['GET', 'POST'])
-def update(key):
-	memo = Memo.query.filter_by(key=key).first()
-	if memo is None:
-		abort(404)
-	if request.method == "POST" and 'message' in request.form:
-		memo = save_memo(memo.key)
-		if memo:
-			return format_response(render_template("memo/view.html",memo=memo))
-		return format_response(render_template("memo/form.html",memo=request.form))
-	return format_response(render_template("memo/form.html",memo=memo))
-	
-@memos_app.route('/<key>/delete',methods=['GET', 'POST'])
-def delete(key):
-	memo = Memo.query.filter_by(key=key).first()
-	if memo is None:
-		abort(404)
-	db_session.delete(memo)
-	db_session.commit()
-	return format_response("deleted")
-
-def get_tag(text,typer):
-	tag = Tag.query.filter_by(text=text).filter_by(type=typer).first()
-	if tag is None:
-		tag = Tag(text,typer)
-		db_session.add(tag)
-		db_session.commit()
-	return tag
-
-def format_response(response):
-	if request.method == "POST" and 'ajax' in request.form:
-		return jsonify({'content':response})
-	return render_template("page.html",content=response)
+def create(request):
+	if request.method == 'POST':
+		form = NoteForm(request.POST)
+		if form.is_valid():
+			note_text = form.cleaned_data['text']
+			note = Note(text=note_text,
+				pub_date=datetime.datetime.now())
+			if request.user.is_authenticated():
+				note.author = request.user
+			note.save()
+			return HttpResponseRedirect(reverse('notes.views.detail', args=(note.id,)))
+	form = NoteForm()
+	return render_to_response('notes/form.html',{'form':form},context_instance=RequestContext(request))
