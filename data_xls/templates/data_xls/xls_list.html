@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>List of Data Files</h2>
+<ul class="list xls">
+{% for xls in xls_list %}
+	<li class="xls">
+		<a href="/xls/{{xls.id}}" class="title">{{xls.title}}</a>
+		<span class="file name">{{xls.xls.name}}</span>
+	</li>
+{% endfor %}
+</ul>
+{% endblock %}

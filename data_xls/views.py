@@ -1,25 +1,19 @@
-from flask import Blueprint, render_template, jsonify, abort, redirect
-import os, glob
-from parse_data import *
+from data_xls.models import Xls
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 
-data_api = Blueprint('data_api', __name__, static_folder='static', template_folder='templates')
+from django.template import RequestContext
 
-charts_dir = os.environ['SFHIV_DATAMEMOS_CHARTS_DIR']
+import json
 
-@data_api.route('/')
-def index():
-	charts = list_all_charts()
-	return jsonify(charts=charts)
-	
-def list_all_charts():
-	charts = []
-	for xls in glob.glob(os.path.join(charts_dir,'*.xls')):
-		charts.append(xls.replace(charts_dir,''))
-	return charts
+from data_xls.parse_data import *
 
-@data_api.route('/<chart>')
-def get_data(chart):
-	filename = charts_dir+chart
-	if not os.path.exists(filename):
-		return jsonify({})
-	return jsonify(parse_data_file(filename))
+def detail(request,xls_id):
+	xls = get_object_or_404(Xls,pk=xls_id)
+	if request.is_ajax():
+		# fetch data from file
+		data = parse_data_file(xls.xls.path)
+		return HttpResponse(
+			json.dumps({'title':xls.title,'description':xls.description,'file':xls.xls.name,'columns':data['columns'],'order':data['order']}),
+			'application/json')
+	return render_to_response('data_xls/xls_detail.html',{'xls':xls},context_instance=RequestContext(request))
