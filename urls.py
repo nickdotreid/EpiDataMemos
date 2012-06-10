@@ -9,4 +9,5 @@ urlpatterns = patterns('',
 	url(r'^xls/', include('data_xls.urls')),
 	url(r'^notes/', include('notes.urls')),
     url(r'^admin/', include(admin.site.urls)),
+	url(r'^$', include('homepage.urls')),
 )

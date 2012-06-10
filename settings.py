@@ -137,6 +137,7 @@ INSTALLED_APPS = (
 	'statistics',
 	'charts',
 	'descriptions',
+	'homepage',
 )
 
 # A sample logging configuration. The only tangible logging
