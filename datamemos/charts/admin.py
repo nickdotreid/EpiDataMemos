@@ -22,7 +22,18 @@ class ChartAdmin(admin.ModelAdmin):
 	parse_charts_xls.short_description = "Regenerate points from Xls"
 
 admin.site.register(Chart,ChartAdmin)
-admin.site.register(Tag)
+
+class TagInline(admin.TabularInline):
+	model = Tag
+	extra = 2
+	fields = ("weight","short","name")
+	# define the sortable
+	sortable_field_name = "weight"
+
+class TagAdmin(admin.ModelAdmin):
+	inlines = [TagInline]
+
+admin.site.register(Tag,TagAdmin)
 
 
 

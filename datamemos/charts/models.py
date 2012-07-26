@@ -4,12 +4,17 @@ from django.contrib.auth.models import User
 class Tag(models.Model):
 	short = models.CharField(unique=True, max_length=15)
 	name = models.CharField(max_length=100)
+	
+	parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
+	
 	weight = models.PositiveIntegerField(blank=True, null=True)
 	
 	class Meta:
 		ordering = ['weight','id']
 	
 	def __unicode__(self):
+		if self.name:
+			return self.name
 		return self.short
 
 class Chart(models.Model):
