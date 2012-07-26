@@ -1,4 +1,5 @@
-from models import Xls
+from models import Chart,Tag
 from django.contrib import admin
 
-admin.site.register(Xls)
+admin.site.register(Chart)
+admin.site.register(Tag)
