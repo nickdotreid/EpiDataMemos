@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 class Tag(models.Model):
 	short = models.CharField(unique=True, max_length=15)
 	name = models.CharField(max_length=100)
+	weight = models.PositiveIntegerField(blank=True, null=True)
+	
+	class Meta:
+		ordering = ['weight','id']
 	
 	def __unicode__(self):
 		return self.short
@@ -17,6 +21,8 @@ class Chart(models.Model):
 	author = models.ForeignKey(User,null=True,blank=True)
 	pub_date = models.DateTimeField('date published')
 	published = models.BooleanField(default=True)
+	
+	columns = models.ManyToManyField(Tag, blank=True)
 	
 	def __unicode__(self):
 		if self.published:
