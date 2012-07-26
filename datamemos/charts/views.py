@@ -10,6 +10,14 @@ from parse_data import *
 
 def detail(request,chart_id):
 	chart = get_object_or_404(Chart,pk=chart_id)
+	columns = []
+	for tag in chart.columns.all():
+		points = chart.point_set.filter(tags__in=[tag.id]).distinct()
+		columns.append({
+			'label':tag.name,
+			'short':tag.short,
+			'points':points,
+		})
 	if request.is_ajax():
 		# fetch data from file
 		return HttpResponse(
@@ -18,4 +26,7 @@ def detail(request,chart_id):
 				'description':chart.description,
 				}),
 			'application/json')
-	return render_to_response('charts/xls_detail.html',{'chart':chart},context_instance=RequestContext(request))
+	return render_to_response('charts/xls_detail.html',{
+		'chart':chart,
+		'columns':columns
+		},context_instance=RequestContext(request))

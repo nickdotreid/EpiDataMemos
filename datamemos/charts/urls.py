@@ -8,5 +8,5 @@ urlpatterns = patterns('charts.views',
 			model=Chart,
 			context_object_name="xls_list",
 		)),
-	url(r'^(?P<xls_id>\d+)/$','detail'),
+	url(r'^(?P<chart_id>\d+)/$','detail'),
 )
