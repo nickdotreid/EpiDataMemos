@@ -2,24 +2,22 @@
 
 {% block styles %}
 {{block.super}}
-
-<link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}css/barchart.less" />
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/barchart.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}charts/css/barchart.css" />
 {% endblock %}
 
 {% block scripts %}
 {{block.super}}
 
-<script type="text/javascript" src="{{STATIC_URL}}js/jquery.address.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/jquery.address.min.js"></script>
 
-<script type="text/javascript" src="{{STATIC_URL}}js/utilites.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/highlight.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/interactions.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/bar.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/column.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/grid.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/controls_filters.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}js/barchart/barchart.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/highlight.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/interactions.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/bar.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/column.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/grid.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/controls_filters.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
 
 {% endblock %}
 
