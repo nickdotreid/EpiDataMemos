@@ -1,60 +1,33 @@
 import xlrd
 
 def parse_data_file(file_location):
-	data = {}
 	wb = xlrd.open_workbook(file_location)
 	sh = wb.sheet_by_index(0)
 	
 	columns = {}
+	column_keys = []
 	for rownum in range(sh.nrows):
+		row = sh.row_values(rownum)
+		if rownum == 0:
+			for index,item in enumerate(row):
+				if index>0:
+					if type(item) is float:
+						item = str(int(item))
+					column_keys.append(item)
 		if rownum > 0:
-			row = sh.row_values(rownum)
-			colnum = 0
 			keys = []
-			for cellnum in range(len(row)):
-				value = row[cellnum]
+			for index,value in enumerate(row):
 				if type(value) is float:
 					value = int(value)
-					if colnum not in columns:
-						columns[colnum] = {}
+					if column_keys[index-1] not in columns:
+						columns[column_keys[index-1]] = {}
 					fake_keys = keys[:]
 					fake_keys.reverse()
-					columns[colnum] = add_keys_to_obj(columns[colnum],fake_keys,value)
-					colnum += 1
+					columns[column_keys[index-1]] = add_keys_to_obj(columns[column_keys[index-1]],fake_keys,value)
 				else:
 					if value is not '':
 						keys.append(value)
-	if sh.nrows > 1:
-		row = sh.row_values(0)
-		name = False
-		colnum = 0
-		for cellnum in range(len(row)):
-			value = row[cellnum]
-			if value is not '':
-				if type(value) is float:
-					value = str(int(value))
-				if not name:
-					name = value
-				else:
-					columns[colnum][name] = value
-					columns[colnum]['Label'] = value
-					colnum += 1
-	list_column = []
-	for col in columns:
-		list_column.append(columns[col])
-	data['columns'] = list_column
-	order = []
-	for colnum in range(sh.ncols):
-		col = sh.col_values(colnum)
-		for cellnum in range(len(col)):
-			value = col[cellnum]
-			if cellnum == 0 or type(value) is not float:
-				if type(value) is float:
-					value = int(value)
-				if value is not "" and value not in order:
-					order.append(str(value))
-	data['order'] = order
-	return data
+	return columns
 	
 def add_keys_to_obj(obj,keys,value):
 	if keys is None or len(keys)<1:
