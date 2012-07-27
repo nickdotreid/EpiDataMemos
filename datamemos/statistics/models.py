@@ -1,20 +1,15 @@
 from django.db import models
 
 from notes.models import Note
-from data_xls.models import Xls
+from charts.models import Chart, Tag
 
 class Statistic(models.Model):
+	chart = models.ForeignKey(Chart)
+	
 	note = models.ForeignKey(Note,null=True,blank=True)
-	xls = models.ForeignKey(Xls)
-	votes = models.IntegerField()
+	tags = models.ManyToManyField(Tag, blank=True)
+	
+	votes = models.PositiveIntegerField()
 	
 	def __unicode__(self):
-		return self.xls.title
-
-class Filter(models.Model):
-	statistic = models.ForeignKey(Statistic)
-	name = models.CharField(max_length=50)
-	value = models.CharField(max_length=50)
-	
-	def __unicode(self):
-		return self.name+"::"+self.value
+		return self.chart.title

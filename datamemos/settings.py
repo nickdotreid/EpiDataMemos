@@ -132,6 +132,7 @@ INSTALLED_APPS = (
 	'south',
 	'notes',
 	'charts',
+	'statistics',
 	'homepage',
 )
 
