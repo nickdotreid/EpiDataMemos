@@ -3,9 +3,9 @@ from django.contrib import admin
 
 class NoteAdmin(admin.ModelAdmin):
 	list_filter = ['pub_date']
-	list_display = ('text', 'pub_date', 'was_published_today')
+	list_display = ('text', 'type', 'pub_date', 'was_published_today')
 	fieldsets = [
-	        (None,               {'fields': ['text']}),
+	        (None,               {'fields': ['text','type']}),
 	        ('Author Information', {'fields': ['author','pub_date']}),
 	    ]
 
