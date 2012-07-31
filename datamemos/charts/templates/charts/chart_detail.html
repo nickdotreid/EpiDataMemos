@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet/css" type="text/css" href="{{STATIC_URL}}charts/css/table.css" />
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/table.js"></script>
+{% endblock %}
+
 {% block content %}
 <h2>{{chart.title}}</h2>
 <p>{{chart.description}}</p>

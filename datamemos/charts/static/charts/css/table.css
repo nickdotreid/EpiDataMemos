@@ -1,0 +1,8 @@
+.chart.table .column {
+  display: block;
+  float: left;
+  width: 70px;
+}
+.chart.table .column.legend {
+  width: 140px;
+}
