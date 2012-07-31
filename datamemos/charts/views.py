@@ -11,22 +11,48 @@ from parse_data import *
 def detail(request,chart_id):
 	chart = get_object_or_404(Chart,pk=chart_id)
 	columns = []
+	rows = []
 	for tag in chart.columns.all():
-		points = chart.point_set.filter(tags__in=[tag.id]).distinct()
-		columns.append({
+		#only append if points length > 0
+		col = {
 			'label':tag.name,
 			'short':tag.short,
-			'points':points,
+			'points':[],
+		}
+		for point in chart.point_set.filter(tags__in=[tag.id]).distinct():
+			_rows = []
+			for row in point.tags.all():
+				if row != tag:
+					_rows.append(row.short)
+					if row not in rows:
+						rows.append(row)
+			col['points'].append({
+				'value':point.value,
+				'rows':_rows,
+				})
+		if len(col['points']) > 0:
+			columns.append(col)
+	_rows = []
+	for row in rows:
+		# check for parent groupings
+		# check to make sure chart allows row
+		_rows.append({
+			'label':row.name,
+			'short':row.short,
 		})
+	#should sort rows
 	if request.is_ajax():
 		# fetch data from file
 		return HttpResponse(
 			json.dumps({
 				'title':chart.title,
 				'description':chart.description,
+				'columns':columns,
+				'rows':_rows,
 				}),
 			'application/json')
-	return render_to_response('charts/xls_detail.html',{
+	return render_to_response('charts/chart_detail.html',{
 		'chart':chart,
-		'columns':columns
+		'columns':columns,
+		'rows':_rows,
 		},context_instance=RequestContext(request))

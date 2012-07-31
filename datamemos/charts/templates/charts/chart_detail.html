@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{chart.title}}</h2>
+<p>{{chart.description}}</p>
+<div class="chart table">
+	<div class="column legend rows">
+		{% for row in rows %}
+		<div class="row {{row.short}}">{{row.short}}</div>
+		{% endfor %}
+	</div>
+{% for column in columns %}
+	<div class="column {{column.short}}">
+		<h2>{{column.label}}</h2>
+		{% for row in rows %}
+		{% for point in column.points %}
+		{% if row.short in point.rows %}
+		<div class="point {{row.short}}">{{point.value}}</div>
+		{% endif %}
+		{% endfor %}
+		{% endfor %}
+	</div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -6,7 +6,7 @@ urlpatterns = patterns('charts.views',
 	url(r'^$',
 		ListView.as_view(
 			model=Chart,
-			context_object_name="xls_list",
+			context_object_name="chart_list",
 		)),
 	url(r'^(?P<chart_id>\d+)/$','detail'),
 )
