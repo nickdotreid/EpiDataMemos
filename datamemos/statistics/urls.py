@@ -4,5 +4,6 @@ from models import Statistic
 
 urlpatterns = patterns('statistics.views',
 	url(r'^$','list'),
+	url(r'^save/$','save'),
 	url(r'^(?P<statistic_id>\d+)/$','detail'),
 )
