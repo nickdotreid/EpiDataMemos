@@ -2,6 +2,7 @@ from models import Statistic
 from charts.models import Chart, Tag
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
+from django.core.urlresolvers import reverse
 
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,14 +20,9 @@ def list(request):
 
 def detail(request,statistic_id):
 	statistic = get_object_or_404(Statistic,pk=statistic_id)
-	if request.is_ajax():
-		return HttpResponse(
-			json.dumps({
-				'title':statistic.chart.title,
-				}),
-			'application/json')
-	# should redirect with filters!!
-	return HttpResponse("Statistic for "+statistic.chart.title)
+	from charts.views import detail as chart_detail
+	redirect_uri = reverse(chart_detail,args=[statistic.chart.id])
+	return HttpResponseRedirect(redirect_uri)
 	
 def save(request):
 	if request.method != "POST":
@@ -50,7 +46,12 @@ def save(request):
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
-				'message':"Should send you ajax response or errors",
+				'message':"Saved",
+				'statistic':{
+					'id':statistic.id,
+					'chart':statistic.chart.id,
+					'tags':request.POST['tags'].split(","),
+				}
 				}),
 			'application/json')
 	return HttpResponse("Gotta write save function")
