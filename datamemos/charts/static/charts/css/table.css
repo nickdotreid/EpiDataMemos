@@ -1,8 +1,13 @@
-.chart.table .column {
+.canvas.table .column {
   display: block;
   float: left;
   width: 70px;
+  text-align: center;
 }
-.chart.table .column.legend {
-  width: 140px;
+.canvas.table .column.legend {
+  width: 180px;
+}
+.canvas.table .row {
+  display: block;
+  clear: both;
 }

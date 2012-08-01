@@ -11,25 +11,28 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{chart.title}}</h2>
-<p>{{chart.description}}</p>
-<div class="chart table">
-	<div class="column legend rows">
+<div id="chart-{{chart.id}}" data-id="{{chart.id}}" class="chart">
+	<h2>{{chart.title}}</h2>
+	<p>{{chart.description}}</p>
+	<div class="canvas table">
+		<div class="row legend">
+			<div class="column legend"></div>
+			{% for column in columns %}
+			<div class="column {{column.short}}">{{column.label}}</div>
+			{% endfor %}
+		</div>
 		{% for row in rows %}
-		<div class="row {{row.short}}">{{row.short}}</div>
+		<div class="row {{row.short}} {% if row.parent %}child{% endif%}">
+			<div class="column legend {{row.short}}">{{row.name}}</div>
+			{% for column in columns %}
+			{% for point in column.points %}
+			{% if row.short in point.rows %}
+			<div data-tags="{{row.short}},{{column.short}}" class="column point {{row.short}} {{column.short}}">{{point.value}}</div>
+			{% endif %}
+			{% endfor %}		
+			{% endfor %}
+		</div>
 		{% endfor %}
 	</div>
-{% for column in columns %}
-	<div class="column {{column.short}}">
-		<h2>{{column.label}}</h2>
-		{% for row in rows %}
-		{% for point in column.points %}
-		{% if row.short in point.rows %}
-		<div class="point {{row.short}}">{{point.value}}</div>
-		{% endif %}
-		{% endfor %}
-		{% endfor %}
-	</div>
-{% endfor %}
 </div>
 {% endblock %}

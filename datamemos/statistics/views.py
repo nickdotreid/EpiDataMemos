@@ -1,8 +1,10 @@
 from models import Statistic
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from charts.models import Chart, Tag
+from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 
 import json
 
@@ -29,6 +31,22 @@ def detail(request,statistic_id):
 def save(request):
 	if request.method != "POST":
 		raise Http404
+	if 'chart_id' not in request.POST or 'tags' not in request.POST:
+		return HttpResponseBadRequest("Insufficent Arguments")
+	chart_id = int(request.POST['chart_id'])
+	chart = get_object_or_404(Chart,pk=chart_id)
+	tags = []
+	for short in request.POST['tags'].split(","):
+		try:
+			tags.append(Tag.objects.filter(short=short).get())
+		except ObjectDoesNotExist:
+			short = False
+	statistic = Statistic(
+		chart = chart,
+		votes = 1,
+	)
+	statistic.save()
+	statistic.tags = tags
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
