@@ -2,7 +2,7 @@
 
 {% block styles %}
 {{block.super}}
-<link rel="stylesheet/css" type="text/css" href="{{STATIC_URL}}charts/css/table.css" />
+<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />
 {% endblock %}
 
 {% block scripts %}
@@ -30,6 +30,6 @@
 		{% endfor %}
 		{% endfor %}
 	</div>
-</div>
 {% endfor %}
+</div>
 {% endblock %}
