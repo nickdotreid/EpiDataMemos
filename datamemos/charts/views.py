@@ -54,5 +54,5 @@ def detail(request,chart_id):
 	return render_to_response('charts/chart_detail.html',{
 		'chart':chart,
 		'columns':columns,
-		'rows':_rows,
+		'rows':rows,
 		},context_instance=RequestContext(request))
