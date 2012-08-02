@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript" src="{{STATIC_URL}}datamemos/js/jquery.address.min.js" ></script>
+<script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
+{% endblock %}
+
+{% block content %}
+<noscript>
+	<div class="alert alert-error">Javascript not enabled</div>
+</noscript>
+<div class="row">
+	<div id="chart-container" class="span10"></div>
+	<div id="note-container" class="span2"></div>
+</div>
+{% endblock %}
