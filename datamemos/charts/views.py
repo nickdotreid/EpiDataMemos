@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 
 from django.template import RequestContext
+from django.template.loader import render_to_string
 
 import json
 
@@ -49,6 +50,11 @@ def detail(request,chart_id):
 				'description':chart.description,
 				'columns':columns,
 				'rows':_rows,
+				'markup':render_to_string("charts/table.html",{
+					'chart':chart,
+					'columns':columns,
+					'rows':rows,
+					}),
 				}),
 			'application/json')
 	return render_to_response('charts/chart_detail.html',{

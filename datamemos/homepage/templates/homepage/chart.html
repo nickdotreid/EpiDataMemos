@@ -6,12 +6,24 @@
 <script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
 {% endblock %}
 
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />
+{% endblock %}
+
 {% block content %}
 <noscript>
 	<div class="alert alert-error">Javascript not enabled</div>
 </noscript>
 <div class="row">
 	<div id="chart-container" class="span10"></div>
-	<div id="note-container" class="span2"></div>
+	<div id="note-container" class="span2">
+		<ul class="nav">
+			<li><a href="#">Share Screen</a></li>
+			<li><a href="#">Show Descriptions</a></li>
+			<li><a href="#">Show Comments</a></li>
+			<li><a href="#">Create Note</a></li>
+		</ul>
+	</div>
 </div>
 {% endblock %}
