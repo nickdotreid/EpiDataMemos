@@ -4,7 +4,7 @@
 <p>{{ note.text }}</p>
 <ul>
 	{% for stat in note.statistic_set.all %}
-	<li>{{ stat.chart.title }}</li>
+	<li><a href="/statistic/{{stat.id}}/">{{ stat.chart.title }}</a></li>
 	{% empty %}
 	<li>No references</li>
 	{% endfor %}
