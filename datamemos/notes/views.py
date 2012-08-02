@@ -1,12 +1,15 @@
 from models import Note
-from statistics.models import Statistic
+from statistics.views import save_statistic
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+
+import json
 
 from forms import NoteForm
 from django.template import RequestContext
@@ -31,12 +34,26 @@ def create(request):
 				note.author = request.user
 			note.save()
 			# should send out node saved doo-hicky?
-			if 'statistics' in request.POST:
-				for stat_id in request.POST['statistics']:
-					try:
-						statistic = Statistic.objects.filter(id=int(stat_id)).get()
-						note.statistic_set.add(statistic)
-					except ObjectDoesNotExist:
-						stat_id = False
+			statistic = save_statistic(request)
+			if statistic:
+				note.statistic_set.add(statistic)
+			if request.is_ajax:
+				return HttpResponse(
+					json.dumps({
+						"note":{
+							"id":note.id,
+							"text":note.text,
+						}
+						}),
+					'application/json')
 			return HttpResponseRedirect(reverse(detail, args=(note.id,)))
-	return render_to_response('notes/form.html',{'form':form},context_instance=RequestContext(request))
+	if request.is_ajax():
+		return HttpResponse(
+			json.dumps({
+				"form":render_to_string("notes/form.html",{
+					"form":form,
+					"extra_css":"ajax"
+					})
+				}),
+			'application/json')
+	return render_to_response('notes/edit.html',{'form':form},context_instance=RequestContext(request))

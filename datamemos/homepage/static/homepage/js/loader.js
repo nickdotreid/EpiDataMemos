@@ -31,5 +31,19 @@ $(document).ready(function(){
 			chart_id:$.address.parameter("chart"),
 		});
 	}
-
+	
+	
+	$(".wrapper").delegate("form.note.create","presubmit",function(event){
+		var form = $(this);
+		if($("input[type='hidden'][name='chart_id']",form).length < 1){
+			form.append('<input type="hidden" name="chart_id" />');
+		}
+		$("input[type='hidden'][name='chart_id']",form).val($.address.parameter("chart"));
+		if($("input[type='hidden'][name='tags']",form).length < 1){
+			form.append('<input type="hidden" name="tags" />');
+		}
+		var tags = "";
+		$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));
+	})
+	
 });

@@ -7,17 +7,6 @@ if(!statistic_get_uri){
 
 $(document).ready(function(){
 	$(document).delegate(".chart .table .point","click",function(event){
-		var point = $(this);
-		$.ajax({
-			url:statistic_save_uri,
-			type:'POST',
-			data:{
-				tags:$(this).data("tags"),
-				chart_id:point.parents(".chart:first").data("id"),
-			},
-			success:function(data){
-				
-			}
-		})
+		$.address.parameter("tags",$(this).data("tags"));
 	});
 });

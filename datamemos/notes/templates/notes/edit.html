@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if note %}
+<p>Update the note</p>
+{% else %}
+<p>Enter a note</p>
+{% endif %}
+<form action="/notes/create/" method="post">
+	{% csrf_token %}
+	{{form}}
+	<input type="submit" value="save" />
+</form>
+{% endblock %}

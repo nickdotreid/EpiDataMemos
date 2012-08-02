@@ -3,6 +3,8 @@
 {% block scripts %}
 {{block.super}}
 <script type="text/javascript" src="{{STATIC_URL}}datamemos/js/jquery.address.min.js" ></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/table.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
 {% endblock %}
 
@@ -22,7 +24,7 @@
 			<li><a href="#">Share Screen</a></li>
 			<li><a href="#">Show Descriptions</a></li>
 			<li><a href="#">Show Comments</a></li>
-			<li><a href="#">Create Note</a></li>
+			<li><a href="#" class="create-note">Create Note</a></li>
 		</ul>
 	</div>
 </div>

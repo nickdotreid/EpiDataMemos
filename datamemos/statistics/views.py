@@ -29,20 +29,7 @@ def save(request):
 		raise Http404
 	if 'chart_id' not in request.POST or 'tags' not in request.POST:
 		return HttpResponseBadRequest("Insufficent Arguments")
-	chart_id = int(request.POST['chart_id'])
-	chart = get_object_or_404(Chart,pk=chart_id)
-	tags = []
-	for short in request.POST['tags'].split(","):
-		try:
-			tags.append(Tag.objects.filter(short=short).get())
-		except ObjectDoesNotExist:
-			short = False
-	statistic = Statistic(
-		chart = chart,
-		votes = 1,
-	)
-	statistic.save()
-	statistic.tags = tags
+	statistic = save_statistic(request)
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
@@ -55,3 +42,23 @@ def save(request):
 				}),
 			'application/json')
 	return HttpResponse("Gotta write save function")
+
+def save_statistic(request):
+	if 'chart_id' not in request.POST or 'tags' not in request.POST:
+		return False
+	chart_id = int(request.POST['chart_id'])
+	chart = get_object_or_404(Chart,pk=chart_id)
+	statistic = Statistic(
+		chart = chart,
+		votes = 1,
+	)
+	statistic.save()
+	tags = []
+	for short in request.POST['tags'].split(","):
+		try:
+			tags.append(Tag.objects.filter(short=short).get())
+		except ObjectDoesNotExist:
+			short = False
+	
+	statistic.tags = tags
+	return statistic
