@@ -16,9 +16,5 @@ class Note(models.Model):
 	
 	public = models.BooleanField(default=False)
 	
-	def was_published_today(self):
-	    return self.pub_date.date() == datetime.date.today()
-	was_published_today.short_description = 'Published today?'
-	
 	def __unicode__(self):
 		return self.text
