@@ -12,7 +12,7 @@ $(document).ready(function(){
 			type:"GET",
 			success:function(data){
 				if(data['form']){
-					$("#note-container").append(data['form']);	
+					$("#comments").prepend(data['form']);	
 				}
 			}
 		})
@@ -27,6 +27,7 @@ $(document).ready(function(){
 			data:form.serialize(),
 			success:function(data){
 				form.remove();
+				add_note(data['note']);
 			},
 			error:function(data){
 				if(data['form']){
@@ -44,8 +45,38 @@ $(document).ready(function(){
 				chart_id:event['chart_id'],
 			},
 			success:function(data){
-				
+				if(data['notes']){
+					for(var index in data['notes']){
+						add_note(data['notes'][index]);
+					}
+					// sort notes
+				}
 			}
 		});
 	});
 });
+
+function add_note(data){
+	if($("#note-id").length > 0){
+		return false;
+	}
+	var note = $("#templates .note").clone();
+	note.attr("id","note-"+data['id']);
+	$(".text",note).html(data['text']);
+	if(data['author']){
+		$(".text",note).html(data['text']).show();
+	}
+	if(data['pub-date']){
+		$(".pub-date",note).html(data['pub-date']).show();
+	}
+	if(data['editable']){
+		$(".edit",note).attr("href","/notes/"+data['id']+'/edit/').show();
+	}
+	if(data['type']=="description"){
+		note.addClass("description");
+		$("#descriptions").append(note);
+		return true;
+	}
+	$("#comments").append(note);
+	return true;
+}
