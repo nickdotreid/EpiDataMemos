@@ -1,6 +1,8 @@
 from models import Chart, Tag, Point
 from django.contrib import admin
 
+from adminsortable.admin import SortableAdmin,SortableTabularInline
+
 from django.core.exceptions import ObjectDoesNotExist
 from parse_data import parse_data_file
 
@@ -23,14 +25,12 @@ class ChartAdmin(admin.ModelAdmin):
 
 admin.site.register(Chart,ChartAdmin)
 
-class TagInline(admin.TabularInline):
+class TagInline(SortableTabularInline):
 	model = Tag
-	extra = 2
-	fields = ("weight","short","name")
-	# define the sortable
-	sortable_field_name = "weight"
+	extra = 1
+	fields = ("short","name")
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(SortableAdmin):
 	inlines = [TagInline]
 
 admin.site.register(Tag,TagAdmin)
