@@ -16,8 +16,10 @@ $(document).ready(function(){
 					type:"load-chart",
 					data:data,
 				});
-				// get all descriptions for chart
-				// get all comments for chart
+				$("#note-container").trigger({
+					type:"get-notes",
+					chart_id:event['chart_id'],
+				})
 			}
 		});
 	});

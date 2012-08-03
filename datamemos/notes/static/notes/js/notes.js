@@ -33,4 +33,16 @@ $(document).ready(function(){
 			}
 		});
 	});
+	$(".wrapper").delegate("#note-container","get-notes",function(event){
+		$.ajax({
+			url:"/notes/",
+			type:"GET",
+			data:{
+				chart_id:event['chart_id'],
+			},
+			success:function(data){
+				
+			}
+		});
+	});
 });
