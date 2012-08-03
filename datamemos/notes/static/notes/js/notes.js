@@ -4,6 +4,9 @@ if(!note_create_uri){
 $(document).ready(function(){
 	$("#note-container").delegate(".nav .create-note","click",function(event){
 		event.preventDefault();
+		if($("form.note.create").length>0){
+			return;
+		}
 		$.ajax({
 			url:note_create_uri,
 			type:"GET",
