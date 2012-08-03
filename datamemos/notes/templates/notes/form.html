@@ -1,5 +1,6 @@
 <form action="/notes/create/" method="post" class="note create {{extra_css}}">
 	{% csrf_token %}
 	{{form}}
+	{{author_form}}
 	<input type="submit" value="save" />
 </form>

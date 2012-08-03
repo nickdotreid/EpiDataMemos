@@ -1,4 +1,6 @@
 from models import Note
+from django.contrib.auth.models import User
+
 from statistics.views import save_statistic
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
@@ -11,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import json
 
-from forms import NoteForm
+from forms import NoteForm, AuthorForm
 from django.template import RequestContext
 
 def detail(request, note_id):
@@ -20,9 +22,25 @@ def detail(request, note_id):
 
 def create(request):
 	form = NoteForm()
+	author_form = False
+	if not request.user.is_authenticated():
+		author_form = AuthorForm()
 	if request.method == 'POST':
+		author = False
+		if request.user.is_authenticated():
+			note.author = request.user
+		else:
+			author_form = AuthorForm(request.POST)
+			if author_form.is_valid() and 'email' in author_form.cleaned_data and 'name' in author_form.cleaned_data:
+				# check if email exists
+				user = User()
+				user.email = author_form.cleaned_data['email']
+				user.username = author_form.cleaned_data['name']
+				user.save()
+				# log in user
+				author = user
 		form = NoteForm(request.POST)
-		if form.is_valid():
+		if form.is_valid() and author:
 			note = Note(
 				text = form.cleaned_data['text'],
 				type = 'comment',
@@ -30,8 +48,6 @@ def create(request):
 				)
 			if 'public' in form.cleaned_data:
 				note.public = True
-			if request.user.is_authenticated():
-				note.author = request.user
 			note.save()
 			# should send out node saved doo-hicky?
 			statistic = save_statistic(request)
@@ -52,6 +68,7 @@ def create(request):
 			json.dumps({
 				"form":render_to_string("notes/form.html",{
 					"form":form,
+					"author_form":author_form,
 					"extra_css":"ajax"
 					})
 				}),
