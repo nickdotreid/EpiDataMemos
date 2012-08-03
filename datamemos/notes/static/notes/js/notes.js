@@ -2,8 +2,9 @@ if(!note_create_uri){
 	var note_create_uri = "/notes/create/";
 }
 $(document).ready(function(){
-	$("#note-container").delegate(".nav .create-note","click",function(event){
+	$("#note-container").delegate(".create-note","click",function(event){
 		event.preventDefault();
+		var button = $(this);
 		if($("form.note.create").length>0){
 			return;
 		}
@@ -12,7 +13,8 @@ $(document).ready(function(){
 			type:"GET",
 			success:function(data){
 				if(data['form']){
-					$("#comments").prepend(data['form']);	
+					button.after(data['form']);
+					button.hide();
 				}
 			}
 		})
@@ -27,6 +29,7 @@ $(document).ready(function(){
 			data:form.serialize(),
 			success:function(data){
 				form.remove();
+				$(".create-note").show();
 				add_note(data['note']);
 			},
 			error:function(data){

@@ -28,7 +28,7 @@ def create(request):
 	if request.method == 'POST':
 		author = False
 		if request.user.is_authenticated():
-			note.author = request.user
+			author = request.user
 		else:
 			author_form = AuthorForm(request.POST)
 			if author_form.is_valid() and 'email' in author_form.cleaned_data and 'name' in author_form.cleaned_data:
