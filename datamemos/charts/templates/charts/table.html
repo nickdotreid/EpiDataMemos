@@ -1,16 +1,16 @@
-<div id="chart-{{chart.id}}" data-id="{{chart.id}}" class="chart">
-	<h2>{{chart.title}}</h2>
-	<p>{{chart.description}}</p>
-	<div class="canvas table">
-		<div class="row legend">
-			<div class="column legend">&nbsp;</div>
+<div id="chart-{{chart.id}}" data-id="{{chart.id}}" class="chart chart-table">
+	<h2 class="title title-chart">{{chart.title}}</h2>
+	<div class="description description-chart">{{chart.description}}</div>
+	<div class="canvas chart-table-canvas table">
+		<div class="row">
+			<div class="column wide">&nbsp;</div>
 			{% for column in columns %}
-			<div class="column {{column.short}}">{{column.label}}</div>
+			<div data-tags="{{column.short}}" class="column legend {{column.short}}">{{column.label}}</div>
 			{% endfor %}
 		</div>
 		{% for row in rows %}
 		<div class="row {{row.short}} {% if row.parent %}child{% endif%}">
-			<div class="column legend {{row.short}}">{{row.name}}</div>
+			<div data-tags="{{row.short}}" class="column wide legend {{row.short}}">{{row.name}}</div>
 			{% for column in columns %}
 			{% for point in column.points %}
 			{% if row.short in point.rows %}
@@ -21,4 +21,5 @@
 		</div>
 		{% endfor %}
 	</div>
+	<br style="clear:both;" />
 </div>

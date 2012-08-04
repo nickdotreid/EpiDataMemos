@@ -5925,15 +5925,8 @@ input[type="submit"].btn.btn-mini {
 body {
   font-family: Verdana, Arial, Sans-Serif;
   font-size: 14px;
-  background-color: #FFF;
+  background-color: #333;
 }
 #templates {
   display: none;
-}
-.wrapper {
-  display: block;
-  margin: 0px 7px;
-  width: auto;
-  background: transparent url('../i/white90.png') repeat top left;
-  color: #333333;
 }

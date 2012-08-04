@@ -1,15 +1,40 @@
+@highlightColor:#a5dfff;
+@gutterWidth:7px;
+
+.chart-table{
+	.title-chart,.description-chart{
+		margin:@gutterWidth @gutterWidth*2;
+	}
+}
 .canvas.table{
+	width:auto;
+	margin:@gutterWidth @gutterWidth*2;
 	.column{
 		display:block;
 		float:left;
-		width:70px;
+		width:@gutterWidth*10;
 		text-align:center;
-		&.legend{
-			width:180px;
+		margin:0px;
+		margin-right:@gutterWidth/2;
+		&.wide{
+			width:@gutterWidth*20;
 		}
 	}
 	.row{
 		display:block;
 		clear:both;
+		margin:@gutterWidth/2 0px;
+	}
+	.legend,.point{
+		cursor:pointer;
+		&.highlight{
+			background-color:lighten(@highlightColor,15%);
+		}
+		&.selected{
+			background-color:@highlightColor;
+		}	
+	}
+	.legend{
+		background-color:#eee;
 	}
 }

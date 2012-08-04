@@ -1,13 +1,39 @@
+.chart-table .title-chart,
+.chart-table .description-chart {
+  margin: 7px 14px;
+}
+.canvas.table {
+  width: auto;
+  margin: 7px 14px;
+}
 .canvas.table .column {
   display: block;
   float: left;
   width: 70px;
   text-align: center;
+  margin: 0px;
+  margin-right: 3.5px;
 }
-.canvas.table .column.legend {
-  width: 180px;
+.canvas.table .column.wide {
+  width: 140px;
 }
 .canvas.table .row {
   display: block;
   clear: both;
+  margin: 3.5px 0px;
+}
+.canvas.table .legend,
+.canvas.table .point {
+  cursor: pointer;
+}
+.canvas.table .legend.highlight,
+.canvas.table .point.highlight {
+  background-color: #f2faff;
+}
+.canvas.table .legend.selected,
+.canvas.table .point.selected {
+  background-color: #a5dfff;
+}
+.canvas.table .legend {
+  background-color: #eee;
 }

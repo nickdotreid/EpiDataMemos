@@ -10,6 +10,7 @@
 
 {% block styles %}
 {{block.super}}
+<link rel="stylesheet" href="{{STATIC_URL}}charts/css/chart.css" />
 <link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />
 {% endblock %}
 
@@ -18,13 +19,13 @@
 	<div class="alert alert-error">Javascript not enabled</div>
 </noscript>
 <div class="row">
-	<div id="chart-container" class="span10"></div>
-	<div id="note-container" class="span2">
+	<div id="chart-container" class="span9"></div>
+	<div id="note-container" class="span3">
 		<a href="#" class="create-note btn">Share Screen</a>
 		<a href="#" class="create-note btn">Create Note</a>
 		<ul class="nav nav-tabs">
-			<li><a href="#">Show Descriptions</a></li>
-			<li><a href="#">Show Comments</a></li>
+			<li><a href="#">Descriptions</a></li>
+			<li><a href="#">Comments</a></li>
 		</ul>
 		<div id="descriptions"></div>
 		<div id="comments"></div>
