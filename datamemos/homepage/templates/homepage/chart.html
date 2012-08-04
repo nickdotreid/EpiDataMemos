@@ -18,18 +18,18 @@
 <noscript>
 	<div class="alert alert-error">Javascript not enabled</div>
 </noscript>
-<div class="row">
-	<div id="chart-container" class="span9"></div>
-	<div id="note-container" class="span3">
-		<a href="#" class="create-note btn">Share Screen</a>
-		<a href="#" class="create-note btn">Create Note</a>
-		<ul class="nav nav-tabs">
-			<li><a href="#">Descriptions</a></li>
-			<li><a href="#">Comments</a></li>
-		</ul>
-		<div id="descriptions"></div>
-		<div id="comments"></div>
-	</div>
+<div id="chart-container"></div>
+<div id="note-container">
+	<ul class="nav nav-pills">
+		<li><a href="#" class="create-note">Share Screen</a></li>
+		<li><a href="#" class="create-note">Create Note</a></li>
+	</ul>
+	<ul class="nav nav-tabs">
+		<li><a href="#">Descriptions</a></li>
+		<li><a href="#">Comments</a></li>
+	</ul>
+	<div id="descriptions"></div>
+	<div id="comments"></div>
 </div>
 {% endblock %}
 

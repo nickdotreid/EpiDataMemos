@@ -5930,3 +5930,34 @@ body {
 #templates {
   display: none;
 }
+#chart-container,
+#note-container {
+  width: auto;
+  display: block;
+  clear: both;
+  float: none;
+  background-color: #FFF;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+@media (min-width: 767px) {
+  #chart-container,
+  #note-container {
+    width: 475px;
+    float: left;
+    clear: none;
+  }
+  #note-container {
+    width: 225px;
+    margin-left: 7px;
+  }
+}
+@media (min-width: 1200px) {
+  #chart-container {
+    width: 675px;
+  }
+  #note-container {
+    width: 475px;
+    margin-left: 14px;
+  }
+}

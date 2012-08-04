@@ -1,0 +1,32 @@
+#chart-container,#note-container{
+	width:auto;
+	display:block;
+	clear:both;
+	float:none;
+	background-color:#FFF;
+	margin-top:@spaceSize;
+	margin-bottom:@spaceSize;
+}
+
+
+@media(min-width: @smallWidth){
+	#chart-container,#note-container{
+		width:475px;
+		float:left;
+		clear:none;
+	}
+	#note-container{
+		width:225px;
+		margin-left:@spaceSize;
+	}
+}
+@media(min-width: @largeWidth){
+	#chart-container{
+		width:675px;
+	}
+	#note-container{
+		width:475px;
+		margin-left:@spaceSize*2;
+	}
+}
+
