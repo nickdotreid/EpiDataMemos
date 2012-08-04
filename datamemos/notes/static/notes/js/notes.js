@@ -14,7 +14,7 @@ $(document).ready(function(){
 			success:function(data){
 				if(data['form']){
 					button.after(data['form']);
-					button.hide();
+					button.parents("li:first").addClass("active");
 				}
 			}
 		})
@@ -30,7 +30,7 @@ $(document).ready(function(){
 			success:function(data){
 				form.remove();
 				$(".create-note").show();
-				add_note(data['note']);
+				place_note(data['note']);
 			},
 			error:function(data){
 				if(data['form']){
@@ -39,6 +39,47 @@ $(document).ready(function(){
 				}
 			}
 		});
+	});
+	$("#note-container").delegate(".note-container","sort",function(event){
+		var container = $(this);
+		var notes = $(".note",container);
+		var tags = event.tags;
+		var tag_count = function(div){
+			var count = 0;
+			var stat_tags = $(div).data("tags");
+			for(var index in stat_tags){
+				if(tags.indexOf(stat_tags[index]) > -1){
+					count++;
+				}
+			}
+			return count;
+		}
+		sorted_notes = notes.sort(function(a,b){
+			var a_count = 0;
+			$(".statistic",$(a)).each(function(){
+				var count = tag_count(this);
+				if(count>a_count){
+					a_count = count;
+				}
+			});
+			var b_count = 0;
+			$(".statistic",$(b)).each(function(){
+				var count = tag_count(this);
+				if(count>b_count){
+					b_count = count;
+				}
+			});
+			if(a_count >= b_count){
+				return -1
+			}else{
+				return 1;
+			}
+		});
+		for(var i=0;i<sorted_notes.length;i++){
+			container.append(sorted_notes[i]);
+		}
+	}).delegate(".share-statistic","click",function(event){
+		event.preventDefault;
 	});
 	$(".wrapper").delegate("#note-container","get-notes",function(event){
 		$.ajax({
@@ -50,19 +91,42 @@ $(document).ready(function(){
 			success:function(data){
 				if(data['notes']){
 					for(var index in data['notes']){
-						add_note(data['notes'][index]);
+						place_note(data['notes'][index]);
+						$("#note-container .note-container").trigger({
+							type:"sort",
+							tags:String($.address.parameter("tags")).split(","),
+						});
 					}
-					// sort notes
 				}
 			}
 		});
 	});
+	$.address.change(function(event){
+		$("#note-container .note-container").trigger({
+			type:"sort",
+			tags:String($.address.parameter("tags")).split(","),
+		});
+	})
 });
 
-function add_note(data){
-	if($("#note-id").length > 0){
-		return false;
+function place_note(data,note){
+	if(!note){
+		note = create_note(data)
 	}
+	if($("#note-"+data['id']).length > 0){
+		var old = $("#note-"+data['id']);
+		old.after(note);
+		old.remove();
+	}else{
+		if(data['type'] == "definition"){
+			$("#descriptions").append(note);
+		}else{
+			$("#comments").append(note);	
+		}
+	}
+}
+
+function create_note(data){
 	var note = $("#templates .note").clone();
 	note.attr("id","note-"+data['id']);
 	$(".text",note).html(data['text']);
@@ -75,11 +139,21 @@ function add_note(data){
 	if(data['editable']){
 		$(".edit",note).attr("href","/notes/"+data['id']+'/edit/').show();
 	}
-	if(data['type']=="description"){
-		note.addClass("description");
-		$("#descriptions").append(note);
-		return true;
+	note.addClass(data['type']);
+	for(stat_index in data['statistics']){
+		var stat = data['statistics'][stat_index];
+		note.append(create_statistic(stat));
 	}
-	$("#comments").append(note);
-	return true;
+	return note;
+}
+
+function create_statistic(data){
+	var stat = $("#templates .statistic").clone();
+	stat.attr("id","statistic-"+data['id']);
+	stat.data("tags",data['tags']);
+	stat.append("Statistic "+data['id']);
+	for(var index in data['tags']){
+		stat.append(" "+data['tags'][index]);
+	}
+	return stat;
 }

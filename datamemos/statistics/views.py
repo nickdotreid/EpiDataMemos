@@ -42,6 +42,7 @@ def list(request):
 				'id':note.id,
 				'text':note.text,
 				'statistics':stats,
+				'type':note.type,
 			})
 		return HttpResponse(
 			json.dumps({

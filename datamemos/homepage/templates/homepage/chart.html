@@ -24,12 +24,16 @@
 		<li><a href="#" class="create-note">Share Screen</a></li>
 		<li><a href="#" class="create-note">Create Note</a></li>
 	</ul>
-	<ul class="nav nav-tabs">
+	<ul id="note-type-selector" class="nav nav-tabs">
 		<li><a href="#">Descriptions</a></li>
 		<li><a href="#">Comments</a></li>
 	</ul>
-	<div id="descriptions"></div>
-	<div id="comments"></div>
+	<div id="descriptions" class="note-container">
+		<h2 class="section-title">Descriptions</h3>
+	</div>
+	<div id="comments" class="note-container">
+		<h2 class="section-title">Comments</h3>
+	</div>
 </div>
 {% endblock %}
 
@@ -40,4 +44,5 @@
 	<div class="date" style="display:none;"></div>
 	<a href="" class="edit" style="display:none;"></a>
 </div>
+<a class="statistic"><i></i></a>
 {% endblock %}

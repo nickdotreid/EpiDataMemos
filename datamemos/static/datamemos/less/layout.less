@@ -6,8 +6,18 @@
 	background-color:#FFF;
 	margin-top:@spaceSize;
 	margin-bottom:@spaceSize;
+	.section-title{
+		display:none;
+	}
 }
 
+@media(min-width:@tabletWidth){
+	#comments,#descriptions{
+		width:225px;
+		display:block;
+		float:left;
+	}
+}
 
 @media(min-width: @smallWidth){
 	#chart-container,#note-container{
@@ -21,12 +31,23 @@
 	}
 }
 @media(min-width: @largeWidth){
+	#chart-container,#note-container{
+		.section-title{
+			display:block;
+		}
+	}
+	#note-type-selector{
+		display:none;
+	}
 	#chart-container{
 		width:675px;
 	}
 	#note-container{
 		width:475px;
 		margin-left:@spaceSize*2;
+		.nav li{
+			width:225px;
+		}
 	}
 }
 

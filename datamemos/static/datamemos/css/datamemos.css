@@ -5940,6 +5940,18 @@ body {
   margin-top: 7px;
   margin-bottom: 7px;
 }
+#chart-container .section-title,
+#note-container .section-title {
+  display: none;
+}
+@media (min-width: 480px) {
+  #comments,
+  #descriptions {
+    width: 225px;
+    display: block;
+    float: left;
+  }
+}
 @media (min-width: 767px) {
   #chart-container,
   #note-container {
@@ -5953,11 +5965,21 @@ body {
   }
 }
 @media (min-width: 1200px) {
+  #chart-container .section-title,
+  #note-container .section-title {
+    display: block;
+  }
+  #note-type-selector {
+    display: none;
+  }
   #chart-container {
     width: 675px;
   }
   #note-container {
     width: 475px;
     margin-left: 14px;
+  }
+  #note-container .nav li {
+    width: 225px;
   }
 }
