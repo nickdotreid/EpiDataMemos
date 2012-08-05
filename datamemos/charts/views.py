@@ -9,8 +9,7 @@ import json
 
 from parse_data import *
 
-def detail(request,chart_id):
-	chart = get_object_or_404(Chart,pk=chart_id)
+def get_chart_values(chart):
 	columns = []
 	rows = []
 	for tag in chart.columns.all():
@@ -28,6 +27,7 @@ def detail(request,chart_id):
 					if row not in rows:
 						rows.append(row)
 			col['points'].append({
+				'id':point.id,
 				'value':point.value,
 				'rows':_rows,
 				})
@@ -38,18 +38,26 @@ def detail(request,chart_id):
 		# check for parent groupings
 		# check to make sure chart allows row
 		_rows.append({
-			'label':row.name,
+			'name':row.name,
 			'short':row.short,
 		})
-	#should sort rows
+	return {
+		'columns':columns,
+		'rows':_rows,
+	}
+	
+def detail(request,chart_id):
+	chart = get_object_or_404(Chart,pk=chart_id)
+	chart_data = get_chart_values(chart)
+	columns = chart_data['columns']
+	rows = chart_data['rows']
 	if request.is_ajax():
-		# fetch data from file
 		return HttpResponse(
 			json.dumps({
 				'title':chart.title,
 				'description':chart.description,
 				'columns':columns,
-				'rows':_rows,
+				'rows':rows,
 				'markup':render_to_string("charts/table.html",{
 					'chart':chart,
 					'columns':columns,

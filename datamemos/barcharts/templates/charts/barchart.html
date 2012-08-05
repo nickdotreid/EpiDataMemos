@@ -1,0 +1,32 @@
+<div id="chart-{{chart.id}}" >
+	<h2 class="title">{{chart.title}}</h2>
+	<div class="description">{{chart.description}}</div>
+	<form class="controls">
+		<fieldset class="filters">
+			<legend><span>Select axis to view</span></legend>
+			{% for row in rows %}
+			<label for="tag-{{row.short}}" class="tag radio">
+				<input id="tag-{{row.short}}" type="radio" name="tag" value="{{row.short}}" />
+				<i></i>
+				{{row.name}}
+			</label>
+			{% endfor %}
+		</fieldset>
+		<fieldset class="layout">
+			<legend><span>Change layout of graph</span></legend>
+			<label class="checkbox"><input class="percent" type="checkbox" name="percent" value="on" />View as percent per <span class="column_name">column</span></label>
+		</fieldset>
+	</form>
+	<div class="chart">
+	{% for column in columns %}
+		<div class="column">
+			<div class="label">{{column.name}}</div>
+			{% for point in column.points %}
+			<div class="bar" data-tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" data-amount="{{point.value}}">
+				<div class="amount">{{point.value}}</div>
+			</div>
+			{% endfor %}
+		</div>
+	{% endfor %}	
+	</div>
+</div>

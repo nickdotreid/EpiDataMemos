@@ -133,6 +133,7 @@ INSTALLED_APPS = (
 	'adminsortable',
 	'notes',
 	'charts',
+	'barcharts',
 	'statistics',
 	'homepage',
 )
