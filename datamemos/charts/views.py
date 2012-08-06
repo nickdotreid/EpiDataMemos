@@ -47,7 +47,6 @@ def get_chart_values(chart):
 			if row.parent == parent:
 				_parent['children'].append(row_to_object(row))
 		_rows.append(_parent)
-	print _rows
 	return {
 		'columns':columns,
 		'rows':_rows,

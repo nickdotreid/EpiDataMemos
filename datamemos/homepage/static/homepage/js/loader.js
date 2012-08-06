@@ -16,7 +16,7 @@ $(document).ready(function(){
 				$("#chart-container .chart").data("data",data).trigger("load-chart");
 				$("#note-container").trigger({
 					type:"get-notes",
-					chart_id:event['chart_id'],
+					chart_id:event['chart_id']
 				})
 			}
 		});
@@ -28,7 +28,7 @@ $(document).ready(function(){
 	}else if($.address.parameter("chart")){
 		$("#chart-container").trigger({
 			type:"get-chart",
-			chart_id:$.address.parameter("chart"),
+			chart_id:$.address.parameter("chart")
 		});
 	}
 	

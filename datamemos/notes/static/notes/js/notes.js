@@ -48,7 +48,7 @@ $(document).ready(function(){
 			var count = 0;
 			var stat_tags = $(div).data("tags");
 			for(var index in stat_tags){
-				if(tags.indexOf(stat_tags[index]) > -1){
+				if(in_array(tags,stat_tags[index])){
 					count++;
 				}
 			}
@@ -86,7 +86,7 @@ $(document).ready(function(){
 			url:"/notes/",
 			type:"GET",
 			data:{
-				chart_id:event['chart_id'],
+				chart_id:event['chart_id']
 			},
 			success:function(data){
 				if(data['notes']){
@@ -94,7 +94,7 @@ $(document).ready(function(){
 						place_note(data['notes'][index]);
 						$("#note-container .note-container").trigger({
 							type:"sort",
-							tags:String($.address.parameter("tags")).split(","),
+							tags:String($.address.parameter("tags")).split(",")
 						});
 					}
 				}
@@ -104,7 +104,7 @@ $(document).ready(function(){
 	$.address.change(function(event){
 		$("#note-container .note-container").trigger({
 			type:"sort",
-			tags:String($.address.parameter("tags")).split(","),
+			tags:String($.address.parameter("tags")).split(",")
 		});
 	})
 });

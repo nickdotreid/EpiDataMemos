@@ -49,7 +49,7 @@ $(document).ready(function(){
 				var matches = 0;
 				for(var index in event.tags){
 					var tag = event.tags[index];
-					if(bar.data("tags").indexOf(tag) > -1){
+					if(in_array(bar.data("tags"),tag)){
 						matches++;
 					}
 				}
@@ -97,7 +97,7 @@ $(document).ready(function(){
 			bar.animate({
 				height:bar.data("height")+'px',
 				top:(canvas.height()-bar.data("height")-bar.data("y"))+"px",
-				left:bar.data("x")+"px",
+				left:bar.data("x")+"px"
 			},{
 				duration:500
 			})
