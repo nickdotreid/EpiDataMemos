@@ -5,11 +5,16 @@
 		<fieldset class="filters">
 			<legend><span>Select axis to view</span></legend>
 			{% for row in rows %}
-			<label for="tag-{{row.short}}" class="tag radio">
-				<input id="tag-{{row.short}}" type="radio" name="tag" value="{{row.short}}" />
-				<i></i>
-				{{row.name}}
-			</label>
+			<div class="tag-section">
+				{% include "charts/row-control.html" with row=row %}
+				{% if row.children|length %}
+				<div class="children">
+				{% for child in row.children %}
+					{% include "charts/row-control.html" with row=child %}
+				{% endfor %}
+				</div>
+				{% endif %}
+			</div>
 			{% endfor %}
 		</fieldset>
 		<fieldset class="layout">

@@ -13,7 +13,6 @@ def get_chart_values(chart):
 	columns = []
 	rows = []
 	for tag in chart.columns.all():
-		#only append if points length > 0
 		col = {
 			'label':tag.name,
 			'short':tag.short,
@@ -33,18 +32,32 @@ def get_chart_values(chart):
 				})
 		if len(col['points']) > 0:
 			columns.append(col)
+	parents = []
+	for row in rows:
+		if row.parent and row.parent not in parents:
+			parents.append(row.parent)
 	_rows = []
 	for row in rows:
-		# check for parent groupings
-		# check to make sure chart allows row
-		_rows.append({
-			'name':row.name,
-			'short':row.short,
-		})
+		if row.parent is None:
+			_rows.append(row_to_object(row))
+	for parent in parents:
+		_parent = row_to_object(parent)
+		_parent['children'] = []
+		for row in rows:
+			if row.parent == parent:
+				_parent['children'].append(row_to_object(row))
+		_rows.append(_parent)
+	print _rows
 	return {
 		'columns':columns,
 		'rows':_rows,
 	}
+
+def row_to_object(row):
+	_row = {}
+	_row['name'] = row.name
+	_row['short'] = row.short
+	return _row
 	
 def detail(request,chart_id):
 	chart = get_object_or_404(Chart,pk=chart_id)
