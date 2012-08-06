@@ -1,20 +1,26 @@
-<div id="chart-{{chart.id}}" >
+<div id="chart-{{chart.id}}" class="chart barchart" >
 	<h2 class="title">{{chart.title}}</h2>
 	<div class="description">{{chart.description}}</div>
 	<form class="controls">
 		<fieldset class="filters">
 			<legend><span>Select axis to view</span></legend>
+			<ul class="nav tags">
 			{% for row in rows %}
-			<div class="tag-section">
+			<li class="tag">
 				{% include "charts/row-control.html" with row=row %}
-				{% if row.children|length %}
-				<div class="children">
-				{% for child in row.children %}
-					{% include "charts/row-control.html" with row=child %}
-				{% endfor %}
-				</div>
-				{% endif %}
-			</div>
+			</li>
+			{% endfor %}
+			</ul>
+			{% for row in rows %}
+			{% if row.children|length %}
+			<ul class="tag tags-children nav" parent="{{row.short}}">
+			{% for child in row.children %}
+				<li class="tag">
+				{% include "charts/row-control.html" with row=child %}
+				</li>
+			{% endfor %}
+			</ul>
+			{% endif %}
 			{% endfor %}
 		</fieldset>
 		<fieldset class="layout">
@@ -22,12 +28,12 @@
 			<label class="checkbox"><input class="percent" type="checkbox" name="percent" value="on" />View as percent per <span class="column_name">column</span></label>
 		</fieldset>
 	</form>
-	<div class="chart">
+	<div class="canvas">
 	{% for column in columns %}
 		<div class="column">
 			<div class="label">{{column.name}}</div>
 			{% for point in column.points %}
-			<div class="bar" data-tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" data-amount="{{point.value}}">
+			<div class="bar" tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" amount="{{point.value}}">
 				<div class="amount">{{point.value}}</div>
 			</div>
 			{% endfor %}

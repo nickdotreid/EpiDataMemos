@@ -3,7 +3,19 @@
 {% block scripts %}
 {{block.super}}
 <script type="text/javascript" src="{{STATIC_URL}}datamemos/js/jquery.address.min.js" ></script>
+
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/highlight.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/interactions.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/bar.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/column.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/grid.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/controls_filters.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
+
+<!--
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/table.js"></script>
+-->
 <script type="text/javascript" src="{{STATIC_URL}}notes/js/notes.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
 {% endblock %}
@@ -11,7 +23,8 @@
 {% block styles %}
 {{block.super}}
 <link rel="stylesheet" href="{{STATIC_URL}}charts/css/chart.css" />
-<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}charts/css/barchart.css" />
+<!--<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />-->
 {% endblock %}
 
 {% block content %}

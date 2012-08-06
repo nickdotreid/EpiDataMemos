@@ -84,11 +84,8 @@ function fill_in_values(obj){
 	if(!obj){
 		obj = {};
 	}
-	if(!obj.filter){
-		obj.filter = unescape($.address.parameter("filter"));
-	}
-	if(!obj.highlight){
-		obj.highlight = unescape($.address.parameter("highlight"));
+	if(!obj.tags){
+		obj.filter = unescape($.address.parameter("tags"));
 	}
 	if(!obj.percent){
 		obj.percent = $.address.parameter("percent");

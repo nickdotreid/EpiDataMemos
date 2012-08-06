@@ -1,106 +1,457 @@
-#chart{
-	overflow:hidden;
+/* GRID */
+.grid {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  width: 100%;
 }
-
-#chart .title,#chart fieldset{
-	padding:0px;
-	margin:7px 13px 0px;
+.grid .tick {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-top: 1px solid #333;
+  width: 100%;
+  font-size: 0.8em;
 }
-
-.chart{
-	clear:both;
-	margin:25px 13px 40px;
-	padding:0px;
-	height:300px;
-	padding:40px 30px 25px;
-	overflow:hidden;
-	position:relative;
+.filters {
+  display: block;
+  clear: both;
 }
-.chart div.canvas{
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:3;
-	padding:0px 25px;
+.filters label {
+  width: auto;
+  display: block;
+  float: left;
+  margin: 0px 7px 0px 0px;
+  position: relative;
 }
-.chart .column{
-	list-style-type:none;
-	margin:0px 5px;
-	padding:0px;
-	width:90px;
-	height:300px;
-	display:block;
-	float:none;
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:3;
+.filters .tags {
+  display: block;
+  clear: both;
 }
-
-#chart .chart .column .label .total{
-	font-size:0.8em;
-	background-color:transparent;
-	display:block;
-	text-align:center;
+.filters .tags-children {
+  display: none;
+  clear: both;
 }
-#chart .chart .column .label .total .percent{
-	display:block;
-	font-size:1.1em;
-	font-style:italic;
+.canvas {
+  height: 400px;
+  width: auto;
+  display: block;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
 }
-
-.chart .bar{
-	position:absolute;
-	z-index:7;
-	left:0px;
-	height:0px;
-	width:60px;
-	background:#79b5ff;
-	cursor:pointer;
-	border-top:1px #000 solid;
-	border-right:1px #000 solid;
-	border-left:1px #000 solid;
+.canvas .column {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  display: block;
+  float: left;
+  width: auto;
+  height: 100%;
+  margin-right: 21px;
 }
-.chart .column .bar.left{
-	border-right:0px;
+.canvas .column .label {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: auto;
+  text-align: center;
 }
-.chart .column .bar.right{
-	border-left:0px;
+.canvas .bar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #CCC;
+  width: 60px;
+  height: 0px;
 }
-
-.filters .filter.hover .color,.chart .bar.hover{
-	background:#86ea9c;
+.canvas .bar .amount {
+  display: none;
 }
-.chart .column .bar.hover{
-	border-right:1px #000 solid;
-	border-left:1px #000 solid;
+.canvas .highlight {
+  display: block;
+  background: #FFF;
+  border: 3px #000 solid;
+  font-size: 0.8em;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 40;
+  padding: 7px;
+  width: 110px;
 }
-
-.chart .column .bar .amount{
-	display:block;
-	font-size:0.8em;
-	position:absolute;
-	top:0px;
-	left:0px;
-	width:60px;
-	padding:3px 0px 0px;
-	text-align:center;
+.canvas .highlight .total {
+  background-color: transparent;
 }
-
-
-.chart .column .label{
-	display:block;
-	position:absolute;
-	top:300px;
-	left:0px;
-	width:90px;
-	text-align:center;
+.canvas .highlight span,
+.canvas .highlight a {
+  display: block;
+  text-align: center;
 }
-
-#chart fieldset{
-	border:0px;
+.canvas .highlight span.percent {
+  font-style: italic;
+  display: inline;
 }
-#chart fieldset legend{
-	font-size:0.8em;
-	font-style:italic;
+.canvas .highlight span.amount {
+  font-size: 1.15em;
+}
+.canvas .highlight .arrow {
+  position: absolute;
+  width: 20px;
+  height: 34px;
+  top: 17px;
+  left: -17px;
+  background: transparent url('i/horiz_hover_right.png') center center no-repeat;
+}
+.canvas .highlight.above .arrow {
+  width: 34px;
+  height: 20px;
+  bottom: -17px;
+  left: 45px;
+  background-image: url('i/horiz_hover_bottom.png');
+}
+.canvas .highlight.left .arrow {
+  left: 121px;
+  background-image: url('i/horiz_hover_left.png');
+}
+.bar .highlight {
+  display: none;
+}
+#chart .bar {
+  background-color: #444444;
+}
+#chart .bar .color {
+  background-color: #444444;
+}
+#chart .bar.sibling {
+  background-color: #777777;
+}
+#chart .bar.sibling .color {
+  background-color: #777777;
+}
+#chart .bar.hover,
+#chart .bar.hover.sibling {
+  background-color: #444444;
+}
+/*  Define Colors */
+#chart .column .total,
+#chart .filters .total,
+#chart .column .male,
+#chart .filters .male,
+#chart .column .white,
+#chart .filters .white,
+#chart .column .zero_onetwo,
+#chart .filters .zero_onetwo,
+#chart .column .msm,
+#chart .filters .msm {
+  background-color: #6666ff;
+}
+#chart .column .total .color,
+#chart .filters .total .color,
+#chart .column .male .color,
+#chart .filters .male .color,
+#chart .column .white .color,
+#chart .filters .white .color,
+#chart .column .zero_onetwo .color,
+#chart .filters .zero_onetwo .color,
+#chart .column .msm .color,
+#chart .filters .msm .color {
+  background-color: #6666ff;
+}
+#chart .column .total.sibling,
+#chart .filters .total.sibling,
+#chart .column .male.sibling,
+#chart .filters .male.sibling,
+#chart .column .white.sibling,
+#chart .filters .white.sibling,
+#chart .column .zero_onetwo.sibling,
+#chart .filters .zero_onetwo.sibling,
+#chart .column .msm.sibling,
+#chart .filters .msm.sibling {
+  background-color: #d6d6f5;
+}
+#chart .column .total.sibling .color,
+#chart .filters .total.sibling .color,
+#chart .column .male.sibling .color,
+#chart .filters .male.sibling .color,
+#chart .column .white.sibling .color,
+#chart .filters .white.sibling .color,
+#chart .column .zero_onetwo.sibling .color,
+#chart .filters .zero_onetwo.sibling .color,
+#chart .column .msm.sibling .color,
+#chart .filters .msm.sibling .color {
+  background-color: #d6d6f5;
+}
+#chart .column .total.hover,
+#chart .filters .total.hover,
+#chart .column .male.hover,
+#chart .filters .male.hover,
+#chart .column .white.hover,
+#chart .filters .white.hover,
+#chart .column .zero_onetwo.hover,
+#chart .filters .zero_onetwo.hover,
+#chart .column .msm.hover,
+#chart .filters .msm.hover,
+#chart .column .total.hover.sibling,
+#chart .filters .total.hover.sibling,
+#chart .column .male.hover.sibling,
+#chart .filters .male.hover.sibling,
+#chart .column .white.hover.sibling,
+#chart .filters .white.hover.sibling,
+#chart .column .zero_onetwo.hover.sibling,
+#chart .filters .zero_onetwo.hover.sibling,
+#chart .column .msm.hover.sibling,
+#chart .filters .msm.hover.sibling {
+  background-color: #6666ff;
+}
+#chart .column .female,
+#chart .filters .female,
+#chart .column .african_american,
+#chart .filters .african_american,
+#chart .column .onethree_onenine,
+#chart .filters .onethree_onenine,
+#chart .column .idu,
+#chart .filters .idu {
+  background-color: #ff8000;
+}
+#chart .column .female .color,
+#chart .filters .female .color,
+#chart .column .african_american .color,
+#chart .filters .african_american .color,
+#chart .column .onethree_onenine .color,
+#chart .filters .onethree_onenine .color,
+#chart .column .idu .color,
+#chart .filters .idu .color {
+  background-color: #ff8000;
+}
+#chart .column .female.sibling,
+#chart .filters .female.sibling,
+#chart .column .african_american.sibling,
+#chart .filters .african_american.sibling,
+#chart .column .onethree_onenine.sibling,
+#chart .filters .onethree_onenine.sibling,
+#chart .column .idu.sibling,
+#chart .filters .idu.sibling {
+  background-color: #e0b385;
+}
+#chart .column .female.sibling .color,
+#chart .filters .female.sibling .color,
+#chart .column .african_american.sibling .color,
+#chart .filters .african_american.sibling .color,
+#chart .column .onethree_onenine.sibling .color,
+#chart .filters .onethree_onenine.sibling .color,
+#chart .column .idu.sibling .color,
+#chart .filters .idu.sibling .color {
+  background-color: #e0b385;
+}
+#chart .column .female.hover,
+#chart .filters .female.hover,
+#chart .column .african_american.hover,
+#chart .filters .african_american.hover,
+#chart .column .onethree_onenine.hover,
+#chart .filters .onethree_onenine.hover,
+#chart .column .idu.hover,
+#chart .filters .idu.hover,
+#chart .column .female.hover.sibling,
+#chart .filters .female.hover.sibling,
+#chart .column .african_american.hover.sibling,
+#chart .filters .african_american.hover.sibling,
+#chart .column .onethree_onenine.hover.sibling,
+#chart .filters .onethree_onenine.hover.sibling,
+#chart .column .idu.hover.sibling,
+#chart .filters .idu.hover.sibling {
+  background-color: #ff8000;
+}
+#chart .column .trans,
+#chart .filters .trans,
+#chart .column .latino,
+#chart .filters .latino,
+#chart .column .twozero_twonine,
+#chart .filters .twozero_twonine,
+#chart .column .msm_idu,
+#chart .filters .msm_idu {
+  background-color: #ff66ff;
+}
+#chart .column .trans .color,
+#chart .filters .trans .color,
+#chart .column .latino .color,
+#chart .filters .latino .color,
+#chart .column .twozero_twonine .color,
+#chart .filters .twozero_twonine .color,
+#chart .column .msm_idu .color,
+#chart .filters .msm_idu .color {
+  background-color: #ff66ff;
+}
+#chart .column .trans.sibling,
+#chart .filters .trans.sibling,
+#chart .column .latino.sibling,
+#chart .filters .latino.sibling,
+#chart .column .twozero_twonine.sibling,
+#chart .filters .twozero_twonine.sibling,
+#chart .column .msm_idu.sibling,
+#chart .filters .msm_idu.sibling {
+  background-color: #f5d6f5;
+}
+#chart .column .trans.sibling .color,
+#chart .filters .trans.sibling .color,
+#chart .column .latino.sibling .color,
+#chart .filters .latino.sibling .color,
+#chart .column .twozero_twonine.sibling .color,
+#chart .filters .twozero_twonine.sibling .color,
+#chart .column .msm_idu.sibling .color,
+#chart .filters .msm_idu.sibling .color {
+  background-color: #f5d6f5;
+}
+#chart .column .trans.hover,
+#chart .filters .trans.hover,
+#chart .column .latino.hover,
+#chart .filters .latino.hover,
+#chart .column .twozero_twonine.hover,
+#chart .filters .twozero_twonine.hover,
+#chart .column .msm_idu.hover,
+#chart .filters .msm_idu.hover,
+#chart .column .trans.hover.sibling,
+#chart .filters .trans.hover.sibling,
+#chart .column .latino.hover.sibling,
+#chart .filters .latino.hover.sibling,
+#chart .column .twozero_twonine.hover.sibling,
+#chart .filters .twozero_twonine.hover.sibling,
+#chart .column .msm_idu.hover.sibling,
+#chart .filters .msm_idu.hover.sibling {
+  background-color: #ff66ff;
+}
+#chart .column .asian_pacific_islander,
+#chart .filters .asian_pacific_islander,
+#chart .column .threezero_threenine,
+#chart .filters .threezero_threenine,
+#chart .column .heterosexual,
+#chart .filters .heterosexual {
+  background-color: #8000ff;
+}
+#chart .column .asian_pacific_islander .color,
+#chart .filters .asian_pacific_islander .color,
+#chart .column .threezero_threenine .color,
+#chart .filters .threezero_threenine .color,
+#chart .column .heterosexual .color,
+#chart .filters .heterosexual .color {
+  background-color: #8000ff;
+}
+#chart .column .asian_pacific_islander.sibling,
+#chart .filters .asian_pacific_islander.sibling,
+#chart .column .threezero_threenine.sibling,
+#chart .filters .threezero_threenine.sibling,
+#chart .column .heterosexual.sibling,
+#chart .filters .heterosexual.sibling {
+  background-color: #b385e0;
+}
+#chart .column .asian_pacific_islander.sibling .color,
+#chart .filters .asian_pacific_islander.sibling .color,
+#chart .column .threezero_threenine.sibling .color,
+#chart .filters .threezero_threenine.sibling .color,
+#chart .column .heterosexual.sibling .color,
+#chart .filters .heterosexual.sibling .color {
+  background-color: #b385e0;
+}
+#chart .column .asian_pacific_islander.hover,
+#chart .filters .asian_pacific_islander.hover,
+#chart .column .threezero_threenine.hover,
+#chart .filters .threezero_threenine.hover,
+#chart .column .heterosexual.hover,
+#chart .filters .heterosexual.hover,
+#chart .column .asian_pacific_islander.hover.sibling,
+#chart .filters .asian_pacific_islander.hover.sibling,
+#chart .column .threezero_threenine.hover.sibling,
+#chart .filters .threezero_threenine.hover.sibling,
+#chart .column .heterosexual.hover.sibling,
+#chart .filters .heterosexual.hover.sibling {
+  background-color: #8000ff;
+}
+#chart .column .native_american,
+#chart .filters .native_american,
+#chart .column .fourzero_fournine,
+#chart .filters .fourzero_fournine,
+#chart .column .other_exposure,
+#chart .filters .other_exposure {
+  background-color: #66ffff;
+}
+#chart .column .native_american .color,
+#chart .filters .native_american .color,
+#chart .column .fourzero_fournine .color,
+#chart .filters .fourzero_fournine .color,
+#chart .column .other_exposure .color,
+#chart .filters .other_exposure .color {
+  background-color: #66ffff;
+}
+#chart .column .native_american.sibling,
+#chart .filters .native_american.sibling,
+#chart .column .fourzero_fournine.sibling,
+#chart .filters .fourzero_fournine.sibling,
+#chart .column .other_exposure.sibling,
+#chart .filters .other_exposure.sibling {
+  background-color: #d6f5f5;
+}
+#chart .column .native_american.sibling .color,
+#chart .filters .native_american.sibling .color,
+#chart .column .fourzero_fournine.sibling .color,
+#chart .filters .fourzero_fournine.sibling .color,
+#chart .column .other_exposure.sibling .color,
+#chart .filters .other_exposure.sibling .color {
+  background-color: #d6f5f5;
+}
+#chart .column .native_american.hover,
+#chart .filters .native_american.hover,
+#chart .column .fourzero_fournine.hover,
+#chart .filters .fourzero_fournine.hover,
+#chart .column .other_exposure.hover,
+#chart .filters .other_exposure.hover,
+#chart .column .native_american.hover.sibling,
+#chart .filters .native_american.hover.sibling,
+#chart .column .fourzero_fournine.hover.sibling,
+#chart .filters .fourzero_fournine.hover.sibling,
+#chart .column .other_exposure.hover.sibling,
+#chart .filters .other_exposure.hover.sibling {
+  background-color: #66ffff;
+}
+#chart .column .other_race,
+#chart .filters .other_race,
+#chart .column .fivezero_,
+#chart .filters .fivezero_ {
+  background-color: #ff0000;
+}
+#chart .column .other_race .color,
+#chart .filters .other_race .color,
+#chart .column .fivezero_ .color,
+#chart .filters .fivezero_ .color {
+  background-color: #ff0000;
+}
+#chart .column .other_race.sibling,
+#chart .filters .other_race.sibling,
+#chart .column .fivezero_.sibling,
+#chart .filters .fivezero_.sibling {
+  background-color: #e08585;
+}
+#chart .column .other_race.sibling .color,
+#chart .filters .other_race.sibling .color,
+#chart .column .fivezero_.sibling .color,
+#chart .filters .fivezero_.sibling .color {
+  background-color: #e08585;
+}
+#chart .column .other_race.hover,
+#chart .filters .other_race.hover,
+#chart .column .fivezero_.hover,
+#chart .filters .fivezero_.hover,
+#chart .column .other_race.hover.sibling,
+#chart .filters .other_race.hover.sibling,
+#chart .column .fivezero_.hover.sibling,
+#chart .filters .fivezero_.hover.sibling {
+  background-color: #ff0000;
+}
+#chart .filters .filter,
+#chart .filters .filter.hover,
+#chart .filters .filter.sibling,
+#chart .filters .filter.sibling.hover {
+  background-color: transparent;
 }

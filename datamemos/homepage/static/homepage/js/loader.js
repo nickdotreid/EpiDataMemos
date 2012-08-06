@@ -12,10 +12,8 @@ $(document).ready(function(){
 				if(data['markup']){
 					markup = data['markup'];
 				}
-				$("#chart-container").append(markup).trigger({
-					type:"load-chart",
-					data:data,
-				});
+				$("#chart-container").append(markup);
+				$("#chart-container .chart").data("data",data).trigger("load-chart");
 				$("#note-container").trigger({
 					type:"get-notes",
 					chart_id:event['chart_id'],
