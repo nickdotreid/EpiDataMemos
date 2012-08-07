@@ -20,6 +20,11 @@ $(document).ready(function(){
 			tags = $.address.parameter("tags").split(",");
 		}
 		$(this).data("tags",tags);
+		if($.address.parameter("percent")){
+			$(this).data("percent",true);
+		}else{
+			$(this).data("percent",false);
+		}
 	}).delegate(".chart.barchart","redraw",function(event){
 		
 		// redraw delay
@@ -31,13 +36,45 @@ $(document).ready(function(){
 		if(!event.tags){
 			event.tags = chart.data("tags");
 		}
+		if(event.percent == undefined){
+			event.percent = chart.data("percent");
+		}
+		var sibling_tags = [];
 		for(var index in event.tags){
 			var tag = event.tags[index];
 			$(".tags-children[parent='"+tag+"'] .tag input").each(function(){
 				event.tags.push(this.value);
 				stacked = true;
 			});
+			$(".tag input:not([value='"+tag+"'])",$(".tag input[value='"+tag+"']",chart).parents(".tags-children:first")).each(function(){
+				sibling_tags.push(this.value);
+			});
 		}
+		$(".column",chart).each(function(){
+			var column = $(this);
+			var total = 0;
+			$(".bar",column).each(function(){
+				var bar = $(this);
+				matches = 0;
+				for(var index in event.tags){
+					if(in_array(bar.data("tags"),event.tags[index])){
+						total += bar.data("amount");
+						matches++;
+					}
+				}
+				for(var index in sibling_tags){
+					if(in_array(bar.data("tags"),sibling_tags[index])){
+						matches++;
+					}
+				}
+				if(matches>0){
+					total += bar.data("amount");
+					bar.data("matches",matches);
+				}
+			});
+			column.data("amount",total);
+		});
+		
 		
 		var chart_max = 0;
 		$(".column",chart).each(function(){
@@ -48,8 +85,7 @@ $(document).ready(function(){
 				var bar = $(this);
 				var matches = 0;
 				for(var index in event.tags){
-					var tag = event.tags[index];
-					if(in_array(bar.data("tags"),tag)){
+					if(in_array(bar.data("tags"),event.tags[index])){
 						matches++;
 					}
 				}
@@ -84,7 +120,13 @@ $(document).ready(function(){
 				}
 			}
 			if(match>0){
-				_height = canvas.height()*(bar.data("amount")/chart_max);
+				var value = 0;
+				if(event.percent){
+					value = bar.data("amount")/bar.parents(".column:first").data("amount");
+				}else{
+					value = bar.data("amount")/chart_max;
+				}
+				_height = canvas.height()*value;
 			}
 			bar.data({
 				"height":_height,

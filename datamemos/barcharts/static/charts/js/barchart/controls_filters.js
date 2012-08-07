@@ -4,6 +4,9 @@ $(document).ready(function(){
 		if(!event.tags){
 			event.tags = chart.data("tags");
 		}
+		if(event.percent == undefined){
+			event.percent = chart.data("percent");
+		}
 		
 		$(".filters input:checked").attr("checked",false);
 		$(".tags-children").hide();
@@ -13,6 +16,23 @@ $(document).ready(function(){
 			input.attr("checked",true);
 			input.parents(".tags-children:first").show();
 			$(".tags-children[parent='"+tag+"']",chart).show();
+		}
+		$(".layout").show();
+		if($(".tags-children:visible").length<1){
+			$(".layout").hide();
+			if(event['percent']){
+				if($.address.parameter("percent")){
+					$.address.parameter("percent",false);
+				}else{
+					event['percent'] = false;
+					chart.trigger({
+						type:"redraw",
+						tags:event.tags,
+						percent:false,
+					});
+				}
+				return;
+			}
 		}
 		if(event['percent']){
 			$("input.percent",chart).attr("checked",true);
