@@ -64,12 +64,16 @@
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 3;
   background-color: #CCC;
   width: 60px;
   height: 0px;
 }
 .canvas .bar .amount {
   display: none;
+}
+.canvas .bar.selected {
+  z-index: 5;
 }
 .canvas .highlight {
   display: block;
@@ -120,338 +124,332 @@
 .bar .highlight {
   display: none;
 }
-#chart .bar {
+.chart.barchart .bar {
   background-color: #444444;
 }
-#chart .bar .color {
+.chart.barchart .bar .color {
   background-color: #444444;
 }
-#chart .bar.sibling {
+.chart.barchart .bar.sibling {
   background-color: #777777;
 }
-#chart .bar.sibling .color {
+.chart.barchart .bar.sibling .color {
   background-color: #777777;
 }
-#chart .bar.hover,
-#chart .bar.hover.sibling {
+.chart.barchart .bar.hover,
+.chart.barchart .bar.hover.sibling {
   background-color: #444444;
 }
 /*  Define Colors */
-#chart .column .total,
-#chart .filters .total,
-#chart .column .male,
-#chart .filters .male,
-#chart .column .white,
-#chart .filters .white,
-#chart .column .zero_onetwo,
-#chart .filters .zero_onetwo,
-#chart .column .msm,
-#chart .filters .msm {
+.chart.barchart .column .total,
+.chart.barchart .tags .total,
+.chart.barchart .column .male,
+.chart.barchart .tags .male,
+.chart.barchart .column .white,
+.chart.barchart .tags .white,
+.chart.barchart .column .under12,
+.chart.barchart .tags .under12,
+.chart.barchart .column .msm,
+.chart.barchart .tags .msm {
   background-color: #6666ff;
 }
-#chart .column .total .color,
-#chart .filters .total .color,
-#chart .column .male .color,
-#chart .filters .male .color,
-#chart .column .white .color,
-#chart .filters .white .color,
-#chart .column .zero_onetwo .color,
-#chart .filters .zero_onetwo .color,
-#chart .column .msm .color,
-#chart .filters .msm .color {
+.chart.barchart .column .total .color,
+.chart.barchart .tags .total .color,
+.chart.barchart .column .male .color,
+.chart.barchart .tags .male .color,
+.chart.barchart .column .white .color,
+.chart.barchart .tags .white .color,
+.chart.barchart .column .under12 .color,
+.chart.barchart .tags .under12 .color,
+.chart.barchart .column .msm .color,
+.chart.barchart .tags .msm .color {
   background-color: #6666ff;
 }
-#chart .column .total.sibling,
-#chart .filters .total.sibling,
-#chart .column .male.sibling,
-#chart .filters .male.sibling,
-#chart .column .white.sibling,
-#chart .filters .white.sibling,
-#chart .column .zero_onetwo.sibling,
-#chart .filters .zero_onetwo.sibling,
-#chart .column .msm.sibling,
-#chart .filters .msm.sibling {
+.chart.barchart .column .total.sibling,
+.chart.barchart .tags .total.sibling,
+.chart.barchart .column .male.sibling,
+.chart.barchart .tags .male.sibling,
+.chart.barchart .column .white.sibling,
+.chart.barchart .tags .white.sibling,
+.chart.barchart .column .under12.sibling,
+.chart.barchart .tags .under12.sibling,
+.chart.barchart .column .msm.sibling,
+.chart.barchart .tags .msm.sibling {
   background-color: #d6d6f5;
 }
-#chart .column .total.sibling .color,
-#chart .filters .total.sibling .color,
-#chart .column .male.sibling .color,
-#chart .filters .male.sibling .color,
-#chart .column .white.sibling .color,
-#chart .filters .white.sibling .color,
-#chart .column .zero_onetwo.sibling .color,
-#chart .filters .zero_onetwo.sibling .color,
-#chart .column .msm.sibling .color,
-#chart .filters .msm.sibling .color {
+.chart.barchart .column .total.sibling .color,
+.chart.barchart .tags .total.sibling .color,
+.chart.barchart .column .male.sibling .color,
+.chart.barchart .tags .male.sibling .color,
+.chart.barchart .column .white.sibling .color,
+.chart.barchart .tags .white.sibling .color,
+.chart.barchart .column .under12.sibling .color,
+.chart.barchart .tags .under12.sibling .color,
+.chart.barchart .column .msm.sibling .color,
+.chart.barchart .tags .msm.sibling .color {
   background-color: #d6d6f5;
 }
-#chart .column .total.hover,
-#chart .filters .total.hover,
-#chart .column .male.hover,
-#chart .filters .male.hover,
-#chart .column .white.hover,
-#chart .filters .white.hover,
-#chart .column .zero_onetwo.hover,
-#chart .filters .zero_onetwo.hover,
-#chart .column .msm.hover,
-#chart .filters .msm.hover,
-#chart .column .total.hover.sibling,
-#chart .filters .total.hover.sibling,
-#chart .column .male.hover.sibling,
-#chart .filters .male.hover.sibling,
-#chart .column .white.hover.sibling,
-#chart .filters .white.hover.sibling,
-#chart .column .zero_onetwo.hover.sibling,
-#chart .filters .zero_onetwo.hover.sibling,
-#chart .column .msm.hover.sibling,
-#chart .filters .msm.hover.sibling {
+.chart.barchart .column .total.hover,
+.chart.barchart .tags .total.hover,
+.chart.barchart .column .male.hover,
+.chart.barchart .tags .male.hover,
+.chart.barchart .column .white.hover,
+.chart.barchart .tags .white.hover,
+.chart.barchart .column .under12.hover,
+.chart.barchart .tags .under12.hover,
+.chart.barchart .column .msm.hover,
+.chart.barchart .tags .msm.hover,
+.chart.barchart .column .total.hover.sibling,
+.chart.barchart .tags .total.hover.sibling,
+.chart.barchart .column .male.hover.sibling,
+.chart.barchart .tags .male.hover.sibling,
+.chart.barchart .column .white.hover.sibling,
+.chart.barchart .tags .white.hover.sibling,
+.chart.barchart .column .under12.hover.sibling,
+.chart.barchart .tags .under12.hover.sibling,
+.chart.barchart .column .msm.hover.sibling,
+.chart.barchart .tags .msm.hover.sibling {
   background-color: #6666ff;
 }
-#chart .column .female,
-#chart .filters .female,
-#chart .column .african_american,
-#chart .filters .african_american,
-#chart .column .onethree_onenine,
-#chart .filters .onethree_onenine,
-#chart .column .idu,
-#chart .filters .idu {
+.chart.barchart .column .female,
+.chart.barchart .tags .female,
+.chart.barchart .column .aa,
+.chart.barchart .tags .aa,
+.chart.barchart .column .13to19,
+.chart.barchart .tags .13to19,
+.chart.barchart .column .idu,
+.chart.barchart .tags .idu {
   background-color: #ff8000;
 }
-#chart .column .female .color,
-#chart .filters .female .color,
-#chart .column .african_american .color,
-#chart .filters .african_american .color,
-#chart .column .onethree_onenine .color,
-#chart .filters .onethree_onenine .color,
-#chart .column .idu .color,
-#chart .filters .idu .color {
+.chart.barchart .column .female .color,
+.chart.barchart .tags .female .color,
+.chart.barchart .column .aa .color,
+.chart.barchart .tags .aa .color,
+.chart.barchart .column .13to19 .color,
+.chart.barchart .tags .13to19 .color,
+.chart.barchart .column .idu .color,
+.chart.barchart .tags .idu .color {
   background-color: #ff8000;
 }
-#chart .column .female.sibling,
-#chart .filters .female.sibling,
-#chart .column .african_american.sibling,
-#chart .filters .african_american.sibling,
-#chart .column .onethree_onenine.sibling,
-#chart .filters .onethree_onenine.sibling,
-#chart .column .idu.sibling,
-#chart .filters .idu.sibling {
+.chart.barchart .column .female.sibling,
+.chart.barchart .tags .female.sibling,
+.chart.barchart .column .aa.sibling,
+.chart.barchart .tags .aa.sibling,
+.chart.barchart .column .13to19.sibling,
+.chart.barchart .tags .13to19.sibling,
+.chart.barchart .column .idu.sibling,
+.chart.barchart .tags .idu.sibling {
   background-color: #e0b385;
 }
-#chart .column .female.sibling .color,
-#chart .filters .female.sibling .color,
-#chart .column .african_american.sibling .color,
-#chart .filters .african_american.sibling .color,
-#chart .column .onethree_onenine.sibling .color,
-#chart .filters .onethree_onenine.sibling .color,
-#chart .column .idu.sibling .color,
-#chart .filters .idu.sibling .color {
+.chart.barchart .column .female.sibling .color,
+.chart.barchart .tags .female.sibling .color,
+.chart.barchart .column .aa.sibling .color,
+.chart.barchart .tags .aa.sibling .color,
+.chart.barchart .column .13to19.sibling .color,
+.chart.barchart .tags .13to19.sibling .color,
+.chart.barchart .column .idu.sibling .color,
+.chart.barchart .tags .idu.sibling .color {
   background-color: #e0b385;
 }
-#chart .column .female.hover,
-#chart .filters .female.hover,
-#chart .column .african_american.hover,
-#chart .filters .african_american.hover,
-#chart .column .onethree_onenine.hover,
-#chart .filters .onethree_onenine.hover,
-#chart .column .idu.hover,
-#chart .filters .idu.hover,
-#chart .column .female.hover.sibling,
-#chart .filters .female.hover.sibling,
-#chart .column .african_american.hover.sibling,
-#chart .filters .african_american.hover.sibling,
-#chart .column .onethree_onenine.hover.sibling,
-#chart .filters .onethree_onenine.hover.sibling,
-#chart .column .idu.hover.sibling,
-#chart .filters .idu.hover.sibling {
+.chart.barchart .column .female.hover,
+.chart.barchart .tags .female.hover,
+.chart.barchart .column .aa.hover,
+.chart.barchart .tags .aa.hover,
+.chart.barchart .column .13to19.hover,
+.chart.barchart .tags .13to19.hover,
+.chart.barchart .column .idu.hover,
+.chart.barchart .tags .idu.hover,
+.chart.barchart .column .female.hover.sibling,
+.chart.barchart .tags .female.hover.sibling,
+.chart.barchart .column .aa.hover.sibling,
+.chart.barchart .tags .aa.hover.sibling,
+.chart.barchart .column .13to19.hover.sibling,
+.chart.barchart .tags .13to19.hover.sibling,
+.chart.barchart .column .idu.hover.sibling,
+.chart.barchart .tags .idu.hover.sibling {
   background-color: #ff8000;
 }
-#chart .column .trans,
-#chart .filters .trans,
-#chart .column .latino,
-#chart .filters .latino,
-#chart .column .twozero_twonine,
-#chart .filters .twozero_twonine,
-#chart .column .msm_idu,
-#chart .filters .msm_idu {
+.chart.barchart .column .transgender,
+.chart.barchart .tags .transgender,
+.chart.barchart .column .latino,
+.chart.barchart .tags .latino,
+.chart.barchart .column .20to29,
+.chart.barchart .tags .20to29,
+.chart.barchart .column .msm-idu,
+.chart.barchart .tags .msm-idu {
   background-color: #ff66ff;
 }
-#chart .column .trans .color,
-#chart .filters .trans .color,
-#chart .column .latino .color,
-#chart .filters .latino .color,
-#chart .column .twozero_twonine .color,
-#chart .filters .twozero_twonine .color,
-#chart .column .msm_idu .color,
-#chart .filters .msm_idu .color {
+.chart.barchart .column .transgender .color,
+.chart.barchart .tags .transgender .color,
+.chart.barchart .column .latino .color,
+.chart.barchart .tags .latino .color,
+.chart.barchart .column .20to29 .color,
+.chart.barchart .tags .20to29 .color,
+.chart.barchart .column .msm-idu .color,
+.chart.barchart .tags .msm-idu .color {
   background-color: #ff66ff;
 }
-#chart .column .trans.sibling,
-#chart .filters .trans.sibling,
-#chart .column .latino.sibling,
-#chart .filters .latino.sibling,
-#chart .column .twozero_twonine.sibling,
-#chart .filters .twozero_twonine.sibling,
-#chart .column .msm_idu.sibling,
-#chart .filters .msm_idu.sibling {
+.chart.barchart .column .transgender.sibling,
+.chart.barchart .tags .transgender.sibling,
+.chart.barchart .column .latino.sibling,
+.chart.barchart .tags .latino.sibling,
+.chart.barchart .column .20to29.sibling,
+.chart.barchart .tags .20to29.sibling,
+.chart.barchart .column .msm-idu.sibling,
+.chart.barchart .tags .msm-idu.sibling {
   background-color: #f5d6f5;
 }
-#chart .column .trans.sibling .color,
-#chart .filters .trans.sibling .color,
-#chart .column .latino.sibling .color,
-#chart .filters .latino.sibling .color,
-#chart .column .twozero_twonine.sibling .color,
-#chart .filters .twozero_twonine.sibling .color,
-#chart .column .msm_idu.sibling .color,
-#chart .filters .msm_idu.sibling .color {
+.chart.barchart .column .transgender.sibling .color,
+.chart.barchart .tags .transgender.sibling .color,
+.chart.barchart .column .latino.sibling .color,
+.chart.barchart .tags .latino.sibling .color,
+.chart.barchart .column .20to29.sibling .color,
+.chart.barchart .tags .20to29.sibling .color,
+.chart.barchart .column .msm-idu.sibling .color,
+.chart.barchart .tags .msm-idu.sibling .color {
   background-color: #f5d6f5;
 }
-#chart .column .trans.hover,
-#chart .filters .trans.hover,
-#chart .column .latino.hover,
-#chart .filters .latino.hover,
-#chart .column .twozero_twonine.hover,
-#chart .filters .twozero_twonine.hover,
-#chart .column .msm_idu.hover,
-#chart .filters .msm_idu.hover,
-#chart .column .trans.hover.sibling,
-#chart .filters .trans.hover.sibling,
-#chart .column .latino.hover.sibling,
-#chart .filters .latino.hover.sibling,
-#chart .column .twozero_twonine.hover.sibling,
-#chart .filters .twozero_twonine.hover.sibling,
-#chart .column .msm_idu.hover.sibling,
-#chart .filters .msm_idu.hover.sibling {
+.chart.barchart .column .transgender.hover,
+.chart.barchart .tags .transgender.hover,
+.chart.barchart .column .latino.hover,
+.chart.barchart .tags .latino.hover,
+.chart.barchart .column .20to29.hover,
+.chart.barchart .tags .20to29.hover,
+.chart.barchart .column .msm-idu.hover,
+.chart.barchart .tags .msm-idu.hover,
+.chart.barchart .column .transgender.hover.sibling,
+.chart.barchart .tags .transgender.hover.sibling,
+.chart.barchart .column .latino.hover.sibling,
+.chart.barchart .tags .latino.hover.sibling,
+.chart.barchart .column .20to29.hover.sibling,
+.chart.barchart .tags .20to29.hover.sibling,
+.chart.barchart .column .msm-idu.hover.sibling,
+.chart.barchart .tags .msm-idu.hover.sibling {
   background-color: #ff66ff;
 }
-#chart .column .asian_pacific_islander,
-#chart .filters .asian_pacific_islander,
-#chart .column .threezero_threenine,
-#chart .filters .threezero_threenine,
-#chart .column .heterosexual,
-#chart .filters .heterosexual {
+.chart.barchart .column .api,
+.chart.barchart .tags .api,
+.chart.barchart .column .30to39,
+.chart.barchart .tags .30to39,
+.chart.barchart .column .heterosexual,
+.chart.barchart .tags .heterosexual {
   background-color: #8000ff;
 }
-#chart .column .asian_pacific_islander .color,
-#chart .filters .asian_pacific_islander .color,
-#chart .column .threezero_threenine .color,
-#chart .filters .threezero_threenine .color,
-#chart .column .heterosexual .color,
-#chart .filters .heterosexual .color {
+.chart.barchart .column .api .color,
+.chart.barchart .tags .api .color,
+.chart.barchart .column .30to39 .color,
+.chart.barchart .tags .30to39 .color,
+.chart.barchart .column .heterosexual .color,
+.chart.barchart .tags .heterosexual .color {
   background-color: #8000ff;
 }
-#chart .column .asian_pacific_islander.sibling,
-#chart .filters .asian_pacific_islander.sibling,
-#chart .column .threezero_threenine.sibling,
-#chart .filters .threezero_threenine.sibling,
-#chart .column .heterosexual.sibling,
-#chart .filters .heterosexual.sibling {
+.chart.barchart .column .api.sibling,
+.chart.barchart .tags .api.sibling,
+.chart.barchart .column .30to39.sibling,
+.chart.barchart .tags .30to39.sibling,
+.chart.barchart .column .heterosexual.sibling,
+.chart.barchart .tags .heterosexual.sibling {
   background-color: #b385e0;
 }
-#chart .column .asian_pacific_islander.sibling .color,
-#chart .filters .asian_pacific_islander.sibling .color,
-#chart .column .threezero_threenine.sibling .color,
-#chart .filters .threezero_threenine.sibling .color,
-#chart .column .heterosexual.sibling .color,
-#chart .filters .heterosexual.sibling .color {
+.chart.barchart .column .api.sibling .color,
+.chart.barchart .tags .api.sibling .color,
+.chart.barchart .column .30to39.sibling .color,
+.chart.barchart .tags .30to39.sibling .color,
+.chart.barchart .column .heterosexual.sibling .color,
+.chart.barchart .tags .heterosexual.sibling .color {
   background-color: #b385e0;
 }
-#chart .column .asian_pacific_islander.hover,
-#chart .filters .asian_pacific_islander.hover,
-#chart .column .threezero_threenine.hover,
-#chart .filters .threezero_threenine.hover,
-#chart .column .heterosexual.hover,
-#chart .filters .heterosexual.hover,
-#chart .column .asian_pacific_islander.hover.sibling,
-#chart .filters .asian_pacific_islander.hover.sibling,
-#chart .column .threezero_threenine.hover.sibling,
-#chart .filters .threezero_threenine.hover.sibling,
-#chart .column .heterosexual.hover.sibling,
-#chart .filters .heterosexual.hover.sibling {
+.chart.barchart .column .api.hover,
+.chart.barchart .tags .api.hover,
+.chart.barchart .column .30to39.hover,
+.chart.barchart .tags .30to39.hover,
+.chart.barchart .column .heterosexual.hover,
+.chart.barchart .tags .heterosexual.hover,
+.chart.barchart .column .api.hover.sibling,
+.chart.barchart .tags .api.hover.sibling,
+.chart.barchart .column .30to39.hover.sibling,
+.chart.barchart .tags .30to39.hover.sibling,
+.chart.barchart .column .heterosexual.hover.sibling,
+.chart.barchart .tags .heterosexual.hover.sibling {
   background-color: #8000ff;
 }
-#chart .column .native_american,
-#chart .filters .native_american,
-#chart .column .fourzero_fournine,
-#chart .filters .fourzero_fournine,
-#chart .column .other_exposure,
-#chart .filters .other_exposure {
+.chart.barchart .column .na,
+.chart.barchart .tags .na,
+.chart.barchart .column .40to49,
+.chart.barchart .tags .40to49,
+.chart.barchart .column .other-exposure,
+.chart.barchart .tags .other-exposure {
   background-color: #66ffff;
 }
-#chart .column .native_american .color,
-#chart .filters .native_american .color,
-#chart .column .fourzero_fournine .color,
-#chart .filters .fourzero_fournine .color,
-#chart .column .other_exposure .color,
-#chart .filters .other_exposure .color {
+.chart.barchart .column .na .color,
+.chart.barchart .tags .na .color,
+.chart.barchart .column .40to49 .color,
+.chart.barchart .tags .40to49 .color,
+.chart.barchart .column .other-exposure .color,
+.chart.barchart .tags .other-exposure .color {
   background-color: #66ffff;
 }
-#chart .column .native_american.sibling,
-#chart .filters .native_american.sibling,
-#chart .column .fourzero_fournine.sibling,
-#chart .filters .fourzero_fournine.sibling,
-#chart .column .other_exposure.sibling,
-#chart .filters .other_exposure.sibling {
+.chart.barchart .column .na.sibling,
+.chart.barchart .tags .na.sibling,
+.chart.barchart .column .40to49.sibling,
+.chart.barchart .tags .40to49.sibling,
+.chart.barchart .column .other-exposure.sibling,
+.chart.barchart .tags .other-exposure.sibling {
   background-color: #d6f5f5;
 }
-#chart .column .native_american.sibling .color,
-#chart .filters .native_american.sibling .color,
-#chart .column .fourzero_fournine.sibling .color,
-#chart .filters .fourzero_fournine.sibling .color,
-#chart .column .other_exposure.sibling .color,
-#chart .filters .other_exposure.sibling .color {
+.chart.barchart .column .na.sibling .color,
+.chart.barchart .tags .na.sibling .color,
+.chart.barchart .column .40to49.sibling .color,
+.chart.barchart .tags .40to49.sibling .color,
+.chart.barchart .column .other-exposure.sibling .color,
+.chart.barchart .tags .other-exposure.sibling .color {
   background-color: #d6f5f5;
 }
-#chart .column .native_american.hover,
-#chart .filters .native_american.hover,
-#chart .column .fourzero_fournine.hover,
-#chart .filters .fourzero_fournine.hover,
-#chart .column .other_exposure.hover,
-#chart .filters .other_exposure.hover,
-#chart .column .native_american.hover.sibling,
-#chart .filters .native_american.hover.sibling,
-#chart .column .fourzero_fournine.hover.sibling,
-#chart .filters .fourzero_fournine.hover.sibling,
-#chart .column .other_exposure.hover.sibling,
-#chart .filters .other_exposure.hover.sibling {
+.chart.barchart .column .na.hover,
+.chart.barchart .tags .na.hover,
+.chart.barchart .column .40to49.hover,
+.chart.barchart .tags .40to49.hover,
+.chart.barchart .column .other-exposure.hover,
+.chart.barchart .tags .other-exposure.hover,
+.chart.barchart .column .na.hover.sibling,
+.chart.barchart .tags .na.hover.sibling,
+.chart.barchart .column .40to49.hover.sibling,
+.chart.barchart .tags .40to49.hover.sibling,
+.chart.barchart .column .other-exposure.hover.sibling,
+.chart.barchart .tags .other-exposure.hover.sibling {
   background-color: #66ffff;
 }
-#chart .column .other_race,
-#chart .filters .other_race,
-#chart .column .fivezero_,
-#chart .filters .fivezero_ {
+.chart.barchart .column .other-race,
+.chart.barchart .tags .other-race,
+.chart.barchart .column .over50,
+.chart.barchart .tags .over50 {
   background-color: #ff0000;
 }
-#chart .column .other_race .color,
-#chart .filters .other_race .color,
-#chart .column .fivezero_ .color,
-#chart .filters .fivezero_ .color {
+.chart.barchart .column .other-race .color,
+.chart.barchart .tags .other-race .color,
+.chart.barchart .column .over50 .color,
+.chart.barchart .tags .over50 .color {
   background-color: #ff0000;
 }
-#chart .column .other_race.sibling,
-#chart .filters .other_race.sibling,
-#chart .column .fivezero_.sibling,
-#chart .filters .fivezero_.sibling {
+.chart.barchart .column .other-race.sibling,
+.chart.barchart .tags .other-race.sibling,
+.chart.barchart .column .over50.sibling,
+.chart.barchart .tags .over50.sibling {
   background-color: #e08585;
 }
-#chart .column .other_race.sibling .color,
-#chart .filters .other_race.sibling .color,
-#chart .column .fivezero_.sibling .color,
-#chart .filters .fivezero_.sibling .color {
+.chart.barchart .column .other-race.sibling .color,
+.chart.barchart .tags .other-race.sibling .color,
+.chart.barchart .column .over50.sibling .color,
+.chart.barchart .tags .over50.sibling .color {
   background-color: #e08585;
 }
-#chart .column .other_race.hover,
-#chart .filters .other_race.hover,
-#chart .column .fivezero_.hover,
-#chart .filters .fivezero_.hover,
-#chart .column .other_race.hover.sibling,
-#chart .filters .other_race.hover.sibling,
-#chart .column .fivezero_.hover.sibling,
-#chart .filters .fivezero_.hover.sibling {
+.chart.barchart .column .other-race.hover,
+.chart.barchart .tags .other-race.hover,
+.chart.barchart .column .over50.hover,
+.chart.barchart .tags .over50.hover,
+.chart.barchart .column .other-race.hover.sibling,
+.chart.barchart .tags .other-race.hover.sibling,
+.chart.barchart .column .over50.hover.sibling,
+.chart.barchart .tags .over50.hover.sibling {
   background-color: #ff0000;
-}
-#chart .filters .filter,
-#chart .filters .filter.hover,
-#chart .filters .filter.sibling,
-#chart .filters .filter.sibling.hover {
-  background-color: transparent;
 }

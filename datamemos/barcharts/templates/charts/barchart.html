@@ -35,7 +35,7 @@
 		<div class="column">
 			<div class="label">{{column.name}}</div>
 			{% for point in column.points %}
-			<div class="bar" tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" amount="{{point.value}}">
+			<div class="bar{% for row in point.rows %} {{row}}{% endfor %}" tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" amount="{{point.value}}">
 				<div class="amount">{{point.value}}</div>
 			</div>
 			{% endfor %}

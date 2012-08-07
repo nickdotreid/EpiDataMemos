@@ -68,11 +68,15 @@
 		position:absolute;
 		top:0px;
 		left:0px;
+		z-index:3;
 		background-color:#CCC;
 		width:60px;
 		height:0px;
 		.amount{
 			display:none;
+		}
+		&.selected{
+			z-index:5;
 		}
 	}
 }
@@ -152,38 +156,31 @@
 	}
 }
 
-#chart .bar{
+.chart.barchart .bar{
 	.bar_mix(#444)
 }
 
 /*  Define Colors */
-
-#chart{
-	.column,.filters{
-		.total,.male,.white,.zero_onetwo,.msm{
+.chart.barchart{
+	.column,.tags{
+		.total,.male,.white,.under12,.msm{
 			.bar_mix(#6666ff)
 		}
-		.female,.african_american,.onethree_onenine,.idu{
+		.female,.aa,.13to19,.idu{
 			.bar_mix(#ff8000)
 		}
-		.trans,.latino,.twozero_twonine,.msm_idu{
+		.transgender,.latino,.20to29,.msm-idu{
 			.bar_mix(#ff66ff)
 		}
-		.asian_pacific_islander,.threezero_threenine,.heterosexual{
+		.api,.30to39,.heterosexual{
 			.bar_mix(#8000ff)
 		}
-		.native_american,.fourzero_fournine,.other_exposure{
+		.na,.40to49,.other-exposure{
 			.bar_mix(#66ffff)
 		}
-		.other_race,.fivezero_{
+		.other-race,.over50{
 			.bar_mix(#ff0000)
 		}
-	}
-}
-
-#chart .filters{
-	.filter,.filter.hover,.filter.sibling,.filter.sibling.hover{
-		background-color:transparent;
 	}
 }
 

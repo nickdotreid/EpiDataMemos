@@ -29,6 +29,12 @@ $(document).ready(function(){
 		});
 	}).delegate(".chart.barchart .bar","bar-animate",function(event){
 		var bar = $(this);
+		bar.removeClass("selected");
+		for(var i in event.tags){
+			if(in_array(bar.data("tags"),event.tags[i])){
+				bar.addClass("selected");
+			}
+		}
 		bar.animate({
 			height:bar.data("height")+'px',
 			top:(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
