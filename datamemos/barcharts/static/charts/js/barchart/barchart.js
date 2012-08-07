@@ -11,7 +11,7 @@ $(document).ready(function(){
 			bar.data("amount",Number(bar.attr("amount")));
 		});
 		// append grid?
-		$(".chart .column .bar",chart).height("0px").css("top",$(".canvas",chart).height());
+		$(".bar",chart).trigger("bar-init");
 		chart.data("tags",[]);
 		chart.trigger("get-state-chart").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
@@ -20,11 +20,6 @@ $(document).ready(function(){
 			tags = $.address.parameter("tags").split(",");
 		}
 		$(this).data("tags",tags);
-		if($.address.parameter("percent")){
-			$(this).data("percent",true);
-		}else{
-			$(this).data("percent",false);
-		}
 	}).delegate(".chart.barchart","redraw",function(event){
 		var chart = $(this);
 		if(chart.data("redraw-timeout")){
@@ -37,45 +32,22 @@ $(document).ready(function(){
 			if(!event.tags){
 				event.tags = chart.data("tags");
 			}
-			if(event.percent == undefined){
-				event.percent = chart.data("percent");
-			}
-			var sibling_tags = [];
-			for(var index in event.tags){
+			
+			for(index in event.tags){
 				var tag = event.tags[index];
 				$(".tags-children[parent='"+tag+"'] .tag input").each(function(){
 					event.tags.push(this.value);
 					stacked = true;
-				});
+				})
+			}
+			
+			sibling_tags = [];
+			for(index in event.tags){
+				var tag = event.tags[index]
 				$(".tag input:not([value='"+tag+"'])",$(".tag input[value='"+tag+"']",chart).parents(".tags-children:first")).each(function(){
 					sibling_tags.push(this.value);
-				});
+				})
 			}
-			$(".column",chart).each(function(){
-				var column = $(this);
-				var total = 0;
-				$(".bar",column).each(function(){
-					var bar = $(this);
-					matches = 0;
-					for(var index in event.tags){
-						if(in_array(bar.data("tags"),event.tags[index])){
-							total += bar.data("amount");
-							matches++;
-						}
-					}
-					for(var index in sibling_tags){
-						if(in_array(bar.data("tags"),sibling_tags[index])){
-							matches++;
-						}
-					}
-					if(matches>0){
-						total += bar.data("amount");
-						bar.data("matches",matches);
-					}
-				});
-				column.data("amount",total);
-			});
-		
 		
 			var chart_max = 0;
 			$(".column",chart).each(function(){
@@ -85,12 +57,19 @@ $(document).ready(function(){
 				$(".bar",column).each(function(){
 					var bar = $(this);
 					var matches = 0;
+					var sibling_matches = 0;
 					for(var index in event.tags){
 						if(in_array(bar.data("tags"),event.tags[index])){
 							matches++;
+							sibling_matches++;
 						}
 					}
-					bar.data("matches",matches);
+					for(var index in sibling_tags){
+						if(in_array(bar.data("tags"),sibling_tags[index])){
+							sibling_matches++;
+						}
+					}
+					bar.data("matches",matches+sibling_matches);
 					if(matches > biggest_match){
 						biggest_number = 0;
 						biggest_match = matches;
@@ -103,53 +82,23 @@ $(document).ready(function(){
 					chart_max = biggest_number;
 				}
 			});
-			$(".bar").each(function(){
-				var bar = $(this);
-				var match = bar.data("matches");
-				var _height = 0;
-				var _y = 0;
-				var _x = 0;
-				var prev = bar.prev(".bar");
-				if(prev.length>0){
-					_x = prev.data("x");
-					if(!stacked && prev.data("height")>0){
-						var offset = bar.width()/10;
-						_x += offset;	
-					}
-					if(stacked){
-						_y = prev.data("y") + prev.data("height");	
-					}
-				}
-				if(match>0){
-					var value = 0;
-					if(event.percent){
-						value = bar.data("amount")/bar.parents(".column:first").data("amount");
-					}else{
-						value = bar.data("amount")/chart_max;
-					}
-					_height = canvas.height()*value;
-				}
-				bar.data({
-					"height":_height,
-					"x":_x,
-					"y":_y
-				});
+			$(".bar").trigger({
+				type:'bar-calculate',
+				tags:event.tags,
+				percent:event.percent,
+				max:chart_max,
+				stacked:stacked
+			}).trigger({
+				type:'bar-animate',
+				tags:event.tags,
+				percent:event.percent,
+				max:chart_max,
 			});
-			$(".bar").each(function(){
-				var bar = $(this);
-				bar.animate({
-					height:bar.data("height")+'px',
-					top:(canvas.height()-bar.data("height")-bar.data("y"))+"px",
-					left:bar.data("x")+"px"
-				},{
-					duration:500
-				})
-			})
 			$(".column",chart).each(function(){
 				var column = $(this);
 				var widest = 0;
 				$(".bar",column).each(function(){
-					var right_pos = $(this).width() + Number($(this).css("left").replace("px",""));
+					var right_pos = $(this).width() +$(this).data("x");
 					if(right_pos > widest){
 						widest = right_pos;
 					}
