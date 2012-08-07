@@ -40,7 +40,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	$("#note-container").delegate(".note-container","sort",function(event){
+	$("#note-container").delegate(".notes","sort",function(event){
 		var container = $(this);
 		var notes = $(".note",container);
 		var tags = event.tags;
@@ -82,17 +82,23 @@ $(document).ready(function(){
 		event.preventDefault;
 	});
 	$(".wrapper").delegate("#note-container","get-notes",function(event){
+		noteType = false;
+		$("#note-type-selector li.active a").each(function(){
+			noteType = $(this).attr("note-type");
+		})
+		$(".notes .note").remove();
 		$.ajax({
 			url:"/notes/",
 			type:"GET",
 			data:{
-				chart_id:event['chart_id']
+				chart_id:event['chart_id'],
+				type:noteType
 			},
 			success:function(data){
 				if(data['notes']){
 					for(var index in data['notes']){
 						place_note(data['notes'][index]);
-						$("#note-container .note-container").trigger({
+						$("#note-container .notes").trigger({
 							type:"sort",
 							tags:String($.address.parameter("tags")).split(",")
 						});
@@ -102,11 +108,22 @@ $(document).ready(function(){
 		});
 	});
 	$.address.change(function(event){
-		$("#note-container .note-container").trigger({
+		$("#note-container .notes").trigger({
 			type:"sort",
 			tags:String($.address.parameter("tags")).split(",")
 		});
+	});
+	$("#note-type-selector li a").click(function(event){
+		event.preventDefault();
+		var link = $(this);
+		$("li.active",link.parents(".nav:first")).removeClass("active");
+		link.parents("li").addClass("active");
+		$("#note-container").trigger({
+			type:"get-notes",
+			chart_id:$.address.parameter("chart")
+			})
 	})
+	$("#note-type-selector li:first").addClass("active");
 });
 
 function place_note(data,note){
@@ -118,11 +135,7 @@ function place_note(data,note){
 		old.after(note);
 		old.remove();
 	}else{
-		if(data['type'] == "definition"){
-			$("#descriptions").append(note);
-		}else{
-			$("#comments").append(note);	
-		}
+		$("#notes").append(note);
 	}
 }
 

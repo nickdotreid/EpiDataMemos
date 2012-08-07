@@ -38,15 +38,10 @@
 		<li><a href="#" class="create-note">Create Note</a></li>
 	</ul>
 	<ul id="note-type-selector" class="nav nav-tabs">
-		<li><a href="#">Descriptions</a></li>
-		<li><a href="#">Comments</a></li>
+		<li><a note-type="definition" href="#">Definitions</a></li>
+		<li><a note-type="comment" href="#">Comments</a></li>
 	</ul>
-	<div id="descriptions" class="note-container">
-		<h2 class="section-title">Descriptions</h3>
-	</div>
-	<div id="comments" class="note-container">
-		<h2 class="section-title">Comments</h3>
-	</div>
+	<div id="notes" class="notes notes-container"></div>
 </div>
 {% endblock %}
 

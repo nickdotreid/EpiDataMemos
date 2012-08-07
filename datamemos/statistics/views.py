@@ -24,7 +24,8 @@ def list(request):
 	notes = []
 	for stat in statistics:
 		if stat.note and stat.note.public and stat.note not in notes:
-			notes.append(stat.note)
+			if 'type' not in request.GET or (request.GET['type'] == stat.note.type):
+				notes.append(stat.note)
 	if request.is_ajax():
 		_notes = []
 		for note in notes:
