@@ -40,7 +40,7 @@ $(document).ready(function(){
 			top:(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
 			left:bar.data("x")+"px"
 		},{
-			duration:1500
+			duration:bar.parents(".chart:first").data("animation-time")
 		})
 	});
 });
