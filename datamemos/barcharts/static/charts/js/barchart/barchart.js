@@ -18,6 +18,8 @@ $(document).ready(function(){
 		var tags = [];
 		if($.address.parameter("tags")){
 			tags = $.address.parameter("tags").split(",");
+		}else{
+			$('.tag input:first',$(this)).click();
 		}
 		$(this).data("tags",tags);
 	}).delegate(".chart.barchart","redraw",function(event){
