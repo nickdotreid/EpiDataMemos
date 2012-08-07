@@ -13,6 +13,7 @@ $(document).ready(function(){
 		// append grid?
 		$(".bar",chart).trigger("bar-init");
 		chart.data("tags",[]);
+		chart.trigger('grid-draw');
 		chart.trigger("get-state-chart").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
 		var tags = [];
@@ -107,12 +108,13 @@ $(document).ready(function(){
 				});
 				column.width(widest);
 			});
-			$(".grid",$(this)).trigger({
-				type:"grid_redraw",
+			$(".grid",chart).trigger({
+				type:"grid-redraw",
 				filter:event.filter,
 				highlight:event.highlight,
 				percent:event.percent,
-				chart_max:chart_max
+				chart_max:chart_max,
+				ticks:5
 			});
 		},500);
 		chart.data("redraw-timeout",timeout);
