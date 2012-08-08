@@ -109,3 +109,23 @@ function number_to_string(text){
 	}
 	return new_text;
 }
+
+function make_color_pallet(){
+	var color_dict = {};
+	var color_pos = 0;
+	var colors = ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"];
+	return function(string){
+		if(!string || color_pos > colors.length){
+			color_pos = 0;
+		}
+		if(!string){
+			return false;
+		}
+		if(color_dict[string]){
+			return color_dict[string];
+		}
+		color_dict[string] = colors[color_pos];
+		color_pos++;
+		return color_dict[string];
+	}
+}

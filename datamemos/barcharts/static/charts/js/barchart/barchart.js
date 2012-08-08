@@ -1,12 +1,24 @@
 $(document).ready(function(){
 	$(".wrapper").delegate(".chart.barchart","load-chart",function(event){
 		var chart = $(this);
-		if(event.data){
-			chart.data("data",event.data);
-		}
+		var pallet = make_color_pallet();
+		chart.data("pallet",pallet);
+		var tags = [];
+		$(".tags,.tags-children",chart).each(function(){
+			pallet(false);//resets pallet
+			$(".tag input",$(this)).each(function(){
+				tags.push(this.value);
+				pallet(this.value);
+			});
+		});
 		$(".bar",chart).each(function(){
 			var bar = $(this);
 			var tag_arr = bar.attr("tags").split(",");
+			for(var index in tag_arr){
+				if(in_array(tags,tag_arr[index])){
+					bar.css("background-color",pallet(tag_arr[index]));
+				}
+			}
 			bar.data("tags",tag_arr);
 			bar.data("amount",Number(bar.attr("amount")));
 		});
