@@ -32,13 +32,16 @@ def create(request):
 		else:
 			author_form = AuthorForm(request.POST)
 			if author_form.is_valid() and 'email' in author_form.cleaned_data and 'name' in author_form.cleaned_data:
-				# check if email exists
-				user = User()
-				user.email = author_form.cleaned_data['email']
-				user.username = author_form.cleaned_data['name']
-				user.save()
-				# log in user
-				author = user
+				users_list = User.objects.filter(email=author_form.cleaned_data['email'])
+				if len(users_list) > 0:
+					author = users_list[0]
+				else:
+					user = User()
+					user.email = author_form.cleaned_data['email']
+					user.username = author_form.cleaned_data['name']
+					user.save()
+					author = user
+				#log in author??
 		form = NoteForm(request.POST)
 		if form.is_valid() and author:
 			note = Note(
