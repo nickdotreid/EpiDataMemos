@@ -45,7 +45,12 @@
 </div>
 <div id="charts" class="page page-content">
 	<div class="page-inner">
-		
+		<h1>All Charts</h1>
+		<ul class="chart-links">
+		{% for chart in charts %}
+		<li><a href="/charts/{{chart.id}}/" data-id="{{chart.id}}">{{chart.title}}</a></li>
+		{% endfor %}
+		</ul>
 	</div>
 </div>
 <noscript>

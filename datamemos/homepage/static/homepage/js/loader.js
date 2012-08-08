@@ -45,7 +45,13 @@ $(document).ready(function(){
 		var tags = "";
 		$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));
 	})
-	
+	$(".chart-links a").click(function(event){
+		event.preventDefault();
+		if($(this).data("id")){
+			$.address.parameter("chart",$(this).data("id"));
+			$.address.parameter("page",false);
+		}
+	})
 	$(".navbar a").click(function(event){
 		event.preventDefault();
 		$(".navbar li.active").removeClass("active");
