@@ -28,7 +28,7 @@ $(document).ready(function(){
 					chart.trigger({
 						type:"redraw",
 						tags:event.tags,
-						percent:false,
+						percent:false
 					});
 				}
 				return;

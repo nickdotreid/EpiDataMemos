@@ -93,7 +93,7 @@ $(document).ready(function(){
 				type:'bar-animate',
 				tags:event.tags,
 				percent:event.percent,
-				max:chart_max,
+				max:chart_max
 			});
 			$(".column",chart).each(function(){
 				var column = $(this);
