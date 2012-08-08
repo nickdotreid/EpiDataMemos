@@ -13,11 +13,16 @@ $(document).ready(function(){
 			type:"GET",
 			success:function(data){
 				if(data['form']){
-					button.after(data['form']);
+					$("#notes-edit-area").html(data['form']);
+					$("#notes-edit-area form").prepend('<a href="#" class="close">close</a>');
 					button.parents("li:first").addClass("active");
 				}
 			}
 		})
+	}).delegate("#notes-edit-area .close","click",function(event){
+		event.preventDefault();
+		$("#notes-edit-area").html("");
+		$("#note-container .create-note").parents("li:first").removeClass("active");
 	}).delegate("form.note.create","submit",function(event){
 		event.preventDefault();
 		var form = $(this);
@@ -29,8 +34,8 @@ $(document).ready(function(){
 			data:form.serialize(),
 			success:function(data){
 				form.remove();
-				$(".create-note").show();
-				place_note(data['note']);
+				$("#note-container .create-note").parents("li:first").removeClass("active");
+				$("#note-type-selector a[note-type='comment']").click();
 			},
 			error:function(data){
 				if(data['form']){

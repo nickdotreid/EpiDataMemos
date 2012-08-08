@@ -18,6 +18,7 @@
 
 {% block styles %}
 {{block.super}}
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}notes/css/notes.css" />
 	<link rel="stylesheet" href="{{STATIC_URL}}charts/css/chart.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}charts/css/barchart.css" />
 <!--<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />-->
@@ -30,9 +31,9 @@
 <div id="chart-container"></div>
 <div id="note-container">
 	<ul class="nav nav-pills">
-		<li><a href="#" class="create-note">Share Screen</a></li>
 		<li><a href="#" class="create-note">Create Note</a></li>
 	</ul>
+	<div id="notes-edit-area" class="notes-edit notes-edit-container"></div>
 	<ul id="note-type-selector" class="nav nav-pills">
 		<li><a note-type="definition" href="#">Definitions</a></li>
 		<li><a note-type="comment" href="#">Comments</a></li>

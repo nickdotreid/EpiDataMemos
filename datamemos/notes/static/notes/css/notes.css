@@ -1,0 +1,17 @@
+.note {
+  background-color: #FFF;
+  margin: 7px 0px;
+  padding: 7px 0px;
+}
+.note .text,
+.note .author,
+.note .date,
+.note .statistic {
+  margin: 0px 7px 3.5px;
+}
+.note .text {
+  margin-bottom: 7px;
+}
+.statistic {
+  display: block;
+}
