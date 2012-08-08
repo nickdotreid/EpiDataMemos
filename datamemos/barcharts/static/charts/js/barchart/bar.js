@@ -7,6 +7,7 @@ $(document).ready(function(){
 		var _height = 0;
 		var _y = 0;
 		var _x = 0;
+		bar.removeClass("stacked");
 		var prev = bar.prev(".bar");
 		if(prev.length>0){
 			_x = prev.data("x");
@@ -15,7 +16,8 @@ $(document).ready(function(){
 				_x += offset;	
 			}
 			if(event.stacked){
-				_y = prev.data("y") + prev.data("height");	
+				bar.addClass("stacked");
+				_y = prev.data("y") + prev.data("height");
 			}
 		}
 		if(match>0){

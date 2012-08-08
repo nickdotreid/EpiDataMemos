@@ -106,10 +106,16 @@
 		left:0px;
 		z-index:3;
 		background-color:#CCC;
+		background-image:url('../i/white70.png');
+		background-repeat:repeat;
+		background-position:top left;
 		width:60px;
 		height:0px;
 		.amount{
 			display:none;
+		}
+		&.stacked,&.selected{
+			background-image:none;
 		}
 		&.selected{
 			z-index:5;

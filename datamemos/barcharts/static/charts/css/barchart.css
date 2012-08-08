@@ -102,11 +102,18 @@
   left: 0px;
   z-index: 3;
   background-color: #CCC;
+  background-image: url('../i/white70.png');
+  background-repeat: repeat;
+  background-position: top left;
   width: 60px;
   height: 0px;
 }
 .canvas .bar .amount {
   display: none;
+}
+.canvas .bar.stacked,
+.canvas .bar.selected {
+  background-image: none;
 }
 .canvas .bar.selected {
   z-index: 5;
