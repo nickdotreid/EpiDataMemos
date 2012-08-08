@@ -46,4 +46,18 @@ $(document).ready(function(){
 		$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));
 	})
 	
+	$(".navbar a").click(function(event){
+		event.preventDefault();
+		$(".navbar li.active").removeClass("active");
+		$(this).parents("li:first").addClass("active");
+		$.address.parameter("page",$(this).attr("href").replace("/",""));
+	});
+	$.address.change(function(){
+		$(".page").hide();
+		if($.address.parameter("page")){
+			$("#"+$.address.parameter("page")+".page").show();
+		}
+	});
+	$(".page").hide();
+	$(".navbar li a:first").click();
 });

@@ -5979,3 +5979,9 @@ body {
     width: 225px;
   }
 }
+.page {
+  background-color: #FFF;
+}
+.page .page-inner {
+  margin: 7px;
+}
