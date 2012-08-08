@@ -114,7 +114,7 @@ $(document).ready(function(){
 				max:chart_max,
 				ticks:5
 			});
-		},500);
+		},100);
 		chart.data("redraw-timeout",timeout);
 	});
 	$.address.change(function(event){

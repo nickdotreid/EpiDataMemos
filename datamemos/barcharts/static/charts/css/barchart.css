@@ -1,12 +1,13 @@
 /* GRID */
 .grid {
   position: absolute;
-  overflow: hidden;
   top: 0px;
   left: 0px;
   z-index: 1;
   width: 100%;
   height: 100%;
+  border-right: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
 }
 .grid .tick {
   position: absolute;
@@ -37,26 +38,27 @@
   display: none;
   clear: both;
 }
+.canvas-container {
+  position: relative;
+  overflow: hidden;
+}
 .canvas {
   height: 400px;
   width: auto;
   display: block;
   margin: 7px 7px 30px;
-  border-bottom: 1px solid #cccccc;
   position: relative;
   top: 0px;
   left: 0px;
 }
 .canvas .scale {
   position: relative;
-  overflow: hidden;
   background-color: #FFF;
   display: block;
   float: left;
   height: 100%;
   width: 50px;
   margin-right: 14px;
-  border-right: 1px solid #cccccc;
 }
 .canvas .scale .tick {
   position: absolute;
@@ -83,9 +85,9 @@
 .canvas .column .label {
   display: block;
   position: absolute;
-  bottom: 0px;
+  top: 400px;
   left: 0px;
-  width: auto;
+  width: 100%;
   text-align: center;
 }
 .canvas .bar-container {
@@ -93,7 +95,6 @@
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 .canvas .bar {
   position: absolute;

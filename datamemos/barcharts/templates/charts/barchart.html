@@ -30,10 +30,11 @@
 		</fieldset>
 		-->
 	</form>
+	<div class="canvas-container">
 	<div class="canvas">
 	{% for column in columns %}
 		<div class="column">
-			<div class="label">{{column.name}}</div>
+			<div class="label">{{column.label}}</div>
 			<div class="bar-container">
 			{% for point in column.points %}
 			<div class="bar{% for row in point.rows %} {{row}}{% endfor %}" tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" amount="{{point.value}}">
@@ -43,5 +44,6 @@
 			</div>
 		</div>
 	{% endfor %}	
+	</div>
 	</div>
 </div>
