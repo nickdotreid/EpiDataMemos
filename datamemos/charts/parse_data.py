@@ -1,7 +1,7 @@
 import xlrd
 
-def parse_data_file(file_location):
-	wb = xlrd.open_workbook(file_location)
+def parse_data_file(_file_contents):
+	wb = xlrd.open_workbook(file_contents=_file_contents)
 	sh = wb.sheet_by_index(0)
 	
 	columns = {}

@@ -41,7 +41,7 @@ def parse_xls_to_points(chart):
 	if not chart or not bool(chart.xls):
 		return False
 	chart.point_set.all().delete()
-	data = parse_data_file(chart.xls.path)
+	data = parse_data_file(chart.xls.read())
 	add_tags_and_points(chart,data)
 	return True
 
