@@ -37,6 +37,11 @@ def get_chart_values(chart):
 		if row.parent and row.parent not in parents:
 			parents.append(row.parent)
 	_rows = []
+	def sort_rows(a,b):
+		if(a.order>b.order):
+			return 1
+		return -1
+	rows.sort(sort_rows)
 	for row in rows:
 		if row.parent is None:
 			_rows.append(row_to_object(row))
