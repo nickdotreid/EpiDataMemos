@@ -10,10 +10,8 @@ $(document).ready(function(){
 			bar.data("tags",tag_arr);
 			bar.data("amount",Number(bar.attr("amount")));
 		});
-		// append grid?
 		$(".bar",chart).trigger("bar-init");
 		chart.data("tags",[]);
-		chart.trigger('grid-draw');
 		chart.trigger("get-state-chart").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
 		var tags = [];
@@ -108,12 +106,12 @@ $(document).ready(function(){
 				});
 				column.width(widest);
 			});
-			$(".grid",chart).trigger({
-				type:"grid-redraw",
-				filter:event.filter,
-				highlight:event.highlight,
-				percent:event.percent,
-				chart_max:chart_max,
+			if($(".scale",canvas).length < 1){
+				canvas.prepend('<div class="scale"></div>');
+			}
+			$(".scale",canvas).trigger({
+				type:'scale-draw',
+				max:chart_max,
 				ticks:5
 			});
 		},500);

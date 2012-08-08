@@ -42,10 +42,29 @@
 	height:400px;
 	width:auto;
 	display:block;
+	margin:7px 7px 30px;
+	border-bottom:1px solid #CCC;
 	position:relative;
 	top:0px;
 	left:0px;
-	overflow:hidden;
+	.scale{
+		position:relative;
+		background-color:#FFF;
+		display:block;
+		float:left;
+		height:100%;
+		width:100px;
+		border-right:1px solid #CCC;
+		.tick{
+			position:absolute;
+			top:0px;
+			left:0px;
+			font-size:0.8em;
+			width:auto;
+			text-align:right;
+			padding:0px 7px;
+		}
+	}
 	.column{
 		position:relative;
 		top:0px;
