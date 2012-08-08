@@ -38,6 +38,9 @@
   display: none;
   clear: both;
 }
+.filters .tag {
+  float: left;
+}
 .canvas-container {
   position: relative;
   overflow: hidden;
