@@ -16,5 +16,7 @@ class Note(models.Model):
 	
 	public = models.BooleanField(default=False)
 	
+	weight = models.PositiveIntegerField(blank=True, null=True, default=1)
+	
 	def __unicode__(self):
 		return self.text

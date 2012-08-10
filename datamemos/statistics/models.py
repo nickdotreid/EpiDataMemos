@@ -9,7 +9,5 @@ class Statistic(models.Model):
 	note = models.ForeignKey(Note,null=True,blank=True)
 	tags = models.ManyToManyField(Tag, blank=True)
 	
-	votes = models.PositiveIntegerField()
-	
 	def __unicode__(self):
 		return self.chart.title

@@ -6,6 +6,6 @@ class StatisticInline(admin.TabularInline):
 	extra = 2
 
 class StatisticAdmin(admin.ModelAdmin):
-	fields = ['note','chart','tags','votes']
+	fields = ['note','chart','tags']
 
 admin.site.register(Statistic,StatisticAdmin)

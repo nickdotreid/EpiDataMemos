@@ -86,7 +86,6 @@ def save_statistic(request):
 	chart = get_object_or_404(Chart,pk=chart_id)
 	statistic = Statistic(
 		chart = chart,
-		votes = 1,
 	)
 	statistic.save()
 	tags = []
