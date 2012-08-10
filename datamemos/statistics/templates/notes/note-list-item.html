@@ -1,0 +1,27 @@
+<div id="note-{{note.id}}" class="note">
+	<div class="text">{{note.text}}</div>
+	{% if statistics %}
+	<ul class="statistics">
+	{% for statistic in statistics %}
+		<li class="statistic statistic-list" tags="{% for tag in statistic.tags.all %}{% if not forloop.first %},{% endif %}{{tag.short}}{% endfor %}"><i></i>{% for tag in statistic.tags.all %}{% if not forloop.first %}, {% if forloop.last %}and {% endif %}{% endif %}{{tag.name}}{% endfor %}</li>
+	{% endfor %}
+	</ul>
+	{% endif %}
+	{% if note.author %}
+	<div class="author">
+		{% if author.username != author.email %}
+		<span class="name">{{author.username}}</span>
+		{% endif %}
+		{% if author.email %}
+		<a href="mailto:{{author.email}}" class="email"><i></i>{{author.email}}</a>
+		{% endif %}
+	</div>
+	{% endif %}
+	<div class="date">{{note.date}}</div>
+	<div class="nav">
+		{% if user %}
+		<a href="#" class="edit">edit</a>
+		{% endif %}
+		<a href="#" class="share">Share</a>
+	</div>
+</div>

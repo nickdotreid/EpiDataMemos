@@ -35,7 +35,7 @@ $(document).ready(function(){
 			success:function(data){
 				form.remove();
 				$("#note-container .create-note").parents("li:first").removeClass("active");
-				$("#note-type-selector a[note-type='comment']").click();
+				$("#note-type-selector a[note-type='comment']").click();	// should reload correct screen
 			},
 			error:function(data){
 				if(data['form']){
@@ -102,14 +102,31 @@ $(document).ready(function(){
 			success:function(data){
 				if(data['notes']){
 					for(var index in data['notes']){
-						place_note(data['notes'][index]);
-						$("#note-container .notes").trigger({
-							type:"sort",
-							tags:String($.address.parameter("tags")).split(",")
-						});
+						var note = data['notes'][index];
+						if($("#note-"+note['id']).length > 0){
+							var original = $("#note-"+note['id']);
+							$(note['markup']).after(original);
+							original.remove();
+						}else{
+							$("#note-container .notes").append(note['markup']);
+						}
 					}
+					$("#note-container .notes .note").trigger("notes-init");
+					$("#note-container .notes").trigger({
+						type:"sort",
+						tags:String($.address.parameter("tags")).split(",")
+					});
 				}
 			}
+		});
+	}).delegate("#note-container .notes .note","notes-init",function(event){
+		var note = $(this);
+		if(note.data("init")){
+			return;
+		}
+		note.data("init",true);
+		$(".statistic",note).each(function(){
+			$(this).data("tags",$(this).attr("tags").split(","));
 		});
 	});
 	$.address.change(function(event){
@@ -130,48 +147,3 @@ $(document).ready(function(){
 	})
 	$("#note-type-selector li:first").addClass("active");
 });
-
-function place_note(data,note){
-	if(!note){
-		note = create_note(data)
-	}
-	if($("#note-"+data['id']).length > 0){
-		var old = $("#note-"+data['id']);
-		old.after(note);
-		old.remove();
-	}else{
-		$("#notes").append(note);
-	}
-}
-
-function create_note(data){
-	var note = $("#templates .note").clone();
-	note.attr("id","note-"+data['id']);
-	$(".text",note).html(data['text']);
-	if(data['author']){
-		$(".text",note).html(data['text']).show();
-	}
-	if(data['pub-date']){
-		$(".pub-date",note).html(data['pub-date']).show();
-	}
-	if(data['editable']){
-		$(".edit",note).attr("href","/notes/"+data['id']+'/edit/').show();
-	}
-	note.addClass(data['type']);
-	for(stat_index in data['statistics']){
-		var stat = data['statistics'][stat_index];
-		note.append(create_statistic(stat));
-	}
-	return note;
-}
-
-function create_statistic(data){
-	var stat = $("#templates .statistic").clone();
-	stat.attr("id","statistic-"+data['id']);
-	stat.data("tags",data['tags']);
-	stat.append("Statistic "+data['id']);
-	for(var index in data['tags']){
-		stat.append(" "+data['tags'][index]);
-	}
-	return stat;
-}

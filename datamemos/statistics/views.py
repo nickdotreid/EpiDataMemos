@@ -6,6 +6,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from annoying.functions import get_object_or_None
 from django.core.urlresolvers import reverse
 
+from django.template.loader import render_to_string
+
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -16,10 +18,11 @@ def list(request):
 	# look for order param
 	# look for limit param
 	# look for filter param
+	chart = None
 	if 'chart_id' in request.GET:
 		chart = get_object_or_None(Chart,id=int(request.GET['chart_id']))
-		if chart is not None:
-			objects.filter(chart=chart)
+	if chart is not None:
+		objects.filter(chart=chart)
 	statistics = objects.all()
 	notes = []
 	for stat in statistics:
@@ -29,21 +32,12 @@ def list(request):
 	if request.is_ajax():
 		_notes = []
 		for note in notes:
-			stats = []
-			for stat in note.statistic_set.all():
-				tags = []
-				for tag in stat.tags.all():
-					tags.append(tag.short)
-				stats.append({
-					'id':stat.id,
-					'chart_id':stat.chart.id,
-					'tags':tags,
-				})
 			_notes.append({
 				'id':note.id,
-				'text':note.text,
-				'statistics':stats,
-				'type':note.type.short,
+				'markup':render_to_string('notes/note-list-item.html',{
+					'note':note,
+					'statistics':note.statistic_set.all(),
+				},context_instance=RequestContext(request))
 			})
 		return HttpResponse(
 			json.dumps({
