@@ -8,18 +8,33 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'Category'
+        db.create_table('notes_category', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('short', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100, blank=True)),
+            ('public', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('viewable', self.gf('django.db.models.fields.BooleanField')(default=True)),
+        ))
+        db.send_create_signal('notes', ['Category'])
+
         # Adding model 'Note'
         db.create_table('notes_note', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True)),
-            ('text', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('text', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('pub_date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['notes.Category'], null=True, blank=True)),
             ('public', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('weight', self.gf('django.db.models.fields.PositiveIntegerField')(default=1, null=True, blank=True)),
         ))
         db.send_create_signal('notes', ['Note'])
 
 
     def backwards(self, orm):
+        # Deleting model 'Category'
+        db.delete_table('notes_category')
+
         # Deleting model 'Note'
         db.delete_table('notes_note')
 
@@ -61,13 +76,23 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        'notes.category': {
+            'Meta': {'object_name': 'Category'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'short': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100', 'blank': 'True'}),
+            'viewable': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
+        },
         'notes.note': {
             'Meta': {'object_name': 'Note'},
             'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
             'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'text': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+            'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['notes.Category']", 'null': 'True', 'blank': 'True'}),
+            'weight': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1', 'null': 'True', 'blank': 'True'})
         }
     }
 

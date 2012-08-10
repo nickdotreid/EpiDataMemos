@@ -9,13 +9,13 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Changing field 'Note.text'
-        db.alter_column('notes_note', 'text', self.gf('django.db.models.fields.TextField')())
+        # Changing field 'Category.short'
+        db.alter_column('notes_category', 'short', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50))
 
     def backwards(self, orm):
 
-        # Changing field 'Note.text'
-        db.alter_column('notes_note', 'text', self.gf('django.db.models.fields.CharField')(max_length=500))
+        # Changing field 'Category.short'
+        db.alter_column('notes_category', 'short', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True))
 
     models = {
         'auth.group': {
@@ -54,6 +54,14 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        'notes.category': {
+            'Meta': {'object_name': 'Category'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'short': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
+            'viewable': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
+        },
         'notes.note': {
             'Meta': {'object_name': 'Note'},
             'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'}),
@@ -61,7 +69,8 @@ class Migration(SchemaMigration):
             'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
             'public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'})
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['notes.Category']", 'null': 'True', 'blank': 'True'}),
+            'weight': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1', 'null': 'True', 'blank': 'True'})
         }
     }
 
