@@ -28,6 +28,15 @@ def make_note_form(user = False):
 		if not user:
 			email = forms.EmailField()
 		
+		text = forms.CharField(
+			widget = forms.Textarea,
+			label = 'Your note or insite to share',
+		)
+		
+		public = forms.BooleanField(
+			label = 'Do you want to list this comment publicly?',
+		)
+		
 		class Meta:
 			model = Note
 			fields = ('text', 'type','public')
