@@ -30,6 +30,9 @@ class Chart(models.Model):
 	
 	columns = models.ManyToManyField(Tag, blank=True)
 	
+	x_label = models.CharField(max_length=250,blank=True)
+	y_label = models.CharField(max_length=250,blank=True)
+	
 	def __unicode__(self):
 		if self.published:
 			return self.title

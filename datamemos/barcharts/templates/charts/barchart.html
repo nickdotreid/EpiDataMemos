@@ -31,6 +31,7 @@
 		-->
 	</form>
 	<div class="canvas-container">
+	<div class="y_label">{{chart.y_label}}</div>
 	<div class="canvas">
 	{% for column in columns %}
 		<div class="column">
@@ -45,5 +46,6 @@
 		</div>
 	{% endfor %}	
 	</div>
+	<div class="x_label">{{chart.x_label}}</div>
 	</div>
 </div>
