@@ -13,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import json
 
-from forms import NoteForm, AuthorForm
+from forms import make_note_form
 from django.template import RequestContext
 
 def detail(request, note_id):
@@ -21,33 +21,33 @@ def detail(request, note_id):
 	return render_to_response('notes/detail.html',{'note':note})
 
 def create(request):
+	if request.user.is_authenticated():
+		NoteForm = make_note_form(request.user)
+	else:
+		NoteForm = make_note_form()
 	form = NoteForm()
-	author_form = False
-	if not request.user.is_authenticated():
-		author_form = AuthorForm()
 	if request.method == 'POST':
-		author = False
-		if request.user.is_authenticated():
-			author = request.user
-		else:
-			author_form = AuthorForm(request.POST)
-			if author_form.is_valid() and 'email' in author_form.cleaned_data and 'name' in author_form.cleaned_data:
-				users_list = User.objects.filter(email=author_form.cleaned_data['email'])
-				if len(users_list) > 0:
-					author = users_list[0]
-				else:
-					user = User()
-					user.email = author_form.cleaned_data['email']
-					user.username = author_form.cleaned_data['name']
-					user.save()
-					author = user
-				#log in author??
 		form = NoteForm(request.POST)
-		if form.is_valid() and author:
+		if form.is_valid():
+			if request.user.is_authenticated():
+				author = request.user
+			else:
+				if 'email' in form.cleaned_data:
+					users_list = User.objects.filter(email=form.cleaned_data['email'])
+					if len(users_list) > 0:
+						author = users_list[0]
+					else:
+						user = User()
+						user.username = form.cleaned_data['email']
+						user.email = form.cleaned_data['email']
+						user.save()
+						author = user
+					#log in author??
 			note = Note(
 				text = form.cleaned_data['text'],
-				type = 'comment',
-				pub_date = datetime.datetime.now()
+				type = form.cleaned_data['type'],
+				pub_date = datetime.datetime.now(),
+				author = author,
 				)
 			if 'public' in form.cleaned_data:
 				note.public = True
@@ -71,7 +71,6 @@ def create(request):
 			json.dumps({
 				"form":render_to_string("notes/form.html",{
 					"form":form,
-					"author_form":author_form,
 					"extra_css":"ajax"
 					})
 				}),
