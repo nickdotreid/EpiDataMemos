@@ -54,9 +54,10 @@ $(document).ready(function(){
 			var stat_tags = $(div).data("tags");
 			for(var index in stat_tags){
 				if(in_array(tags,stat_tags[index])){
-					count++;
+					count += 2;
 				}
 			}
+			// if tag is parent of child add 1
 			return count;
 		}
 		sorted_notes = notes.sort(function(a,b){
@@ -125,6 +126,7 @@ $(document).ready(function(){
 			return;
 		}
 		note.data("init",true);
+		note.data("date",new Date(note.attr("date")));
 		$(".statistic",note).each(function(){
 			$(this).data("tags",$(this).attr("tags").split(","));
 		});

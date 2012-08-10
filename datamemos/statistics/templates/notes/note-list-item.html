@@ -1,4 +1,4 @@
-<div id="note-{{note.id}}" class="note">
+<div id="note-{{note.id}}" class="note" date="{{note.pub_date|date:"SHORT_DATE_FORMAT"}}">
 	<div class="text">{{note.text}}</div>
 	{% if statistics %}
 	<ul class="statistics">
@@ -17,7 +17,7 @@
 		{% endif %}
 	</div>
 	{% endif %}
-	<div class="date">{{note.date}}</div>
+	<div class="pub_date">{{note.pub_date|date:"SHORT_DATE_FORMAT"}}</div>
 	<div class="nav">
 		{% if user %}
 		<a href="#" class="edit">edit</a>
