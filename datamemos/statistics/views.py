@@ -24,7 +24,7 @@ def list(request):
 	notes = []
 	for stat in statistics:
 		if stat.note and stat.note.public and stat.note not in notes:
-			if 'type' not in request.GET or (request.GET['type'] == stat.note.type):
+			if 'type' not in request.GET or (request.GET['type'] == stat.note.type.short):
 				notes.append(stat.note)
 	if request.is_ajax():
 		_notes = []
@@ -43,7 +43,7 @@ def list(request):
 				'id':note.id,
 				'text':note.text,
 				'statistics':stats,
-				'type':note.type,
+				'type':note.type.short,
 			})
 		return HttpResponse(
 			json.dumps({
