@@ -4,7 +4,7 @@ from models import Note, Category
 
 def make_note_form(user = False):	
 	class NoteForm(ModelForm):
-		if user:
+		if user and user.is_staff:
 			categories = Category.objects
 		else:
 			categories = Category.objects.filter(public=True)
