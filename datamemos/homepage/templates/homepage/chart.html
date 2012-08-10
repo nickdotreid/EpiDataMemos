@@ -63,8 +63,9 @@
 	</ul>
 	<div id="notes-edit-area" class="notes-edit notes-edit-container"></div>
 	<ul id="note-type-selector" class="nav nav-pills">
-		<li><a note-type="definition" href="#">Definitions</a></li>
-		<li><a note-type="comment" href="#">Comments</a></li>
+		{% for category in categories %}
+		<li><a note-type="{{category.short}}" href="#">{{category.name}}</a></li>
+		{% endfor %}
 	</ul>
 	<div id="notes" class="notes notes-container"></div>
 </div>
