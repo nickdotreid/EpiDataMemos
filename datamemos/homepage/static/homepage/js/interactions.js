@@ -14,7 +14,12 @@ $(document).ready(function(){
 			type:"redraw",
 			tags:tags
 			});
+		$(".notes").trigger({
+			type:"sort",
+			tags:tags
+		})
 	}).delegate(".barchart .column","mouseleave",function(){
 		$(".barchart").trigger("redraw");
+		$(".notes").trigger("sort");
 	});
 });
