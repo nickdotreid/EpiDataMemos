@@ -50,7 +50,11 @@ $(document).ready(function(){
 		$(".tags input, .tags-children input",$(this).parents(".chart:first")).removeClass("selected").each(function(){
 			row_values.push(this.value);
 		});
-		new_elements = add_and_filter_array($.address.parameter("tags").split(","), this.value, row_values);
+		var tags = [];
+		if($.address.parameter("tags")){
+			tags = $.address.parameter("tags").split(",");
+		}
+		new_elements = add_and_filter_array(tags, this.value, row_values);
 		$.address.parameter("tags",new_elements.join(","));
 	}).delegate(".column .label","click",function(event){
 		event.preventDefault();
@@ -59,11 +63,15 @@ $(document).ready(function(){
 		$(".column",column.parents(".canvas:first")).removeClass("selected").each(function(){
 			column_values.push($(this).attr("value"));
 		});
-		var elements = $.address.parameter("tags").split(",");
-		if(elements.indexOf(column.attr("value")) == -1){
+		var tags = [];
+		if($.address.parameter("tags")){
+			tags = $.address.parameter("tags").split(",");
+		}
+		if(!in_array(tags,column.attr("value"))){
 			column.addClass("selected");
 		}
-		new_elements = add_and_filter_array($.address.parameter("tags").split(","), column.attr("value"), column_values, true);
+
+		new_elements = add_and_filter_array(tags, column.attr("value"), column_values, true);
 		$.address.parameter("tags",new_elements.join(","));
 	});
 });
@@ -74,7 +82,7 @@ function add_and_filter_array(original_arr,value,remove_values,removable){
 	for(var i in original_arr){
 		if(removable && original_arr[i] == value){
 			remove = true
-		}else if(remove_values.indexOf(original_arr[i])>-1){
+		}else if(in_array(remove_values,original_arr[i])){
 			// dump
 		}else{
 			new_arr.push(original_arr[i]);
