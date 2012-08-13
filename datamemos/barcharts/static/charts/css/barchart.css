@@ -125,6 +125,9 @@
 .canvas .bar.selected {
   z-index: 5;
 }
+.canvas .bar.hover {
+  z-index: 7;
+}
 .canvas .highlight {
   display: block;
   background: #FFF;
@@ -135,6 +138,7 @@
   left: 0px;
   z-index: 40;
   padding: 7px;
+  margin-bottom: 23px;
   width: 110px;
 }
 .canvas .highlight .total {

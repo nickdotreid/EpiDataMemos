@@ -40,6 +40,12 @@
 			{% for point in column.points %}
 			<div class="bar{% for row in point.rows %} {{row}}{% endfor %}" tags="{{column.short}}{% for row in point.rows %},{{row}}{% endfor %}" amount="{{point.value}}">
 				<div class="amount">{{point.value}}</div>
+				<div class="highlight">
+					<div class="title title-hightlight">{% for row in point.rows %}{{row}}{% endfor %} in {{column.label}}</div>
+					<div class="number">{{point.value}}</div>
+					<div class="total"></div>
+					<div class="arrow"></div>
+				</div>
 			</div>
 			{% endfor %}
 			</div>
