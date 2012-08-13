@@ -47,5 +47,28 @@ $(document).ready(function(){
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(){
 		$.address.parameter("tags",this.value);
+	}).delegate(".column .label","click",function(event){
+		event.preventDefault();
+		var column = $(this).parents(".column:first");
+		column_values = [];
+		$(".column",colum.parents(".canvas:first")).each(function(){
+			column_values.push($(this).attr("value"));
+		});
+		var elements = $.address.parameter("tags").split(",");
+		var new_elements = [];
+		var removed = false;
+		for(var i in elements){
+			if(elements[i] == column.attr("value")){
+				removed = true;
+			}else if(column_values.indexOf(elements[i])>-1){
+				// dump the value
+			}else{
+				new_elements.push(elements[i]);
+			}
+		}
+		if(!removed){
+			new_elements.push(column.attr("value"));
+		}
+		$.address.parameter("tags",new_elements.join(","));
 	});
 });

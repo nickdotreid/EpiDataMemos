@@ -130,32 +130,6 @@ $(document).ready(function(){
 		chart.data("redraw-timeout",timeout);
 	});
 	
-	$(".wrapper").delegate(".column .label","click",function(event){
-		event.preventDefault();
-		column_values = [];
-		$(".column",$(this).parents(".canvas:first")).removeClass("selected").each(function(){
-			column_values.push($(this).attr("value"));
-		});
-		var column = $(this).parents(".column:first");
-		var elements = $.address.parameter("tags").split(",");
-		var new_elements = [];
-		var removed = false;
-		for(var i in elements){
-			if(elements[i] == column.attr("value")){
-				removed = true;
-			}else if(column_values.indexOf(elements[i])>-1){
-				// dump the value
-			}else{
-				new_elements.push(elements[i]);
-			}
-		}
-		if(!removed){
-			new_elements.push(column.attr("value"));
-			column.addClass("selected");
-		}
-		$.address.parameter("tags",new_elements.join(","));
-	});
-	
 	$.address.change(function(event){
 		$(".chart.barchart").trigger("get-state-chart").trigger("redraw");
 	});
