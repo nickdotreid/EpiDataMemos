@@ -56,6 +56,9 @@ $(document).ready(function(){
 		}
 		new_elements = add_and_filter_array(tags, this.value, row_values);
 		$.address.parameter("tags",new_elements.join(","));
+	}).delegate(".canvas .bar","click",function(event){
+		event.preventDefault();
+		$.address.parameter("tags",$(this).data("tags").join(","));
 	}).delegate(".column .label","click",function(event){
 		event.preventDefault();
 		var column = $(this).parents(".column:first");

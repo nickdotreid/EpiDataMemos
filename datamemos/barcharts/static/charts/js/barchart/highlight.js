@@ -4,7 +4,7 @@ $(document).ready(function(){
 		var highlight = $(".highlight",bar);	
 		var canvas = bar.parents(".canvas:first");
 		
-		bar.addClass("hover");
+		$("."+bar.attr("class").replace(" ","."),canvas).addClass("hover");
 		
 		y = 0 - highlight.height() - Number(highlight.css("margin-bottom").replace("px",""));
 		x = 0 - highlight.width()/2 + bar.width()/2;
@@ -14,7 +14,7 @@ $(document).ready(function(){
 			left:x+'px'
 		}).show();
 	}).delegate(".wrapper .bar","unhighlight",function(event){
-		$(this).removeClass("hover");
+		$(".bar.hover").removeClass("hover");
 		$(".highlight",$(this)).hide();
 	}).delegate(".chart .bar","mouseenter",function(event){
 		$(this).trigger("highlight");
