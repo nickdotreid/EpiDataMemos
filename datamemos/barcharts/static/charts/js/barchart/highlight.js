@@ -9,6 +9,13 @@ $(document).ready(function(){
 		y = 0 - highlight.height() - Number(highlight.css("margin-bottom").replace("px",""));
 		x = 0 - highlight.width()/2 + bar.width()/2;
 		
+		if(bar.height()+highlight.height()+Number(highlight.css("margin-bottom").replace("px","")) > canvas.height()){
+			if(bar.height()>highlight.height()){
+				x = bar.width();
+				y = bar.height()/2 - highlight.height()/2;
+			}
+		}
+		
 		highlight.css({
 			top:y+'px',
 			left:x+'px'
