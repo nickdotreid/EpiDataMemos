@@ -13,6 +13,9 @@ $(document).ready(function(){
 			_x = prev.data("x");
 			if(!event.stacked && prev.data("height")>0){
 				var offset = bar.width()/10;
+				if(bar.parents(".column:first").hasClass("selected")){
+					offset += offset*2;
+				}
 				_x += offset;	
 			}
 			if(event.stacked){
@@ -33,7 +36,7 @@ $(document).ready(function(){
 		var bar = $(this);
 		bar.removeClass("selected");
 		for(var i in event.tags){
-			if(in_array(bar.data("tags"),event.tags[i])){
+			if(event.tags[i] != bar.parents(".column:first").attr("value") && in_array(bar.data("tags"),event.tags[i])){
 				bar.addClass("selected");
 			}
 		}

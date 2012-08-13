@@ -51,7 +51,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		var column = $(this).parents(".column:first");
 		column_values = [];
-		$(".column",colum.parents(".canvas:first")).each(function(){
+		$(".column",column.parents(".canvas:first")).removeClass("selected").each(function(){
 			column_values.push($(this).attr("value"));
 		});
 		var elements = $.address.parameter("tags").split(",");
@@ -68,6 +68,7 @@ $(document).ready(function(){
 		}
 		if(!removed){
 			new_elements.push(column.attr("value"));
+			column.addClass("selected");
 		}
 		$.address.parameter("tags",new_elements.join(","));
 	});

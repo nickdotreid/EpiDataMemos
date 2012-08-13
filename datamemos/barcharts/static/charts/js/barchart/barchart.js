@@ -72,7 +72,7 @@ $(document).ready(function(){
 					var matches = 0;
 					var sibling_matches = 0;
 					for(var index in event.tags){
-						if(in_array(bar.data("tags"),event.tags[index])){
+						if(event.tags[index] != column.attr("value") && in_array(bar.data("tags"),event.tags[index])){
 							matches++;
 							sibling_matches++;
 						}
