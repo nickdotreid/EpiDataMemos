@@ -6,10 +6,12 @@ $(document).ready(function(){
 		
 		$("."+bar.attr("class").replace(" ","."),canvas).addClass("hover");
 		
-		y = 0 - highlight.height() - Number(highlight.css("margin-bottom").replace("px",""));
-		x = 0 - highlight.width()/2 + bar.width()/2;
+		var y = 0 - highlight.height() - Number(highlight.css("margin-bottom").replace("px",""));
+		var x = 0 - highlight.width()/2 + bar.width()/2;
 		
-		if(bar.height()+highlight.height()+Number(highlight.css("margin-bottom").replace("px","")) > canvas.height()){
+		combinded_height = bar.height()+highlight.height()+Number(highlight.css("margin-bottom").replace("px",""));
+		
+		if(bar.hasClass("stacked") || combinde_height > canvas.height()){
 			if(bar.height()>highlight.height()){
 				x = bar.width();
 				y = bar.height()/2 - highlight.height()/2;
