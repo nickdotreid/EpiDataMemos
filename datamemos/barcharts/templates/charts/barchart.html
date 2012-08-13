@@ -34,7 +34,7 @@
 	<div class="y_label">{{chart.y_label}}</div>
 	<div class="canvas">
 	{% for column in columns %}
-		<div class="column">
+		<div class="column" value="{{column.short}}">
 			<div class="label">{{column.label}}</div>
 			<div class="bar-container">
 			{% for point in column.points %}
