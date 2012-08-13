@@ -22,4 +22,14 @@ $(document).ready(function(){
 		$(".barchart").trigger("redraw");
 		$(".notes").trigger("sort");
 	});
+	
+	$(".wrapper").delegate(".notes .statistic","mouseenter",function(){
+		tags = $(this).data("tags");
+		$(".barchart").trigger({
+			type:"redraw",
+			tags:tags
+			});
+	}).delegate(".notes .statistic","mouseleave",function(){
+		$(".barchart").trigger("redraw");
+	});
 });
