@@ -60,17 +60,13 @@ $(document).ready(function(){
 		event.preventDefault();
 		var column = $(this).parents(".column:first");
 		column_values = [];
-		$(".column",column.parents(".canvas:first")).removeClass("selected").each(function(){
+		$(".column",column.parents(".canvas:first")).each(function(){
 			column_values.push($(this).attr("value"));
 		});
 		var tags = [];
 		if($.address.parameter("tags")){
 			tags = $.address.parameter("tags").split(",");
 		}
-		if(!in_array(tags,column.attr("value"))){
-			column.addClass("selected");
-		}
-
 		new_elements = add_and_filter_array(tags, column.attr("value"), column_values, true);
 		$.address.parameter("tags",new_elements.join(","));
 	});

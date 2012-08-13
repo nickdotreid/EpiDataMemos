@@ -94,6 +94,11 @@ $(document).ready(function(){
 					chart_max = biggest_number;
 				}
 			});
+			$(".column",chart).removeClass("selected").each(function(){
+				if(in_array(event.tags,$(this).attr("value"))){
+					$(this).addClass("selected");
+				}
+			});
 			$(".bar").trigger({
 				type:'bar-calculate',
 				tags:event.tags,
