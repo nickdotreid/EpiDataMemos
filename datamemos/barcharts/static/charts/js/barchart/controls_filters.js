@@ -46,7 +46,12 @@ $(document).ready(function(){
 			$.address.parameter("percent",false);
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(){
-		$.address.parameter("tags",this.value);
+		var row_values = []
+		$(".tags input, .tags-children input",$(this).parents(".chart:first")).removeClass("selected").each(function(){
+			row_values.push(this.value);
+		});
+		new_elements = add_and_filter_array($.address.parameter("tags").split(","), this.value, row_values);
+		$.address.parameter("tags",new_elements.join(","));
 	}).delegate(".column .label","click",function(event){
 		event.preventDefault();
 		var column = $(this).parents(".column:first");
@@ -55,21 +60,28 @@ $(document).ready(function(){
 			column_values.push($(this).attr("value"));
 		});
 		var elements = $.address.parameter("tags").split(",");
-		var new_elements = [];
-		var removed = false;
-		for(var i in elements){
-			if(elements[i] == column.attr("value")){
-				removed = true;
-			}else if(column_values.indexOf(elements[i])>-1){
-				// dump the value
-			}else{
-				new_elements.push(elements[i]);
-			}
-		}
-		if(!removed){
-			new_elements.push(column.attr("value"));
+		if(elements.indexOf(column.attr("value")) == -1){
 			column.addClass("selected");
 		}
+		new_elements = add_and_filter_array($.address.parameter("tags").split(","), column.attr("value"), column_values, true);
 		$.address.parameter("tags",new_elements.join(","));
 	});
 });
+
+function add_and_filter_array(original_arr,value,remove_values,removable){
+	var new_arr = []
+	var remove = false;
+	for(var i in original_arr){
+		if(removable && original_arr[i] == value){
+			remove = true
+		}else if(remove_values.indexOf(original_arr[i])>-1){
+			// dump
+		}else{
+			new_arr.push(original_arr[i]);
+		}
+	}
+	if(!remove){
+		new_arr.push(value);
+	}
+	return new_arr;
+}
