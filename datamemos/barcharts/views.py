@@ -17,10 +17,7 @@ def load_chart(request,chart_id):
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
-				'title':chart.title,
-				'description':chart.description,
-				'columns':columns,
-				'rows':rows,
+				'id':chart.id,
 				'markup':render_to_string("charts/barchart.html",{
 					'chart':chart,
 					'columns':columns,

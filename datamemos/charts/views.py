@@ -1,4 +1,4 @@
-from models import Chart
+from models import Chart, Tag
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 
@@ -21,8 +21,8 @@ def get_chart_values(chart):
 		for point in chart.point_set.filter(tags__in=[tag.id]).distinct():
 			_rows = []
 			for row in point.tags.all():
-				if row != tag:
-					_rows.append(row.short)
+				if row != tag and isinstance(row,Tag):
+					_rows.append(row)
 					if row not in rows:
 						rows.append(row)
 			col['points'].append({
@@ -36,20 +36,41 @@ def get_chart_values(chart):
 	for row in rows:
 		if row.parent and row.parent not in parents:
 			parents.append(row.parent)
-	_rows = []
+	for parent in parents:
+		for column in columns:
+			total = 0
+			for point in column['points']:
+				add = False
+				for row in point['rows']:
+					if row in parent.children.all():
+						add = True
+				if add:
+					total += point['value']
+			for point in column['points']:
+				add = False
+				for row in point['rows']:
+					if row in parent.children.all():
+						add = True
+				if add:
+					point['total'] = total
+					point['percent'] = float(point['value'])/float(point['total'])
 	def sort_rows(a,b):
 		if(a.order>b.order):
 			return 1
 		return -1
 	rows.sort(sort_rows)
+	_rows = []
 	for row in rows:
 		if row.parent is None:
 			_rows.append(row_to_object(row))
+	_parents = []
 	for parent in parents:
-		_parent = row_to_object(parent)
+		_parents.append(row_to_object(parent))
+	for parent in _parents:
+		_parent = parent
 		_parent['children'] = []
 		for row in rows:
-			if row.parent == parent:
+			if row.parent and row.parent.short == parent['short']:
 				_parent['children'].append(row_to_object(row))
 		_rows.append(_parent)
 	return {
