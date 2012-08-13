@@ -20,7 +20,6 @@ $(document).ready(function(){
 				}
 			}
 			bar.data("tags",tag_arr);
-			bar.data("amount",Number(bar.attr("amount")));
 		});
 		$(".bar",chart).trigger("bar-init");
 		chart.data("tags",[]);

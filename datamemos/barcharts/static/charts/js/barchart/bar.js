@@ -1,6 +1,10 @@
 $(document).ready(function(){
 	$(".wrapper").delegate(".chart.barchart .bar","bar-init",function(event){
-		$(this).height("0px").css("top",$(this).parents(".canvas:first").height());
+		var bar = $(this);
+		bar.data("amount",Number(bar.attr("amount")));
+		bar.data("total",Number(bar.attr("total")));
+		bar.data("percent",Number(bar.attr("percent")));
+		bar.height("0px").css("top",bar.parents(".canvas:first").height());
 	}).delegate(".chart.barchart .bar","bar-calculate",function(event){
 		var bar = $(this);
 		var match = bar.data("matches");
