@@ -40,7 +40,7 @@ $(document).ready(function(){
 		}).show();
 	}).delegate(".wrapper .bar","unhighlight",function(event){
 		$(".bar.hover").removeClass("hover");
-		$(".highlight:not(.bar .highlight)",$(this).parents("canvas:first")).remove();
+		$(".highlight:not(.bar .highlight)",$(this).parents(".canvas:first")).remove();
 	}).delegate(".chart .bar","mouseenter",function(event){
 		$(this).trigger("highlight");
 	}).delegate(".chart .bar","mouseleave",function(event){
