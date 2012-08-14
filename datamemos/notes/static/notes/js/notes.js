@@ -48,14 +48,18 @@ $(document).ready(function(){
 	$("#note-container").delegate(".notes","sort",function(event){
 		var container = $(this);
 		var notes = $(".note",container);
+		var ignore_values = [];
+		$(".chart .column").each(function(){
+			ignore_values.push($(this).attr("value"));
+		})
 		var tags = event.tags;
 		var tag_count = function(div){
 			var count = 0;
 			var stat = $(div);
 			var tag_count = arr_similar_count(tags,stat.data("tags"));
-			var parent_count = arr_similar_count(tags,stat.data("parent-tags"));
-			var child_count = arr_similar_count(tags,stat.data("child-tags"));
-			var sibling_count = arr_similar_count(tags,stat.data("sibling-tags"));
+			var parent_count = arr_similar_count(tags,stat.data("parent-tags"),ignore_values);
+			var child_count = arr_similar_count(tags,stat.data("child-tags"),ignore_values);
+			var sibling_count = arr_similar_count(tags,stat.data("sibling-tags"),ignore_values);
 			return tag_count*3 + child_count + parent_count/2 + sibling_count/2;
 		}
 		notes.removeClass("active").each(function(){
@@ -151,11 +155,17 @@ $(document).ready(function(){
 	$("#note-type-selector li:first").addClass("active");
 });
 
-function arr_similar_count(arr1,arr2){
+function arr_similar_count(arr1,arr2,ignore_arr){
 	var count = 0;
-	for(var index in arr1){
-		if(in_array(arr2,arr1[index])){
-			count += 1;
+	for(var i in arr1){
+		if(!ignore_arr || !in_array(ignore_arr,arr1[i])){
+			for( var q in arr2){
+				if(!ignore_arr || !in_array(ignore_arr,arr2[q])){
+					if(arr1[i] == arr2[q]){
+						count += 1;
+					}					
+				}
+			}			
 		}
 	}
 	return count;
