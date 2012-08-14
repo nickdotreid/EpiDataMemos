@@ -58,22 +58,19 @@ $(document).ready(function(){
 			var sibling_count = arr_similar_count(tags,stat.data("sibling-tags"));
 			return tag_count*3 + child_count + parent_count/2 + sibling_count/2;
 		}
+		notes.each(function(){
+			var note_count = 0;
+			var note = $(this);
+			$(".statistic",note).each(function(){
+				var count = tag_count(this);
+				if(count>note_count){
+					note_count = count;
+				}
+			});
+			note.data("count",note_count);
+		})
 		sorted_notes = notes.sort(function(a,b){
-			var a_count = 0;
-			$(".statistic",$(a)).each(function(){
-				var count = tag_count(this);
-				if(count>a_count){
-					a_count = count;
-				}
-			});
-			var b_count = 0;
-			$(".statistic",$(b)).each(function(){
-				var count = tag_count(this);
-				if(count>b_count){
-					b_count = count;
-				}
-			});
-			if(a_count >= b_count){
+			if($(a).data("count") >= $(b).data("count")){
 				return -1
 			}else{
 				return 1;
