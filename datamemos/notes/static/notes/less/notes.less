@@ -1,9 +1,15 @@
 @spaceSize:7px;
 
 .note{
-	background-color:#FFF;
+	background-color:transparent;
+	background-image:url('../i/white70.png');
+	background-repeat:repeat;
+	background-position:top left;
 	margin:@spaceSize 0px;
 	padding:@spaceSize 0px;
+	&.active{
+		background-color:#FFF;
+	}
 	.text,.author,.date,.statistic{
 		margin:0px @spaceSize @spaceSize/2;
 	}

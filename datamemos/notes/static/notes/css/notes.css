@@ -1,7 +1,13 @@
 .note {
-  background-color: #FFF;
+  background-color: transparent;
+  background-image: url('../i/white70.png');
+  background-repeat: repeat;
+  background-position: top left;
   margin: 7px 0px;
   padding: 7px 0px;
+}
+.note.active {
+  background-color: #FFF;
 }
 .note .text,
 .note .author,

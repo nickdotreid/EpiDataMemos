@@ -58,7 +58,7 @@ $(document).ready(function(){
 			var sibling_count = arr_similar_count(tags,stat.data("sibling-tags"));
 			return tag_count*3 + child_count + parent_count/2 + sibling_count/2;
 		}
-		notes.each(function(){
+		notes.removeClass("active").each(function(){
 			var note_count = 0;
 			var note = $(this);
 			$(".statistic",note).each(function(){
@@ -67,8 +67,11 @@ $(document).ready(function(){
 					note_count = count;
 				}
 			});
+			if(note_count > 0){
+				note.addClass("active");
+			}
 			note.data("count",note_count);
-		})
+		});
 		sorted_notes = notes.sort(function(a,b){
 			if($(a).data("count") >= $(b).data("count")){
 				return -1
