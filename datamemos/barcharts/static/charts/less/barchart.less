@@ -1,6 +1,25 @@
 @highlight_color:#AAA;
 @gridColor:#CCC;
+@spaceSize:7px;
 
+.chart{
+	.description,.title{
+		margin:0px @spaceSize;
+	}
+	.description{
+		margin-bottom:@spaceSize;
+	}
+	.controls{
+		margin:0px @spaceSize;
+		legend{
+			margin:0px 0px @spaceSize/2;
+			font-size:12px;
+			line-height:13px;
+			font-style:italic;
+			border:0px;
+		}
+	}
+}
 
 /* GRID */
 .grid{

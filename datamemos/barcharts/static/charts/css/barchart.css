@@ -1,3 +1,20 @@
+.chart .description,
+.chart .title {
+  margin: 0px 7px;
+}
+.chart .description {
+  margin-bottom: 7px;
+}
+.chart .controls {
+  margin: 0px 7px;
+}
+.chart .controls legend {
+  margin: 0px 0px 3.5px;
+  font-size: 12px;
+  line-height: 13px;
+  font-style: italic;
+  border: 0px;
+}
 /* GRID */
 .grid {
   position: absolute;
