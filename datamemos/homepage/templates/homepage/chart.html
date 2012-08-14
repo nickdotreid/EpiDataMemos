@@ -38,18 +38,21 @@
 	</div>
 </div>
 <div id="home" class="page page-content">
-	<div class="about-container about-container-shared page-inner">
+	<div class="page-inner">
+	<div class="about-container about-container-shared">
 		<h2>About SF HIV Chart Project</h2>
 		<p>This is some intro copy about the project. You should be proud.</p>
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 	</div>
-	<div class="chart-list chart-list-shared page-inner">
+	<div class="chart-list chart-list-shared">
 		<h2>Browse Charts</h2>
 		<ul class="links chart-links">
 		{% for chart in charts %}
 		<li><a href="/charts/{{chart.id}}/" data-id="{{chart.id}}">{{chart.title}}</a></li>
 		{% endfor %}
 		</ul>
+	</div>
+	<div style="clear:both;">&nbsp;</div>
 	</div>
 </div>
 <div id="charts" class="page page-content">

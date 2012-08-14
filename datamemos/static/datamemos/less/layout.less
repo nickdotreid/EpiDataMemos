@@ -28,6 +28,17 @@
 		width:225px;
 		margin-left:@spaceSize;
 	}
+	#home{
+		.about-container,.chart-list{
+			display:block;
+			float:left;
+			width:475px;
+		}
+		.chart-list{
+			width:225px;
+			margin-left:@spaceSize;
+		}
+	}
 }
 @media(min-width: @largeWidth){
 	#chart-container,#note-container{
@@ -44,6 +55,13 @@
 		.nav li{
 			width:225px;
 		}
+	}
+	#home .about-container{
+		width:615px;
+	}
+	#home .chart-list{
+		width:525px;
+		margin-left:@spaceSize*2;
 	}
 }
 

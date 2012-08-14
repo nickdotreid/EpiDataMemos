@@ -5925,7 +5925,7 @@ input[type="submit"].btn.btn-mini {
 body {
   font-family: Verdana, Arial, Sans-Serif;
   font-size: 14px;
-  background-color: #333;
+  background-color: #EFEFEF;
 }
 #templates {
   display: none;
@@ -5962,6 +5962,16 @@ body {
     width: 225px;
     margin-left: 7px;
   }
+  #home .about-container,
+  #home .chart-list {
+    display: block;
+    float: left;
+    width: 475px;
+  }
+  #home .chart-list {
+    width: 225px;
+    margin-left: 7px;
+  }
 }
 @media (min-width: 1200px) {
   #chart-container .section-title,
@@ -5977,6 +5987,13 @@ body {
   }
   #note-container .nav li {
     width: 225px;
+  }
+  #home .about-container {
+    width: 615px;
+  }
+  #home .chart-list {
+    width: 525px;
+    margin-left: 14px;
   }
 }
 .page {
