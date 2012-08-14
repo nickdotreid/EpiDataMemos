@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	
 	$(".wrapper").delegate(".barchart .column","mouseenter",function(){
 		var column = $(this);
 		column_values = [];
