@@ -3,7 +3,16 @@
 	{% if statistics %}
 	<ul class="statistics">
 	{% for statistic in statistics %}
-		<li class="statistic statistic-list" tags="{% for tag in statistic.tags.all %}{% if not forloop.first %},{% endif %}{{tag.short}}{% endfor %}"><i></i>{% for tag in statistic.tags.all %}{% if not forloop.first %}, {% if forloop.last %}and {% endif %}{% endif %}{{tag.name}}{% endfor %}</li>
+		<li class="statistic statistic-list"
+			tags="{% for tag in statistic.tags.all %}{% if not forloop.first %},{% endif %}{{tag.short}}{% endfor %}"
+			parent-tags="{% for tag in statistic.tags.all %}{% if tag.parent %}{{tag.parent.short}},{% endif %}{% endfor %}"
+			sibling-tags="{% for tag in statistic.tags.all %}{% if tag.parent %}{% for sibling in tag.parent.children.all %}{% if sibling != tag %}{{sibling.short}},{% endif %}{% endfor %}{% endif %}{% endfor %}"
+			child-tags="{% for tag in statistic.tags.all %}{% if tag.children.count > 0 %}{% for child in tag.children.all %}{{child.short}},{% endfor %}{% endif %}{% endfor %}">
+			<i></i>
+			{% for tag in statistic.tags.all %}
+			{% if not forloop.first %}, {% if forloop.last %}and {% endif %}{% endif %}
+			{{tag.name}}{% endfor %}
+		</li>
 	{% endfor %}
 	</ul>
 	{% endif %}
