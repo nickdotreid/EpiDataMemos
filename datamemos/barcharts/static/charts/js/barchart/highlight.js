@@ -11,7 +11,7 @@ $(document).ready(function(){
 		
 		combinded_height = bar.height()+highlight.height()+Number(highlight.css("margin-bottom").replace("px",""));
 		
-		if(bar.hasClass("stacked") || combinde_height > canvas.height()){
+		if(bar.hasClass("stacked") || combinded_height > canvas.height()){
 			if(bar.height()>highlight.height()){
 				x = bar.width();
 				y = bar.height()/2 - highlight.height()/2;

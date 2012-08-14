@@ -59,6 +59,9 @@ function in_array(arr,value){
 }
 
 function in_array_position(arr,value){
+	if(!arr){
+		return -1;
+	}
 	for(var i=0;i<arr.length;i++){
 		if(arr[i]==value){
 			return i;

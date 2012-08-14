@@ -127,6 +127,7 @@
 }
 .canvas .bar.hover {
   z-index: 7;
+  background-image: none;
 }
 .canvas .highlight {
   display: block;
