@@ -51,14 +51,12 @@ $(document).ready(function(){
 		var tags = event.tags;
 		var tag_count = function(div){
 			var count = 0;
-			var stat_tags = $(div).data("tags");
-			for(var index in stat_tags){
-				if(in_array(tags,stat_tags[index])){
-					count += 2;
-				}
-			}
-			// if tag is parent of child add 1
-			return count;
+			var stat = $(div);
+			var tag_count = arr_similar_count(tags,stat.data("tags"));
+			var parent_count = arr_similar_count(tags,stat.data("parent-tags"));
+			var child_count = arr_similar_count(tags,stat.data("child-tags"));
+			var sibling_count = arr_similar_count(tags,stat.data("sibling-tags"));
+			return tag_count*3 + child_count + parent_count/2 + sibling_count/2;
 		}
 		sorted_notes = notes.sort(function(a,b){
 			var a_count = 0;
@@ -129,6 +127,9 @@ $(document).ready(function(){
 		note.data("date",new Date(note.attr("date")));
 		$(".statistic",note).each(function(){
 			$(this).data("tags",$(this).attr("tags").split(","));
+			$(this).data("parent-tags",$(this).attr("parent-tags").split(","));
+			$(this).data("sibling-tags",$(this).attr("sibling-tags").split(","));
+			$(this).data("child-tags",$(this).attr("child-tags").split(","));
 		});
 	});
 	$.address.change(function(event){
@@ -149,3 +150,13 @@ $(document).ready(function(){
 	})
 	$("#note-type-selector li:first").addClass("active");
 });
+
+function arr_similar_count(arr1,arr2){
+	var count = 0;
+	for(var index in arr1){
+		if(in_array(arr2,arr1[index])){
+			count += 1;
+		}
+	}
+	return count;
+}
