@@ -16,21 +16,27 @@
 	{% endfor %}
 	</ul>
 	{% endif %}
-	{% if note.author %}
-	<div class="author">
-		{% if author.username != author.email %}
-		<span class="name">{{author.username}}</span>
+	<div class="meta note-meta">
+		<div class="pub_date"><em>Posted on </em>{{note.pub_date|date:"SHORT_DATE_FORMAT"}}</div>
+		{% if note.author %}
+		<div class="author">
+			<em>&nbsp;by&nbsp;</em>
+			{% if note.author.username != note.author.email %}
+			<span class="name">{{note.author.username}}</span>
+			{% endif %}
+			{% if note.author.email %}
+			<a href="mailto:{{note.author.email}}" class="email"><i></i>{{note.author.email}}</a>
+			{% endif %}
+		</div>
 		{% endif %}
-		{% if author.email %}
-		<a href="mailto:{{author.email}}" class="email"><i></i>{{author.email}}</a>
-		{% endif %}
+		<div style="clear:both;float:none;display:block;height:0px;overflow:hidden;">&nbsp;</div>
 	</div>
-	{% endif %}
-	<div class="pub_date">{{note.pub_date|date:"SHORT_DATE_FORMAT"}}</div>
 	<div class="nav">
 		{% if user %}
-		<a href="#" class="edit">edit</a>
+		{% if user.is_staff or user == note.author %}
+		<a href="/notes/{{note.id}}/edit/" class="edit">Edit</a>
 		{% endif %}
-		<a href="#" class="share">Share</a>
+		{% endif %}
+		<a href="/notes/{{note.id}}/" class="share">Share</a>
 	</div>
 </div>

@@ -4,19 +4,29 @@
   background-repeat: repeat;
   background-position: top left;
   margin: 7px 0px;
-  padding: 7px 0px;
+  padding: 7px 0px 0px;
 }
 .note.active {
   background-color: #FFF;
 }
 .note .text,
-.note .author,
-.note .date,
+.note .meta,
 .note .statistic {
   margin: 0px 7px 3.5px;
 }
+.note .meta {
+  font-size: 12px;
+}
+.note .meta div {
+  float: left;
+}
 .note .text {
   margin-bottom: 7px;
+}
+.note .nav {
+  background: #DDD;
+  padding: 3.5px 7px;
+  margin: 0px;
 }
 .statistic {
   display: block;
