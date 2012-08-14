@@ -141,7 +141,7 @@ $(document).ready(function(){
 	$("#note-type-selector li a").click(function(event){
 		event.preventDefault();
 		var link = $(this);
-		$("li.active",link.parents(".nav:first")).removeClass("active");
+		$("li.active",link.parents("#note-type-selector:first")).removeClass("active");
 		link.parents("li").addClass("active");
 		$("#note-container").trigger({
 			type:"get-notes",

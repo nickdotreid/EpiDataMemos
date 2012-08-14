@@ -32,27 +32,29 @@
 		<div class="container">
 		<a class="brand" href="#">SF HIV Charts</a>
 		<ul class="nav pull-right">
-			<li class=""><a href="/about">About</a></li>
-			<li class=""><a href="/charts">Charts</a></li>
+			<li class=""><a href="/home">About</a></li>
 		</ul>
 	</div>
 	</div>
 </div>
-<div id="about" class="page page-content">
-	<div class="page-inner">
-		<h1>About SF HIV Chart Project</h1>
+<div id="home" class="page page-content">
+	<div class="about-container about-container-shared page-inner">
+		<h2>About SF HIV Chart Project</h2>
 		<p>This is some intro copy about the project. You should be proud.</p>
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 	</div>
-</div>
-<div id="charts" class="page page-content">
-	<div class="page-inner">
-		<h1>All Charts</h1>
-		<ul class="chart-links">
+	<div class="chart-list chart-list-shared page-inner">
+		<h2>Browse Charts</h2>
+		<ul class="links chart-links">
 		{% for chart in charts %}
 		<li><a href="/charts/{{chart.id}}/" data-id="{{chart.id}}">{{chart.title}}</a></li>
 		{% endfor %}
 		</ul>
+	</div>
+</div>
+<div id="charts" class="page page-content">
+	<div class="page-inner">
+
 	</div>
 </div>
 <noscript>
@@ -64,9 +66,9 @@
 		<li><a href="#" class="create-note">Create Note</a></li>
 	</ul>
 	<div id="notes-edit-area" class="notes-edit notes-edit-container"></div>
-	<ul id="note-type-selector" class="nav nav-pills">
+	<ul id="note-type-selector" class="btn-group">
 		{% for category in categories %}
-		<li><a note-type="{{category.short}}" href="#">{{category.name}}</a></li>
+		<li class="btn"><a note-type="{{category.short}}" href="#">{{category.name}}</a></li>
 		{% endfor %}
 	</ul>
 	<div id="notes" class="notes notes-container"></div>
