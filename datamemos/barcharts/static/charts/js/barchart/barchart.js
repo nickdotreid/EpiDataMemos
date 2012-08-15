@@ -22,6 +22,22 @@ $(document).ready(function(){
 			bar.data("tags",tag_arr);
 		});
 		$(".bar",chart).trigger("bar-init");
+		var bars = $(".bar",$(".column:first",chart));
+		var sorted_bars = bars.sort(function(a,b){
+			if($(a).data("amount") >= $(b).data("amount")){
+				return 1;
+			}
+			return -1;
+		});
+		var first_col_value = $(".column:first",chart).attr("value");
+		for(var i=0;i<sorted_bars.length;i++){
+			var bar = $(sorted_bars[i]);
+			$(".column",chart).each(function(){
+				var column = $(this);
+				var tag_match = bar.attr("tags").replace(first_col_value,column.attr("value"));
+				$('.bar[tags="'+tag_match+'"]',column).prependTo(column);
+			});
+		}
 		chart.data("tags",[]);
 		chart.trigger("get-state-chart").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
