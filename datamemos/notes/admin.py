@@ -1,8 +1,9 @@
 from notes.models import Note, Category
+from adminsortable.admin import SortableAdmin,SortableTabularInline
 from statistics.admin import StatisticInline
 from django.contrib import admin
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(SortableAdmin):
 	fieldsets = [
 		(None, {'fields':['name','short']}),
 		("Display Information", {'fields':['viewable','public']})

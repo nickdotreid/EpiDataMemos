@@ -1,14 +1,18 @@
 from django.db import models
+from adminsortable.models import Sortable
 from django.contrib.auth.models import User
 import datetime
 
 
-class Category(models.Model):
+class Category(Sortable):
 	name = models.CharField(blank=True, max_length=100)
 	short = models.CharField(max_length=50, unique=True)
 	
 	public = models.BooleanField(default=False)
 	viewable = models.BooleanField(default=True)
+	
+	class Meta(Sortable.Meta):
+		pass
 	
 	def __unicode__(self):
 		return self.short
