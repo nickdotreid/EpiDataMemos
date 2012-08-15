@@ -37,7 +37,7 @@ $(document).ready(function(){
 		highlight.css({
 			top:y+'px',
 			left:x+'px'
-		}).show();
+		}).trigger("highlight-init").show();
 	}).delegate(".wrapper .bar","unhighlight",function(event){
 		$(".bar.hover").removeClass("hover");
 		$(".highlight:not(.bar .highlight)",$(this).parents(".canvas:first")).remove();
@@ -45,5 +45,13 @@ $(document).ready(function(){
 		$(this).trigger("highlight");
 	}).delegate(".chart .bar","mouseleave",function(event){
 		$(this).trigger("unhighlight");
+	}).delegate(".highlight","highlight-init",function(){
+		var highlight = $(this);
+		var arrow = $(".arrow",highlight);
+		if(highlight.hasClass("above")){
+			// arrow.css("top",highlight.height() - 3 + "px");
+		}else{
+			arrow.css("top",highlight.height()/2 - arrow.height()/2 + "px");
+		}
 	});
 });
