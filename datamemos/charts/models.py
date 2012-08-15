@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Tag(Sortable):
 	
-	short = models.CharField(unique=True, max_length=15)
+	short = models.CharField(unique=True, max_length=50)
 	name = models.CharField(max_length=100)
 	
 	parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
