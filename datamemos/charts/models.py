@@ -13,6 +13,16 @@ class Tag(Sortable):
 	class Meta(Sortable.Meta):
 		pass
 	
+	def transfer_to(self,new_tag):
+		if isinstance(new_tag,int):
+			new_tag = Tag.objects.get(id=new_tag)
+		if not isinstance(new_tag,Tag):
+			return False
+		for point in self.point_set.all():
+			point.tags.add(new_tag)
+		self.delete()
+		return True
+	
 	def __unicode__(self):
 		if self.name:
 			return self.name
