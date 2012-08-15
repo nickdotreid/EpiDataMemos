@@ -48,11 +48,16 @@ $(document).ready(function(){
 	$(".navbar a").click(function(event){
 		event.preventDefault();
 		$(".navbar li.active").removeClass("active");
-		$(this).parents("li:first").addClass("active");
-		$.address.parameter("page",$(this).attr("href").replace("/",""));
+		if($.address.parameter("page") && $.address.parameter("page") == $(this).attr("href").replace("/","")){
+			$.address.parameter("page",false);
+		}else{
+			$(this).parents("li:first").addClass("active");
+			$.address.parameter("page",$(this).attr("href").replace("/",""));	
+		}
 	});
 	$.address.change(function(){
 		$(".page").hide();
+		$(".navbar li.active").removeClass("active");
 		if($.address.parameter("page")){
 			$("#"+$.address.parameter("page")+".page").show();
 		}

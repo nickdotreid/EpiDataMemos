@@ -50,6 +50,7 @@ $(document).ready(function(){
 				});			
 		},500));
 	}).delegate(".notes .statistic","mouseleave",function(){
+		var statistic = $(this);
 		if(statistic.data("hover-timeout")){
 			clearTimeout(statistic.data("hover-timeout"));
 			statistic.data("hover-timeout",false);
