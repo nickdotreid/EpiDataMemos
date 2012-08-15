@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$(".wrapper").delegate("#chart-container","get-chart",function(event){
 		// unload existing chart
+		$("#chart-container,#note-container").show().trigger("loading");
 		if(!event.chart_id){
 			alert("No Chart ID to load");
 			return false;
@@ -13,26 +14,18 @@ $(document).ready(function(){
 					markup = data['markup'];
 				}
 				$("#chart-container").append(markup);
-				$("#chart-container .chart").data("data",data).trigger("load-chart");
-				$("#note-container").trigger({
-					type:"get-notes",
-					chart_id:event['chart_id']
-				})
+				$("#chart-container .chart").trigger("load-chart");
+				
+				setTimeout(function(){
+					$("#notes-list").trigger({
+						type:"get-notes",
+						chart_id:event['chart_id']
+					});	
+				});
 			}
 		});
 	});
-	if($.address.parameter("statistic")){
 		
-	}else if($.address.parameter("note")){
-		
-	}else if($.address.parameter("chart")){
-		$("#chart-container").trigger({
-			type:"get-chart",
-			chart_id:$.address.parameter("chart")
-		});
-	}
-	
-	
 	$(".wrapper").delegate("form.note.create","presubmit",function(event){
 		var form = $(this);
 		if($("input[type='hidden'][name='chart_id']",form).length < 1){
@@ -64,6 +57,22 @@ $(document).ready(function(){
 			$("#"+$.address.parameter("page")+".page").show();
 		}
 	});
-	$(".page").hide();
-	$(".navbar li a:first").click();
+
+	$('#chart-container').data("charts",[]);
+	$.address.change(function(){
+		if($.address.parameter('chart')){
+			if(!in_array($("#chart-container").data("charts"),$.address.parameter("chart"))){
+				$("#chart-container").data("charts").push($.address.parameter("chart"));
+				$("#chart-container").trigger({
+					type:"get-chart",
+					chart_id:$.address.parameter("chart")
+				});
+			}
+		}
+	});
+	
+	$(".page,#chart-container,#note-container").hide();
+	if(!$.address.parameter("chart") || !$.address.parameter("note") || !$.address.parameter("statistic")){
+		$(".navbar .nav a").click();
+	}
 });

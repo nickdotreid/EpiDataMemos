@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="{{STATIC_URL}}charts/js/table.js"></script>
 	-->
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes-edit.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/interactions.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
 {% endblock %}
@@ -30,7 +31,7 @@
 <div class="navbar">
 	<div class="navbar-inner">
 		<div class="container">
-		<a class="brand" href="#">SF HIV Charts</a>
+		<a class="brand" href="/home">SF HIV Charts</a>
 		<ul class="nav pull-right">
 			<li class=""><a href="/home">About</a></li>
 		</ul>
@@ -65,15 +66,20 @@
 </noscript>
 <div id="chart-container"></div>
 <div id="note-container">
-	<ul class="nav nav-pills">
-		<li><a href="#" class="create-note">Create Note</a></li>
-	</ul>
-	<div id="notes-edit-area" class="notes-edit notes-edit-container"></div>
-	<ul id="note-type-selector" class="btn-group">
-		{% for category in categories %}
-		<li class="btn"><a note-type="{{category.short}}" href="#">{{category.name}}</a></li>
-		{% endfor %}
-	</ul>
-	<div id="notes" class="notes notes-container"></div>
+	<div id="notes-edit" class="notes">
+		<ul class="nav notes-nav btn-group">
+			<li class="btn"><a href="#" class="share-page">Share Page</a></li>
+			<li class="btn"><a href="#" class="create-note">Create Note</a></li>
+		</ul>
+		<div class="notes-container"></div>
+	</div>
+	<div id="notes-list" class="notes">
+		<ul class="nav notes-nav btn-group">
+			{% for category in categories %}
+			<li class="btn"><a note-type="{{category.short}}" href="#">{{category.name}}</a></li>
+			{% endfor %}
+		</ul>
+		<div class="notes-container"></div>
+	</div>
 </div>
 {% endblock %}
