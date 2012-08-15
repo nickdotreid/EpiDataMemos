@@ -1,7 +1,11 @@
 import os
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+if 'debug' in os.environ:
+	DEBUG = True
+	TEMPLATE_DEBUG = DEBUG
+else:
+	DEBUG = False
+	TEMPLATE_DEBUG = DEBUG	
 
 if 'secret_key' in os.environ:
 	SECRET_KEY = os.environ['secrect_key']
