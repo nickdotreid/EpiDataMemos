@@ -25,7 +25,7 @@ class Tag(Sortable):
 	
 	def __unicode__(self):
 		if self.name:
-			return self.name
+			return "%s (%s)" % (self.name,self.short)
 		return self.short
 
 class Chart(models.Model):
