@@ -14,7 +14,7 @@ $(document).ready(function(){
 				if(data['markup']){
 					markup = data['markup'];
 				}
-				$("#chart-container").append(markup);
+				$("#chart-container .inner").append(markup);
 				$("#chart-container .chart").trigger("load-chart");
 				
 				setTimeout(function(){

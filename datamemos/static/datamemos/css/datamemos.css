@@ -5958,6 +5958,9 @@ body {
     float: left;
     clear: none;
   }
+  #chart-container .inner {
+    width: 475px;
+  }
   #note-container {
     width: 225px;
     margin-left: 7px;
@@ -5979,6 +5982,9 @@ body {
     display: block;
   }
   #chart-container {
+    width: 675px;
+  }
+  #chart-container .inner {
     width: 675px;
   }
   #note-container {
