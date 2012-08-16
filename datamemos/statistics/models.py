@@ -10,4 +10,6 @@ class Statistic(models.Model):
 	tags = models.ManyToManyField(Tag, blank=True)
 	
 	def __unicode__(self):
-		return self.chart.title
+		if self.chart:
+			return self.chart.title
+		return unicode(self.id)
