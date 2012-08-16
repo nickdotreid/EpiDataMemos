@@ -22,7 +22,7 @@ def list(request):
 	if 'chart_id' in request.GET:
 		chart = get_object_or_None(Chart,id=int(request.GET['chart_id']))
 	if chart is not None:
-		objects.filter(chart=chart)
+		objects = objects.filter(chart=chart)
 	statistics = objects.all()
 	notes = []
 	for stat in statistics:
