@@ -7,6 +7,7 @@ $(document).ready(function(){
 		$(".highlight:not(.bar .highlight)",canvas).remove();
 		
 		var highlight = $(".highlight",bar).clone();
+		var arrow = $(".arrow",highlight);
 		canvas.append(highlight);
 		
 		var x_offset = bar.position().left + column.position().left;
@@ -24,20 +25,25 @@ $(document).ready(function(){
 			y = y_offset - highlight.height() - Number(highlight.css("margin-bottom").replace("px",""));
 			x = x_offset - highlight.width()/2 + bar.width()/2;
 
-			combinded_height = bar.height()+highlight.height()+Number(highlight.css("margin-bottom").replace("px",""));
-
 			if(y < 0){
 				x = x_offset + bar.width();
 				y = canvas.height()/2 - highlight.height()/2;
 			}else{
 				highlight.addClass("above");
 			}	
+		}
+		
+		if(highlight.hasClass("above")){
+			 arrow.css("top",highlight.height() +arrow.height() - 9 + "px");
+		}else{
+			arrow.css("top",highlight.height()/2 - arrow.height()/2 + "px");
 		}		
 		
 		highlight.css({
 			top:y+'px',
 			left:x+'px'
-		}).trigger("highlight-init").show();
+		});
+		highlight.show();
 	}).delegate(".wrapper .bar","unhighlight",function(event){
 		$(".bar.hover").removeClass("hover");
 		$(".highlight:not(.bar .highlight)",$(this).parents(".canvas:first")).remove();
@@ -45,13 +51,5 @@ $(document).ready(function(){
 		$(this).trigger("highlight");
 	}).delegate(".chart .bar","mouseleave",function(event){
 		$(this).trigger("unhighlight");
-	}).delegate(".highlight","highlight-init",function(){
-		var highlight = $(this);
-		var arrow = $(".arrow",highlight);
-		if(highlight.hasClass("above")){
-			// arrow.css("top",highlight.height() - 3 + "px");
-		}else{
-			arrow.css("top",highlight.height()/2 - arrow.height()/2 + "px");
-		}
 	});
 });
