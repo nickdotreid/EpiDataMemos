@@ -17,7 +17,8 @@ $(document).ready(function(){
 		event_obj = {
 			type:'tick-draw',
 			max:event.max,
-			ticks:event.ticks
+			ticks:event.ticks,
+			percent:event.percent
 		};
 		
 		grid.trigger(event_obj);
@@ -35,7 +36,7 @@ $(document).ready(function(){
 		for(var i=0;i<ticks.length;i++){
 			tick = ticks[i];
 			if($(".tick[data-value='"+tick+"']",scale).length<1){
-				scale.append('<div class="tick" data-value="'+tick+'"><span class="label">'+format_number(tick)+'</span></div>');
+				scale.append('<div class="tick" data-value="'+tick+'"><span class="label">'+format_number(tick,event.percent)+'</span></div>');
 				$(".tick:last",scale).css("top",graph.height()+'px').css("opacity",0);
 			}
 		}

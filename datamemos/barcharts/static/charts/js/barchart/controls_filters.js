@@ -43,9 +43,9 @@ $(document).ready(function(){
 		}
 	}).delegate(".chart.barchart input.percent","click",function(){
 		if(this.checked){
-			$.address.parameter("percent",this.value);
+			$(this).parents(".chart:first").data("percent",true).trigger("redraw");
 		}else{
-			$.address.parameter("percent",false);
+			$(this).parents(".chart:first").data("percent",false).trigger("redraw");
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(){
 		var row_values = []

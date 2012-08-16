@@ -63,6 +63,9 @@ $(document).ready(function(){
 			if(!event.tags){
 				event.tags = chart.data("tags");
 			}
+			if(event.percent == undefined){
+				event.percent = chart.data("percent");
+			}
 			
 			for(index in event.tags){
 				var tag = event.tags[index];
@@ -106,7 +109,11 @@ $(document).ready(function(){
 						biggest_match = matches;
 					}
 					if(matches >= biggest_match){
-						biggest_number += bar.data("amount");
+						if(event.percent){
+							biggest_number += bar.data("percent");
+						}else{
+							biggest_number += bar.data("amount");	
+						}
 					}
 				})
 				if(biggest_number>chart_max){
@@ -147,7 +154,8 @@ $(document).ready(function(){
 			$(".scale",canvas).trigger({
 				type:'scale-draw',
 				max:chart_max,
-				ticks:5
+				ticks:5,
+				percent:event.percent
 			});
 		},100);
 		chart.data("redraw-timeout",timeout);

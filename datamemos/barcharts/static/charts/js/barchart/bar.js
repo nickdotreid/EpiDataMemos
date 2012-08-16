@@ -28,7 +28,13 @@ $(document).ready(function(){
 			}
 		}
 		if(match>0){
-			var value = bar.data("amount")/event.max;
+			var value = 0;
+			if(event.percent){
+				value = bar.data("percent")/event.max;
+			}else{
+				value = bar.data("amount")/event.max;
+			}
+			
 			_height = bar.parents(".canvas:first").height()*value;
 		}
 		bar.data({
