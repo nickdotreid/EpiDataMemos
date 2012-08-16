@@ -7,14 +7,16 @@ $(document).ready(function(){
 		if(event.percent == undefined){
 			event.percent = chart.data("percent");
 		}
-		
+		$(".filters .tag.active").removeClass("active").removeClass("active-parent");
 		$(".filters input:checked").attr("checked",false);
 		$(".tags-children").hide();
 		for(var index in event.tags){
 			var tag = event.tags[index]
 			var input = $(".tag input[value='"+tag+"']");
 			input.attr("checked",true);
+			input.parents(".tag:first").addClass("active");
 			input.parents(".tags-children:first").show();
+			$("#tag-"+input.parents(".tags-children:first").attr("parent")).parents(".tag:first").addClass("active").addClass("active-parent");
 			$(".tags-children[parent='"+tag+"']",chart).show();
 		}
 		$(".layout").show();

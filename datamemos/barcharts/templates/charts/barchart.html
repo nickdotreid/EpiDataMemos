@@ -6,7 +6,7 @@
 			<legend><span>Select axis to view</span></legend>
 			<ul class="nav tags">
 			{% for row in rows %}
-			<li class="tag">
+			<li>
 				{% include "charts/row-control.html" with row=row %}
 			</li>
 			{% endfor %}
@@ -15,7 +15,7 @@
 			{% if row.children|length %}
 			<ul class="tag tags-children nav" parent="{{row.short}}">
 			{% for child in row.children %}
-				<li class="tag">
+				<li>
 				{% include "charts/row-control.html" with row=child %}
 				</li>
 			{% endfor %}

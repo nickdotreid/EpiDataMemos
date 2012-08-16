@@ -11,6 +11,9 @@ $(document).ready(function(){
 				pallet(this.value);
 			});
 		});
+		$(".tags input,.tags-children input",chart).each(function(){
+			$(".color",$(this).parents(".tag:first")).css("background-color",pallet(this.value));
+		});
 		$(".bar",chart).each(function(){
 			var bar = $(this);
 			var tag_arr = bar.attr("tags").split(",");

@@ -55,8 +55,43 @@
   display: none;
   clear: both;
 }
-.filters .tag {
+.filters .tags li,
+.filters .tags-children li {
   float: left;
+}
+.filters .tag {
+  cursor: pointer;
+  padding: 5px;
+}
+.filters .tag.radio {
+  padding-left: 22px;
+}
+.filters .tag.active {
+  background-color: #cccccc;
+}
+.filters .tag.active-parent {
+  background-color: #f2f2f2;
+}
+.filters .tag .color {
+  width: 20px;
+  height: 15px;
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  border: #FFF 3px solid;
+}
+.filters .tags .tag .color {
+  display: none;
+}
+.filters .tags-children .tag {
+  padding: 5px 5px 5px 35px;
+}
+.filters .tags-children .tag .color {
+  display: block;
+}
+.filters .tags-children .tag input {
+  display: none;
 }
 .canvas-container {
   position: relative;

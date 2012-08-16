@@ -61,8 +61,42 @@
 		display:none;
 		clear:both;
 	}
-	.tag{
+	.tags li,.tags-children li{
 		float:left;
+	}
+	.tag{
+		cursor:pointer;
+		padding:5px;
+	}
+	.tag.radio{
+		padding-left:22px;
+	}
+	.tag.active{
+		background-color:@gridColor;
+	}
+	.tag.active-parent{
+		background-color:lighten(@gridColor,15%);
+	}
+	.tag .color{
+		width:20px;
+		height:15px;
+		display:block;
+		position:absolute;
+		top:3px;
+		left:5px;
+		border:#FFF 3px solid;
+	}
+	.tags .tag .color{
+		display:none;
+	}
+	.tags-children .tag{
+		padding:5px 5px 5px 35px;
+		.color{
+			display:block;
+		}
+		input{
+			display:none;
+		}
 	}
 }
 .canvas-container{
