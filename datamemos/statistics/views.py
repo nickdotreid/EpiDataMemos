@@ -22,7 +22,8 @@ def list(request):
 	if 'chart_id' in request.GET:
 		chart = get_object_or_None(Chart,id=int(request.GET['chart_id']))
 	if chart is not None:
-		objects = objects.filter(chart=chart)
+		from django.db.models import Q
+		objects = objects.filter(Q(chart=chart) | Q(chart=None))
 	statistics = objects.all()
 	notes = []
 	for stat in statistics:
