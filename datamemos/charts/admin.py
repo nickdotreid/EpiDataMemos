@@ -32,6 +32,22 @@ class TagInline(SortableTabularInline):
 
 class TagAdmin(SortableAdmin):
 	inlines = [TagInline]
+	actions = ['combine_tags']
+	
+	def combine_tags(self,request,queryset):
+		if queryset.count() < 2:
+			self.message_user(request,"Not enough arguments to combine")
+		else:
+			count = 0
+			old_tag = False
+			for tag in queryset:
+				if old_tag:
+					tag.transfer_to(old_tag)
+				else:
+					old_tag = tag
+				count += 1
+			self.message_user(request, "%s tags were successfully merged." % count)
+	combine_tags.short_description = "Merge Tags"
 
 admin.site.register(Tag,TagAdmin)
 
