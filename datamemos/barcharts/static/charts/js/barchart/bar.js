@@ -46,7 +46,7 @@ $(document).ready(function(){
 		}
 		bar.animate({
 			height:bar.data("height")+'px',
-			top:(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
+			top:Math.round(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
 			left:bar.data("x")+"px"
 		},{
 			duration:bar.parents(".chart:first").data("animation-time"),
