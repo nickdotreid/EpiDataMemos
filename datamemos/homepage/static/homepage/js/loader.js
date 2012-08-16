@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$(".wrapper").delegate("#chart-container","get-chart",function(event){
 		// unload existing chart
+		$("#chart-container .chart").remove();
 		$("#chart-container,#note-container").show().trigger("loading");
 		if(!event.chart_id){
 			alert("No Chart ID to load");
@@ -21,7 +22,7 @@ $(document).ready(function(){
 						type:"get-notes",
 						chart_id:event['chart_id']
 					});	
-				});
+				},500);
 			}
 		});
 	});
