@@ -170,6 +170,17 @@ $(document).ready(function(){
 			$(".canvas",this).height(avail_height - css_to_number(canvas.css("margin-top")) - css_to_number(canvas.css("margin-bottom")));
 			chart.trigger("redraw");			
 		}
+	}).delegate(".chart.barchart","chart-resize",function(event){
+		var chart = $(this);
+		var canvas = $(".canvas",chart);
+		var canvas_width = 0;
+		$(".column,.scale",canvas).each(function(){
+			canvas_width += $(this).width() + css_to_number($(this).css("margin-right")) + css_to_number($(this).css("margin-left"));
+		});
+		if(canvas_width < $(".canvas-container",chart).width()){
+			canvas_width = $(".canvas-container",chart).width();
+		}
+		canvas.width(canvas_width);
 	});
 	
 	$(window).resize(function(){
