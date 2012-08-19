@@ -61,8 +61,15 @@ $(document).ready(function(){
 			var stacked = false;
 		
 			if(!event.tags){
-				event.tags = chart.data("tags");
+				event.tags = [];
+				for(var i=0; i<chart.data("tags").length;i++){
+					event.tags.push(chart.data("tags")[i]);
+				}
 			}
+			chart.trigger({
+				type:"controls-redraw",
+				tags:event.tags
+			});
 			if(event.percent == undefined){
 				event.percent = chart.data("percent");
 			}

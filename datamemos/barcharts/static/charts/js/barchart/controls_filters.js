@@ -1,24 +1,25 @@
 $(document).ready(function(){
-	$(".wrapper").delegate(".chart.barchart","redraw",function(event){
-		var chart = $(this)
+	$(".wrapper").delegate(".chart.barchart","controls-redraw",function(event){
+		var chart = $(this);
 		if(!event.tags){
 			event.tags = chart.data("tags");
-		}
-		if(event.percent == undefined){
-			event.percent = chart.data("percent");
 		}
 		$(".filters .tag.active").removeClass("active").removeClass("active-parent");
 		$(".filters input:checked").attr("checked",false);
 		$(".tags-children").hide();
+		
 		for(var index in event.tags){
 			var tag = event.tags[index]
 			var input = $(".tag input[value='"+tag+"']");
-			input.attr("checked",true);
-			input.parents(".tag:first").addClass("active");
-			input.parents(".tags-children:first").show();
-			$("#tag-"+input.parents(".tags-children:first").attr("parent")).parents(".tag:first").addClass("active").addClass("active-parent");
-			$(".tags-children[parent='"+tag+"']",chart).show();
+			if(input.length > 0){
+				input.attr("checked",true);
+				input.parents(".tag:first").addClass("active");
+				input.parents(".tags-children:first").show();
+				$("#tag-"+input.parents(".tags-children:first").attr("parent")).parents(".tag:first").addClass("active").addClass("active-parent");
+				$(".tags-children[parent='"+tag+"']",chart).show();
+			}
 		}
+		
 		$(".layout").show();
 		if($(".tags-children:visible").length<1){
 			$(".layout").hide();
@@ -36,6 +37,23 @@ $(document).ready(function(){
 				return;
 			}
 		}
+	}).delegate(".chart.barchart .filters .tag input","click",function(event){
+		event.preventDefault();
+		var row_values = []
+		$(".tags input, .tags-children input",$(this).parents(".chart:first")).each(function(){
+			row_values.push(this.value);
+		});
+		var tags = [];
+		if($.address.parameter("tags")){
+			tags = $.address.parameter("tags").split(",");
+		}
+		new_elements = add_and_filter_array(tags, this.value, row_values);
+		$.address.parameter("tags",new_elements.join(","));
+	}).delegate(".chart.barchart","redraw",function(event){
+		var chart = $(this)
+		if(event.percent == undefined){
+			event.percent = chart.data("percent");
+		}
 		if(event['percent']){
 			$("input.percent",chart).attr("checked",true);
 		}else{
@@ -47,17 +65,6 @@ $(document).ready(function(){
 		}else{
 			$(this).parents(".chart:first").data("percent",false).trigger("redraw");
 		}
-	}).delegate(".chart.barchart .filters .tag input","click",function(){
-		var row_values = []
-		$(".tags input, .tags-children input",$(this).parents(".chart:first")).removeClass("selected").each(function(){
-			row_values.push(this.value);
-		});
-		var tags = [];
-		if($.address.parameter("tags")){
-			tags = $.address.parameter("tags").split(",");
-		}
-		new_elements = add_and_filter_array(tags, this.value, row_values);
-		$.address.parameter("tags",new_elements.join(","));
 	}).delegate(".canvas .bar","click",function(event){
 		event.preventDefault();
 		$.address.parameter("tags",$(this).data("tags").join(","));
