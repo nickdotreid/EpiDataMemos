@@ -35,7 +35,7 @@ $(document).ready(function(){
 				value = bar.data("amount")/event.max;
 			}
 			
-			_height = bar.parents(".canvas:first").height()*value;
+			_height = Math.round(bar.parents(".canvas:first").height()*value);
 		}
 		bar.data({
 			"height":_height,
@@ -52,7 +52,7 @@ $(document).ready(function(){
 		}
 		bar.animate({
 			height:bar.data("height")+'px',
-			top:Math.round(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
+			top:(bar.parents(".canvas:first").height()-bar.data("height")-bar.data("y"))+"px",
 			left:bar.data("x")+"px"
 		},{
 			duration:bar.parents(".chart:first").data("animation-time"),
