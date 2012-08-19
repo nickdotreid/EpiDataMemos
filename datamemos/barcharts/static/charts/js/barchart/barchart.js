@@ -42,7 +42,7 @@ $(document).ready(function(){
 			});
 		}
 		chart.data("tags",[]);
-		chart.trigger("get-state-chart").trigger("redraw");
+		chart.trigger("get-state-chart").trigger("resize").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
 		var tags = [];
 		if($.address.parameter("tags")){
@@ -159,9 +159,28 @@ $(document).ready(function(){
 			});
 		},100);
 		chart.data("redraw-timeout",timeout);
+	}).delegate(".chart.barchart","chart-resize",function(event){
+		var chart = $(this);
+		var canvas = $(".canvas",chart);
+		var canvas_container = $(".canvas-container",chart);
+		var total_height = $(window).height() - css_to_number(chart.css("margin-top")) - css_to_number(chart.css("margin-bottom"));
+		var avail_height = total_height - canvas_container.position().top - css_to_number(canvas_container.css("margin-top")) - css_to_number(canvas_container.css("margin-bottom"))
+		if(canvas_container.height() != avail_height){
+			canvas_container.height(avail_height);
+			$(".canvas",this).height(avail_height - css_to_number(canvas.css("margin-top")) - css_to_number(canvas.css("margin-bottom")));
+			chart.trigger("redraw");			
+		}
+	});
+	
+	$(window).resize(function(){
+		$(".chart").trigger("chart-resize");
 	});
 	
 	$.address.change(function(event){
 		$(".chart.barchart").trigger("get-state-chart").trigger("redraw");
 	});
 });
+
+function css_to_number(css){
+	return Number(css.replace("px",""));
+}

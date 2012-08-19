@@ -1,3 +1,9 @@
+.chart {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  margin: 14px 0px;
+}
 .chart .description,
 .chart .title {
   margin: 0px 7px;
@@ -96,9 +102,10 @@
 .canvas-container {
   position: relative;
   overflow: hidden;
+  height: 350px;
 }
 .canvas {
-  height: 400px;
+  height: 300px;
   width: auto;
   display: block;
   margin: 7px 7px 30px;

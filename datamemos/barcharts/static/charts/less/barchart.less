@@ -3,6 +3,10 @@
 @spaceSize:7px;
 
 .chart{
+	position:relative;
+	top:0px;
+	left:0px;
+	margin:@spaceSize*2 0px;
 	.description,.title{
 		margin:0px @spaceSize;
 	}
@@ -102,9 +106,10 @@
 .canvas-container{
 	position:relative;
 	overflow:hidden;
+	height:350px;
 }
 .canvas{
-	height:400px;
+	height:300px;
 	width:auto;
 	display:block;
 	margin:7px 7px 30px;
