@@ -59,12 +59,13 @@ def create(request):
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({
-						"message":"Your note has been added.",
+						"message":"Your message has been saved",
 						"note":{
 							"id":note.id,
 							"type":note.type.short,
 							"markup":render_to_string("notes/note-list-item.html",{
 								"note":note,
+								"statistics":note.statistic_set.all(),
 								},context_instance=RequestContext(request))
 						}
 						}),

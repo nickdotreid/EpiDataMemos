@@ -51,7 +51,7 @@ $(document).ready(function(){
 		$(".notes-nav li.active a").each(function(){
 			noteType = $(this).attr("note-type");
 		})
-		$(".notes .note").remove();
+		$(".note",list).remove();
 		$.ajax({
 			url:"/notes/",
 			type:"GET",
@@ -63,13 +63,7 @@ $(document).ready(function(){
 				if(data['notes']){
 					for(var index in data['notes']){
 						var note = data['notes'][index];
-						if($("#note-"+note['id']).length > 0){
-							var original = $("#note-"+note['id']);
-							$(note['markup']).after(original);
-							original.remove();
-						}else{
-							container.append(note['markup']);
-						}
+						container.append(note['markup']);
 					}
 					$(".note",container).trigger("notes-init");
 					list.trigger({

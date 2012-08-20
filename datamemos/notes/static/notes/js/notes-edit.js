@@ -16,7 +16,8 @@ $(document).ready(function(){
 			success:function(data){
 				if(data['form']){
 					$("#notes-edit .notes-container").html(data['form']);
-					$("#notes-edit .notes-container form").prepend('<a href="#" class="close">close</a>');
+					var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
+					$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
 				}
 			}
 		});
@@ -39,12 +40,15 @@ $(document).ready(function(){
 					form.remove();
 					return;
 				}
+				if(data['message']){
+					form.before('<span class="alert">'+data['message']+'</span>');
+				}
 				if(data['note']){
-					if(data['note']['type']){
-						$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
-					}
 					if(data['note']['markup']){
 						form.after(data['note']['markup']);	
+					}
+					if(data['note']['type']){
+						$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
 					}
 				}
 				form.remove();
