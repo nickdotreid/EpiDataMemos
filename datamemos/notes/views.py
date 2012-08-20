@@ -19,6 +19,55 @@ from django.template import RequestContext
 def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
 	return render_to_response('notes/detail.html',{'note':note})
+	
+def edit(request,note_id):
+	note = get_object_or_404(Note,pk=note_id)
+	if not request.user.is_authenticated():
+		return HttpResponse(
+			json.dumps({
+				"message":{
+					'type':'error',
+					'text':"You don't have permission to edit this note.",
+				},
+				}),
+			'application/json')
+	NoteForm = make_note_form(request.user)
+	form = NoteForm(instance=note)
+	if request.method == 'POST':
+		form = NoteForm(request.POST,instance=note)
+		if form.is_valid():
+			note.text = form.cleaned_data['text'],
+			note.type = form.cleaned_data['type'],
+			note.pub_date = datetime.datetime.now(),
+			if 'public' in form.cleaned_data:
+				note.public = True
+			note.save()
+			return HttpResponse(
+				json.dumps({
+					"message":{
+						'type':'success',
+						'text':"Your message has been updated",
+					},
+					"note":{
+						"id":note.id,
+						"type":note.type.short,
+						"markup":render_to_string("notes/note-list-item.html",{
+							"note":note,
+							"statistics":note.statistic_set.all(),
+							},context_instance=RequestContext(request))
+					}
+					}),
+				'application/json')
+	if request.is_ajax():
+		return HttpResponse(
+			json.dumps({
+				"form":render_to_string("notes/form.html",{
+					"form":form,
+					},context_instance=RequestContext(request))
+				}),
+			'application/json')
+	return render_to_response('notes/edit.html',{'form':form},context_instance=RequestContext(request))
+		
 
 def create(request):
 	if request.user.is_authenticated():

@@ -10,4 +10,5 @@ urlpatterns = patterns('notes.views',
 			template_name = 'notes/index.html')),
 	url(r'^create/$','create'),
 	url(r'^(?P<note_id>\d+)/$','detail'),
+	url(r'^(?P<note_id>\d+)/edit/$','edit'),
 )

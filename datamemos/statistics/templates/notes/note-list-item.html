@@ -1,4 +1,4 @@
-<div id="note-{{note.id}}" class="note" date="{{note.pub_date|date:"SHORT_DATE_FORMAT"}}">
+<div id="note-{{note.id}}" note-id="{{note.id}}" class="note" date="{{note.pub_date|date:"SHORT_DATE_FORMAT"}}">
 	<div class="text">{{note.text}}</div>
 	{% if statistics %}
 	<ul class="statistics">

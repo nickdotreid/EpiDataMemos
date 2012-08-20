@@ -55,5 +55,24 @@ $(document).ready(function(){
 				$("#notes-edit .notes-nav .active").removeClass("active");
 			}
 		});
+	})
+	$("#note-container").delegate(".note .edit","click",function(event){
+		event.preventDefault();
+		var note = $(this).parents(".note:first");
+		$("#notes-edit .notes-container").html("");
+		$.ajax({
+			url:'/notes/'+note.attr("note-id")+"/edit/",
+			type:"POST",
+			success:function(data){
+				if(data['form']){
+					$("#notes-edit .notes-container").html(data['form']);
+				}
+				if(data['message']){
+					$("#notes-edit .notes-container").prepend('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
+				}
+				var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
+				$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
+			}
+		})
 	});	
 });
