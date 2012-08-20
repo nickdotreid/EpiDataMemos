@@ -1,0 +1,58 @@
+@import 'variables';
+
+.notes-nav{
+	margin:0px;
+}
+#notes-edit{
+	margin-bottom:@spaceSize;
+}
+#notes-edit a.close{
+	background-color:#AAA;
+	display:block;
+	width:auto;
+	float:none;
+	clear:both;
+	font-size:@smallFontSize;
+	text-align:right;
+	padding:@spaceSize/2 0px;
+	&:hover{
+		background-color:#999;
+	}
+	i{
+		display:block;
+		float:right;
+		width:12px;
+		height:12px;
+		margin:3px;
+		background-image:url(@iconSpritePath);
+		background-position:-313px 0px;
+		background-repeat:no-repeat;
+	}
+}
+
+#notes-edit .note{
+	margin:0px;
+}
+
+#form-note .control-group{
+	margin:0px @spaceSize @spaceSize;
+	input.textinput,select,textarea{
+		display:block;
+		clear:none;
+		width:200px;
+	}
+}
+@media(min-width: @largeWidth){
+	#form-note .control-group{
+		margin:0px @spaceSize*2 @spaceSize;
+		input.textinput,select,textarea{
+			display:block;
+			clear:none;
+			width:435px;
+		}
+	}
+}
+
+#form-note .form-actions{
+	margin-bottom:0px;
+}
