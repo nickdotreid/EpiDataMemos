@@ -25,6 +25,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		$("#notes-edit .notes-container").html("");
 		$("#notes-edit .notes-nav .active ").removeClass("active");
+		$.address.parameter("note",false);
 	}).delegate("form.note.create","submit",function(event){
 		event.preventDefault();
 		var form = $(this);
@@ -74,5 +75,29 @@ $(document).ready(function(){
 				$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
 			}
 		})
-	});	
+	});
+	$.address.change(function(){
+		if($.address.parameter("note")){
+			$("#notes-edit .notes-container").html("");
+			$.ajax({
+				url:'/notes/'+$.address.parameter("note")+'/get/',
+				type:"GET",
+				success:function(data){
+					if(data['note']){
+						if(data['note']['markup']){
+							$("#notes-edit .notes-container").html(data['note']['markup']);	
+						}
+						if(data['note']['type']){
+							$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
+						}
+					}
+					if(data['message']){
+						$("#notes-edit .notes-container").prepend('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
+					}
+					var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
+					$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
+				}
+			});
+		}
+	});
 });

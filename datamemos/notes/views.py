@@ -17,6 +17,19 @@ from django.template import RequestContext
 
 def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
+	if request.is_ajax():
+		return HttpResponse(
+			json.dumps({
+				"note":{
+					"id":note.id,
+					"type":note.type.short,
+					"markup":render_to_string("notes/note-list-item.html",{
+						"note":note,
+						"statistics":note.statistic_set.all(),
+						},context_instance=RequestContext(request))
+				}
+				}),
+			'application/json')
 	return render_to_response('notes/detail.html',{'note':note})
 	
 def edit(request,note_id):
