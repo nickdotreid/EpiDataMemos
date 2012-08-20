@@ -44,6 +44,7 @@ $(document).ready(function(){
 				$('.bar[tags="'+tag_match+'"]',column).prependTo(column);
 			});
 		}
+		$(".canvas-container",chart).append('<div class="top-fade"></div>');
 		chart.data("tags",[]);
 		chart.trigger("get-state-chart").trigger("resize").trigger("redraw");
 	}).delegate(".chart.barchart","get-state-chart",function(){
@@ -167,6 +168,7 @@ $(document).ready(function(){
 				ticks:5,
 				percent:event.percent
 			});
+			chart.trigger("chart-resize");
 		},100);
 		chart.data("redraw-timeout",timeout);
 	}).delegate(".chart.barchart","chart-resize",function(event){
@@ -175,10 +177,13 @@ $(document).ready(function(){
 		var canvas_container = $(".canvas-container",chart);
 		var total_height = $(window).height() - css_to_number(chart.css("margin-top")) - css_to_number(chart.css("margin-bottom"));
 		var avail_height = total_height - canvas_container.position().top - css_to_number(canvas_container.css("margin-top")) - css_to_number(canvas_container.css("margin-bottom"))
+		canvas_container.nextAll("div").each(function(){
+			avail_height -= $(this).height();	
+		});
 		if(canvas_container.height() != avail_height){
 			canvas_container.height(avail_height);
-			$(".canvas",this).height(avail_height - css_to_number(canvas.css("margin-top")) - css_to_number(canvas.css("margin-bottom")));
-			chart.trigger("redraw");			
+			canvas.height(avail_height - css_to_number(canvas.css("margin-top")) - css_to_number(canvas.css("margin-bottom")));
+			$(".column .label",canvas).css("top",canvas.height());			
 		}
 	}).delegate(".chart.barchart","chart-resize",function(event){
 		var chart = $(this);
@@ -194,7 +199,7 @@ $(document).ready(function(){
 	});
 	
 	$(window).resize(function(){
-		$(".chart").trigger("chart-resize");
+		$(".chart").trigger("redraw");
 	});
 	
 	$.address.change(function(event){

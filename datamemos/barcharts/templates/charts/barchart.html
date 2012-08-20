@@ -26,8 +26,8 @@
 			<label class="checkbox"><input class="percent" type="checkbox" name="percent" value="on" />View as percent per <span class="column_name">column</span></label>
 		</fieldset>
 	</form>
-	<div class="canvas-container">
 	<div class="y_label">{{chart.y_label}}</div>
+	<div class="canvas-container">
 	<div class="canvas">
 	{% for column in columns %}
 		<div class="column" value="{{column.short}}">
@@ -54,6 +54,6 @@
 		</div>
 	{% endfor %}	
 	</div>
-	<div class="x_label">{{chart.x_label}}</div>
 	</div>
+	<div class="x_label">{{chart.x_label}}</div>
 </div>

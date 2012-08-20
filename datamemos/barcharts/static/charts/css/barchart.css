@@ -183,6 +183,32 @@
   z-index: 7;
   background-image: none;
 }
+.chart .x_label,
+.chart .y_label {
+  font-style: italic;
+  font-size: 0.8em;
+  display: block;
+  float: none;
+  clear: both;
+  width: auto;
+}
+.chart .y_label {
+  margin-left: 7px;
+}
+.chart .x_label {
+  text-align: center;
+}
+.canvas-container .top-fade {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 13;
+  width: 100%;
+  height: 5px;
+  background-image: url('../i/top-fade.png');
+  background-repeat: repeat-x;
+  background-position: 0px 0px;
+}
 .canvas .highlight {
   display: block;
   background: #FFF;
