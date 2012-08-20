@@ -12,7 +12,10 @@ $(document).ready(function(){
 			});
 		});
 		$(".tags input,.tags-children input",chart).each(function(){
-			$(".color",$(this).parents(".tag:first")).css("background-color",pallet(this.value));
+			var tag = $(this).parents(".tag:first");
+			if(!tag.hasClass("tag-has-children")){
+				$(".color",tag).css("background-color",pallet(this.value));	
+			}
 		});
 		$(".bar",chart).each(function(){
 			var bar = $(this);

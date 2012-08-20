@@ -60,20 +60,24 @@
 	.tags{
 		display:block;
 		clear:both;
+		margin:0px;
 	}
 	.tags-children{
 		display:none;
 		clear:both;
+		margin:0px;
+		padding:0px;
 	}
 	.tags li,.tags-children li{
 		float:left;
 	}
 	.tag{
 		cursor:pointer;
-		padding:5px;
+		padding:@spaceSize;
+		margin:0px;
 	}
 	.tag.radio{
-		padding-left:22px;
+		padding-left:@spaceSize;
 	}
 	.tag.active{
 		background-color:@gridColor;
@@ -81,26 +85,17 @@
 	.tag.active-parent{
 		background-color:lighten(@gridColor,15%);
 	}
-	.tag .color{
-		width:20px;
-		height:15px;
-		display:block;
-		position:absolute;
-		top:3px;
-		left:5px;
-		border:#FFF 3px solid;
-	}
-	.tags .tag .color{
+	.tag input{
 		display:none;
 	}
-	.tags-children .tag{
-		padding:5px 5px 5px 35px;
-		.color{
-			display:block;
-		}
-		input{
-			display:none;
-		}
+	.tag .color{
+		width:auto;
+		height:5px;
+		display:block;
+		float:none;
+	}
+	.tag-has-children .color{
+		
 	}
 }
 .canvas-container{

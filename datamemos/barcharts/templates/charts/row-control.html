@@ -1,5 +1,5 @@
-<label for="tag-{{row.short}}" class="tag radio">
-	<i class="color"></i>
+<label for="tag-{{row.short}}" class="tag radio btn {% if row.children|length %}tag-has-children{% endif %}">
 	<input id="tag-{{row.short}}" type="radio" name="tag" value="{{row.short}}" />
 	{{row.name}}
+	<i class="color"></i>
 </label>

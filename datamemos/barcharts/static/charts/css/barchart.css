@@ -56,10 +56,13 @@
 .filters .tags {
   display: block;
   clear: both;
+  margin: 0px;
 }
 .filters .tags-children {
   display: none;
   clear: both;
+  margin: 0px;
+  padding: 0px;
 }
 .filters .tags li,
 .filters .tags-children li {
@@ -67,10 +70,11 @@
 }
 .filters .tag {
   cursor: pointer;
-  padding: 5px;
+  padding: 7px;
+  margin: 0px;
 }
 .filters .tag.radio {
-  padding-left: 22px;
+  padding-left: 7px;
 }
 .filters .tag.active {
   background-color: #cccccc;
@@ -78,26 +82,14 @@
 .filters .tag.active-parent {
   background-color: #f2f2f2;
 }
+.filters .tag input {
+  display: none;
+}
 .filters .tag .color {
-  width: 20px;
-  height: 15px;
+  width: auto;
+  height: 5px;
   display: block;
-  position: absolute;
-  top: 3px;
-  left: 5px;
-  border: #FFF 3px solid;
-}
-.filters .tags .tag .color {
-  display: none;
-}
-.filters .tags-children .tag {
-  padding: 5px 5px 5px 35px;
-}
-.filters .tags-children .tag .color {
-  display: block;
-}
-.filters .tags-children .tag input {
-  display: none;
+  float: none;
 }
 .canvas-container {
   position: relative;

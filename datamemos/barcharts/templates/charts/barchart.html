@@ -6,20 +6,16 @@
 	<form class="controls">
 		<fieldset class="filters">
 			<legend><span>Select axis to view</span></legend>
-			<ul class="nav tags">
+			<ul class="nav tags btn-group">
 			{% for row in rows %}
-			<li>
 				{% include "charts/row-control.html" with row=row %}
-			</li>
 			{% endfor %}
 			</ul>
 			{% for row in rows %}
 			{% if row.children|length %}
-			<ul class="tag tags-children nav" parent="{{row.short}}">
+			<ul class="tags tags-children nav btn-group" parent="{{row.short}}">
 			{% for child in row.children %}
-				<li>
 				{% include "charts/row-control.html" with row=child %}
-				</li>
 			{% endfor %}
 			</ul>
 			{% endif %}
