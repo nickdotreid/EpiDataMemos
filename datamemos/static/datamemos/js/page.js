@@ -9,7 +9,7 @@ $(document).ready(function(){
 	$(window).scroll(function(event){
 		$(".sticky").each(function(){
 			var sticky = $(this)
-			if($(window).scrollTop() > sticky.data("top")){
+			if($(window).scrollTop() > sticky.data("top") && sticky.width() != sticky.parents(".container").width()){
 				sticky.css({
 					position:'fixed',
 					top:'0px'
