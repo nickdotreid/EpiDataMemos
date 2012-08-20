@@ -34,6 +34,11 @@ $(document).ready(function(){
 			type:"POST",
 			data:form.serialize(),
 			success:function(data){
+				if(data['form']){
+					form.after(data['form']);
+					form.remove();
+					return;
+				}
 				if(data['note']){
 					if(data['note']['type']){
 						$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
@@ -44,13 +49,6 @@ $(document).ready(function(){
 				}
 				form.remove();
 				$("#notes-edit .notes-nav .active").removeClass("active");
-
-			},
-			error:function(data){
-				if(data['form']){
-					form.after(data['form']);
-					form.remove();
-				}
 			}
 		});
 	});	

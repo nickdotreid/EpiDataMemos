@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from statistics.views import save_statistic
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 import datetime
@@ -59,9 +59,13 @@ def create(request):
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({
+						"message":"Your note has been added.",
 						"note":{
 							"id":note.id,
-							"text":note.text,
+							"type":note.type.short,
+							"markup":render_to_string("notes/note-list-item.html",{
+								"note":note,
+								},context_instance=RequestContext(request))
 						}
 						}),
 					'application/json')
@@ -71,7 +75,6 @@ def create(request):
 			json.dumps({
 				"form":render_to_string("notes/form.html",{
 					"form":form,
-					"extra_css":"ajax"
 					},context_instance=RequestContext(request))
 				}),
 			'application/json')
