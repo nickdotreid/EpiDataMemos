@@ -59,7 +59,10 @@ def create(request):
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({
-						"message":"Your message has been saved",
+						"message":{
+							'type':'success',
+							'text':"Your message has been saved",
+						},
 						"note":{
 							"id":note.id,
 							"type":note.type.short,

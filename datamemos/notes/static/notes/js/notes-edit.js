@@ -41,7 +41,7 @@ $(document).ready(function(){
 					return;
 				}
 				if(data['message']){
-					form.before('<span class="alert">'+data['message']+'</span>');
+					form.before('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
 				}
 				if(data['note']){
 					if(data['note']['markup']){
