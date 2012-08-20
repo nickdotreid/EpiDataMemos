@@ -38,6 +38,7 @@ def make_note_form(user = False):
 		
 		public = forms.BooleanField(
 			label = 'Do you want to list this comment publicly?',
+			required = False,
 		)
 		
 		class Meta:
