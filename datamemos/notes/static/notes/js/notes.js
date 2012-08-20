@@ -88,6 +88,18 @@ $(document).ready(function(){
 		});
 	});
 	
+	$("#note-container").delegate(".note .share-btn","click",function(event){
+		event.preventDefault();
+		var note = $(this).parents(".note:first");
+		if($(".share .close",note).length<1){
+			$(".share",note).append("<a href='#' class='close'><i></i>Close</a>");
+		}
+		$(".share",note).show();
+	}).delegate(".note .share .close","click",function(event){
+		event.preventDefault();
+		$(this).parents(".share:first").hide();
+	});
+	
 	$.address.change(function(event){
 		$("#note-container .notes").trigger({
 			type:"sort",

@@ -20,6 +20,9 @@
 .note .meta div {
   float: left;
 }
+.note .share {
+  display: none;
+}
 .note .text {
   margin-bottom: 7px;
 }

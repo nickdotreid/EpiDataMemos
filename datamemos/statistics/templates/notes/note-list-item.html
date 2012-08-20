@@ -31,12 +31,13 @@
 		{% endif %}
 		<div style="clear:both;float:none;display:block;height:0px;overflow:hidden;">&nbsp;</div>
 	</div>
+	{% include "statistics/share-box.html" with url=note_url %}
 	<div class="nav">
 		{% if user %}
 		{% if user.is_staff or user == note.author %}
-		<a href="/notes/{{note.id}}/edit/" class="edit">Edit</a>
+		<a href="/notes/{{note.id}}/edit/" class="edit edit-btn">Edit</a>
 		{% endif %}
 		{% endif %}
-		<a href="/notes/{{note.id}}/" class="share">Share</a>
+		<a href="/notes/{{note.id}}/" class="share-btn">Share</a>
 	</div>
 </div>

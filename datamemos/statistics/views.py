@@ -32,11 +32,13 @@ def list(request):
 				notes.append(stat.note)
 	if request.is_ajax():
 		_notes = []
+		from notes.views import detail as note_detail
 		for note in notes:
 			_notes.append({
 				'id':note.id,
 				'markup':render_to_string('notes/note-list-item.html',{
 					'note':note,
+					'note_url':reverse(note_detail,args=[note.id]),
 					'statistics':note.statistic_set.all(),
 				},context_instance=RequestContext(request))
 			})
