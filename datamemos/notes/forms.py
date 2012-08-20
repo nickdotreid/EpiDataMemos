@@ -43,7 +43,10 @@ def make_note_form(user = False):
 		
 		class Meta:
 			model = Note
-			fields = ('text', 'type','public')
+			if not user:
+				fields = ('text', 'email','public')
+			else:
+				fields = ( 'type','text','public')
 		def __init__(self, *args, **kwargs):
 			self.helper = FormHelper()
 			self.helper.form_id = 'form-note'
