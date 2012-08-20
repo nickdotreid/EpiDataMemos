@@ -81,4 +81,20 @@ $(document).ready(function(){
 	if(!$.address.parameter("chart") || !$.address.parameter("note") || !$.address.parameter("statistic")){
 		$(".navbar .nav a").click();
 	}
+	
+	if($.urlParam("chart")){
+		$.address.parameter("chart",$.urlParam("chart"));
+	}
+	if($.urlParam("note")){
+		$.address.parameter("note",$.urlParam("note"));
+	}
+	if($.urlParam("tags")){
+		$.address.parameter("tags",$.urlParam("tags"));
+	}
+	
 });
+
+$.urlParam = function(name){
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    return results[1] || 0;
+}
