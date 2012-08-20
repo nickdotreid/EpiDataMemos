@@ -2,6 +2,9 @@ from django import forms
 from django.forms import ModelForm
 from models import Note, Category
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 def make_note_form(user = False):	
 	class NoteForm(ModelForm):
 		if user and user.is_staff:
@@ -10,7 +13,7 @@ def make_note_form(user = False):
 			categories = Category.objects.filter(public=True)
 			
 		if categories.count() > 1:
-			type_widget = forms.RadioSelect
+			type_widget = forms.Select
 		else:
 			type_widget = forms.HiddenInput
 		initial = None
@@ -40,4 +43,13 @@ def make_note_form(user = False):
 		class Meta:
 			model = Note
 			fields = ('text', 'type','public')
+		def __init__(self, *args, **kwargs):
+			self.helper = FormHelper()
+			self.helper.form_id = 'form-note'
+			self.helper.form_class = 'ajax note create note-create'
+			self.helper.form_method = 'post'
+			self.helper.form_action = '/notes/create/'
+
+			self.helper.add_input(Submit('submit', 'Save Note'))
+			super(NoteForm, self).__init__(*args, **kwargs)
 	return NoteForm

@@ -72,7 +72,7 @@ def create(request):
 				"form":render_to_string("notes/form.html",{
 					"form":form,
 					"extra_css":"ajax"
-					})
+					},context_instance=RequestContext(request))
 				}),
 			'application/json')
 	return render_to_response('notes/edit.html',{'form':form},context_instance=RequestContext(request))
