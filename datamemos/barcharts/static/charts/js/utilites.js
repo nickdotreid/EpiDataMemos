@@ -34,7 +34,11 @@ function array_sum(arr,value_function){
 
 function format_number(num,percent){
 	if(percent){
-		return Math.round(num*100)+'%';
+		num = Math.round(num*10000)/100;
+		if(String(num).replace("0","").length >3 ){
+			num = Math.round(num);
+		}
+		return num +'%';
 	}
 	return addCommas(Math.round(num));
 }
