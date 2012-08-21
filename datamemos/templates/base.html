@@ -3,9 +3,10 @@
 <html>
 <head>
 	<title>{% block title %}SF HIV Charts{% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	{% block styles %}
-	<link rel="stylesheet" href="{{ STATIC_URL }}datamemos/css/datamemos.css" >
+	<link rel="stylesheet" href="{{ STATIC_URL }}datamemos/css/datamemos.css" />
 	{% endblock %}
 	
 	{% block scripts %}
@@ -14,7 +15,10 @@
 	<script type="text/javascript" src="{{STATIC_URL}}datamemos/js/page.js"></script>
 	{% endblock %}
 	<script type="text/javascript" src="{{STATIC_URL}}datamemos/js/respond.min.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Respond.js proxy on external server -->
+	<link href="{{STATIC_URL}}respond-proxy/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+	<link href="{{STATIC_URL}}respond-proxy/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+	<script src="{{STATIC_URL}}respond-proxy/respond.proxy.js"></script>
 </head>
 <body>
 	<div class="wrapper container">
