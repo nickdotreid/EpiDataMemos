@@ -24,16 +24,12 @@ $(document).ready(function(){
 		if($(".tags-children:visible").length<1){
 			$(".layout").hide();
 			if(event['percent']){
-				if($.address.parameter("percent")){
-					$.address.parameter("percent",false);
-				}else{
-					event['percent'] = false;
-					chart.trigger({
-						type:"redraw",
-						tags:event.tags,
-						percent:false
-					});
-				}
+				event['percent'] = false;
+				chart.trigger({
+					type:"redraw",
+					tags:event.tags,
+					percent:false
+				});
 			}
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(event){
