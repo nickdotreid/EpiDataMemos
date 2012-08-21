@@ -75,6 +75,7 @@
 		cursor:pointer;
 		padding:@spaceSize;
 		margin:0px;
+		overflow:hidden;
 	}
 	.tag.radio{
 		padding-left:@spaceSize;
@@ -86,7 +87,9 @@
 		background-color:lighten(@gridColor,15%);
 	}
 	.tag input{
-		display:none;
+		display:block;
+		position:absolute;
+		left:-50px;
 	}
 	.tag .color{
 		width:auto;

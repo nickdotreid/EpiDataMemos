@@ -39,7 +39,7 @@ $(document).ready(function(){
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(event){
 		event.preventDefault();
-		var row_values = []
+		var row_values = [];
 		$(".tags input, .tags-children input",$(this).parents(".chart:first")).each(function(){
 			row_values.push(this.value);
 		});

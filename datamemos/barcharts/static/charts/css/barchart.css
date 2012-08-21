@@ -72,6 +72,7 @@
   cursor: pointer;
   padding: 7px;
   margin: 0px;
+  overflow: hidden;
 }
 .filters .tag.radio {
   padding-left: 7px;
@@ -83,7 +84,9 @@
   background-color: #f2f2f2;
 }
 .filters .tag input {
-  display: none;
+  display: block;
+  position: absolute;
+  left: -50px;
 }
 .filters .tag .color {
   width: auto;
