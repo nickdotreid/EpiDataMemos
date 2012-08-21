@@ -9,7 +9,7 @@ urlpatterns = patterns('notes.views',
 			context_object_name = 'recent_notes',
 			template_name = 'notes/index.html')),
 	url(r'^create/$','create'),
-	url(r'^(?P<note_id>\d+)/$','detail'),
 	url(r'^(?P<note_id>\d+)/get/$','detail'),
+	url(r'^(?P<note_id>\d+)/$','detail'),
 	url(r'^(?P<note_id>\d+)/edit/$','edit'),
 )

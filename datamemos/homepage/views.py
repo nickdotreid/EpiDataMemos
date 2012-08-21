@@ -25,6 +25,6 @@ def load_note(request,note_id):
 			tags = []
 			for tag in statistic.tags.all():
 				tags.append(tag.short)
-			return HttpResponseRedirect("/?chart=%i&note=%i&tags=%s" % (statistic.chart.id,note.id,",".join(tags)))
-	return HttpResponseRedirect("/?note=%i" % (note.id))
+			return HttpResponseRedirect("/#/?chart=%i&note=%i&tags=%s" % (statistic.chart.id,note.id,",".join(tags)))
+	return HttpResponseRedirect("/#/?note=%i" % (note.id))
 	
