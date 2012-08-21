@@ -11,6 +11,10 @@ $(document).ready(function(){
 			url:"/charts/"+event.chart_id+"/",
 			success:function(data){
 				var markup = '<div class="chart table"></div>';
+				if(data['title']){
+					var title = document.title.split(":");
+					document.title = title[0] + ": " + data['title'];
+				}
 				if(data['markup']){
 					markup = data['markup'];
 				}
