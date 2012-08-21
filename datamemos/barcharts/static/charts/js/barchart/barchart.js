@@ -72,13 +72,15 @@ $(document).ready(function(){
 					}					
 				}
 			}
-			chart.trigger({
-				type:"controls-redraw",
-				tags:event.tags
-			});
 			if(event.percent == undefined){
 				event.percent = chart.data("percent");
 			}
+			chart.trigger({
+				type:"controls-redraw",
+				tags:event.tags,
+				percent:event.percent
+			});
+
 			
 			for(index in event.tags){
 				var tag = event.tags[index];

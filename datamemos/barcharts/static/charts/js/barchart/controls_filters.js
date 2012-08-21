@@ -34,7 +34,6 @@ $(document).ready(function(){
 						percent:false
 					});
 				}
-				return;
 			}
 		}
 	}).delegate(".chart.barchart .filters .tag input","click",function(event){
