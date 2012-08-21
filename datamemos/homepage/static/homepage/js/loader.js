@@ -82,7 +82,7 @@ $(document).ready(function(){
 	});
 	
 	$(".page,#chart-container,#note-container").hide();
-	if(!$.address.parameter("chart") || !$.address.parameter("note") || !$.address.parameter("statistic")){
+	if(!$.address.parameter("chart") && !$.address.parameter("note") && !$.address.parameter("statistic")){
 		$(".navbar .nav a").click();
 	}
 });
