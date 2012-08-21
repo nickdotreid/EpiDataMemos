@@ -66,8 +66,10 @@ $(document).ready(function(){
 		
 			if(!event.tags){
 				event.tags = [];
-				for(var i=0; i<chart.data("tags").length;i++){
-					event.tags.push(chart.data("tags")[i]);
+				if(chart.data("tags") && chart.data("tags").length){
+					for(var i=0; i<chart.data("tags").length;i++){
+						event.tags.push(chart.data("tags")[i]);
+					}					
 				}
 			}
 			chart.trigger({
