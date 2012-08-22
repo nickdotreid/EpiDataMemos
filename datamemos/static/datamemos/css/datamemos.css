@@ -3149,14 +3149,14 @@ form .requiredField .asteriskField {
   margin: 0px;
 }
 #form-note .control-group {
-  margin: 0px 14px 7px;
+  margin: 0px 7px 7px;
 }
 #form-note .control-group input.textinput,
 #form-note .control-group select,
 #form-note .control-group textarea {
   display: block;
   clear: none;
-  width: 435px;
+  width: 200px;
 }
 #form-note .form-actions {
   margin-bottom: 0px;
