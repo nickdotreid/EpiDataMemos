@@ -102,6 +102,7 @@ $(document).ready(function(){
 			$(".column",chart).each(function(){
 				var column = $(this);
 				var biggest_number = 0;
+				var total_number = 0;
 				var biggest_match = 1;
 				$(".bar",column).each(function(){
 					var bar = $(this);
@@ -121,16 +122,19 @@ $(document).ready(function(){
 					bar.data("matches",matches+sibling_matches);
 					if(matches > biggest_match){
 						biggest_number = 0;
+						total_number = 0;
 						biggest_match = matches;
 					}
 					if(matches >= biggest_match){
+						total_number += bar.data("amount");
 						if(event.percent){
 							biggest_number += bar.data("percent");
 						}else{
 							biggest_number += bar.data("amount");	
 						}
 					}
-				})
+				});
+				$(".label .total .amount",column).html(format_number(total_number));
 				if(biggest_number>chart_max){
 					chart_max = biggest_number;
 				}

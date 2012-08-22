@@ -155,6 +155,16 @@
 			width:100%;
 			text-align:center;
 			cursor:pointer;
+			font-size:0.8em;
+			line-height:1em;
+			padding-bottom:@spaceSize/2;
+			.row{
+				margin:@spaceSize/2 0px 0px;
+				display:block;
+			}
+			.total{
+				font-style:italic;
+			}
 		}
 	}
 	.column.selected .label{
@@ -278,49 +288,3 @@
 .bar .highlight{
 	display:none;
 }
-
-
-.bar_mix(@color){
-	background-color:@color;
-	.color{
-		background-color:@color;
-	}
-	&.sibling{
-		background-color:desaturate(lighten(@color,20%),40%);
-		.color{
-			background-color:desaturate(lighten(@color,20%),40%);
-		}
-	}
-	&.hover,&.hover.sibling{
-		background-color:@color;
-	}
-}
-
-.chart.barchart .bar{
-	.bar_mix(#444)
-}
-
-/*  Define Colors */
-.chart.barchart{
-	.column,.tags{
-		.total,.male,.white,.under12,.msm{
-			.bar_mix(#6666ff)
-		}
-		.female,.aa,.13to19,.idu{
-			.bar_mix(#ff8000)
-		}
-		.transgender,.latino,.20to29,.msm-idu{
-			.bar_mix(#ff66ff)
-		}
-		.api,.30to39,.heterosexual{
-			.bar_mix(#8000ff)
-		}
-		.na,.40to49,.other-exposure{
-			.bar_mix(#66ffff)
-		}
-		.other-race,.over50{
-			.bar_mix(#ff0000)
-		}
-	}
-}
-
