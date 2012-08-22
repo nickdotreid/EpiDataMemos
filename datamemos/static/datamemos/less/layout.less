@@ -1,70 +1,34 @@
 #chart-container,#note-container{
 	width:auto;
 	display:block;
-	clear:both;
-	float:none;
+	float:left;
 	margin-top:@spaceSize;
 	margin-bottom:@spaceSize;
 	.section-title{
-		display:none;
-	}
-}
-
-@media(min-width:@tabletWidth){
-	#comments,#descriptions{
-		width:225px;
 		display:block;
-		float:left;
 	}
 }
 
-@media(min-width: @smallWidth){
-	#chart-container,#note-container{
-		width:475px;
-		float:left;
-		clear:none;
-	}
-	#chart-container .inner{
-		width:475px;
-	}
-	#note-container{
-		width:225px;
-		margin-left:@spaceSize;
-	}
-	#home{
-		.about-container,.chart-list{
-			display:block;
-			float:left;
-			width:475px;
-		}
-		.chart-list{
-			width:225px;
-			margin-left:@spaceSize;
-		}
-	}
+#chart-container{
+	width:675px;
 }
-@media(min-width: @largeWidth){
-	#chart-container,#note-container{
-		.section-title{
-			display:block;
-		}
-	}
-	#chart-container{
-		width:675px;
-	}
-	#chart-container .inner{
-		width:675px;
-	}
-	#note-container{
-		width:475px;
-		margin-left:@spaceSize*2;
-	}
-	#home .about-container{
-		width:615px;
-	}
-	#home .chart-list{
-		width:525px;
-		margin-left:@spaceSize*2;
-	}
+#chart-container .inner{
+	width:675px;
+}
+#note-container{
+	width:225px;
+	margin-left:@spaceSize*2;
+}
+#home .about-container,.chart-list{
+	display:block;
+	float:left;
+}
+
+#home .about-container{
+	width:615px;
+}
+#home .chart-list{
+	width:275px;
+	margin-left:@spaceSize*2;
 }
 
