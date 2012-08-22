@@ -80,7 +80,7 @@ $(document).ready(function(){
 				tags:event.tags,
 				percent:event.percent
 			});
-
+			chart.trigger("chart-resize");
 			
 			for(index in event.tags){
 				var tag = event.tags[index];
@@ -172,7 +172,6 @@ $(document).ready(function(){
 				ticks:5,
 				percent:event.percent
 			});
-			chart.trigger("chart-resize");
 		},100);
 		chart.data("redraw-timeout",timeout);
 	}).delegate(".chart.barchart","chart-resize",function(event){
