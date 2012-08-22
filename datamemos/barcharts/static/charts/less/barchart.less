@@ -227,29 +227,28 @@
 		display:block;
 		background:#FFF;
 		border:3px #000 solid;
+		text-align:center;
 		font-size:0.8em;
 		position:absolute;
 		top:0px;
 		left:0px;
 		z-index:40;
 		padding:7px;
-		margin-bottom:23px;
 		width:110px;
-		.total{
-			background-color:transparent;
+		margin-bottom:23px;
+		.row{
+			margin:0px @spaceSize/2;
 		}
-		span,a{
-			display:block;
-			text-align:center;
-		}
-		span.percent{
-			font-style:italic;
-			display:inline;
-		}
-		span.amount{
+		.amount{
 			font-size:1.15em;
+			font-weight:bold;
 		}
-		
+		.percent{
+			font-style:italic;
+		}
+		.total{
+			font-weight:bold;
+		}
 		.arrow{
 			position:absolute;
 			width:20px;

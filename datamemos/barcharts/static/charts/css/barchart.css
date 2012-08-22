@@ -216,29 +216,28 @@
   display: block;
   background: #FFF;
   border: 3px #000 solid;
+  text-align: center;
   font-size: 0.8em;
   position: absolute;
   top: 0px;
   left: 0px;
   z-index: 40;
   padding: 7px;
-  margin-bottom: 23px;
   width: 110px;
+  margin-bottom: 23px;
+}
+.canvas .highlight .row {
+  margin: 0px 3.5px;
+}
+.canvas .highlight .amount {
+  font-size: 1.15em;
+  font-weight: bold;
+}
+.canvas .highlight .percent {
+  font-style: italic;
 }
 .canvas .highlight .total {
-  background-color: transparent;
-}
-.canvas .highlight span,
-.canvas .highlight a {
-  display: block;
-  text-align: center;
-}
-.canvas .highlight span.percent {
-  font-style: italic;
-  display: inline;
-}
-.canvas .highlight span.amount {
-  font-size: 1.15em;
+  font-weight: bold;
 }
 .canvas .highlight .arrow {
   position: absolute;

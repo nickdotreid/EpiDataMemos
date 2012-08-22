@@ -41,11 +41,18 @@
 				percent="{{point.percent}}">
 				<div class="amount">{{point.value}}</div>
 				<div class="highlight">
-					<div class="title title-hightlight">{% for row in point.rows %}{{row.name}}{% endfor %} in {{column.label}}</div>
-					<div class="number">{{point.value}}</div>
-					<div class="total">{{point.total}}</div>
-					<div class="label">{{chart.y_label}}</div>
-					<div class="percent">{{point.percent|as_percent}}</div>
+					<div class="row">
+						<span class="amount">{{point.value}}</span>
+						<span class="percent">{{point.percent|as_percent}}</span>
+					</div>
+					<div class="row">
+						of
+						<span class="total">{{point.total}}</span>
+						<span class="label">{{chart.units}}</span>
+					</div>
+					<div class="row">
+						<span class="tags">{% for row in point.rows %}{{row.name}}{% endfor %} in {{column.label}}</span>
+					</div>
 					<div class="arrow"></div>
 				</div>
 			</div>
