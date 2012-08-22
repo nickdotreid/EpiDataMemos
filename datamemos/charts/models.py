@@ -43,6 +43,8 @@ class Chart(models.Model):
 	x_label = models.CharField(max_length=250,blank=True)
 	y_label = models.CharField(max_length=250,blank=True)
 	
+	units = models.CharField(max_length=100,blank=True)
+	
 	def __unicode__(self):
 		if self.published:
 			return self.title
