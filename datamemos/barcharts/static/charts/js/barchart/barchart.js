@@ -52,7 +52,10 @@ $(document).ready(function(){
 		if($.address.parameter("tags")){
 			tags = $.address.parameter("tags").split(",");
 		}else{
-			$('.tag input:first',$(this)).click();
+			var chart = $(this);
+			setTimeout(function(){
+				$('.tag input:first',chart).click();
+			},500);
 		}
 		$(this).data("tags",tags);
 	}).delegate(".chart.barchart","redraw",function(event){
