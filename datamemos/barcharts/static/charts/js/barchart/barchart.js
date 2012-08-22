@@ -177,6 +177,16 @@ $(document).ready(function(){
 	}).delegate(".chart.barchart","chart-resize",function(event){
 		var chart = $(this);
 		var canvas = $(".canvas",chart);
+		var margin_bottom = 0;
+		$(".column .label",canvas).each(function(){
+			if($(this).height() > margin_bottom){
+				margin_bottom = $(this).height();
+			}
+		});
+		canvas.css("margin-bottom",margin_bottom + 'px');
+	}).delegate(".chart.barchart","chart-resize",function(event){
+		var chart = $(this);
+		var canvas = $(".canvas",chart);
 		var canvas_container = $(".canvas-container",chart);
 		var total_height = $(window).height() - css_to_number(chart.css("margin-top")) - css_to_number(chart.css("margin-bottom"));
 		var avail_height = total_height - canvas_container.position().top - css_to_number(canvas_container.css("margin-top")) - css_to_number(canvas_container.css("margin-bottom"))
