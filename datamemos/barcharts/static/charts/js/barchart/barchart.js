@@ -142,6 +142,18 @@ $(document).ready(function(){
 					chart_max = biggest_number;
 				}
 			});
+			var to_5 = function(num){
+				num += num * 0.05;
+				return Math.ceil(num/5)*5;
+			}
+			if(event.percent){
+				chart_max = to_5(chart_max * 100)/100;
+				if(chart_max > 1){
+					chart_max = 1;
+				}
+			}else{
+				chart_max = to_5(chart_max);
+			}
 			$(".column",chart).removeClass("selected").each(function(){
 				if(in_array(event.tags,$(this).attr("value"))){
 					$(this).addClass("selected");
