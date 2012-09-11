@@ -11,7 +11,7 @@ $(document).ready(function(){
 		var _height = 0;
 		var _y = 0;
 		var _x = 0;
-		bar.removeClass("stacked");
+		bar.removeClass("stacked").removeClass("showing");
 		var prev = bar.prev(".bar");
 		if(prev.length>0){
 			_x = prev.data("x");
@@ -28,13 +28,13 @@ $(document).ready(function(){
 			}
 		}
 		if(match>0){
+			bar.addClass("showing");
 			var value = 0;
 			if(event.percent){
 				value = bar.data("percent")/event.max;
 			}else{
 				value = bar.data("amount")/event.max;
 			}
-			
 			_height = Math.round(bar.parents(".canvas:first").height()*value);
 		}
 		bar.data({

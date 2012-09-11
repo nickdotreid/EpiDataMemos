@@ -174,8 +174,12 @@ $(document).ready(function(){
 			$(".column",chart).each(function(){
 				var column = $(this);
 				var widest = 0;
-				$(".bar",column).each(function(){
-					var right_pos = $(this).width() +$(this).data("x");
+				var bars = $(".bar.showing",column);
+				bars.each(function(i){
+					var right_pos = $(this).width();
+					if(i > 1){
+						right_pos += $(this).data("x");
+					}
 					if(right_pos > widest){
 						widest = right_pos;
 					}
