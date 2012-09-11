@@ -35,14 +35,23 @@ $(document).ready(function(){
 	}).delegate(".chart.barchart .filters .tag input","click",function(event){
 		event.preventDefault();
 		var row_values = [];
-		$(".tags input, .tags-children input",$(this).parents(".chart:first")).each(function(){
+		var filter_values = $(".tags input, .tags-children input",$(this).parents(".chart:first"));
+		filter_values.each(function(){
 			row_values.push(this.value);
 		});
 		var tags = [];
 		if($.address.parameter("tags")){
 			tags = $.address.parameter("tags").split(",");
 		}
-		new_elements = add_and_filter_array(tags, this.value, row_values);
+		var new_elements = add_and_filter_array(tags, this.value, row_values, true);
+		if(!in_array(new_elements,this.value)){
+			var parent = $(this).parents(".tags:first").attr("parent");
+			if(parent && parent!=""){
+				new_elements.push(parent);
+			}else{
+				new_elements.push(filter_values[0].value);
+			}
+		}
 		$.address.parameter("tags",new_elements.join(","));
 	}).delegate(".chart.barchart","redraw",function(event){
 		var chart = $(this)
