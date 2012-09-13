@@ -9,6 +9,8 @@ $(document).ready(function(){
 		}
 		var grid = scale.data("grid");
 		
+		scale.data("max",event.max);
+		
 		grid.css({
 			left:scale.width()+'px',
 			width:(graph.width()-scale.width())+'px'

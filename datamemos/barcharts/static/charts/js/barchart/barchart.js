@@ -137,29 +137,21 @@ $(document).ready(function(){
 						}
 					}
 				});
-				column.data("max",total_number);
+				column.data("max",biggest_number);
 				$(".label .total .amount",column).html(format_number(total_number)); // total number is max, not total amount -- fix this
 				if(biggest_number>chart_max){
 					chart_max = biggest_number;
 				}
 			});
-			var to_5 = function(num){
-				num += num * 0.05;
-				return Math.ceil(num/5)*5;
-			}
-			if(event.percent){
-				chart_max = to_5(chart_max * 100)/100;
-				if(chart_max > 1){
-					chart_max = 1;
-				}
-			}else{
-				chart_max = to_5(chart_max);
-			}
+			
 			$(".column",chart).removeClass("selected").each(function(){
 				if(in_array(event.tags,$(this).attr("value"))){
 					$(this).addClass("selected");
 				}
 			});
+			
+			chart_max = round_to_significant_number(chart_max,event.percent);
+			
 			var last_max = chart_max;
 			if($(".scale",canvas).length < 1){
 				canvas.prepend('<div class="scale"></div>');
@@ -179,8 +171,8 @@ $(document).ready(function(){
 					}
 				});
 				column.width(widest);
-				if(column.data("max") < last_max/6){
-					last_max = to_5(column.data("max"));
+				if(!in_range_of(column.data("max"),last_max)){
+					last_max = round_to_significant_number(column.data("max"),event.percent);
 					column.before('<div class="scale"></div>');
 					column.prev(".scale:first").data("max",last_max);
 				}
@@ -196,7 +188,7 @@ $(document).ready(function(){
 					percent:event.percent,
 					max:last_max
 				});
-				column.prev(".scale:first").trigger({
+				column.prevAll(".scale:first").trigger({
 					type:'scale-draw',
 					max:last_max,
 					ticks:5,
@@ -204,8 +196,11 @@ $(document).ready(function(){
 				});
 			});
 			$(".scale",chart).each(function(){
-				if($(this).next().hasClass("scale")){
-					$(this).trigger("scale-remove");
+				var scale = $(this);
+				if(scale.next().hasClass("scale")){
+					scale.trigger("scale-remove");
+				}else if(in_range_of(scale.data("max"),scale.prevAll(".scale:first").data("max"))){
+					scale.trigger("scale-remove");
 				}
 			});
 		},100);
@@ -249,4 +244,26 @@ $(document).ready(function(){
 
 function css_to_number(css){
 	return Number(css.replace("px",""));
+}
+
+function round_to_significant_number(num,percent){
+	if(percent){
+		num = round_to_significant_number(num * 100, false)/100;
+		if(num > 1){
+			num = 1;
+		}
+		return num;
+	}
+	num += num * 0.05;
+	return Math.ceil(num/5)*5;
+}
+function in_range_of(a,b){
+	if(a < b && a > b/6){
+		return true;
+	}else if(a > b && b > a/6){
+		return true;
+	}else if( a == b){
+		return true;
+	}
+	return false;
 }
