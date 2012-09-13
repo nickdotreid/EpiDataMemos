@@ -171,7 +171,7 @@ $(document).ready(function(){
 					}
 				});
 				column.width(widest);
-				if(!in_range_of(column.data("max"),last_max)){
+				if(column.data("max") && !in_range_of(column.data("max"),last_max)){
 					last_max = round_to_significant_number(column.data("max"),event.percent);
 					column.before('<div class="scale"></div>');
 					column.prev(".scale:first").data("max",last_max);
