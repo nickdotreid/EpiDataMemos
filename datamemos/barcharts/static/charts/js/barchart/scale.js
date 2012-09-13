@@ -24,6 +24,11 @@ $(document).ready(function(){
 		grid.trigger(event_obj);
 		scale.trigger(event_obj);
 		
+	}).delegate(".chart.barchart .scale","scale-remove",function(event){
+		if($(this).data("grid")){
+			$(this).data("grid").remove();
+		}
+		$(this).remove();
 	}).delegate(".chart.barchart .scale,.chart.barchart .grid","tick-draw",function(event){
 		if(!event.max){
 			return;

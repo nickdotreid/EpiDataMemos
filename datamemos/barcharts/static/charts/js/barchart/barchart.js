@@ -137,7 +137,8 @@ $(document).ready(function(){
 						}
 					}
 				});
-				$(".label .total .amount",column).html(format_number(total_number));
+				column.data("max",total_number);
+				$(".label .total .amount",column).html(format_number(total_number)); // total number is max, not total amount -- fix this
 				if(biggest_number>chart_max){
 					chart_max = biggest_number;
 				}
@@ -159,18 +160,11 @@ $(document).ready(function(){
 					$(this).addClass("selected");
 				}
 			});
-			$(".bar").trigger({
-				type:'bar-calculate',
-				tags:event.tags,
-				percent:event.percent,
-				max:chart_max,
-				stacked:stacked
-			}).trigger({
-				type:'bar-animate',
-				tags:event.tags,
-				percent:event.percent,
-				max:chart_max
-			});
+			var last_max = chart_max;
+			if($(".scale",canvas).length < 1){
+				canvas.prepend('<div class="scale"></div>');
+				$(".scale:first",chart).data("max",last_max);
+			}
 			$(".column",chart).each(function(){
 				var column = $(this);
 				var widest = 0;
@@ -185,15 +179,34 @@ $(document).ready(function(){
 					}
 				});
 				column.width(widest);
+				if(column.data("max") < last_max/6){
+					last_max = to_5(column.data("max"));
+					column.before('<div class="scale"></div>');
+					column.prev(".scale:first").data("max",last_max);
+				}
+				$(".bar",column).trigger({
+					type:'bar-calculate',
+					tags:event.tags,
+					percent:event.percent,
+					max:last_max,
+					stacked:stacked
+				}).trigger({
+					type:'bar-animate',
+					tags:event.tags,
+					percent:event.percent,
+					max:last_max
+				});
+				column.prev(".scale:first").trigger({
+					type:'scale-draw',
+					max:last_max,
+					ticks:5,
+					percent:event.percent
+				});
 			});
-			if($(".scale",canvas).length < 1){
-				canvas.prepend('<div class="scale"></div>');
-			}
-			$(".scale",canvas).trigger({
-				type:'scale-draw',
-				max:chart_max,
-				ticks:5,
-				percent:event.percent
+			$(".scale",chart).each(function(){
+				if($(this).next().hasClass("scale")){
+					$(this).trigger("scale-remove");
+				}
 			});
 		},100);
 		chart.data("redraw-timeout",timeout);
