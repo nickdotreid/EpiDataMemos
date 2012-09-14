@@ -10,6 +10,8 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 
+from annoying.functions import get_object_or_None
+
 import json
 
 from forms import make_note_form
@@ -118,6 +120,11 @@ def create(request):
 			statistic = save_statistic(request)
 			if statistic:
 				note.statistic_set.add(statistic)
+			from statistics.models import Statistic
+			if 'bookmarks' in request.POST:
+				for bookmark_id in request.POST['bookmarks'].split(","):
+					bm = get_object_or_None(Statistic, id=bookmark_id)
+					note.statistic_set.add(bm)
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({

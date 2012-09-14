@@ -33,7 +33,6 @@ $(document).ready(function(){
 			success:function(data){
 				if(data['form']){
 					button.hide();
-					$("#notes-edit .bookmarks-container").hide();
 					$("#notes-edit .notes-container").append(data['form']);
 				}
 			}
@@ -48,14 +47,15 @@ $(document).ready(function(){
 			type:"POST",
 			data:form.serialize(),
 			success:function(data){
+				if(data['message']){
+					form.before('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
+				}
 				if(data['form']){
 					form.after(data['form']);
 					form.remove();
 					return;
 				}
-				if(data['message']){
-					form.before('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
-				}
+				form.trigger("saved");
 				if(data['note']){
 					if(data['note']['markup']){
 						form.after(data['note']['markup']);	
@@ -68,7 +68,7 @@ $(document).ready(function(){
 				$("#notes-edit .notes-nav .active").removeClass("active");
 			}
 		});
-	})
+	});
 	$("#note-container").delegate(".note .edit","click",function(event){
 		event.preventDefault();
 		var note = $(this).parents(".note:first");
