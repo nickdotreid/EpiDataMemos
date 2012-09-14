@@ -71,6 +71,9 @@ def save(request):
 					'id':statistic.id,
 					'chart':statistic.chart.id,
 					'tags':request.POST['tags'].split(","),
+					'markup':render_to_string("statistics/detail.html",{
+						"bookmark":statistic,
+						}),
 				}
 				}),
 			'application/json')

@@ -1,0 +1,6 @@
+<div id="bookmark-{{bookmark.id}}" bookmark-id="{{bookmark.id}}" class="bookmark">
+	<i></i>
+	{% for tag in bookmark.tags.all %}
+	{{tag.name}}
+	{% endfor %}
+</div>

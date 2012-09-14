@@ -1,31 +1,43 @@
 $(document).ready(function(){
-	$("#notes-edit").delegate(".notes-nav a","click",function(event){
+	$("#notes-edit").delegate("a.bookmarks-add","click",function(event){
 		event.preventDefault();
-		var button = $(this);
-		$("li.active",button.parents(".notes-nav:first")).removeClass("active");
-		button.parents("li:first").addClass("active");
-	}).delegate(".notes-nav .create-note","click",function(event){
+		$.ajax({
+			url:"/statistics/save/",
+			type:"POST",
+			data:{
+				chart_id:$.address.parameter("chart"),
+				tags:$.address.parameter("tags")
+			},
+			success:function(data){
+				if(data['statistic']['markup']){
+					$("#notes-edit .bookmarks-list").append(data['statistic']['markup']);
+				}
+			}
+		});
+	}).delegate(".create-note","click",function(event){
 		event.preventDefault();
 		var button = $(this);
 		if($("form.note.create").length>0){
 			return;
 		}
+		bookmarks = [];
+		$(".bookmarks-container .bookmark").each(function(){
+			bookmarks.push($(this).attr("bookmark-id"));
+		});
 		$.ajax({
 			url:note_create_uri,
 			type:"GET",
+			data:{
+				bookmarks:bookmarks
+			},
 			success:function(data){
 				if(data['form']){
-					$("#notes-edit .notes-container").html(data['form']);
-					var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
-					$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
+					button.hide();
+					$("#notes-edit .bookmarks-container").hide();
+					$("#notes-edit .notes-container").append(data['form']);
 				}
 			}
 		});
-	}).delegate(".notes-container .close","click",function(event){
-		event.preventDefault();
-		$("#notes-edit .notes-container").html("");
-		$("#notes-edit .notes-nav .active ").removeClass("active");
-		$.address.parameter("note",false);
 	}).delegate("form.note.create","submit",function(event){
 		event.preventDefault();
 		var form = $(this);
