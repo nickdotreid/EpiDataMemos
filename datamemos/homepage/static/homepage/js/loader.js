@@ -30,29 +30,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-		
-	$(".wrapper").delegate("form.note.create","presubmit",function(event){
-		var form = $(this);
-		$("input[type='hidden'][name='chart_id']",form).remove();
-		var bookmarks = [];
-		$(".bookmarks-list .bookmark").each(function(){
-			bookmarks.push($(this).attr("bookmark-id"));
-		});
-		form.append('<input type="hidden" name="bookmarks" value="'+bookmarks.join(",")+'" />');
-		if(!$(".bookmarks-add").hasClass("disabled")){
-			if($("input[type='hidden'][name='chart_id']",form).length < 1){
-				form.append('<input type="hidden" name="chart_id" />');
-			}
-			$("input[type='hidden'][name='chart_id']",form).val($.address.parameter("chart"));
-			if($("input[type='hidden'][name='tags']",form).length < 1){
-				form.append('<input type="hidden" name="tags" />');
-			}
-			var tags = "";
-			$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));			
-		}
-	}).delegate("form.note.create","saved",function(event){
-		$(".bookmarks-list").html("");
-	});
+	
 	$(".chart-links a").click(function(event){
 		event.preventDefault();
 		if($(this).data("id")){

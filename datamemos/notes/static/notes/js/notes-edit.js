@@ -1,20 +1,5 @@
 $(document).ready(function(){
-	$("#notes-edit").delegate("a.bookmarks-add","click",function(event){
-		event.preventDefault();
-		$.ajax({
-			url:"/statistics/save/",
-			type:"POST",
-			data:{
-				chart_id:$.address.parameter("chart"),
-				tags:$.address.parameter("tags")
-			},
-			success:function(data){
-				if(data['statistic']['markup']){
-					$("#notes-edit .bookmarks-list").append(data['statistic']['markup']);
-				}
-			}
-		});
-	}).delegate(".create-note","click",function(event){
+	$("#notes-edit").delegate(".create-note","click",function(event){
 		event.preventDefault();
 		var button = $(this);
 		if($("form.note.create").length>0){

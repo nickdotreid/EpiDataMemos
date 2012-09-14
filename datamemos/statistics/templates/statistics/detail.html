@@ -1,6 +1,9 @@
-<div id="bookmark-{{bookmark.id}}" bookmark-id="{{bookmark.id}}" class="bookmark">
+<div id="bookmark-{{bookmark.id}}" bookmark-id="{{bookmark.id}}" chart-id="{{bookmark.chart.id}}" tags="{% for tag in bookmark.tags.all %}{{tag.short}},{% endfor %}" class="bookmark">
 	<i></i>
-	{% for tag in bookmark.tags.all %}
-	{{tag.name}}
-	{% endfor %}
+	<span class="bookmark-chart">{{bookmark.chart.title}}</span>
+	<ul class="tags">
+		{% for tag in bookmark.tags.all %}
+		<li class="tag">{{tag.name}}</li>
+		{% endfor %}
+	</ul>
 </div>
