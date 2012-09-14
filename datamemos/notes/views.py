@@ -121,7 +121,7 @@ def create(request):
 			if statistic:
 				note.statistic_set.add(statistic)
 			from statistics.models import Statistic
-			if 'bookmarks' in request.POST:
+			if 'bookmarks' in request.POST and request.POST['bookmarks'] != '':
 				for bookmark_id in request.POST['bookmarks'].split(","):
 					bm = get_object_or_None(Statistic, id=bookmark_id)
 					note.statistic_set.add(bm)

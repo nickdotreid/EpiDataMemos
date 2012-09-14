@@ -32,9 +32,6 @@ $(document).ready(function(){
 			type:"POST",
 			data:form.serialize(),
 			success:function(data){
-				if(data['message']){
-					form.before('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
-				}
 				if(data['form']){
 					form.after(data['form']);
 					form.remove();
@@ -42,14 +39,10 @@ $(document).ready(function(){
 				}
 				form.trigger("saved");
 				if(data['note']){
-					if(data['note']['markup']){
-						form.after(data['note']['markup']);	
-					}
-					if(data['note']['type']){
-						$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
-					}
+					$.address.parameter("note",data['note']['id']);
 				}
 				form.remove();
+				$(".create-note").show();
 				$("#notes-edit .notes-nav .active").removeClass("active");
 			}
 		});
@@ -68,33 +61,18 @@ $(document).ready(function(){
 				if(data['message']){
 					$("#notes-edit .notes-container").prepend('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
 				}
-				var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
-				$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
 			}
 		})
 	});
 	$.address.change(function(){
 		if($.address.parameter("note")){
-			$("#notes-edit .notes-container").html("");
-			$.ajax({
-				url:'/notes/'+$.address.parameter("note")+'/get/',
-				type:"GET",
-				success:function(data){
-					if(data['note']){
-						if(data['note']['markup']){
-							$("#notes-edit .notes-container").html(data['note']['markup']);	
-						}
-						if(data['note']['type']){
-							$("#notes-list .notes-nav a[note-type='"+data['note']['type']+"']").click();
-						}
-					}
-					if(data['message']){
-						$("#notes-edit .notes-container").prepend('<span class="alert '+data['message']['type']+'">'+data['message']['text']+'</span>');
-					}
-					var close_bttn = '<a href="#" class="close"><i></i>Close</a>';
-					$("#notes-edit .notes-container").prepend(close_bttn).append(close_bttn);
-				}
-			});
+			var note_id = $.address.parameter("note");
+			if($("#note-"+note_id).length < 1){
+				// search for note on server
+			}else{
+				// scroll to note_id
+				$.address.parameter("note",false);
+			}
 		}
 	});
 });
