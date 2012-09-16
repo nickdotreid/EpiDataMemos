@@ -1,6 +1,8 @@
 from django.db import models
 from adminsortable.models import Sortable
 from django.contrib.auth.models import User
+from charts.models import Chart, Tag
+
 import datetime
 
 
@@ -30,3 +32,16 @@ class Note(models.Model):
 	
 	def __unicode__(self):
 		return self.text
+		
+class Bookmark(models.Model):
+	text = models.CharField(blank=True, max_length=200)
+	
+	chart = models.ForeignKey(Chart,null=True,blank=True)
+	
+	note = models.ForeignKey(Note,null=True,blank=True)
+	tags = models.ManyToManyField(Tag, blank=True)
+	
+	def __unicode__(self):
+		if self.chart:
+			return self.chart.title
+		return unicode(self.id)

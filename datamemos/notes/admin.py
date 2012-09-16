@@ -1,6 +1,5 @@
-from notes.models import Note, Category
+from notes.models import Note, Category, Bookmark
 from adminsortable.admin import SortableAdmin,SortableTabularInline
-from statistics.admin import StatisticInline
 from django.contrib import admin
 
 class CategoryAdmin(SortableAdmin):
@@ -10,6 +9,10 @@ class CategoryAdmin(SortableAdmin):
 	]
 admin.site.register(Category,CategoryAdmin)
 
+class BookmarkInline(admin.TabularInline):
+	model = Bookmark
+	extra = 2
+
 class NoteAdmin(admin.ModelAdmin):
 	list_filter = ['pub_date']
 	list_display = ('text', 'type', 'pub_date')
@@ -17,6 +20,6 @@ class NoteAdmin(admin.ModelAdmin):
 	        (None,               {'fields': ['text','type']}),
 	        ('Author Information', {'fields': ['author','pub_date','public']}),
 	    ]
-	inlines = [StatisticInline]
+	inlines = [BookmarkInline]
 
 admin.site.register(Note,NoteAdmin)
