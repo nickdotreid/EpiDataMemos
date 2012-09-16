@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ModelForm
-from models import Note, Category
+from models import Note, Category, Bookmark
+
+from charts.models import Chart, Tag
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -57,3 +59,42 @@ def make_note_form(user = False):
 			self.helper.add_input(Submit('submit', 'Save Note'))
 			super(NoteForm, self).__init__(*args, **kwargs)
 	return NoteForm
+
+class BookmarkForm(ModelForm):
+	
+	text = forms.CharField(
+		label = 'Title for Bookmark',
+		required = False,
+	)
+	
+	note = forms.ModelChoiceField(
+		widget = forms.HiddenInput,
+		required = False,
+		queryset = Note.objects
+	)
+	
+	chart = forms.ModelChoiceField(
+		widget = forms.HiddenInput,
+		required = False,
+		queryset = Chart.objects
+	)
+	
+	tags = forms.ModelMultipleChoiceField(
+		widget = forms.HiddenInput,
+		required = False,
+		queryset = Chart.objects
+	)
+	
+	class Meta:
+		model = Bookmark
+		fields = ('text','chart','tags','note')
+	
+	def __init__(self,*args,**kwargs):
+		self.helper = FormHelper()
+		self.helper.form_id = 'form-bookmark'
+		self.helper.form_class = 'ajax bookmark create bookmark-create'
+		self.helper.form_method = 'post'
+		self.helper.form_action = '/notes/bookmark/'
+
+		self.helper.add_input(Submit('submit', 'Save Bookmark'))
+		super(BookmarkForm, self).__init__(*args, **kwargs)

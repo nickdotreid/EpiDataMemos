@@ -14,7 +14,7 @@ from annoying.functions import get_object_or_None
 
 import json
 
-from forms import make_note_form
+from forms import make_note_form, BookmarkForm
 from django.template import RequestContext
 
 def list(request):
@@ -142,4 +142,46 @@ def create(request):
 					},context_instance=RequestContext(request))
 				}),
 			'application/json')
-	return render_to_response('notes/edit.html',{'form':form},context_instance=RequestContext(request))
+	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
+	
+def save_bookmark(request,bookmark_id = False):
+	form = BookmarkForm()
+	bookmark = get_object_or_None(Bookmark,pk=bookmark_id)
+	if bookmark:
+		form = BookmarkForm(instance=bookmark)
+		if not request.user.is_authenticated() or (not request.user.is_staff and (bookmark.note.author == request.user)):
+			return HttpResponse(
+				json.dumps({
+					"message":{
+						'type':'error',
+						'text':"You don't have permission to edit this bookmark.",
+					},
+					}),
+				'application/json')
+	if request.method == "POST":
+		print "POST"
+		if bookmark:
+			form = BookmarkForm(request.POST, instance=bookmark)
+		else:
+			print "NEW BOOKMAKR"
+			form = BookmarkForm(request.POST)
+		if form.is_valid():
+			print "valid"
+			if not bookmark:
+				bookmark = Bookmark()
+				bookmark.save()
+			if 'text' in form.cleaned_data:
+				bookmark.text = form.cleaned_data['text']
+			if 'chart' in form.cleaned_data:
+				bookmark.chart = form.cleaned_data['chart']
+			if 'tags' in form.cleaned_data:
+				bookmark.tags = form.cleaned_data['tags']
+			if 'note' in form.cleaned_data:
+				bookmark.note = form.cleaned_data['note']			
+			bookmark.save()
+			return HttpResponseRedirect(reverse(save_bookmark, kwargs={
+				"bookmark_id":bookmark.id,
+				}))
+	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
+		
+	

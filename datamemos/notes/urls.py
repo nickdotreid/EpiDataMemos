@@ -8,4 +8,6 @@ urlpatterns = patterns('notes.views',
 	url(r'^(?P<note_id>\d+)/get/$','detail'),
 	url(r'^(?P<note_id>\d+)/$','detail'),
 	url(r'^(?P<note_id>\d+)/edit/$','edit'),
+	url(r'^bookmark/$','save_bookmark'),
+	url(r'^bookmark/(?P<bookmark_id>\d+)$','save_bookmark'),
 )
