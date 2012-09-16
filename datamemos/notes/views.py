@@ -1,4 +1,4 @@
-from models import Note
+from models import Note, Bookmark, Category
 from django.contrib.auth.models import User
 
 from django.template import Context, loader
@@ -17,19 +17,35 @@ import json
 from forms import make_note_form
 from django.template import RequestContext
 
+def list(request):
+	objects = Note.objects
+	if 'chart_id' in request.GET:
+		if get_object_or_None(Chart,id=int(request.GET['chart_id'])):
+			objects.filter(bookmark__chart__id=request.GET['chart_id'])
+	if 'type' in request.GET:
+		category = get_object_or_None(Category,short == request.GET['type'])
+		objects.filter(type=category)
+	if not request.user.is_staff:
+		objects.filter(public=True)
+	if request.is_ajax():
+		_notes = []
+		for note in objects.all():
+			_notes.append(note.as_json())
+		return HttpResponse(
+			json.dumps({
+				'notes':_notes,
+				}),
+			'application/json')
+	return render_to_response('notes/list_page.html',{
+		'notes':objects.all(),
+		},context_instance=RequestContext(request))
+
 def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
-				"note":{
-					"id":note.id,
-					"type":note.type.short,
-					"markup":render_to_string("notes/note-list-item.html",{
-						"note":note,
-						"statistics":note.statistic_set.all(),
-						},context_instance=RequestContext(request))
-				}
+				"note":note.as_json(),
 				}),
 			'application/json')
 	return render_to_response('notes/detail.html',{'note':note})
@@ -60,17 +76,10 @@ def edit(request,note_id):
 				json.dumps({
 					"message":{
 						'type':'success',
-						'text':"Your message has been updated",
+						'text':"Your note has been updated",
 					},
-					"note":{
-						"id":note.id,
-						"type":note.type.short,
-						"markup":render_to_string("notes/note-list-item.html",{
-							"note":note,
-							"statistics":note.statistic_set.all(),
-							},context_instance=RequestContext(request))
-					}
-					}),
+					"note":note.as_json(),
+				}),
 				'application/json')
 	if request.is_ajax():
 		return HttpResponse(
@@ -105,7 +114,6 @@ def create(request):
 						user.email = form.cleaned_data['email']
 						user.save()
 						author = user
-					#log in author??
 			note = Note(
 				text = form.cleaned_data['text'],
 				type = form.cleaned_data['type'],
@@ -115,31 +123,14 @@ def create(request):
 			if 'public' in form.cleaned_data:
 				note.public = True
 			note.save()
-			# should send out node saved doo-hicky?
-			from statistics.views import save_statistic
-			statistic = save_statistic(request)
-			if statistic:
-				note.statistic_set.add(statistic)
-			from statistics.models import Statistic
-			if 'bookmarks' in request.POST and request.POST['bookmarks'] != '':
-				for bookmark_id in request.POST['bookmarks'].split(","):
-					bm = get_object_or_None(Statistic, id=bookmark_id)
-					note.statistic_set.add(bm)
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({
 						"message":{
 							'type':'success',
-							'text':"Your message has been saved",
+							'text':"Your note has been saved",
 						},
-						"note":{
-							"id":note.id,
-							"type":note.type.short,
-							"markup":render_to_string("notes/note-list-item.html",{
-								"note":note,
-								"statistics":note.statistic_set.all(),
-								},context_instance=RequestContext(request))
-						}
+						"note":note.as_json(),
 						}),
 					'application/json')
 			return HttpResponseRedirect(reverse(detail, args=(note.id,)))

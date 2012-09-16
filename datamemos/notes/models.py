@@ -32,6 +32,17 @@ class Note(models.Model):
 	
 	def __unicode__(self):
 		return self.text
+	
+	def as_json(self):
+		obj = {
+			'id':self.id,
+			'author':self.author,
+			'text':self.text,
+			'type':self.type.short,
+			'public':self.public,
+			'weight':self.weight,
+		}
+		return obj
 		
 class Bookmark(models.Model):
 	text = models.CharField(blank=True, max_length=200)

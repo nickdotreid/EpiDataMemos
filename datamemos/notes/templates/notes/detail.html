@@ -1,12 +1,8 @@
-{% extends 'base.html' %}
-
-{% block content %}
 <p>{{ note.text }}</p>
 <ul>
-	{% for stat in note.statistic_set.all %}
-	<li><a href="/statistic/{{stat.id}}/">{{ stat.chart.title }}</a></li>
+	{% for bookmark in note.bookmark_set.all %}
+	<li><a href="/bookmark/{{bookmark.id}}/">{{ bookmark.chart.title }}</a></li>
 	{% empty %}
 	<li>No references</li>
 	{% endfor %}
 </ul>
-{% endblock %}

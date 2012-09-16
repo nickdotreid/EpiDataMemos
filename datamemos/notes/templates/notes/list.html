@@ -1,0 +1,7 @@
+<ul>
+{% for note in notes%}
+	<li>{% include 'notes/detail.html' %}</li>
+{% empty %}
+	<li>No Notes</li>
+{% endfor %}
+</ul>
