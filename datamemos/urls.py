@@ -10,7 +10,6 @@ urlpatterns = patterns('',
 	url(r'^barcharts/', include('barcharts.urls')),
 	url(r'^charts/(?P<chart_id>\d+)/$','barcharts.views.load_chart'),
 	url(r'^charts/', include('charts.urls')),
-	url(r'^statistics/', include('statistics.urls')),
 	url(r'^notes/', include('notes.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

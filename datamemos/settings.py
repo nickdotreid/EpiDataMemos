@@ -92,7 +92,6 @@ INSTALLED_APPS = (
 	'notes',
 	'charts',
 	'barcharts',
-	'statistics',
 	'homepage',
 )
 

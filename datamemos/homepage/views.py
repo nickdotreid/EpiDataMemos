@@ -20,11 +20,11 @@ def load_chart(request):
 
 def load_note(request,note_id):
 	note = get_object_or_404(Note,pk=note_id)
-	for statistic in note.statistic_set.all():
-		if statistic.chart:
-			tags = []
-			for tag in statistic.tags.all():
-				tags.append(tag.short)
-			return HttpResponseRedirect("/#/?chart=%i&note=%i&tags=%s" % (statistic.chart.id,note.id,",".join(tags)))
+	if note.bookmark_set.count() > 0:
+		bookmark = note.bookmark_set.get()
+		tags = []
+		for tag in bookmark.tags.all():
+			tags.append(tag.short)
+		return HttpResponseRedirect("/#/?chart=%i&tags=%s&note=%i" % (bookmark.chart.id,",".join(tags),note.id))
 	return HttpResponseRedirect("/#/?note=%i" % (note.id))
 	
