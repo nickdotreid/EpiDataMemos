@@ -6,9 +6,5 @@
 {% else %}
 <p>Enter a note</p>
 {% endif %}
-<form action="/notes/create/" method="post">
-	{% csrf_token %}
-	{{form}}
-	<input type="submit" value="save" />
-</form>
+{% include 'notes/form.html' %}
 {% endblock %}

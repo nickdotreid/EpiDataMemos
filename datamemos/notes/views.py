@@ -89,7 +89,7 @@ def edit(request,note_id):
 					},context_instance=RequestContext(request))
 				}),
 			'application/json')
-	return render_to_response('notes/edit.html',{'form':form},context_instance=RequestContext(request))
+	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
 		
 
 def create(request):
