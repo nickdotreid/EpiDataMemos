@@ -34,9 +34,11 @@ class Note(models.Model):
 		return self.text
 	
 	def as_json(self):
+		import time
 		obj = {
 			'id':self.id,
 			'author':self.author.email,
+			'date':time.mktime(self.pub_date.timetuple()),
 			'text':self.text,
 			'type':self.type.short,
 			'public':self.public,
