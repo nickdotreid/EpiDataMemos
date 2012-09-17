@@ -159,14 +159,11 @@ def save_bookmark(request,bookmark_id = False):
 					}),
 				'application/json')
 	if request.method == "POST":
-		print "POST"
 		if bookmark:
 			form = BookmarkForm(request.POST, instance=bookmark)
 		else:
-			print "NEW BOOKMAKR"
 			form = BookmarkForm(request.POST)
 		if form.is_valid():
-			print "valid"
 			if not bookmark:
 				bookmark = Bookmark()
 				bookmark.save()
