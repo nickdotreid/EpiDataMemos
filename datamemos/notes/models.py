@@ -72,10 +72,7 @@ class Bookmark(models.Model):
 				'id':self.note.id
 			}
 		for tag in self.tags.all():
-			obj['tags'].append({
-				'short':tag.short,
-				'name':tag.name,
-				})
+			obj['tags'].append(tag.short)
 		return obj
 	
 	def __unicode__(self):
