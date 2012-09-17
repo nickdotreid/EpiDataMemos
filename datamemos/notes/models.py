@@ -59,6 +59,7 @@ class Bookmark(models.Model):
 	
 	def as_json(self):
 		obj = {
+			'id':self.id,
 			'text':self.text,
 			'tags':[]
 		}

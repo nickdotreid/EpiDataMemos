@@ -1,5 +1,5 @@
 from models import Note, Bookmark, Category
-from charts.models import Chart
+from charts.models import Chart, Tag
 from django.contrib.auth.models import User
 
 from django.template import Context, loader
@@ -151,19 +151,14 @@ def create(request):
 	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
 	
 def save_bookmark(request,bookmark_id = False):
+	if request.is_ajax:
+		return ajax_save_bookmark(request,bookmark_id)
 	form = BookmarkForm()
 	bookmark = get_object_or_None(Bookmark,pk=bookmark_id)
 	if bookmark:
 		form = BookmarkForm(instance=bookmark)
 		if not request.user.is_authenticated() or (not request.user.is_staff and (bookmark.note.author == request.user)):
-			return HttpResponse(
-				json.dumps({
-					"message":{
-						'type':'error',
-						'text':"You don't have permission to edit this bookmark.",
-					},
-					}),
-				'application/json')
+			return HttpResponseRedirect(reverse(list, args=(note.id,)))
 	if request.method == "POST":
 		if bookmark:
 			form = BookmarkForm(request.POST, instance=bookmark)
@@ -186,5 +181,53 @@ def save_bookmark(request,bookmark_id = False):
 				"bookmark_id":bookmark.id,
 				}))
 	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
+
+def ajax_save_bookmark(request,bookmark_id = False):
+	bookmark = get_object_or_None(Bookmark,pk=bookmark_id)
+	if request.method == "POST":
+		if 'chart_id' not in request.POST or 'tags' not in request.POST:
+			return HttpResponse(
+				json.dumps({
+					"message":{
+						'type':'error',
+						'text':"Can't save bookmark",
+					},
+					}),
+				'application/json')
+		if not bookmark:
+			bookmark = Bookmark()
+			bookmark.save()
+		if 'chart_id' in request.POST:
+			chart = get_object_or_None(Chart,pk=request.POST['chart_id'])
+			if chart:
+				bookmark.chart = chart
+		if 'tags' in request.POST:
+			for short in request.POST['tags'].split(','):
+				tag = get_object_or_None(Tag,short=short)
+				if tag:
+					bookmark.tags.add(tag)
+		bookmark.save()
+		bm_obj = bookmark.as_json()
+		bm_obj['markup'] = render_to_string("bookmarks/detail.html",{
+			"bookmark":bookmark,
+			},context_instance=RequestContext(request))
+		return HttpResponse(
+			json.dumps({
+				"message":{
+					'type':'success',
+					'text':"Bookmark saved",
+				},
+				"bookmarks":[bm_obj],
+				}),
+			'application/json')
+	return HttpResponse(
+		json.dumps({
+			"message":{
+				'type':'error',
+				'text':"Use post",
+			},
+			}),
+		'application/json')
+			
 		
 	
