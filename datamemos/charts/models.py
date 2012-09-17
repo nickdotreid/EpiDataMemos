@@ -31,6 +31,7 @@ class Tag(Sortable):
 class Chart(models.Model):
 	title = models.CharField(max_length=200)
 	description = models.CharField(max_length=250,blank=True)
+	footnotes = models.TextField(blank=True)
 	
 	xls = models.FileField(upload_to='xls/',blank=True,null=True)
 	

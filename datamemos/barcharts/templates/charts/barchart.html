@@ -28,43 +28,44 @@
 	</form>
 	<div class="y_label">{{chart.y_label}}</div>
 	<div class="canvas-container">
-	<div class="canvas">
-	{% for column in columns %}
-		<div class="column" value="{{column.short}}">
-			<div class="label">
-				<span class="name row">{{column.label}}</span>
-				<span class="total row"><span class="amount"></span>&nbsp;{{chart.units}}</span>
-				<div class="clear">&nbsp;</div>
-			</div>
-			<div class="bar-container">
-			{% for point in column.points %}
-			<div class="bar{% for row in point.rows %} {{row.short}}{% endfor %}"
-				tags="{{column.short}}{% for row in point.rows %},{{row.short}}{% endfor %}"
-				amount="{{point.value}}"
-				total="{{point.total}}"
-				percent="{{point.percent}}">
-				<div class="amount">{{point.value}}</div>
-				<div class="highlight">
-					<div class="row">
-						<span class="amount">{{point.value}}</span>
-						<span class="percent">{{point.percent|as_percent}}</span>
+		<div class="canvas">
+		{% for column in columns %}
+			<div class="column" value="{{column.short}}">
+				<div class="label">
+					<span class="name row">{{column.label}}</span>
+					<span class="total row"><span class="amount"></span>&nbsp;{{chart.units}}</span>
+					<div class="clear">&nbsp;</div>
+				</div>
+				<div class="bar-container">
+				{% for point in column.points %}
+				<div class="bar{% for row in point.rows %} {{row.short}}{% endfor %}"
+					tags="{{column.short}}{% for row in point.rows %},{{row.short}}{% endfor %}"
+					amount="{{point.value}}"
+					total="{{point.total}}"
+					percent="{{point.percent}}">
+					<div class="amount">{{point.value}}</div>
+					<div class="highlight">
+						<div class="row">
+							<span class="amount">{{point.value}}</span>
+							<span class="percent">{{point.percent|as_percent}}</span>
+						</div>
+						<div class="row">
+							of
+							<span class="total">{{point.total}}</span>
+							<span class="label">{{chart.units}}</span>
+						</div>
+						<div class="row">
+							<span class="tags">{% for row in point.rows %}{{row.name}}{% endfor %} in {{column.label}}</span>
+						</div>
+						<div class="arrow"></div>
 					</div>
-					<div class="row">
-						of
-						<span class="total">{{point.total}}</span>
-						<span class="label">{{chart.units}}</span>
-					</div>
-					<div class="row">
-						<span class="tags">{% for row in point.rows %}{{row.name}}{% endfor %} in {{column.label}}</span>
-					</div>
-					<div class="arrow"></div>
+				</div>
+				{% endfor %}
 				</div>
 			</div>
-			{% endfor %}
-			</div>
+		{% endfor %}	
 		</div>
-	{% endfor %}	
-	</div>
 	</div>
 	<div class="x_label">{{chart.x_label}}</div>
+	<div class="footnotes">{{chart.footnotes}}</div>
 </div>
