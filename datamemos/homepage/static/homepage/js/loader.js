@@ -22,10 +22,7 @@ $(document).ready(function(){
 				$("#chart-container .chart").trigger("load-chart");
 				
 				setTimeout(function(){
-					$("#notes-list").trigger({
-						type:"get-notes",
-						chart_id:event['chart_id']
-					});	
+					$("#notes-list .notes-nav .btn a:first").click();	
 				},500);
 			}
 		});

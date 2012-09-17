@@ -114,18 +114,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#note-container").delegate(".note .share-btn","click",function(event){
-		event.preventDefault();
-		var note = $(this).parents(".note:first");
-		if($(".share .close",note).length<1){
-			$(".share",note).append("<a href='#' class='close'><i></i>Close</a>");
-		}
-		$(".share",note).show();
-	}).delegate(".note .share .close","click",function(event){
-		event.preventDefault();
-		$(this).parents(".share:first").hide();
-	});
-	
 	$.address.change(function(event){
 		$("#note-container .notes").trigger({
 			type:"sort",
@@ -140,9 +128,8 @@ $(document).ready(function(){
 		link.parents("li").addClass("active");
 		$("#notes-list").trigger({
 			type:"get-notes",
-			chart_id:$.address.parameter("chart")
+			chart_id:$.address.parameter("chart"),
+			note_type:link.attr("note-type")
 			});
 	});
-	
-	$("#notes-list .notes-nav li:first").addClass("active");
 });
