@@ -36,7 +36,7 @@ class Note(models.Model):
 	def as_json(self):
 		obj = {
 			'id':self.id,
-			'author':self.author,
+			'author':self.author.email,
 			'text':self.text,
 			'type':self.type.short,
 			'public':self.public,
