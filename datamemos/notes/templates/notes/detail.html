@@ -1,8 +1,16 @@
-<p>{{ note.text }}</p>
-<ul>
+<div id="note-{{note.id}}" class="note">
+	<div class="text">{{note.text}}</div>
+	<div class="bookmarks list bookmarks-list">
 	{% for bookmark in note.bookmark_set.all %}
-	<li><a href="/bookmark/{{bookmark.id}}/">{{ bookmark.chart.title }}</a></li>
-	{% empty %}
-	<li>No references</li>
+		<a class="bookmark" href="/bookmark/{{bookmark.id}}/">{{ bookmark.chart.title }}</a>
 	{% endfor %}
-</ul>
+	</div>
+	<div class="meta">
+		<span class="date">{{ note.pub_date|date:"SHORT_DATE_FORMAT" }}</span>
+		<span class="author">by <a href="mailto:{{note.author.email}}">{{note.author.email}}</a></span>
+	</div>
+	<div class="actions">
+		<a href="#" class="share">Share</a>
+		{% if user.is_staff or user == note.author %}<a href="#" class="edit">Edit</a>{% endif %}
+	</div>
+</div>
