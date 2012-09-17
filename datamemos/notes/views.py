@@ -1,4 +1,5 @@
 from models import Note, Bookmark, Category
+from charts.models import Chart
 from django.contrib.auth.models import User
 
 from django.template import Context, loader
@@ -18,18 +19,19 @@ from forms import make_note_form, BookmarkForm
 from django.template import RequestContext
 
 def list(request):
-	objects = Note.objects
+	query = Note.objects
 	if 'chart_id' in request.GET:
-		if get_object_or_None(Chart,id=int(request.GET['chart_id'])):
-			objects.filter(bookmark__chart__id=request.GET['chart_id'])
+		chart = get_object_or_None(Chart,id = int(request.GET['chart_id']))
+		if chart:
+			query = query.filter(bookmark__chart__id = chart.id)
 	if 'type' in request.GET:
-		category = get_object_or_None(Category,short == request.GET['type'])
-		objects.filter(type=category)
+		category = get_object_or_None(Category,short = request.GET['type'])
+		query = query.filter(type=category)
 	if not request.user.is_staff:
-		objects.filter(public=True)
+		query = query.filter(public=True)
 	if request.is_ajax():
 		_notes = []
-		for note in objects.all():
+		for note in query.all():
 			_notes.append(note.as_json())
 		return HttpResponse(
 			json.dumps({
@@ -37,7 +39,7 @@ def list(request):
 				}),
 			'application/json')
 	return render_to_response('notes/list_page.html',{
-		'notes':objects.all(),
+		'notes':query.all(),
 		},context_instance=RequestContext(request))
 
 def detail(request, note_id):
