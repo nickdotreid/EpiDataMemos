@@ -32,7 +32,11 @@ def list(request):
 	if request.is_ajax():
 		_notes = []
 		for note in query.all():
-			_notes.append(note.as_json())
+			_note = note.as_json()
+			_note['markup'] = render_to_string("notes/detail.html",{
+				'note':note,
+				},context_instance=RequestContext(request))
+			_notes.append(_note)
 		return HttpResponse(
 			json.dumps({
 				'notes':_notes,
