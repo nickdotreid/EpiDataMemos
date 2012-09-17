@@ -41,7 +41,10 @@ class Note(models.Model):
 			'type':self.type.short,
 			'public':self.public,
 			'weight':self.weight,
+			'bookmarks':[],
 		}
+		for bookmark in self.bookmark_set.all():
+			obj['bookmarks'].append(bookmark.as_json())
 		return obj
 		
 class Bookmark(models.Model):
@@ -51,6 +54,27 @@ class Bookmark(models.Model):
 	
 	note = models.ForeignKey(Note,null=True,blank=True)
 	tags = models.ManyToManyField(Tag, blank=True)
+	
+	def as_json(self):
+		obj = {
+			'text':self.text,
+			'tags':[]
+		}
+		if self.chart:
+			obj['chart'] = {
+				'id':self.chart.id,
+				'title':self.chart.title,
+			}
+		if self.note:
+			obj['note'] = {
+				'id':self.note.id
+			}
+		for tag in self.tags.all():
+			obj['tags'].append({
+				'short':tag.short,
+				'name':tag.name,
+				})
+		return obj
 	
 	def __unicode__(self):
 		if self.chart:
