@@ -3082,6 +3082,9 @@ body {
 form .requiredField .asteriskField {
   color: #b00005;
 }
+.wrapper.container {
+  width: 1090px;
+}
 #chart-container,
 #note-container {
   width: auto;
@@ -3101,7 +3104,7 @@ form .requiredField .asteriskField {
   width: 675px;
 }
 #note-container {
-  width: 225px;
+  width: 400px;
   margin-left: 14px;
 }
 #home .about-container,
