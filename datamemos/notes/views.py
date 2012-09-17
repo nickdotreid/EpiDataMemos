@@ -129,6 +129,7 @@ def create(request):
 			if 'public' in form.cleaned_data:
 				note.public = True
 			note.save()
+			save_bookmark_to_note(request,note)
 			if request.is_ajax:
 				return HttpResponse(
 					json.dumps({
@@ -149,6 +150,34 @@ def create(request):
 				}),
 			'application/json')
 	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
+
+def save_bookmark_to_note(request,note):
+	saved_bookmarks = 0
+	if request.method == 'POST':
+		if 'bookmarks' in request.POST:
+			for bookmark_id in request.POST['bookmarks'].split(","):
+				if bookmark_id != '':
+					bookmark = get_object_or_None(Bookmark,pk=bookmark_id)
+					if bookmark:
+						bookmark.note = note
+						bookmark.save()
+		chart = False
+		tags = []
+		if 'chart_id' in request.POST:
+			chart = get_object_or_None(Chart,pk=request.POST['chart_id'])
+		if 'tags' in request.POST:
+			for short in request.POST['tags'].split(','):
+				if short!='':
+					tag = get_object_or_None(Tag,short=short)
+					if tag:
+						tags.append(tag)
+		if chart:
+			bookmark = Bookmark()
+			bookmark.chart = chart
+			bookmark.note = note
+			bookmark.save()
+			bookmark.tags = tags
+	return saved_bookmarks
 	
 def save_bookmark(request,bookmark_id = False):
 	if request.is_ajax:

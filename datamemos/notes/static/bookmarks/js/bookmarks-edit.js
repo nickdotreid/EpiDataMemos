@@ -98,6 +98,6 @@ $(document).ready(function(){
 			$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));			
 		}
 	}).delegate("form.note.create","saved",function(event){
-		$(".bookmarks-list").html("");
+		$(".bookmarks-container").html("");
 	});
 });
