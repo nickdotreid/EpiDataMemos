@@ -161,6 +161,13 @@
 .canvas .column .label .total {
   font-style: italic;
 }
+.canvas .column,
+.canvas .scale {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 3;
+}
 .canvas .column.selected .label {
   background-color: #cccccc;
 }

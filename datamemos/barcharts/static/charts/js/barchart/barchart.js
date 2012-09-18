@@ -203,6 +203,12 @@ $(document).ready(function(){
 					scale.trigger("scale-remove");
 				}
 			});
+			var xpos = 0;
+			$(".scale,.column",chart).each(function(){
+				$(this).css("left",xpos + 'px');
+				xpos += $(this).width() + css_to_number($(this).css("margin-right"));
+			});
+			$(".scale").trigger("grid-redraw");
 		},100);
 		chart.data("redraw-timeout",timeout);
 	}).delegate(".chart.barchart","chart-resize",function(event){
