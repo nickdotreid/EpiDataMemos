@@ -140,6 +140,9 @@ $(document).ready(function(){
 					}
 				});
 				column.data("max",biggest_number);
+				if(biggest_match_total == 0){
+					biggest_match_total = biggest_number;
+				}
 				$(".label .total .amount",column).html(format_number(biggest_match_total));
 				if(biggest_number>chart_max){
 					chart_max = biggest_number;
