@@ -3084,6 +3084,7 @@ form .requiredField .asteriskField {
 }
 .wrapper.container {
   width: 1090px;
+  padding-top: 35px;
 }
 #chart-container,
 #note-container {
