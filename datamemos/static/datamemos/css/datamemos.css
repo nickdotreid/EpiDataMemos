@@ -3159,7 +3159,7 @@ form .requiredField .asteriskField {
 #form-note .control-group textarea {
   display: block;
   clear: none;
-  width: 200px;
+  width: 360px;
 }
 #form-note .form-actions {
   margin-bottom: 0px;

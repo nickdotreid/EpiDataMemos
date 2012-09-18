@@ -31,3 +31,15 @@
 .statistic {
   display: block;
 }
+#notes-edit {
+  background-color: #DDD;
+  padding: 3.5px 0px;
+}
+.action-area {
+  margin: 3.5px 7px;
+}
+.action-area .btn-main {
+  display: block;
+  clear: both;
+  margin: 3.5px auto;
+}

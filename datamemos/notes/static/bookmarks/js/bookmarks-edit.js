@@ -108,7 +108,7 @@ $(document).ready(function(){
 		var form = $(this);
 		$("input[type='hidden'][name='chart_id']",form).remove();
 		var bookmarks = [];
-		$(".bookmarks-list .bookmark").each(function(){
+		$("#notes-edit .bookmarks-list .bookmark").each(function(){
 			bookmarks.push($(this).attr("bookmark-id"));
 		});
 		form.append('<input type="hidden" name="bookmarks" value="'+bookmarks.join(",")+'" />');
@@ -124,6 +124,7 @@ $(document).ready(function(){
 			$("input[type='hidden'][name='tags']",form).val($.address.parameter("tags"));			
 		}
 	}).delegate("form.note.create","saved",function(event){
+		$("#notes-edit .bookmarks-list").data("bookmarks",[]);
 		$(".bookmarks-container").html("");
 	});
 });
