@@ -171,12 +171,19 @@ $(document).ready(function(){
 					}
 				});
 				column.width(widest);
+				var target_columns = column;
 				if(column.data("max") && !in_range_of(column.data("max"),last_max)){
 					last_max = round_to_significant_number(column.data("max"),event.percent);
 					column.before('<div class="scale"></div>');
 					column.prev(".scale:first").data("max",last_max);
+				}else{
+					if(column.data("max") > last_max){
+						last_max = round_to_significant_number(column.data("max"),event.percent);
+						target_columns = column.prevUntil(".scale");
+						target_columns.push(column[0]);
+					}
 				}
-				$(".bar",column).trigger({
+				$(".bar",target_columns).trigger({
 					type:'bar-calculate',
 					tags:event.tags,
 					percent:event.percent,
