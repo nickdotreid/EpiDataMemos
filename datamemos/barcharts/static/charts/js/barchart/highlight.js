@@ -16,7 +16,7 @@ $(document).ready(function(){
 		var x = 0;
 		var y = 0;
 		
-		$("."+bar.attr("class").replace(" ","."),canvas).addClass("hover");
+		bar.addClass("hover");
 		
 		if(bar.hasClass("stacked")){
 			x = x_offset + bar.width();
@@ -44,7 +44,7 @@ $(document).ready(function(){
 			left:x+'px'
 		});
 		highlight.show();
-	}).delegate(".wrapper .bar","unhighlight",function(event){
+	}).delegate(".chart .bar","unhighlight",function(event){
 		$(".bar.hover").removeClass("hover");
 		$(".highlight:not(.bar .highlight)",$(this).parents(".canvas:first")).remove();
 	}).delegate(".chart .bar","mouseenter",function(event){
