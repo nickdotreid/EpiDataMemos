@@ -2,14 +2,14 @@
 
 {% block content %}
 <h2>List of Data Files</h2>
-<ul class="list xls">
-{% for chart in chart_list %}
-	<li class="xls">
+<div class="list charts-list charts">
+{% for chart in charts %}
+	<div class="chart chart-short">
 		<h3><a href="/charts/{{chart.id}}/" class="title">{{chart.title}}</a></h3>
 		{% if chart.description %}
 		<p class="description">{{chart.description}}</p>
 		{% endif %}
-	</li>
+	</div>
 {% endfor %}
-</ul>
+</div>
 {% endblock %}

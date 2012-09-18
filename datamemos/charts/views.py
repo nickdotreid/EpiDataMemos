@@ -84,6 +84,25 @@ def row_to_object(row):
 	_row['short'] = row.short
 	return _row
 	
+def list(request):
+	charts = Chart.objects.all()
+	if request.is_ajax():
+		_charts = []
+		for chart in charts:
+			_charts.append({
+				'id':chart.id,
+				'title':chart.title,
+				'description':chart.description,
+			})
+		return HttpResponse(
+			json.dumps({
+				'charts':_charts,
+				}),
+			'application/json')
+	return render_to_response('charts/chart_list.html',{
+		'charts':charts,
+		},context_instance=RequestContext(request))
+	
 def detail(request,chart_id):
 	chart = get_object_or_404(Chart,pk=chart_id)
 	chart_data = get_chart_values(chart)
