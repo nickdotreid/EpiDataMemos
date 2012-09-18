@@ -93,6 +93,9 @@ def list(request):
 				'id':chart.id,
 				'title':chart.title,
 				'description':chart.description,
+				'markup':render_to_string("charts/short.html",{
+					'chart':chart,
+					}),
 			})
 		return HttpResponse(
 			json.dumps({

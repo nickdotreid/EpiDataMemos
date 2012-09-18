@@ -28,13 +28,14 @@ $(document).ready(function(){
 		});
 	});
 	
-	$(".chart-links a").click(function(event){
+	$("#chart-container").delegate(".chart-short a",'click',function(event){
 		event.preventDefault();
-		if($(this).data("id")){
-			$.address.parameter("chart",$(this).data("id"));
+		var chart = $(this).parents(".chart:first");
+		if(chart.attr("chart-id")){
+			$.address.parameter("chart",chart.attr("chart-id"));
 			$.address.parameter("page",false);
 		}
-	})
+	});
 	$(".navbar a").click(function(event){
 		event.preventDefault();
 		$(".navbar li.active").removeClass("active");
@@ -50,6 +51,23 @@ $(document).ready(function(){
 		$(".navbar li.active").removeClass("active");
 		if($.address.parameter("page")){
 			$("#"+$.address.parameter("page")+".page").show();
+		}
+		if(!$.address.parameter("chart")){
+			$.ajax({
+				url:'/charts/',
+				method:'GET',
+				data_type:'JSON',
+				success:function(data){
+					if(data['charts']){
+						$("#chart-container .chart").remove();
+						for(var i=0;i<data['charts'].length;i++){
+							var chart = data['charts'][i];
+							$("#chart-container .inner").append(chart['markup']);
+						}
+						$("#chart-container").show();
+					}
+				}
+			});
 		}
 	});
 
