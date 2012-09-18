@@ -107,6 +107,7 @@ $(document).ready(function(){
 				var biggest_number = 0;
 				var total_number = 0;
 				var biggest_match = 1;
+				var biggest_match_total = 0;
 				$(".bar",column).each(function(){
 					var bar = $(this);
 					var matches = 0;
@@ -130,6 +131,7 @@ $(document).ready(function(){
 					}
 					if(matches >= biggest_match){
 						total_number += bar.data("amount");
+						biggest_match_total = bar.data("total");
 						if(event.percent){
 							biggest_number += bar.data("percent");
 						}else{
@@ -138,7 +140,7 @@ $(document).ready(function(){
 					}
 				});
 				column.data("max",biggest_number);
-				$(".label .total .amount",column).html(format_number(total_number)); // total number is max, not total amount -- fix this
+				$(".label .total .amount",column).html(format_number(biggest_match_total));
 				if(biggest_number>chart_max){
 					chart_max = biggest_number;
 				}
