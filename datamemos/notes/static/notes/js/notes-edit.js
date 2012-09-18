@@ -2,6 +2,9 @@ $(document).ready(function(){
 	$("#notes-edit").delegate(".create-note","click",function(event){
 		event.preventDefault();
 		var button = $(this);
+		if(button.hasClass("disabled")){
+			return ;
+		}
 		if($("form.note.create").length>0){
 			return;
 		}
@@ -15,13 +18,19 @@ $(document).ready(function(){
 			data:{
 				bookmarks:bookmarks
 			},
-			success:function(data){
-				if(data['form']){
-					button.hide();
-					$("#notes-edit .notes-container").append(data['form']);
-				}
-			}
 		});
+	}).ajaxSuccess(function(event,xhr,settings){
+		var data = $.parseJSON(xhr.responseText);
+		if(data['form']){
+			$("#notes-edit .create-note").hide();
+			$("#notes-edit .notes-container").append(data['form']);
+			var cancel_btn = '<a href="#" class="cancel note-create-cancel">Cancel</a>';
+			$("#notes-edit .notes-container").prepend(cancel_btn).append(cancel_btn);
+		}
+	}).delegate(".note-create-cancel","click",function(event){
+		event.preventDefault();
+		$("#notes-edit .notes-container").html("");
+		$("#notes-edit .create-note").show();
 	}).delegate("form.note.create","submit",function(event){
 		event.preventDefault();
 		var form = $(this);
