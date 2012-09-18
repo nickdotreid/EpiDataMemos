@@ -72,6 +72,32 @@ $(document).ready(function(){
 			}
 		}
 		button.removeClass("disabled");
+	}).bind("bookmark-remove",function(event){
+		if(!event['bookmark_id']){
+			return ;
+		}
+		var list = $(this);
+		var bookmarks = [];
+		for(var i=0;i<list.data("bookmarks").length;i++){
+			var bookmark = list.data("bookmarks")[i];
+			if(event['bookmark_id'] == bookmark['id']){
+				bookmark['div'].remove();
+				// send ajax delete request??
+			}else{
+				bookmarks.push(bookmark);
+			}
+		}
+		list.data("bookmarks",bookmarks).trigger("bookmark-addable-toggle");
+	});
+	
+	$(".bookmarks-list").delegate(".bookmark a","click",function(event){
+		event.preventDefault();
+	}).delegate(".bookmark a.remove","click",function(event){
+		var bookmark = $(this).parents(".bookmark:first");
+		$(".bookmarks-list").trigger({
+			type:'bookmark-remove',
+			bookmark_id:bookmark.attr("bookmark-id")
+		});
 	});
 	
 	$.address.change(function(){

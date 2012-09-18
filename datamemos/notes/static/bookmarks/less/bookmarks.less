@@ -1,0 +1,54 @@
+.bookmark{
+	display:block;
+	position:relative;
+	overflow:hidden;
+	clear:both;
+	background-color:#AAA;
+	margin:3px;
+	padding:3px 0px 0px;
+	.text,.bookmark-chart,.tags,.actions{
+		display:block;
+		clear:both;
+		margin:0px 0px 3px 25px;
+	}
+	.bookmark-chart,.tag{
+		font-size:0.8em;
+		line-height:1em;
+	}
+	.tags{
+		padding:0px;
+	}
+	.tag{
+		display:block;
+		float:left;
+		margin:0px 3px 0px 0px;
+	}
+	.actions{
+		background-color:#DDD;
+		margin:0px;
+		padding:0px 0px 5px;
+		a{
+			display:block;
+			float:left;
+			margin:2px 3px 2px 5px;
+		}
+		.remove{
+			color:#F00;
+			float:right;
+		}
+	}
+	i{
+		position:absolute;
+		top:5px;
+		left:5px;
+		width:15px;
+		height:15px;
+		background-image:url('../../bootstrap/img/glyphicons-halflings.png');
+		background-repeat:no-repeat;
+		background-position:0px -49px;
+	}
+}
+
+.note .bookmark{
+	margin:3px 7px;
+}

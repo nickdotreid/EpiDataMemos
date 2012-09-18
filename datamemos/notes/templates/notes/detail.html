@@ -2,7 +2,7 @@
 	<div class="text">{{note.text}}</div>
 	<div class="bookmarks list bookmarks-list">
 	{% for bookmark in note.bookmark_set.all %}
-		<a class="bookmark" href="/bookmark/{{bookmark.id}}/">{{ bookmark.chart.title }}</a>
+		{% include 'bookmarks/detail.html' %}
 	{% endfor %}
 	</div>
 	<div class="meta">

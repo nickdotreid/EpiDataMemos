@@ -235,10 +235,18 @@ def ajax_save_bookmark(request,bookmark_id = False):
 				tag = get_object_or_None(Tag,short=short)
 				if tag:
 					bookmark.tags.add(tag)
+		if 'note_id' in request.POST:
+			note = get_object_or_None(Note,pk=request.POST['note_id'])
+			if note:
+				bookmark.note = note
+			else:
+				bookmark.note = False
 		bookmark.save()
 		bm_obj = bookmark.as_json()
 		bm_obj['markup'] = render_to_string("bookmarks/detail.html",{
 			"bookmark":bookmark,
+			"actionable":True,
+			"editable":True,
 			},context_instance=RequestContext(request))
 		return HttpResponse(
 			json.dumps({

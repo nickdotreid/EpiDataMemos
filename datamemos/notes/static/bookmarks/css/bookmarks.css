@@ -1,0 +1,57 @@
+.bookmark {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  background-color: #AAA;
+  margin: 3px;
+  padding: 3px 0px 0px;
+}
+.bookmark .text,
+.bookmark .bookmark-chart,
+.bookmark .tags,
+.bookmark .actions {
+  display: block;
+  clear: both;
+  margin: 0px 0px 3px 25px;
+}
+.bookmark .bookmark-chart,
+.bookmark .tag {
+  font-size: 0.8em;
+  line-height: 1em;
+}
+.bookmark .tags {
+  padding: 0px;
+}
+.bookmark .tag {
+  display: block;
+  float: left;
+  margin: 0px 3px 0px 0px;
+}
+.bookmark .actions {
+  background-color: #DDD;
+  margin: 0px;
+  padding: 0px 0px 5px;
+}
+.bookmark .actions a {
+  display: block;
+  float: left;
+  margin: 2px 3px 2px 5px;
+}
+.bookmark .actions .remove {
+  color: #F00;
+  float: right;
+}
+.bookmark i {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 15px;
+  height: 15px;
+  background-image: url('../../bootstrap/img/glyphicons-halflings.png');
+  background-repeat: no-repeat;
+  background-position: 0px -49px;
+}
+.note .bookmark {
+  margin: 3px 7px;
+}

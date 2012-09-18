@@ -1,9 +1,29 @@
-<div id="bookmark-{{bookmark.id}}" bookmark-id="{{bookmark.id}}" chart-id="{{bookmark.chart.id}}" tags="{% for tag in bookmark.tags.all %}{{tag.short}},{% endfor %}" class="bookmark">
+<div id="bookmark-{{bookmark.id}}" 
+	bookmark-id="{{bookmark.id}}"
+	chart-id="{{bookmark.chart.id}}"
+	tags="{% for tag in bookmark.tags.all %}{{tag.short}},{% endfor %}"
+	{% if bookmark.note %}note-id="{{bookmark.note.id}}"{% endif %}
+	class="bookmark" >
 	<i></i>
+	{% if bookmark.text %}
+	<span class="text">{{bookmark.text}}</span>
+	{% else %}
 	<span class="bookmark-chart">{{bookmark.chart.title}}</span>
 	<ul class="tags">
 		{% for tag in bookmark.tags.all %}
 		<li class="tag">{{tag.name}}</li>
 		{% endfor %}
 	</ul>
+	<div class="clear">&nbsp;</div>
+	{% endif %}
+	{% if actionable %}
+	<div class="actions">
+		<a class="share" href="#">Share</a>
+		{% if editable or user.is_staff %}
+		<a class="edit" href="#">Edit</a>
+		<a class="remove" href="#">Remove</a>
+		{% endif %}
+		<div class="clear">&nbsp;</div>
+	</div>
+	{% endif %}
 </div>

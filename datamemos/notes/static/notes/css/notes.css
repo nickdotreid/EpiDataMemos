@@ -20,13 +20,10 @@
 .note .meta div {
   float: left;
 }
-.note .share {
-  display: none;
-}
 .note .text {
   margin-bottom: 7px;
 }
-.note .nav {
+.note .actions {
   background: #DDD;
   padding: 3.5px 7px;
   margin: 0px;
