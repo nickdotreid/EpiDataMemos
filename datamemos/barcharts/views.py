@@ -24,6 +24,7 @@ def load_chart(request,chart_id):
 					'columns':columns,
 					'rows':rows,
 					}),
+				'rows':rows,
 				}),
 			'application/json')
 	return render_to_response('charts/chart.html',{
