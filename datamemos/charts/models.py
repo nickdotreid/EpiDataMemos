@@ -22,6 +22,16 @@ class Tag(Sortable):
 			point.tags.add(new_tag)
 		self.delete()
 		return True
+		
+	def as_json(self):
+		children = []
+		for child in self.children.all():
+			children.append(child.short)
+		return {
+			'short':self.short,
+			'name':self.name,
+			'children':children,
+		}
 	
 	def __unicode__(self):
 		if self.name:
@@ -55,6 +65,16 @@ class Point(models.Model):
 	value = models.IntegerField()
 	tags = models.ManyToManyField(Tag)
 	chart = models.ForeignKey(Chart)
+	
+	def as_json(self):
+		tags = []
+		for tag in self.tags.all():
+			tags.append(tag.short)
+		return {
+			'chart':self.chart.id,
+			'tags':tags,
+			'value':self.value,
+		}
 	
 	def __unicode__(self):
 		return self.chart.title + " - " + str(self.value)

@@ -7,11 +7,8 @@
 
 {% block scripts %}
 {{block.super}}
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/raphael-min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/highlight.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/bar.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/scale.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/controls_filters.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){

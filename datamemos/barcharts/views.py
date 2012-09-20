@@ -14,6 +14,19 @@ def load_chart(request,chart_id):
 	chart_data = get_chart_values(chart)
 	columns = chart_data['columns']
 	rows = chart_data['rows']
+	_rows = []
+	_columns = []
+	for col in chart.columns.all():
+		_columns.append(col.as_json())
+	_points = []
+	raw_rows = []
+	for point in chart.point_set.all():
+		_points.append(point.as_json())
+		for row in point.tags.all():
+			if row not in raw_rows and chart not in row.chart_set.all():
+				raw_rows.append(row)
+	for row in raw_rows:
+		_rows.append(row.as_json())
 	if request.is_ajax():
 		return HttpResponse(
 			json.dumps({
@@ -24,7 +37,9 @@ def load_chart(request,chart_id):
 					'columns':columns,
 					'rows':rows,
 					}),
-				'rows':rows,
+				'rows':_rows,
+				'columns':_columns,
+				'points':_points,
 				}),
 			'application/json')
 	return render_to_response('charts/chart.html',{
