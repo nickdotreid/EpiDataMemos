@@ -39,7 +39,7 @@ Tag = Backbone.Model.extend({
 	set_color: function(pallet){
 		var pallet = pallet;
 		var children = this.get("children");
-		if(children.length > 0 || !this.parent){
+		if(children.length > 0 || !this.get('parent')){
 			pallet(false);
 		}
 		_(children).forEach(function(tag){
