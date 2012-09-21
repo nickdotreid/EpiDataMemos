@@ -50,13 +50,27 @@ Chart = Backbone.Model.extend({
 		});
 		this.set("columns",columns);
 		
-		var points = _(data['points']).map(function(point){
-			return new Point({
+		var points = new PointCollection();
+		_(data['points']).forEach(function(point){
+			var point = point;
+			var tags = _.filter(_.union(columns.models,rows.models), function(tag){
+				if(_.indexOf(point['tags'],tag.get("short")) > -1){
+					return true;
+				}
+				return false;
+			});
+			points.add({
 				value:point['value'],
-				tags:point['tags']
+				tags:tags
 			});
 		});
 		this.set("points",points);
+		
+		rows.bind("change:selected",function(tag){
+			if(tag.get("selected")){
+				points.toggle();
+			}
+		});
 		
 		this.trigger("loaded");
 	}
@@ -97,15 +111,15 @@ ChartView = Backbone.View.extend({
 		columns_control.$el.appendTo(".controls",this.$el);	
 		
 		var canvas = $(".canvas",$(this.el));
-		this.paper = Raphael(canvas[0],canvas.width(),canvas.height());
-		var paper = this.paper;
-		_(this.model.points).forEach(function(point){
-			point_view = new PointView({
+		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
+		_(this.model.get('points').models).forEach(function(point){
+			var point_view = new PointView({
 				model:point,
 				paper:paper
 			});
 			point_view.render();
 		});
+		this.paper = paper;
 		return this;
 	}
 });
@@ -113,23 +127,51 @@ ChartView = Backbone.View.extend({
 Point = Backbone.Model.extend({
 	defaults: {
 		tags:[],
-		value:0
+		value:0,
+		status: false
+	},
+	toggle: function(){
+		var status = false;
+		_(this.get("tags")).forEach(function(tag){
+			if(tag.get("selected")){
+				status = true;
+			}
+		});
+		if(this.get("status") != status){
+			this.set("status",status);
+		}
+	}
+});
+
+PointCollection = Backbone.Collection.extend({
+	model:Point,
+	toggle:function(){
+		this.forEach(function(point){
+			point.toggle();
+		});
 	}
 });
 
 PointView = Backbone.View.extend({
 	initialize:function(options){
+		var point_view = this;
 		this.paper = options.paper;
-		this.el = this.paper.rect(0,0,50,50);
-		this.el.attr("stroke-width",0);
-		_(this.model.tags).forEach(function(tag){
-			if(tag.color){
-				this.el.attr("fill",tag.color);
-			}
+		this.model.bind("change:status",function(){
+			point_view.calculate();
 		});
 	},
+	calculate: function(){
+		alert("calculate");
+		// figures out new height
+	},
 	render: function(){
-
+		var paper = this.paper;
+		var el = paper.rect(0,0,50,50);
+		el.attr("stroke-width",0);
+		_(this.model.get("tags")).forEach(function(tag){
+			el.attr("fill",tag.get("color"));
+		});
+		this.el = el;
 	},
 	highlight: function(){
 		
