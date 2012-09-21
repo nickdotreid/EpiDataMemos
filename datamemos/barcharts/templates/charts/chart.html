@@ -40,4 +40,10 @@ $(document).ready(function(){
 		<div class="footnotes"><%= footnotes %></div>
 	</div>
 </script>
+<script id="tag-button-template" type="text/html">
+	<div class="tag btn tab-btn <%= short %>">
+		<span class="name"><%= name %></span>
+		<i class="color" style="background-color:<%= color %>"></i>
+	</div>
+</script>
 {% endblock %}

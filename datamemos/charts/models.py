@@ -27,10 +27,18 @@ class Tag(Sortable):
 		children = []
 		for child in self.children.all():
 			children.append(child.short)
+		sibilings = []
+		parent = False
+		if self.parent:
+			parent = self.parent.short
+			for sibiling in self.parent.children.all():
+				if sibiling != self:
+					sibilings.append(sibiling.short)
 		return {
 			'short':self.short,
 			'name':self.name,
 			'children':children,
+			'parent':parent,
 		}
 	
 	def __unicode__(self):
