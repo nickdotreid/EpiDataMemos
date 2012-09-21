@@ -83,7 +83,7 @@ ChartView = Backbone.View.extend({
 		});
 		
 		// render control field sets for columns & rows
-		$('<fieldset class="control-rows"><div class="row tags-row tags"></div></fieldset>').appendTo(".controls",this.$el);		
+		$('<fieldset class="control-rows"><div class="btn-group row tags-row tags"></div></fieldset>').appendTo(".controls",this.$el);		
 		var control_rows = $(".control-rows:first",this.$el);
 		var tags_row = $(".tags-row:first",control_rows);
 		_(_(this.model.rows).filter(function(tag){
@@ -109,6 +109,9 @@ ChartView = Backbone.View.extend({
 			point_view.render();
 		});
 		return this;
+	},
+	view: function(){
+		
 	}
 });
 
@@ -173,7 +176,9 @@ Tag = Backbone.Model.extend({
 });
 
 TagButton = Backbone.View.extend({
-	tagName:"li",
+	events:{
+		'click .btn':'selected'
+	},
 	initialize:function(options){
 		this.template = _.template($("#tag-button-template").html());
 		this.container = options.container;
@@ -183,7 +188,7 @@ TagButton = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()))
 		this.$el.appendTo(this.container);
 		if(this.model.get('children').length > 0){
-			this.child_row = $('<div class="tags tags-row row"></div>').appendTo(this.fieldset);
+			this.child_row = $('<div class="btn-group tags tags-row row child-row"></div>').appendTo(this.fieldset);
 			var row = this.child_row;
 			var fieldset = this.fieldset;
 			_(this.model.get('children')).forEach(function(tag){
@@ -196,5 +201,17 @@ TagButton = Backbone.View.extend({
 			});
 		}
 		return this;
+	},
+	selected:function(){
+		$(".btn.active",this.fieldset).removeClass("active");
+		$(".child-row",this.fieldset).hide();
+		
+		$('.btn',this.$el).addClass("active");
+		this.container.show();
+		if(this.child_row){
+			this.child_row.show();
+		}
+		
+		this.model.trigger("selected");
 	}
 });
