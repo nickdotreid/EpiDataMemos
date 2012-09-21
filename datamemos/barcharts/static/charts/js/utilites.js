@@ -11,25 +11,27 @@ function make_ticks(min,max,amount){
 	return ticks;
 }
 
-function array_max(arr,value_function){
-	max = 0;
-	for(index in arr){
-		value = value_function(arr[index]);
-		if(value > max){
-			max = value;
+function round_to_significant_number(num,percent){
+	if(percent){
+		num = round_to_significant_number(num * 100, false)/100;
+		if(num > 1){
+			num = 1;
 		}
+		return num;
 	}
-	return Number(max);
+	num += num * 0.05;
+	return Math.ceil(num/5)*5;
 }
-function array_sum(arr,value_function){
-	total = 0;
-	for(index in arr){
-		value = value_function(arr[index]);
-		if(value){
-			total += value;
-		}
+
+function in_range_of(a,b){
+	if(a < b && a > b/6){
+		return true;
+	}else if(a > b && b > a/6){
+		return true;
+	}else if( a == b){
+		return true;
 	}
-	return total;
+	return false;
 }
 
 function format_number(num,percent){

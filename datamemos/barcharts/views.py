@@ -25,6 +25,13 @@ def load_chart(request,chart_id):
 		for row in point.tags.all():
 			if row not in raw_rows and chart not in row.chart_set.all():
 				raw_rows.append(row)
+				if row.parent and row.parent not in raw_rows and chart not in row.parent.chart_set.all():
+					raw_rows.append(row.parent)
+	def sort_rows(a,b):
+		if(a.order>b.order):
+			return 1
+		return -1
+	raw_rows.sort(sort_rows)
 	for row in raw_rows:
 		_rows.append(row.as_json())
 	if request.is_ajax():
@@ -32,11 +39,8 @@ def load_chart(request,chart_id):
 			json.dumps({
 				'id':chart.id,
 				'title':chart.title,
-				'markup':render_to_string("charts/barchart.html",{
-					'chart':chart,
-					'columns':columns,
-					'rows':rows,
-					}),
+				'description':chart.description,
+				'footnotes':chart.footnotes,
 				'rows':_rows,
 				'columns':_columns,
 				'points':_points,

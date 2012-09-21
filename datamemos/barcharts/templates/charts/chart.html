@@ -7,17 +7,37 @@
 
 {% block scripts %}
 {{block.super}}
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/raphael-min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}libs/js/underscore.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}libs/js/backbone.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}libs/js/raphael-min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".chart").trigger("load-chart");
+	var chart = new Chart({
+		id:{{chart.id}}
+		});
+	var chart_view = new ChartView({model:chart,container_el:'barchart-container'});
+	chart.fetch();
 });
 </script>
 
 {% endblock %}
 
 {% block content %}
-{% include "charts/barchart.html" %}
+<div id="barchart-container"></div>
+<script id="barchart-template" type="html/template">
+	<div id="chart-<%= id %>" class="chart barchart" >
+		<h2 class="title"><%= title %></h2>
+		<div class="description"><%= description %></div>
+		<form class="controls">
+		</form>
+		<div class="canvas-container">
+			<div class="canvas">
+
+			</div>
+		</div>
+		<div class="footnotes"><%= footnotes %></div>
+	</div>
+</script>
 {% endblock %}
