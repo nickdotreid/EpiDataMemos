@@ -306,6 +306,9 @@ ColumnView = Backbone.View.extend({
 			var row = point.model.get("rows")[0];
 			return _(new_order).indexOf(row);
 		});
+		_(this.points).forEach(function(point){
+			point.el.toFront();
+		});
 	},
 	update: function(){
 		_(this.points).forEach(function(point_view){
