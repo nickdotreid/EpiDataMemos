@@ -77,6 +77,7 @@ TagButton = Backbone.View.extend({
 			this.$el.addClass("active");
 			this.container.show();
 			if(this.child_row){
+				$('.child-row',this.fieldset).hide();
 				this.child_row.show();
 			}
 		}else{
