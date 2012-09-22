@@ -200,9 +200,10 @@ ChartView = Backbone.View.extend({
 		chart_max = round_to_significant_number(chart_max);
 		var xpos = 0;
 		_(this.columns).forEach(function(column){
+			xpos += column.padding;
 			column.x = xpos;
 			column.calculate(chart_max);
-			xpos = column.width + column.x;
+			xpos = column.width + column.x + column.padding;
 		});
 		_(this.columns).forEach(function(column){
 			column.update();
@@ -215,6 +216,7 @@ ColumnView = Backbone.View.extend({
 		this.model = options.model;
 		this.paper = options.paper;
 		this.points = [];
+		this.padding = 10;
 		this.width = 0;
 		this.x = 0;
 		this.stacked = true;
@@ -253,8 +255,9 @@ ColumnView = Backbone.View.extend({
 				point_view.x = xpos;
 				point_view.y = point_view.paper.height - point_view.height;
 				if(point_view.height > 0){
-					xpos += point_view.width/2;
-					extra = point_view.width/2;
+					var offset = point_view.width/5
+					xpos += offset;
+					extra = point_view.width - offset;
 					point_view.recolor(!point_view.model.get("selected"));
 				}
 			});
@@ -271,6 +274,9 @@ ColumnView = Backbone.View.extend({
 				}
 			});
 		}
+	},
+	order: function(order){
+		
 	},
 	update: function(){
 		_(this.points).forEach(function(point_view){
@@ -318,7 +324,7 @@ PointView = Backbone.View.extend({
 	},
 	recolor: function(desaturate){
 		if(desaturate){
-			var color = Raphael.hsb(this.color.h,this.color.s * 0.5,1);
+			var color = Raphael.hsb(this.color.h,this.color.s * 0.3,1);
 			this.el.attr("fill",color);
 			return this;
 		}
