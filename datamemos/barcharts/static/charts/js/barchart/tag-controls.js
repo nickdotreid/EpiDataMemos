@@ -15,7 +15,7 @@ TagButtonField = Backbone.View.extend({
 	render_row: function(tags){
 		var buttonField = this;
 		var tags_row = $(this.row_template({}));
-		tags.forEach(function(row){
+		_(tags).forEach(function(row){
 			btn = new TagButton({
 				model:row,
 				container:tags_row,

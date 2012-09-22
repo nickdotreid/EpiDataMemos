@@ -91,9 +91,9 @@ ChartView = Backbone.View.extend({
 		this.$el = $(this.el);
 		
 		var pallet = this.pallet;
-		this.model.get("rows").filter(function(tag){
+		_(_(this.model.get("rows").models).filter(function(tag){
 			return !tag.get("parent");
-		}).forEach(function(tag){
+		})).forEach(function(tag){
 			tag.set_color(pallet);
 		});
 		

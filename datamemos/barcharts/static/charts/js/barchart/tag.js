@@ -55,7 +55,7 @@ TagCollection = Backbone.Collection.extend({
 		var collection = this;
 		this.on('change:selected',function(tag_selected){
 			if(tag_selected.get("selected")){
-				collection.without([tag_selected]).forEach(function(tag){
+				_(collection.without([tag_selected])).forEach(function(tag){
 					if(tag != tag_selected){
 						tag.set("selected",false);
 					}
