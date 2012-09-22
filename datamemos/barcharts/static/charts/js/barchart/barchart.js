@@ -134,6 +134,8 @@ ChartView = Backbone.View.extend({
 		this.model.bind("loaded",function(){
 			view.render();
 		});
+		
+		this.tag_order = [];
 	},
 	render: function(){
 		var chart_view = this;
@@ -186,6 +188,11 @@ ChartView = Backbone.View.extend({
 				column.points.push(point_view);
 				point_view.render();
 			});
+			column.tag_order = column.get_order();
+		});
+		
+		this.tag_order = _(this.model.get("rows").models).map(function(tag){
+			return tag;
 		});
 		
 		this.paper = paper;
@@ -193,16 +200,14 @@ ChartView = Backbone.View.extend({
 	},
 	update: function(){
 		var chart_max = 0;
-		var tag_order = _(this.model.get('rows').models).map(function(tag){
-			return tag;
-		});
+		var tag_order = this.tag_order;
 		var order_set = false;
 		_(this.columns).forEach(function(column){
 			var total = column.get_total();
 			if(total > chart_max) chart_max = total;
 			if(column.stacked && !order_set){
 				order_set = true;
-				tag_order = column.get_order();
+				tag_order = column.tag_order;
 			}
 		});
 		chart_max = round_to_significant_number(chart_max);
@@ -227,6 +232,7 @@ ColumnView = Backbone.View.extend({
 		this.model = options.model;
 		this.paper = options.paper;
 		this.points = [];
+		this.tag_order = [];
 		this.padding = 10;
 		this.width = 0;
 		this.x = 0;
