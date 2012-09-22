@@ -88,15 +88,19 @@ Point = Backbone.Model.extend({
 		columns:[],
 		value:0,
 		visible: false,
+		selected: false,
+		highlighted: false
 	},
 	initialize: function(){
 		var point = this;
 	},
 	toggle: function(){
-		var visible = false
+		var visible = false;
+		var selected = false;
 		_(this.get("rows")).forEach(function(tag){
 			if(tag.get("selected")){
 				visible = true;
+				selected = true;
 			}else if(tag.get("parent") && tag.get("parent").get("selected")){
 				visible = true;
 			}else{
@@ -106,8 +110,9 @@ Point = Backbone.Model.extend({
 					}
 				});
 			}
-			
 		});
+		// check if column is selected -- if tag also selected || highlight!
+		this.set("selected",selected);
 		this.set("visible",visible);
 	}
 });
@@ -163,11 +168,13 @@ ChartView = Backbone.View.extend({
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
 		
 		var chart_view = this;
+		this.columns = [];
 		_(this.model.get("columns").models).forEach(function(tag){
 			var column = new ColumnView({
 				model:tag,
 				paper:paper
 			});
+			chart_view.columns.push(column);
 			
 			_(_(chart_view.model.get("points").models).filter(function(point){
 				return _(point.get("columns")).indexOf(tag) > -1;			
@@ -176,15 +183,8 @@ ChartView = Backbone.View.extend({
 					model:point,
 					paper:paper
 				});
+				column.points.push(point_view);
 				point_view.render();
-				
-				column.bind("update",function(total){
-					point_view.calculate(total).update();
-				});
-			});
-			
-			chart_view.bind('update',function(){
-				column.update();
 			});
 		});
 		
@@ -192,7 +192,21 @@ ChartView = Backbone.View.extend({
 		return this;
 	},
 	update: function(){
-		this.trigger("update");
+		var chart_max = 0;
+		_(this.columns).forEach(function(column){
+			var total = column.get_total();
+			if(total > chart_max) chart_max = total;
+		});
+		chart_max = round_to_significant_number(chart_max);
+		var xpos = 0;
+		_(this.columns).forEach(function(column){
+			column.x = xpos;
+			column.calculate(chart_max);
+			xpos = column.width + column.x;
+		});
+		_(this.columns).forEach(function(column){
+			column.update();
+		});
 	}
 });
 
@@ -200,9 +214,66 @@ ColumnView = Backbone.View.extend({
 	initialize:function(options){
 		this.model = options.model;
 		this.paper = options.paper;
+		this.points = [];
+		this.width = 0;
+		this.x = 0;
+		this.stacked = true;
+	},
+	get_total: function(){
+		var column = this;
+		var selected = false;
+		var total = 0;
+		column.stacked = false;
+		_(this.points).forEach(function(point_view){
+			if(point_view.model.get('selected')){
+				selected = true;
+				total += point_view.model.get("value");
+			}
+		});
+		if(!selected){
+			column.stacked = true;
+			_(this.points).forEach(function(point_view){
+				if(point_view.model.get('visible')){
+					total += point_view.model.get("value");
+				}
+			});
+		}
+		return total;
+	},
+	calculate: function(total){
+		if(!total) return;
+		var column = this;
+		_(this.points).forEach(function(point_view){
+			point_view.calculate(total);
+		});
+		if(!this.stacked){ // serial chart
+			var xpos = 0 + this.x;
+			var extra = 0;
+			_(this.points).forEach(function(point_view){
+				point_view.x = xpos;
+				point_view.y = point_view.paper.height - point_view.height;
+				if(point_view.height > 0){
+					xpos += point_view.width/2;
+					extra = point_view.width/2;
+				}
+			});
+			this.width = xpos+extra - this.x;
+		}else{ // stacked chart
+			var ypos = 0;
+			_(this.points).forEach(function(point_view){
+				point_view.x = column.x;
+				point_view.y = point_view.paper.height - ypos - point_view.height;
+				if(point_view.height > 0){
+					ypos += point_view.height;
+					column.width = point_view.width;
+				}
+			});
+		}
 	},
 	update: function(){
-		this.trigger("update",300);
+		_(this.points).forEach(function(point_view){
+			point_view.update();
+		});
 	}
 });
 
@@ -214,6 +285,8 @@ PointView = Backbone.View.extend({
 		// defaults
 		this.width = 65;
 		this.height = 0;
+		this.y = 0;
+		this.x = 0;
 	},
 	render: function(){
 		var paper = this.paper;
@@ -229,6 +302,7 @@ PointView = Backbone.View.extend({
 		if(this.model.get("visible")){
 			var value = this.model.get("value");
 			this.height = value/total * this.paper.height;
+			this.y = this.paper.height - this.height;
 			return this;
 		}
 		this.height = 0;
@@ -236,8 +310,13 @@ PointView = Backbone.View.extend({
 	},
 	update: function(){
 		this.el.attr({
+			width:this.width,
 			height:this.height,
-			y:this.paper.height - this.height
+			y:this.y,
+			x:this.x
 			});
+		if(this.model.get("selected")){
+			this.el.toFront();
+		}
 	}
 });
