@@ -255,6 +255,7 @@ ColumnView = Backbone.View.extend({
 				if(point_view.height > 0){
 					xpos += point_view.width/2;
 					extra = point_view.width/2;
+					point_view.recolor(!point_view.model.get("selected"));
 				}
 			});
 			this.width = xpos+extra - this.x;
@@ -266,6 +267,7 @@ ColumnView = Backbone.View.extend({
 				if(point_view.height > 0){
 					ypos += point_view.height;
 					column.width = point_view.width;
+					point_view.recolor();
 				}
 			});
 		}
@@ -287,14 +289,20 @@ PointView = Backbone.View.extend({
 		this.height = 0;
 		this.y = 0;
 		this.x = 0;
+		
+		var color = false;
+		_(this.model.get("rows")).forEach(function(tag){
+			if(tag.get("color")){
+				color = Raphael.color(tag.get("color"));
+			}
+		});
+		this.color = color;
 	},
 	render: function(){
 		var paper = this.paper;
 		var el = paper.rect(0,paper.height - this.height,this.width,this.height);
 		el.attr("stroke-width",0);
-		_(this.model.get("rows")).forEach(function(tag){
-			el.attr("fill",tag.get("color"));
-		});
+		el.attr("fill",this.color);
 		this.el = el;
 	},
 	calculate: function(total){
@@ -306,6 +314,15 @@ PointView = Backbone.View.extend({
 			return this;
 		}
 		this.height = 0;
+		return this;
+	},
+	recolor: function(desaturate){
+		if(desaturate){
+			var color = Raphael.hsb(this.color.h,this.color.s * 0.5,1);
+			this.el.attr("fill",color);
+			return this;
+		}
+		this.el.attr("fill",this.color);
 		return this;
 	},
 	update: function(){
