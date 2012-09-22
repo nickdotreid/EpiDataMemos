@@ -193,11 +193,22 @@ ChartView = Backbone.View.extend({
 	},
 	update: function(){
 		var chart_max = 0;
+		var tag_order = _(this.model.get('rows').models).map(function(tag){
+			return tag;
+		});
+		var order_set = false;
 		_(this.columns).forEach(function(column){
 			var total = column.get_total();
 			if(total > chart_max) chart_max = total;
+			if(column.stacked && !order_set){
+				order_set = true;
+				tag_order = column.get_order();
+			}
 		});
 		chart_max = round_to_significant_number(chart_max);
+		_(this.columns).forEach(function(column){
+			column.set_order(tag_order);
+		});
 		var xpos = 0;
 		_(this.columns).forEach(function(column){
 			xpos += column.padding;
@@ -275,8 +286,20 @@ ColumnView = Backbone.View.extend({
 			});
 		}
 	},
-	order: function(order){
-		
+	get_order: function(){
+		var points = _(this.points).sortBy(function(point){
+			return point.model.get('value') * -1;
+		});
+		return _(points).map(function(point){
+			return point.model.get("rows")[0];	
+		});
+	},
+	set_order: function(order){
+		var new_order = order;
+		this.points = _(this.points).sortBy(function(point){
+			var row = point.model.get("rows")[0];
+			return _(new_order).indexOf(row);
+		});
 	},
 	update: function(){
 		_(this.points).forEach(function(point_view){
