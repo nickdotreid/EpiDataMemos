@@ -8,22 +8,27 @@ Tag = Backbone.Model.extend({
 		color:false,
 		selected:false
 	},
-	connect_to: function(items){
-		this.set_property('children',items);
-		this.set_property('siblings',items);
-		this.set_parent(items);
-	},
-	set_property: function(property,items){
-		var items = items;
-		var _children = [];
-		_(this.get(property)).forEach(function(str){
-			_(items).forEach(function(tag){
-				if(str == tag.get("short")){
-					_children.push(tag);
-				}
-			});
+	set_children: function(items){
+		var tag = this;
+		children = _(items).filter(function(row){
+			if(tag != row && row.get("parent") && tag == row.get("parent")){
+				return true;
+			}
+			return false;
 		});
-		this.set(property,_children);
+		this.set('children',children);
+		return this;
+	},
+	set_siblings:function(items){
+		var tag = this;
+		if(!tag.get("parent")) return ;
+		siblings = _(items).filter(function(row){
+			if(tag != row && row.get("parent") && tag.get("parent") == row.get("parent")){
+				return true;
+			}
+			return false;
+		});
+		this.set('siblings',siblings);
 		return this;
 	},
 	set_parent: function(items){
@@ -31,7 +36,7 @@ Tag = Backbone.Model.extend({
 		var parent = false;
 		_(items).forEach(function(row){
 			if(tag != row && tag.get('parent') == row.get("short")){
-				parent = tag;
+				parent = row;
 			}
 		});
 		tag.set("parent",parent);
@@ -59,14 +64,21 @@ TagCollection = Backbone.Collection.extend({
 					if(tag != tag_selected){
 						tag.set("selected",false);
 					}
-				});				
+				});
+				collection.trigger("tag-changed");
 			}
 		});
 	},
 	connect_tags: function(){
 		var items = this.models;
 		this.forEach(function(tag){
-			tag.connect_to(items);
+			tag.set_parent(items);
+		});
+		this.forEach(function(tag){
+			tag.set_children(items);
+		});
+		this.forEach(function(tag){
+			tag.set_siblings(items);
 		});
 	}
 });

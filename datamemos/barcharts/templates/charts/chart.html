@@ -14,16 +14,6 @@
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag-controls.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	var chart = new Chart({
-		id:{{chart.id}}
-		});
-	var chart_view = new ChartView({model:chart,container_el:'barchart-container'});
-	chart.fetch();
-});
-</script>
-
 {% endblock %}
 
 {% block content %}
@@ -34,10 +24,8 @@ $(document).ready(function(){
 		<div class="description"><%= description %></div>
 		<form class="controls">
 		</form>
-		<div class="canvas-container">
-			<div class="canvas">
+		<div class="canvas">
 
-			</div>
 		</div>
 		<div class="footnotes"><%= footnotes %></div>
 	</div>
@@ -47,5 +35,13 @@ $(document).ready(function(){
 		<span class="name"><%= name %></span>
 		<i class="color" style="background-color:<%= color %>"></i>
 	</div>
+</script>
+<script type="text/javascript">
+	var chart = new Chart({
+		id:{{chart.id}}
+		});
+	var chart_view = new ChartView({model:chart,container_el:'barchart-container'});
+	chart.fetch();
+	window.chartApp = chart_view;
 </script>
 {% endblock %}

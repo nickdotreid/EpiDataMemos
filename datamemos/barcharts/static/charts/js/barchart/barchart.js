@@ -53,16 +53,22 @@ Chart = Backbone.Model.extend({
 		var points = new PointCollection();
 		_(data['points']).forEach(function(point){
 			var point = point;
-			var tags = _.filter(_.union(columns.models,rows.models), function(tag){
+			var add_tag = function(tag){
 				if(_.indexOf(point['tags'],tag.get("short")) > -1){
 					return true;
 				}
 				return false;
-			});
+			};
 			points.add({
 				value:point['value'],
-				tags:tags
+				rows:_.filter(rows.models, add_tag),
+				columns:_.filter(columns.models, add_tag)
 			});
+		});
+		rows.bind("tag-changed",function(){
+			_(points.models).forEach(function(point){
+				point.toggle();
+			})
 		});
 		this.set("points",points);
 		
@@ -76,6 +82,44 @@ Chart = Backbone.Model.extend({
 	}
 });
 
+Point = Backbone.Model.extend({
+	defaults: {
+		rows:[],
+		columns:[],
+		value:0,
+		visible: false,
+	},
+	initialize: function(){
+		var point = this;
+	},
+	toggle: function(){
+		var visible = false
+		_(this.get("rows")).forEach(function(tag){
+			if(tag.get("selected")){
+				visible = true;
+			}else if(tag.get("parent") && tag.get("parent").get("selected")){
+				visible = true;
+			}else{
+				_(tag.get("siblings")).forEach(function(sib){
+					if(sib.get("selected")){
+						visible = true;
+					}
+				});
+			}
+			
+		});
+		this.set("visible",visible);
+	}
+});
+
+PointCollection = Backbone.Collection.extend({
+	model:Point,
+	toggle:function(){
+		this.forEach(function(point){
+			point.toggle();
+		});
+	}
+});
 
 ChartView = Backbone.View.extend({
 	initialize: function(){
@@ -87,6 +131,11 @@ ChartView = Backbone.View.extend({
 		});
 	},
 	render: function(){
+		var chart_view = this;
+		this.model.get("rows").bind("tag-changed",function(){
+			chart_view.update();
+		});
+		
 		this.el = $(this.template(this.model.toJSON())).appendTo("#barchart-container")[0];
 		this.$el = $(this.el);
 		
@@ -112,43 +161,48 @@ ChartView = Backbone.View.extend({
 		
 		var canvas = $(".canvas",$(this.el));
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
-		_(this.model.get('points').models).forEach(function(point){
-			var point_view = new PointView({
-				model:point,
+		
+		var chart_view = this;
+		_(this.model.get("columns").models).forEach(function(tag){
+			var column = new ColumnView({
+				model:tag,
 				paper:paper
 			});
-			point_view.render();
+			
+			_(_(chart_view.model.get("points").models).filter(function(point){
+				return _(point.get("columns")).indexOf(tag) > -1;			
+			})).forEach(function(point){
+				var point_view = new PointView({
+					model:point,
+					paper:paper
+				});
+				point_view.render();
+				
+				column.bind("update",function(total){
+					point_view.calculate(total).update();
+				});
+			});
+			
+			chart_view.bind('update',function(){
+				column.update();
+			});
 		});
+		
 		this.paper = paper;
 		return this;
-	}
-});
-
-Point = Backbone.Model.extend({
-	defaults: {
-		tags:[],
-		value:0,
-		status: false
 	},
-	toggle: function(){
-		var status = false;
-		_(this.get("tags")).forEach(function(tag){
-			if(tag.get("selected")){
-				status = true;
-			}
-		});
-		if(this.get("status") != status){
-			this.set("status",status);
-		}
+	update: function(){
+		this.trigger("update");
 	}
 });
 
-PointCollection = Backbone.Collection.extend({
-	model:Point,
-	toggle:function(){
-		this.forEach(function(point){
-			point.toggle();
-		});
+ColumnView = Backbone.View.extend({
+	initialize:function(options){
+		this.model = options.model;
+		this.paper = options.paper;
+	},
+	update: function(){
+		this.trigger("update",300);
 	}
 });
 
@@ -156,24 +210,34 @@ PointView = Backbone.View.extend({
 	initialize:function(options){
 		var point_view = this;
 		this.paper = options.paper;
-		this.model.bind("change:status",function(){
-			point_view.calculate();
-		});
-	},
-	calculate: function(){
-		alert("calculate");
-		// figures out new height
+		
+		// defaults
+		this.width = 65;
+		this.height = 0;
 	},
 	render: function(){
 		var paper = this.paper;
-		var el = paper.rect(0,0,50,50);
+		var el = paper.rect(0,paper.height - this.height,this.width,this.height);
 		el.attr("stroke-width",0);
-		_(this.model.get("tags")).forEach(function(tag){
+		_(this.model.get("rows")).forEach(function(tag){
 			el.attr("fill",tag.get("color"));
 		});
 		this.el = el;
 	},
-	highlight: function(){
-		
+	calculate: function(total){
+		if(!total) return ;
+		if(this.model.get("visible")){
+			var value = this.model.get("value");
+			this.height = value/total * this.paper.height;
+			return this;
+		}
+		this.height = 0;
+		return this;
+	},
+	update: function(){
+		this.el.attr({
+			height:this.height,
+			y:this.paper.height - this.height
+			});
 	}
 });
