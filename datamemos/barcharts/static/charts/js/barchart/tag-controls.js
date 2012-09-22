@@ -30,22 +30,24 @@ TagButtonField = Backbone.View.extend({
 
 TagButton = Backbone.View.extend({
 	events:{
-		'click .btn':'selected'
+		'click':'selected'
 	},
 	initialize:function(options){
 		this.template = _.template($("#tag-button-template").html());
+		this.el = this.template(this.model.toJSON());
+		this.$el = $(this.el);
+		
 		this.container = options.container;
 		this.fieldset = options.fieldset;
 		this.row_template = options.row_template;
+		
 		var btn = this;
 		this.model.bind("change:selected",function(){
 			btn.toggle();
 		});
 	},
 	render:function(){
-		this.$el.html(this.template(this.model.toJSON()))
 		this.$el.appendTo(this.container);
-		this.btn = $('.btn',this.$el);
 		if(this.model.get('children').length > 0){
 			var row = $(this.row_template({})).appendTo(this.fieldset);
 			row.addClass("child-row");
@@ -72,13 +74,13 @@ TagButton = Backbone.View.extend({
 	},
 	toggle: function(){
 		if(this.model.get("selected")){
-			this.btn.addClass("active");
+			this.$el.addClass("active");
 			this.container.show();
 			if(this.child_row){
 				this.child_row.show();
 			}
 		}else{
-			this.btn.removeClass("active");
+			this.$el.removeClass("active");
 			if(this.child_row && !_(this.model.get("children")).find(function(tag){
 				return tag.get("selected");
 			})){
