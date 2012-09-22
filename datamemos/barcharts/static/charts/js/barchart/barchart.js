@@ -306,8 +306,13 @@ ColumnView = Backbone.View.extend({
 			var row = point.model.get("rows")[0];
 			return _(new_order).indexOf(row);
 		});
+		var behind = false;
 		_(this.points).forEach(function(point){
-			point.el.toFront();
+			if(behind) point.el.insertBefore(behind.el);
+			else point.el.toFront();
+			if(point.model.get("selected") || behind){
+				behind = point;
+			}
 		});
 	},
 	update: function(){
