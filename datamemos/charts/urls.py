@@ -4,5 +4,5 @@ from models import Chart
 
 urlpatterns = patterns('charts.views',
 	url(r'^$','list'),
-	url(r'^(?P<chart_id>\d+)/$','detail'),
+	url(r'^(?P<chart_id>\d+)$','detail'),
 )

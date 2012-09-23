@@ -1,57 +1,48 @@
 Chart = Backbone.Model.extend({
+	urlRoot:'/charts/',
+	url:function(){
+		return this.urlRoot + this.get("id");
+	},
 	defaults:{
+		tags:[],
 		rows:[],
 		columns:[],
 		points:[],
 		id:1
 	},
-	fetch:function(){
-		if(this.lock){
-			return ;
-		}
-		this.lock = true;
+	parse_self: function(){
 		var chart = this;
-		$.ajax({
-			url:'/charts/'+this.id+'/',
-			method:'GET',
-			data_type:'JSON',
-			data:{
-				json:true
-			},
-			success:function(data){
-				chart.load(data);
-				chart.lock = false;
+		
+		var get_or_add_tag = function(data){
+			var tag = false;
+			var tags = chart.get("tags");
+			var _tags = tags.where({short:tag['short']});
+			if(_tags.length > 0){
+				tag = _tags[0];
+			}else{
+				tag = new Tag(data);
+				tags.add(tag);
 			}
-		});
-	},
-	load: function(data){
-		this.set(data);
-		var chart = this;
-
+			return tag;
+		}
+		
 		var rows = new TagCollection();
-		_(data['rows']).forEach(function(tag){
-			rows.add({
-				short: tag['short'],
-				name: tag['name'],
-				parent: tag['parent'],
-				children: tag['children'],
-				siblings: tag['sibilings']
-			});
+		_(this.get("rows")).forEach(function(data){
+			var tag = get_or_add_tag(data);
+			rows.add(tag);
 		});
 		rows.connect_tags();
 		this.set("rows",rows);
 		
 		var columns = new TagCollection();
-		_(data['columns']).forEach(function(tag){
-			columns.add({
-				short: tag['short'],
-				name: tag['name'],
-			});
+		_(this.get("columns")).forEach(function(data){
+			var tag = get_or_add_tag(data);
+			columns.add(tag);
 		});
 		this.set("columns",columns);
 		
 		var points = new PointCollection();
-		_(data['points']).forEach(function(point){
+		_(this.get("points")).forEach(function(point){
 			var point = point;
 			var add_tag = function(tag){
 				if(_.indexOf(point['tags'],tag.get("short")) > -1){
@@ -127,24 +118,33 @@ PointCollection = Backbone.Collection.extend({
 });
 
 ChartView = Backbone.View.extend({
-	initialize: function(){
+	initialize: function(options){
+		this.container = options.container;
+		
 		this.template = _.template($("#barchart-template").html());
 		this.pallet = make_color_pallet();
-		var view = this;
-		this.model.bind("loaded",function(){
-			view.render();
-		});
 		
 		this.tag_order = [];
-	},
-	render: function(){
+		
 		var chart_view = this;
 		this.model.get("rows").bind("tag-changed",function(){
 			chart_view.update();
 		});
+	},
+	render: function(){
+		var chart_view = this;
 		
-		this.el = $(this.template(this.model.toJSON())).appendTo("#barchart-container")[0];
-		this.$el = $(this.el);
+		this.setElement(this.template(this.model.toJSON()));
+		var container = $(this.container);
+		var existing_element = $("#chart-" + this.model.get("id") + ":first",container);
+		if(existing_element.length > 0){
+			this.$el.insertBefore(existing_element);
+			existing_element.remove();
+		}else{
+			this.$el.appendTo(container);
+		}
+		
+		this.el = $().appendTo("#barchart-container")[0];
 		
 		var pallet = this.pallet;
 		_(_(this.model.get("rows").models).filter(function(tag){
@@ -166,7 +166,7 @@ ChartView = Backbone.View.extend({
 		columns_control.render();
 		columns_control.$el.appendTo(".controls",this.$el);	
 		
-		var canvas = $(".canvas",$(this.el));
+		var canvas = this.$(".canvas");
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
 		
 		this.x_label = paper.text(0,0,this.model.get("x_label"));
@@ -209,6 +209,9 @@ ChartView = Backbone.View.extend({
 		});
 		
 		this.paper = paper;
+		
+		this.trigger("rendered",this.model);
+		
 		return this;
 	},
 	update: function(){

@@ -14,10 +14,13 @@
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag-controls.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/charts.js"></script>
 {% endblock %}
 
 {% block content %}
-<div id="barchart-container"></div>
+<div class="charts list charts-list">
+	{% include "charts/barchart.html" %}
+</div>
 <script id="barchart-template" type="html/template">
 	<div id="chart-<%= id %>" class="chart barchart" >
 		<h2 class="title"><%= title %></h2>
@@ -37,11 +40,19 @@
 	</div>
 </script>
 <script type="text/javascript">
-	var chart = new Chart({
-		id:{{chart.id}}
+	$(document).ready(function(){
+		var charts = new Charts();
+		window.charts = charts;
+		
+		$(".charts-list .chart").each(function(){
+			var chart_id = parseInt($(this).attr("chart-id"));
+			var chart = new Chart({
+				id:chart_id,
+				tags:charts.tags
+			})
+			charts.add(chart);
+			charts.manager.show_chart(chart_id);
 		});
-	var chart_view = new ChartView({model:chart,container_el:'barchart-container'});
-	chart.fetch();
-	window.chartApp = chart_view;
+	});
 </script>
 {% endblock %}
