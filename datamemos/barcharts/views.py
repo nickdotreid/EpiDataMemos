@@ -41,6 +41,8 @@ def load_chart(request,chart_id):
 				'title':chart.title,
 				'description':chart.description,
 				'footnotes':chart.footnotes,
+				'x_label':chart.x_label,
+				'y_label':chart.y_label,
 				'rows':_rows,
 				'columns':_columns,
 				'points':_points,

@@ -169,12 +169,24 @@ ChartView = Backbone.View.extend({
 		var canvas = $(".canvas",$(this.el));
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
 		
+		this.x_label = paper.text(0,0,this.model.get("x_label"));
+		var xbox = this.x_label.getBBox();
+		this.x_label.attr("x",paper.width/2 - xbox.width/2);
+		this.x_label.attr("y",paper.height - xbox.height);
+		
+		this.y_label = paper.text(0,0,this.model.get("y_label"));
+		this.y_label.transform('r-90');
+		var ybox = this.y_label.getBBox();
+		this.y_label.attr("x",0-(paper.height-ybox.height));
+		this.y_label.attr("y",ybox.width);
+		
 		var chart_view = this;
 		this.columns = [];
 		_(this.model.get("columns").models).forEach(function(tag){
 			var column = new ColumnView({
 				model:tag,
-				paper:paper
+				paper:paper,
+				floor:paper.height - xbox.height,
 			});
 			chart_view.columns.push(column);
 			
@@ -215,6 +227,7 @@ ChartView = Backbone.View.extend({
 			column.set_order(tag_order);
 		});
 		var xpos = 0;
+		xpos += this.y_label.getBBox().width;
 		_(this.columns).forEach(function(column){
 			xpos += column.padding;
 			column.x = xpos;
@@ -236,43 +249,71 @@ ColumnView = Backbone.View.extend({
 		this.padding = 10;
 		this.width = 0;
 		this.x = 0;
+		
+		this.floor = options.floor;
+		
 		this.stacked = true;
+		
+		this.current_total=0;
+		
+		this.make_label();
+	},
+	make_label: function(){
+		var title = this.model.get("name");
+		this.label_title = this.paper.text(0,0,title);
+		this.label_total = this.paper.text(0,0,"foo");
+		this.update_label();
+		this.label_total.attr("y",this.floor - this.label_total.getBBox().height);
+		this.label_title.attr("y",this.floor - this.label_total.getBBox().height - this.label_title.getBBox().height);
+		this.floor = this.floor - this.label_title.getBBox().height - this.label_total.getBBox().height;
+	},
+	update_label: function(){
+		this.label_total.attr("text",this.current_total);
+		var total_box = this.label_total.getBBox();
+		this.label_total.attr("x",this.x + this.width/2 - total_box.width/2);
+		
+		var xbox = this.label_title.getBBox();
+		this.label_title.attr("x",this.x + this.width/2 - xbox.width/2);
 	},
 	get_total: function(){
 		var column = this;
 		var selected = false;
 		var total = 0;
-		column.stacked = false;
+		var current_total = 0;
 		_(this.points).forEach(function(point_view){
 			if(point_view.model.get('selected')){
 				selected = true;
 				total += point_view.model.get("value");
 			}
+			if(point_view.model.get('visible')){
+				current_total += point_view.model.get("value");
+			}
 		});
-		if(!selected){
-			column.stacked = true;
-			_(this.points).forEach(function(point_view){
-				if(point_view.model.get('visible')){
-					total += point_view.model.get("value");
-				}
-			});
+		this.current_total = current_total;
+		if(selected){
+			this.stacked = false;
+			return total;
 		}
-		return total;
+		this.stacked = true;
+		return current_total;
 	},
 	calculate: function(total){
 		if(!total) return;
 		var column = this;
 		_(this.points).forEach(function(point_view){
-			point_view.calculate(total);
+			point_view.calculate(total,column.floor);
 		});
 		if(!this.stacked){ // serial chart
 			var xpos = 0 + this.x;
 			var extra = 0;
 			_(this.points).forEach(function(point_view){
 				point_view.x = xpos;
-				point_view.y = point_view.paper.height - point_view.height;
+				point_view.y = column.floor - point_view.height;
 				if(point_view.height > 0){
-					var offset = point_view.width/5
+					var offset = point_view.width/5;
+					if(column.model.get("selected")){
+						offset += offset;
+					}
 					xpos += offset;
 					extra = point_view.width - offset;
 					point_view.recolor(!point_view.model.get("selected"));
@@ -283,7 +324,7 @@ ColumnView = Backbone.View.extend({
 			var ypos = 0;
 			_(this.points).forEach(function(point_view){
 				point_view.x = column.x;
-				point_view.y = point_view.paper.height - ypos - point_view.height;
+				point_view.y = column.floor - ypos - point_view.height;
 				if(point_view.height > 0){
 					ypos += point_view.height;
 					column.width = point_view.width;
@@ -319,6 +360,7 @@ ColumnView = Backbone.View.extend({
 		_(this.points).forEach(function(point_view){
 			point_view.update();
 		});
+		this.update_label();
 	}
 });
 
@@ -348,12 +390,12 @@ PointView = Backbone.View.extend({
 		el.attr("fill",this.color);
 		this.el = el;
 	},
-	calculate: function(total){
+	calculate: function(total,floor){
 		if(!total) return ;
 		if(this.model.get("visible")){
 			var value = this.model.get("value");
-			this.height = value/total * this.paper.height;
-			this.y = this.paper.height - this.height;
+			this.height = value/total * floor;
+			this.y = floor - this.height;
 			return this;
 		}
 		this.height = 0;
