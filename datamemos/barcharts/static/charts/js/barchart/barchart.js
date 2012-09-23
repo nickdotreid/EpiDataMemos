@@ -254,7 +254,7 @@ ChartView = Backbone.View.extend({
 			xpos = column.width + column.x + column.padding;
 		});
 		_(this.columns).forEach(function(column){
-			column.update();
+			column.animate(750);
 		});
 	}
 });
@@ -381,6 +381,12 @@ ColumnView = Backbone.View.extend({
 			point_view.update();
 		});
 		this.update_label();
+	},
+	animate: function(duration){
+		_(this.points).forEach(function(point_view){
+			point_view.animate(duration);
+		});
+		this.update_label();
 	}
 });
 
@@ -388,6 +394,8 @@ PointView = Backbone.View.extend({
 	initialize:function(options){
 		var point_view = this;
 		this.paper = options.paper;
+		
+		this.updated = false;
 		
 		// defaults
 		this.width = 65;
@@ -401,6 +409,7 @@ PointView = Backbone.View.extend({
 				color = Raphael.color(tag.get("color"));
 			}
 		});
+		this.original_color = color;
 		this.color = color;
 	},
 	render: function(){
@@ -422,23 +431,47 @@ PointView = Backbone.View.extend({
 		return this;
 	},
 	recolor: function(desaturate){
+		this.color = this.original_color;
 		if(desaturate){
 			var color = Raphael.hsb(this.color.h,this.color.s * 0.3,1);
-			this.el.attr("fill",color);
+			this.color = color;
 			return this;
 		}
-		this.el.attr("fill",this.color);
 		return this;
 	},
 	update: function(){
+		this.updated = true;
 		this.el.attr({
-			width:this.width,
 			height:this.height,
 			y:this.y,
-			x:this.x
+			x:this.x,
+			fill: this.color
 			});
 		if(this.model.get("selected")){
 			this.el.toFront();
 		}
+	},
+	animate: function(duration){
+		if(!this.updated) this.update();
+		if(this.in_position()) return true;
+		var point = this;
+		var duration = duration/2;
+		point.el.animate({
+			x: this.x,
+			fill: point.color,
+			callback:function(){
+				point.el.animate({
+					height: point.height,
+					y: point.y
+				},duration);
+			}
+		},duration);
+	},
+	in_position: function(){
+		if(this.x != this.el.attr("x")) return false;
+		if(this.y != this.el.attr("y")) return false;
+		if(this.height != this.el.attr("height")) return false;
+		if(this.color != this.el.attr("color")) return false;
+		return true;
 	}
 });
