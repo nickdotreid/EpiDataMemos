@@ -7,6 +7,11 @@ Notes = Backbone.Model.extend({
 		this.notes = new NoteList();
 		this.types = new NoteTypeList();
 		
+		new NoteListView({
+			collection: this.notes,
+			el: $(".notes-list")[0]
+		});
+		
 		var notes_manager = this;
 		
 		this.bind("change:chart",function(){
@@ -33,6 +38,10 @@ Notes = Backbone.Model.extend({
 Note = Backbone.Model.extend({
 	defaults:{
 		editable: false,
+		id:1,
+		text:"",
+		author:"",
+		pub_date:""
 	},
 	initialize: function(){
 	}
@@ -42,11 +51,21 @@ NoteItem = Backbone.View.extend({
 	events:{
 		
 	},
-	initialize: function(){
-		
+	initialize: function(options){
+		this.template = _.template($("#note-template").html());
+		this.container = options.container;
+		this.$container = $(this.container);
+		this.render();
 	},
 	render: function(){
-		
+		var note_id = this.model.get("id");
+		if($("#note-"+note_id,this.$container).length > 0){
+			this.setElement($("note-"+note_id,this.$container)[0]);
+		}else{
+			var new_el = this.template(this.model.toJSON());
+			this.setElement(new_el);
+			this.$el.appendTo(this.$container);
+		}
 	}
 });
 
@@ -78,6 +97,24 @@ NoteList = Backbone.Collection.extend({
 				});
 			}
 		});
+	}
+});
+
+NoteListView = Backbone.View.extend({
+	initialize: function(){
+		var note_list_view = this;
+		this.collection.bind("add",function(note){
+			var note_view = new NoteItem({
+				model:note,
+				container:note_list_view.el
+			});
+		});
+		this.collection.bind("reset",function(){
+			note_list_view.$el.html("");
+		});
+	},
+	render: function(){
+		
 	}
 });
 
@@ -122,7 +159,7 @@ NoteTypeButton = Backbone.View.extend({
 
 NoteTypeList = Backbone.Collection.extend({
 	model:NoteType,
-	initialize: function(){
+	initialize: function(options){
 		this.bind("change:active",function(note_type){
 			if(note_type.get("active")){
 				_(this.without(note_type)).forEach(function(note_type){

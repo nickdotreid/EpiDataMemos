@@ -3,6 +3,18 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script id="note-template" type="text/html">
+		<div id="note-<%= id %>" note-id="<%= id %>" class="note">
+			<div class="text"><%= text %></div>
+			<div class="meta">
+				<span class="date"><%= pub_date %></span>
+				<span class="author">by <a href="mailto:<%= author %>"><%= author %></a></span>
+			</div>
+			<div class="actions">
+				<a href="#" class="share">Share</a>
+			</div>
+		</div>
+	</script>
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/new-notes.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/homepage.js"></script>
 	<script type="text/javascript">
