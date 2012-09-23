@@ -39,6 +39,7 @@ Chart = Backbone.Model.extend({
 			var tag = get_or_add_tag(data);
 			columns.add(tag);
 		});
+		columns.connect_tags();
 		this.set("columns",columns);
 		
 		var points = new PointCollection();
