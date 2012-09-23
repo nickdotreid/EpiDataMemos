@@ -64,6 +64,8 @@ ChartManager = Backbone.View.extend({
 			});
 			if(!active){
 				chart.get("rows").models[0].set("selected",true);
+			}else{
+				active_chart.update();
 			}
 		});
 		active_chart.render();
