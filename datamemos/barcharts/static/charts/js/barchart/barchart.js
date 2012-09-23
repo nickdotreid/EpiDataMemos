@@ -300,6 +300,15 @@ PercentCheckbox = Backbone.View.extend({
 		this.model.bind("change:percent",function(){
 			checkbox.render();
 		});
+		
+		this.model.get("rows").bind("tag-changed",function(tag){
+			if(tag.get("children").length < 1 && !tag.get("parent")){
+				checkbox.$el.hide();
+				checkbox.trigger("percent-toggle");
+				return ;
+			}
+			checkbox.$el.show();
+		});
 	},
 	render: function(){
 		if(this.model.get("percent")){

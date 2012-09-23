@@ -75,7 +75,7 @@ TagCollection = Backbone.Collection.extend({
 						tag.set("selected",false);
 					}
 				});
-				collection.trigger("tag-changed");
+				collection.trigger("tag-changed",tag_selected);
 			}
 		});
 	}
