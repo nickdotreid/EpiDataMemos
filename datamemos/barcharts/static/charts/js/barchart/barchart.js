@@ -105,11 +105,6 @@ Point = Backbone.Model.extend({
 
 PointCollection = Backbone.Collection.extend({
 	model:Point,
-	toggle:function(){
-		this.forEach(function(point){
-			point.toggle();
-		});
-	}
 });
 
 ChartView = Backbone.View.extend({
