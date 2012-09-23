@@ -24,7 +24,7 @@ Charts = Backbone.Collection.extend({
 	activate_chart:function(chart){
 		if(chart.get("active")){
 			this.manager.show_chart(chart.id);
-			this.without(chart).forEach(function(chart){
+			_(this.without(chart)).forEach(function(chart){
 				chart.set("active",false);
 			})
 		}else{
