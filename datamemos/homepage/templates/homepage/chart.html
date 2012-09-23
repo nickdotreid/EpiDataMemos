@@ -62,11 +62,15 @@
 	{% endfor %}
 </div>
 <div id="notes-container" class="">
-	<ul class="nav notes-nav btn-group">
+	<div class="nav notes-nav btn-group">
 		{% for category in categories %}
-		<li class="btn note-type" note-type="{{category.short}}">{{category.name}}</li>
+		<a class="btn note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" href="#" >{{category.name}}</a>
 		{% endfor %}
-	</ul>
-	<div class="notes-list"></div>
+	</div>
+	<div class="notes-list">
+		{% for note in notes %}
+		{% include 'notes/detail.html' %}
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}

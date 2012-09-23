@@ -13,9 +13,12 @@ def show_home(request):
 	return render_to_response('homepage/homepage.html',context_instance=RequestContext(request))
 
 def load_chart(request):
+	categories = Category.objects.filter(viewable=True).all()
+	notes = Note.objects.filter(type=categories[0]).all()[:5]
 	return render_to_response('homepage/chart.html',{
 		'charts':Chart.objects.all(),
-		'categories':Category.objects.filter(viewable=True).all(),
+		'categories':categories,
+		'notes':notes,
 	},context_instance=RequestContext(request))
 
 def load_note(request,note_id):
