@@ -27,9 +27,25 @@ Charts = Backbone.Collection.extend({
 			_(this.without(chart)).forEach(function(chart){
 				chart.set("active",false);
 			})
+			this.trigger("chart-changed",chart);
 		}else{
 			this.manager.list_chart(chart.id);
 		}
+	},
+	deactivate: function(){
+		this.forEach(function(chart){
+			chart.set("active",false);
+		});
+		this.trigger("chart-changed",false);
+	},
+	active: function(){
+		var active_charts = this.filter(function(chart){
+			return chart.get("active");
+		});
+		if(active_charts.length > 0){
+			return active_charts[0];
+		}
+		return false;
 	}
 });
 

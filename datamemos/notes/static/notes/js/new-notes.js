@@ -15,7 +15,7 @@ Notes = Backbone.Model.extend({
 		var notes_manager = this;
 		
 		this.bind("change:chart",function(){
-			notes_manager.notes.chart = chart;
+			notes_manager.notes.chart = notes_manager.get("chart");
 			notes_manager.notes.fetch();
 		});
 		this.types.bind("note-type-changed",function(type){
@@ -32,6 +32,9 @@ Notes = Backbone.Model.extend({
 				});
 			}
 		});
+	},
+	set_chart: function(chart){
+		this.set("chart",chart);
 	}
 });
 
@@ -73,10 +76,11 @@ NoteList = Backbone.Collection.extend({
 	model:Note,
 	urlRoot:'/notes/',
 	url: function(){
-		var vars = "";
-		if( this.chart ) vars += "chart_id="+this.chart.id;
-		if( this.type ) vars += "type="+this.type.get("short");
-		return this.urlRoot + '?' + vars;
+		var vars = [];
+		if( this.chart ) vars.push("chart_id="+this.chart.id);
+		else vars.push("limit=10");
+		if( this.type ) vars.push("type="+this.type.get("short"));
+		return this.urlRoot + '?' + vars.join("&");
 	},
 	initialize: function(){
 		this.type = false;

@@ -13,6 +13,7 @@ Homepage = Backbone.Model.extend({
 		});
 		
 		this.set("charts",new Charts());
+		this.setup_charts();
 		this.bootstrap_charts();
 		
 		this.set("notes",new Notes());
@@ -23,11 +24,16 @@ Homepage = Backbone.Model.extend({
 	change_page: function(page_name){
 		if(!page_name || page_name == "") return ;
 		if(page_name == 'home'){
-			this.get("charts").forEach(function(chart){
-				chart.set("active",false);
-			});
+			this.get("charts").deactivate();
 		}
 		this.set("page",page_name);
+	},
+	setup_charts: function(){
+		var charts = this.get("charts");
+		var manager = this;
+		charts.bind("chart-changed",function(chart){
+			manager.get("notes").set_chart(chart);
+		});
 	},
 	bootstrap_charts: function(){
 		var charts = this.get("charts");
