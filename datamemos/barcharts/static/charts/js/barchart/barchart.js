@@ -58,17 +58,11 @@ Chart = Backbone.Model.extend({
 			});
 		});
 		rows.bind("tag-changed",function(){
-			_(points.models).forEach(function(point){
+			points.forEach(function(point){
 				point.toggle();
 			})
 		});
 		this.set("points",points);
-		
-		rows.bind("change:selected",function(tag){
-			if(tag.get("selected")){
-				points.toggle();
-			}
-		});
 		
 		this.trigger("loaded");
 	}
