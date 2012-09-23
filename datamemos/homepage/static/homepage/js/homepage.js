@@ -15,6 +15,9 @@ Homepage = Backbone.Model.extend({
 		this.set("charts",new Charts());
 		this.bootstrap_charts();
 		
+		this.set("notes",new Notes());
+		this.bootstrap_notes();
+		
 		this.manager.render();
 	},
 	change_page: function(page_name){
@@ -39,6 +42,21 @@ Homepage = Backbone.Model.extend({
 				model:chart,
 				el:this
 			});
+		});
+	},
+	bootstrap_notes: function(){
+		var notes_manager = this.get("notes");
+		$(".notes-nav .note-type").each(function(){
+			var note_type_node = $(this);
+			var note_type = new NoteType({
+				short:note_type_node.attr("note-type"),
+				name:note_type_node.html()
+			});
+			new NoteTypeButton({
+				model:note_type,
+				el:this
+			});
+			notes_manager.types.add(note_type);
 		});
 	}
 });
