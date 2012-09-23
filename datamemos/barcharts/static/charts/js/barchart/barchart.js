@@ -300,7 +300,7 @@ ColumnView = Backbone.View.extend({
 		return current_total;
 	},
 	calculate: function(total){
-		if(!total) return;
+		if(!total) total = this.get_total();
 		var column = this;
 		_(this.points).forEach(function(point_view){
 			point_view.calculate(total,column.floor - column.cieling);
