@@ -1,6 +1,6 @@
 Homepage = Backbone.Model.extend({
 	defaults:{
-		page: 'home',
+		page: 'home'
 	},
 	initialize: function(){
 		this.manager = new HomepageView({
@@ -58,6 +58,9 @@ Homepage = Backbone.Model.extend({
 			});
 			notes_manager.types.add(note_type);
 		});
+		if(!notes_manager.types.any(function(note_type){ return note_type.get("active"); })){
+			notes_manager.types.first().toggle();
+		}
 	}
 });
 

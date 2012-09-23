@@ -1,6 +1,6 @@
 Notes = Backbone.Model.extend({
 	defaults: {
-		chart: false,
+		chart: false
 	},
 	initialize: function(){
 		this.tags = new TagCollection();
