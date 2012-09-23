@@ -1,4 +1,4 @@
-<div id="note-{{note.id}}" class="note">
+<div id="note-{{note.id}}" note-id="{{note.id}}" note-type="{{note.type.short}}" class="note note-{{note.type.short}}">
 	<div class="text">{{note.text}}</div>
 	<div class="bookmarks list bookmarks-list">
 	{% for bookmark in note.bookmark_set.all %}

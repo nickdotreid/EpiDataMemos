@@ -37,7 +37,7 @@ class Note(models.Model):
 		import time
 		obj = {
 			'id':self.id,
-			'author':self.author.email,
+			'author':False,
 			'date':time.mktime(self.pub_date.timetuple()),
 			'text':self.text,
 			'type':self.type.short,
@@ -45,6 +45,8 @@ class Note(models.Model):
 			'weight':self.weight,
 			'bookmarks':[],
 		}
+		if self.author:
+			obj['author'] = self.author.email
 		for bookmark in self.bookmark_set.all():
 			obj['bookmarks'].append(bookmark.as_json())
 		return obj

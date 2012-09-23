@@ -4,7 +4,80 @@ Notes = Backbone.Model.extend({
 	},
 	initialize: function(){
 		this.tags = new TagCollection();
+		this.notes = new NoteList();
 		this.types = new NoteTypeList();
+		
+		var notes_manager = this;
+		
+		this.bind("change:chart",function(){
+			notes_manager.notes.chart = chart;
+			notes_manager.notes.fetch();
+		});
+		this.types.bind("note-type-changed",function(type){
+			notes_manager.notes.type = type;
+			notes_manager.notes.fetch();
+		});
+		
+		this.notes.bind("add",function(note){
+			if(note.get("type") && typeof(note.get("type")) == "string"){
+				notes_manager.types.forEach(function(type){
+					if(type.get("short") == note.get("type")){
+						note.set("type",type);
+					}
+				});
+			}
+		});
+	}
+});
+
+Note = Backbone.Model.extend({
+	defaults:{
+		editable: false,
+	},
+	initialize: function(){
+	}
+});
+
+NoteItem = Backbone.View.extend({
+	events:{
+		
+	},
+	initialize: function(){
+		
+	},
+	render: function(){
+		
+	}
+});
+
+NoteList = Backbone.Collection.extend({
+	model:Note,
+	urlRoot:'/notes/',
+	url: function(){
+		var vars = "";
+		if( this.chart ) vars += "chart_id="+this.chart.id;
+		if( this.type ) vars += "type="+this.type.get("short");
+		return this.urlRoot + '?' + vars;
+	},
+	initialize: function(){
+		this.type = false;
+		this.chart = false;
+	},
+	fetch:function(options){
+		var notes_list = this;
+		this.reset();
+		$.ajax({
+			url:this.url(),
+			data_type:"JSON",
+			data:{
+				json:true
+			},
+			success:function(data){
+				_(data['notes']).forEach(function(note_node){
+					notes_list.add(note_node);
+				});
+			}
+		});
 	}
 });
 
