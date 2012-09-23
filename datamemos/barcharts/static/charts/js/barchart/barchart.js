@@ -131,6 +131,9 @@ ChartView = Backbone.View.extend({
 		this.model.get("rows").bind("tag-changed",function(){
 			chart_view.update();
 		});
+		this.model.get("columns").bind("tag-changed",function(){
+			chart_view.update();
+		});
 	},
 	render: function(){
 		var chart_view = this;
