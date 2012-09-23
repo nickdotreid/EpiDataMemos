@@ -2,20 +2,7 @@
 
 {% block scripts %}
 {{block.super}}
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/bar.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/scale.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/highlight.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/controls_filters.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
-	<!--
-	<script type="text/javascript" src="{{STATIC_URL}}charts/js/table.js"></script>
-	-->
-	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes-edit.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}bookmarks/js/bookmarks-edit.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/interactions.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/loader.js"></script>
+	{% include 'charts/barchart-scripts.html' %}
 {% endblock %}
 
 {% block styles %}

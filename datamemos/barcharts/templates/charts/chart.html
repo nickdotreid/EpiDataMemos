@@ -7,38 +7,7 @@
 
 {% block scripts %}
 {{block.super}}
-<script type="text/javascript" src="{{STATIC_URL}}libs/js/underscore.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}libs/js/backbone.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}libs/js/raphael-min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/utilites.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/tag-controls.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/barchart.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}charts/js/barchart/charts.js"></script>
-{% endblock %}
-
-{% block content %}
-<div class="charts list charts-list">
-	{% include "charts/barchart.html" %}
-</div>
-<script id="barchart-template" type="html/template">
-	<div id="chart-<%= id %>" class="chart barchart" >
-		<h2 class="title"><%= title %></h2>
-		<div class="description"><%= description %></div>
-		<form class="controls">
-		</form>
-		<div class="canvas">
-
-		</div>
-		<div class="footnotes"><%= footnotes %></div>
-	</div>
-</script>
-<script id="tag-button-template" type="text/html">
-	<div class="tag btn tag-btn <%= short %>">
-		<span class="name"><%= name %></span>
-		<i class="color" style="background-color:<%= color %>"></i>
-	</div>
-</script>
+{% include 'charts/barchart-scripts.html' %}
 <script type="text/javascript">
 	$(document).ready(function(){
 		var charts = new Charts();
@@ -55,4 +24,10 @@
 		});
 	});
 </script>
+{% endblock %}
+
+{% block content %}
+<div class="charts list charts-list">
+	{% include "charts/barchart.html" %}
+</div>
 {% endblock %}
