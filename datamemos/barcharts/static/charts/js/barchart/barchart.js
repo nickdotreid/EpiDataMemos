@@ -187,6 +187,7 @@ ChartView = Backbone.View.extend({
 				model:tag,
 				paper:paper,
 				floor:paper.height - xbox.height,
+				cieling:10
 			});
 			chart_view.columns.push(column);
 			
@@ -250,6 +251,7 @@ ColumnView = Backbone.View.extend({
 		this.width = 0;
 		this.x = 0;
 		
+		this.cieling = options.cieling;
 		this.floor = options.floor;
 		
 		this.stacked = true;
@@ -301,7 +303,7 @@ ColumnView = Backbone.View.extend({
 		if(!total) return;
 		var column = this;
 		_(this.points).forEach(function(point_view){
-			point_view.calculate(total,column.floor);
+			point_view.calculate(total,column.floor - column.cieling);
 		});
 		if(!this.stacked){ // serial chart
 			var xpos = 0 + this.x;
