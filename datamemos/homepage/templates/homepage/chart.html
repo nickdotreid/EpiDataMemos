@@ -3,6 +3,21 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var charts = new Charts();
+			window.charts = charts;
+
+			$(".charts-list .chart").each(function(){
+				var chart_id = parseInt($(this).attr("chart-id"));
+				var chart = new Chart({
+					id:chart_id,
+					tags:charts.tags
+				});
+				charts.add(chart);
+			});
+		});
+	</script>
 {% endblock %}
 
 {% block styles %}
@@ -11,7 +26,6 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bookmarks/css/bookmarks.css" />
 	<link rel="stylesheet" href="{{STATIC_URL}}charts/css/chart.css" />
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}charts/css/barchart.css" />
-<!--<link rel="stylesheet" href="{{STATIC_URL}}charts/css/table.css" />-->
 {% endblock %}
 
 {% block content %}
@@ -24,14 +38,11 @@
 			<li class=""><a href="/about">About</a></li>
 			<li class=""><a href="/instructions">Instructions</a></li>
 		</ul>
+		<ul class="nav pull-right">
+			<li class=""><a href="/share">Share Page</a></li>
+			<li class=""><a href="/comment">Add Note</a></li>			
+		</ul>
 	</div>
-	</div>
-</div>
-<div id="home" class="page page-content">
-	<div class="page-inner">
-		<div class="">
-			<h2>SF HIV Chart Project</h2>
-		</div>
 	</div>
 </div>
 <div id="about" class="page page-content">
@@ -52,22 +63,14 @@
 	</div>
 </div>
 <noscript>
-	<div class="alert alert-error">Javascript not enabled</div>
+	<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
 </noscript>
-<div id="chart-container">
-	<div class="inner"></div>
+<div id="chart-container" class="charts list charts-list">
+	{% for chart in charts %}
+		{% include 'charts/short.html' %}
+	{% endfor %}
 </div>
 <div id="note-container">
-	<div id="notes-edit" class="notes">
-		<div class="list bookmarks-list action-area">
-			<div class="bookmarks-container"></div>
-			<a href="#" class="btn btn-main bookmarks-add">Add Bookmark</a>
-		</div>
-		<div class="notes-edit-area action-area">
-			<div class="notes-container"></div>
-			<a href="#" class="btn btn-main create-note">Create Note</a>
-		</div>
-	</div>
 	<div id="notes-list" class="notes">
 		<ul class="nav notes-nav btn-group">
 			{% for category in categories %}
