@@ -8,7 +8,8 @@ Chart = Backbone.Model.extend({
 		rows:[],
 		columns:[],
 		points:[],
-		id:1
+		id:1,
+		active:false
 	},
 	fetch: function(options){
 		var success_func = false;
@@ -150,9 +151,9 @@ ChartView = Backbone.View.extend({
 		
 		this.setElement(this.template(this.model.toJSON()));
 		var container = $(this.container);
-		var existing_element = $("#chart-" + this.model.get("id") + ":first",container);
+		var existing_element = $("#chart-" + this.model.get("id") + ", .chart[chart-id="+this.model.get("id")+"]",container);
 		if(existing_element.length > 0){
-			this.$el.insertBefore(existing_element);
+			this.$el.insertBefore(existing_element[0]);
 			existing_element.remove();
 		}else{
 			this.$el.appendTo(container);
