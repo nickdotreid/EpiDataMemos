@@ -40,7 +40,6 @@ ChartManager = Backbone.View.extend({
 			var chart_manager = this;
 			chart.fetch({
 				success:function(chart){
-					chart.parse_self();
 					chart_manager.show_chart(chart.get("id"));
 				}
 			});

@@ -10,6 +10,27 @@ Chart = Backbone.Model.extend({
 		points:[],
 		id:1
 	},
+	fetch: function(options){
+		var success_func = false;
+		if(options.success){
+			success_func = options.success;
+		}
+		var chart = this;
+		$.ajax({
+			url:this.url(),
+			data_type:"JSON",
+			data:{
+				json:true
+			},
+			success:function(data){
+				chart.set(data);
+				chart.parse_self();
+				if(success_func){
+					success_func(chart);
+				}
+			}
+		});
+	},
 	parse_self: function(){
 		var chart = this;
 		
@@ -104,7 +125,7 @@ Point = Backbone.Model.extend({
 });
 
 PointCollection = Backbone.Collection.extend({
-	model:Point,
+	model:Point
 });
 
 ChartView = Backbone.View.extend({
