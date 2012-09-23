@@ -56,19 +56,6 @@ Tag = Backbone.Model.extend({
 
 TagCollection = Backbone.Collection.extend({
 	model:Tag,
-	initialize: function(){
-		var collection = this;
-		this.on('change:selected',function(tag_selected){
-			if(tag_selected.get("selected")){
-				_(collection.without([tag_selected])).forEach(function(tag){
-					if(tag != tag_selected){
-						tag.set("selected",false);
-					}
-				});
-				collection.trigger("tag-changed");
-			}
-		});
-	},
 	connect_tags: function(){
 		var items = this.models;
 		this.forEach(function(tag){
@@ -79,6 +66,17 @@ TagCollection = Backbone.Collection.extend({
 		});
 		this.forEach(function(tag){
 			tag.set_siblings(items);
+		});
+		var collection = this;
+		this.on('change:selected',function(tag_selected){
+			if(tag_selected.get("selected")){
+				_(collection.without([tag_selected])).forEach(function(tag){
+					if(tag != tag_selected){
+						tag.set("selected",false);
+					}
+				});
+				collection.trigger("tag-changed");
+			}
 		});
 	}
 });
