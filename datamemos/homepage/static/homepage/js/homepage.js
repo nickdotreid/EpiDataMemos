@@ -50,7 +50,8 @@ Homepage = Backbone.Model.extend({
 			var note_type_node = $(this);
 			var note_type = new NoteType({
 				short:note_type_node.attr("note-type"),
-				name:note_type_node.html()
+				name:note_type_node.html(),
+				active:note_type_node.hasClass("active")
 			});
 			new NoteTypeButton({
 				model:note_type,
