@@ -3,23 +3,10 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/homepage.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var charts = new Charts();
-			window.charts = charts;
-
-			$(".charts-list .chart").each(function(){
-				var chart_id = parseInt($(this).attr("chart-id"));
-				var chart = new Chart({
-					id:chart_id,
-					tags:charts.tags
-				});
-				charts.add(chart);
-				new ChartShortView({
-					model:chart,
-					el:this
-				});
-			});
+			var homepage = new Homepage();
 		});
 	</script>
 {% endblock %}
