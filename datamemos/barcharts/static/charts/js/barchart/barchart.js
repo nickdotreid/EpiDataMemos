@@ -8,6 +8,7 @@ Chart = Backbone.Model.extend({
 		rows:[],
 		columns:[],
 		points:[],
+		percent:false,
 		id:1,
 		active:false
 	},
@@ -145,6 +146,9 @@ ChartView = Backbone.View.extend({
 		this.model.get("columns").bind("tag-changed",function(){
 			chart_view.update();
 		});
+		this.model.bind("change:percent",function(){
+			chart_view.update();
+		});
 	},
 	render: function(){
 		var chart_view = this;
@@ -179,7 +183,22 @@ ChartView = Backbone.View.extend({
 			collection:this.model.get("columns")
 		});
 		columns_control.render();
-		columns_control.$el.appendTo(".controls",this.$el);	
+		columns_control.$el.appendTo(".controls",this.$el);
+		
+		var percent_control = new PercentCheckbox({
+			model: this.model
+		});
+		var chart_model = this.model;
+		percent_control.bind("percent-toggle",function(){
+			if(chart_model.get("percent")){
+				chart_model.set("percent",false);
+				return ;
+			}
+			chart_model.set("percent",true);
+		})
+		percent_control.render();
+		percent_control.$el.appendTo(".controls",this.$el);
+		
 		
 		var canvas = this.$(".canvas");
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
@@ -233,8 +252,18 @@ ChartView = Backbone.View.extend({
 		var chart_max = 0;
 		var tag_order = this.tag_order;
 		var order_set = false;
+		var percent = this.model.get("percent");
+		
+		var active_tag = this.model.get("rows").find(function(tag){
+			return tag.get("selected");
+		});
+		if(percent && active_tag.get("children").length < 1 && !active_tag.get("parent")){
+			this.model.set("percent",false);
+			return this;
+		}
+		
 		_(this.columns).forEach(function(column){
-			var total = column.get_total();
+			var total = column.get_total(percent);
 			if(total > chart_max) chart_max = total;
 			if(column.stacked && !order_set){
 				order_set = true;
@@ -250,12 +279,38 @@ ChartView = Backbone.View.extend({
 		_(this.columns).forEach(function(column){
 			xpos += column.padding;
 			column.x = xpos;
-			column.calculate(chart_max);
+			column.calculate(chart_max,percent);
 			xpos = column.width + column.x + column.padding;
 		});
 		_(this.columns).forEach(function(column){
 			column.animate(750);
 		});
+	}
+});
+
+PercentCheckbox = Backbone.View.extend({
+	events:{
+		'click input':'toggle'
+	},
+	initialize:function(options){
+		this.template = _.template('<fieldset class="percent-control"><label class="checkbox"><input type="checkbox" value="" />Show as percent</label></fieldset>');
+		this.setElement(this.template({}));
+		
+		var checkbox = this;
+		this.model.bind("change:percent",function(){
+			checkbox.render();
+		});
+	},
+	render: function(){
+		if(this.model.get("percent")){
+			this.$("input").attr("checked","checked");
+			return true;
+		}
+		this.$("input").attr("checked",false);
+		return false;
+	},
+	toggle: function(event){
+		this.trigger("percent-toggle");
 	}
 });
 
@@ -295,18 +350,22 @@ ColumnView = Backbone.View.extend({
 		var xbox = this.label_title.getBBox();
 		this.label_title.attr("x",this.x + this.width/2 - xbox.width/2);
 	},
-	get_total: function(){
+	get_total: function(percent){
 		var column = this;
 		var selected = false;
 		var total = 0;
 		var current_total = 0;
+		var abs_total = 0;
+		
 		_(this.points).forEach(function(point_view){
 			if(point_view.model.get('selected')){
 				selected = true;
-				total += point_view.model.get("value");
+				if(percent) total += point_view.model.get("value");
+				else total += point_view.model.get("value");
 			}
 			if(point_view.model.get('visible')){
-				current_total += point_view.model.get("value");
+				if(percent) current_total += point_view.model.get("value");
+				else current_total += point_view.model.get("value");
 			}
 		});
 		this.current_total = current_total;
