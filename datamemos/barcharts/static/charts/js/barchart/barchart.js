@@ -277,14 +277,6 @@ ChartView = Backbone.View.extend({
 		var order_set = false;
 		var percent = this.model.get("percent");
 		
-		var active_tag = this.model.get("rows").find(function(tag){
-			return tag.get("selected");
-		});
-		if(percent && active_tag.get("children").length < 1 && !active_tag.get("parent")){
-			this.model.set("percent",false);
-			return this;
-		}
-		
 		_(this.columns).forEach(function(column){
 			var total = column.get_total(percent);
 			if(total > chart_max) chart_max = total;
