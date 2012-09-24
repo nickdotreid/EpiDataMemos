@@ -33,6 +33,9 @@ Homepage = Backbone.Model.extend({
 		var manager = this;
 		charts.bind("chart-changed",function(chart){
 			manager.get("notes").set_chart(chart);
+			if(chart){
+				manager.set("page",false);
+			}
 		});
 	},
 	bootstrap_charts: function(){
@@ -96,6 +99,7 @@ HomepageView = Backbone.View.extend({
 	render: function(){
 		this.$(".page-content").hide();
 		this.$(".navbar .pages .active").removeClass("active");
+		if(!this.model.get("page")) return ;
 		this.$("#"+this.model.get("page")).show();
 		this.$(".navbar .pages li."+this.model.get("page")+":first").addClass("active");
 		if(this.$(".page-content:visible").length < 1){
