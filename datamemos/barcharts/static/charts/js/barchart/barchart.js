@@ -36,19 +36,6 @@ Chart = Backbone.Model.extend({
 	parse_self: function(){
 		var chart = this;
 		
-		var get_or_add_tag = function(data){
-			var tag = false;
-			var tags = chart.get("tags");
-			var _tags = tags.where({short:tag['short']});
-			if(_tags.length > 0){
-				tag = _tags[0];
-			}else{
-				tag = new Tag(data);
-				tags.add(tag);
-			}
-			return tag;
-		}
-		
 		var rows = new TagCollection();
 		var tags = chart.get("tags");
 		_(this.get("rows")).forEach(function(data){
