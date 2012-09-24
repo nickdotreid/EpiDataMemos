@@ -389,8 +389,8 @@ ColumnView = Backbone.View.extend({
 			}
 			if(point_view.model.get('visible')){
 				visible_total += value;
+				current_total += point_view.model.get("value");
 			}
-			current_total += point_view.model.get("value");
 		});
 		this.current_total = current_total;
 		if(selected){
