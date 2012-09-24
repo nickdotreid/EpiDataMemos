@@ -68,21 +68,23 @@
 <noscript>
 	<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
 </noscript>
-<div id="charts-container" class="charts list charts-list">
-	{% for chart in charts %}
-		{% include 'charts/short.html' %}
-	{% endfor %}
-</div>
-<div id="notes-container" class="">
-	<div class="nav notes-nav btn-group">
-		{% for category in categories %}
-		<a class="btn note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" href="#" >{{category.name}}</a>
+<div class="row-fluid">
+	<div id="charts-container" class="span8 charts list charts-list">
+		{% for chart in charts %}
+			{% include 'charts/short.html' %}
 		{% endfor %}
 	</div>
-	<div class="notes-list">
-		{% for note in notes %}
-		{% include 'notes/detail.html' %}
-		{% endfor %}
+	<div id="notes-container" class="span4">
+		<div class="nav notes-nav btn-group">
+			{% for category in categories %}
+			<a class="btn note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" href="#" >{{category.name}}</a>
+			{% endfor %}
+		</div>
+		<div class="notes-list">
+			{% for note in notes %}
+			{% include 'notes/detail.html' %}
+			{% endfor %}
+		</div>
 	</div>
 </div>
 {% endblock %}
