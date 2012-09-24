@@ -211,14 +211,7 @@ ChartView = Backbone.View.extend({
 		var percent_control = new PercentCheckbox({
 			model: this.model
 		});
-		var chart_model = this.model;
-		percent_control.bind("percent-toggle",function(){
-			if(chart_model.get("percent")){
-				chart_model.set("percent",false);
-				return ;
-			}
-			chart_model.set("percent",true);
-		})
+		
 		percent_control.render();
 		percent_control.$el.appendTo(".controls",this.$el);
 		
@@ -277,6 +270,15 @@ ChartView = Backbone.View.extend({
 		var order_set = false;
 		var percent = this.model.get("percent");
 		
+		var active_tag = this.model.get("rows").find(function(tag){
+			return tag.get("selected");
+		});
+		if(percent && active_tag.get("children").length < 1 && !active_tag.get("parent")){
+			this.model.set("percent",false);
+			this.update();
+			return ;
+		}
+		
 		_(this.columns).forEach(function(column){
 			var total = column.get_total(percent);
 			if(total > chart_max) chart_max = total;
@@ -323,6 +325,15 @@ PercentCheckbox = Backbone.View.extend({
 				return ;
 			}
 			checkbox.$el.show();
+		});
+		
+		var chart_model = this.model; 
+		this.bind("percent-toggle",function(){
+			if(chart_model.get("percent")){
+				chart_model.set("percent",false);
+				return ;
+			}
+			chart_model.set("percent",true);
 		});
 	},
 	render: function(){
