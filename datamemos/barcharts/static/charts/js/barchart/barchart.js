@@ -148,6 +148,7 @@ ChartView = Backbone.View.extend({
 		this.template = _.template($("#barchart-template").html());
 		this.pallet = make_color_pallet();
 		
+		this.scales = [];
 		this.tag_order = [];
 		
 		var chart_view = this;
@@ -220,7 +221,7 @@ ChartView = Backbone.View.extend({
 		
 		var chart_view = this;
 		this.columns = [];
-		_(this.model.get("columns").models).forEach(function(tag){
+		this.model.get("columns").forEach(function(tag){
 			var column = new ColumnView({
 				model:tag,
 				paper:paper,
@@ -279,14 +280,53 @@ ChartView = Backbone.View.extend({
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
+		
+		/*
+		var scale = false;
+		if(this.scales.length < 1){
+			scale = new ScaleColumn({
+				paper: this.paper
+			});	
+		}else{
+			scale = this.scales[0];
+		}
+		scale.max = chart_max;
+		
+		_(this.scales).forEach(function(scale){
+			scale.columns = [];
+		});
+		*/
+		
 		var xpos = 0;
 		xpos += this.y_label.getBBox().width;
+		
+//		scale.calculate(chart_max,this.paper.height);
+//		xpos += scale.width;
+		
 		_(this.columns).forEach(function(column){
+/*			if(!in_range_of(scale.max,column.visible_total)){
+				// make new scale
+			}
+*/			
+//			scale.colums.push(column);
+			
 			xpos += column.padding;
 			column.x = xpos;
 			column.calculate(chart_max,percent);
 			xpos = column.width + column.x + column.padding;
 		});
+		
+		/*
+		// remove unused scales
+		this.scales = _(this.scales).filter(function(scale){
+			if(scale.columns.length < 1){
+				scale.remove();
+				return false;
+			}
+			return true;
+		});
+		*/
+		
 		_(this.columns).forEach(function(column){
 			column.animate(750);
 		});
@@ -353,6 +393,7 @@ ColumnView = Backbone.View.extend({
 		this.stacked = true;
 		
 		this.current_total=0;
+		this.visible_total=0;
 		
 		this.make_label();
 	},
@@ -393,6 +434,7 @@ ColumnView = Backbone.View.extend({
 			}
 		});
 		this.current_total = current_total;
+		this.visible_total = visible_total;
 		if(selected){
 			this.stacked = false;
 			return total;

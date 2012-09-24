@@ -12,7 +12,7 @@ function make_ticks(min,max,amount){
 }
 
 function round_to_significant_number(num,percent){
-	if(percent){
+	if(percent || num <= 1){
 		num = round_to_significant_number(num * 100, false)/100;
 		if(num > 1){
 			num = 1;
