@@ -43,7 +43,7 @@ ScaleColumn = Backbone.View.extend({
 		});
 		this.width = width;
 		_(this.ticks).forEach(function(tick){
-			if(visible_ticks.indexOf(tick) == -1) tick.visible = false;
+			if(_(visible_ticks).indexOf(tick) == -1) tick.visible = false;
 			else tick.visible = true;
 			tick.calculate(max,height,width);
 			tick.x += scale.x;
