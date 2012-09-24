@@ -80,6 +80,7 @@ Chart = Backbone.Model.extend({
 				columns:_.filter(columns.models, add_tag)
 			});
 		});
+		points.set_percents();
 		rows.bind("tag-changed",function(){
 			points.forEach(function(point){
 				point.toggle();
@@ -96,6 +97,7 @@ Point = Backbone.Model.extend({
 		rows:[],
 		columns:[],
 		value:0,
+		percent:0,
 		visible: false,
 		selected: false,
 		highlighted: false
@@ -127,7 +129,28 @@ Point = Backbone.Model.extend({
 });
 
 PointCollection = Backbone.Collection.extend({
-	model:Point
+	model:Point,
+	set_percents: function(){
+		var points = this;
+		this.forEach(function(point){
+			if(point.get("rows")[0].get("parent")){
+				var neighbors = _(_(points.without(point)).filter(function(p){
+					return p.get("columns")[0] == point.get("columns")[0];
+				})).filter(function(p){
+					return p.get("rows")[0].get("parent") == point.get("rows")[0].get("parent");
+				});
+				if(neighbors.length > 0){
+					var total = point.get("value");
+					_(neighbors).forEach(function(p){
+						total += p.get("value");
+					});
+					point.set("percent",point.get("value")/total);
+					return ;
+				}
+			}
+			point.set("percent",1);
+		});
+	}
 });
 
 ChartView = Backbone.View.extend({
@@ -270,7 +293,7 @@ ChartView = Backbone.View.extend({
 				tag_order = column.tag_order;
 			}
 		});
-		chart_max = round_to_significant_number(chart_max);
+		chart_max = round_to_significant_number(chart_max,percent);
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
@@ -364,18 +387,19 @@ ColumnView = Backbone.View.extend({
 		var selected = false;
 		var total = 0;
 		var current_total = 0;
-		var abs_total = 0;
+		var visible_total = 0;
 		
 		_(this.points).forEach(function(point_view){
+			var value = point_view.model.get("value");
+			if( percent ) value = point_view.model.get("percent");
 			if(point_view.model.get('selected')){
 				selected = true;
-				if(percent) total += point_view.model.get("value");
-				else total += point_view.model.get("value");
+				total += value;
 			}
 			if(point_view.model.get('visible')){
-				if(percent) current_total += point_view.model.get("value");
-				else current_total += point_view.model.get("value");
+				visible_total += value;
 			}
+			current_total += point_view.model.get("value");
 		});
 		this.current_total = current_total;
 		if(selected){
@@ -383,13 +407,13 @@ ColumnView = Backbone.View.extend({
 			return total;
 		}
 		this.stacked = true;
-		return current_total;
+		return visible_total;
 	},
-	calculate: function(total){
+	calculate: function(total,percent){
 		if(!total) total = this.get_total();
 		var column = this;
 		_(this.points).forEach(function(point_view){
-			point_view.calculate(total,column.floor - column.cieling);
+			point_view.calculate(total,column.floor - column.cieling,percent);
 		});
 		if(!this.stacked){ // serial chart
 			var xpos = 0 + this.x;
@@ -487,10 +511,11 @@ PointView = Backbone.View.extend({
 		el.attr("fill",this.color);
 		this.el = el;
 	},
-	calculate: function(total,floor){
+	calculate: function(total,floor,percent){
 		if(!total) return ;
 		if(this.model.get("visible")){
 			var value = this.model.get("value");
+			if(percent) value = this.model.get("percent");
 			this.height = value/total * floor;
 			this.y = floor - this.height;
 			return this;
