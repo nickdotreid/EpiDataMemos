@@ -34,6 +34,9 @@ Tag = Backbone.Model.extend({
 	set_parent: function(items){
 		var tag = this;
 		var parent = false;
+		if( typeof(tag.get('parent')) != 'string'){
+			return ;
+		}
 		_(items).forEach(function(row){
 			if(tag != row && tag.get('parent') == row.get("short")){
 				parent = row;
@@ -56,6 +59,17 @@ Tag = Backbone.Model.extend({
 
 TagCollection = Backbone.Collection.extend({
 	model:Tag,
+	get_or_add: function(obj){
+		var tag = false;
+		var _tags = this.where({short:obj['short']});
+		if(_tags.length > 0){
+			tag = _tags[0];
+		}else{
+			tag = new Tag(obj);
+			this.add(tag);
+		}
+		return tag;
+	},
 	connect_tags: function(){
 		var items = this.models;
 		this.forEach(function(tag){

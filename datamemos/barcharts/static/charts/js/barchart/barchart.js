@@ -50,8 +50,9 @@ Chart = Backbone.Model.extend({
 		}
 		
 		var rows = new TagCollection();
+		var tags = chart.get("tags");
 		_(this.get("rows")).forEach(function(data){
-			var tag = get_or_add_tag(data);
+			var tag = tags.get_or_add(data);
 			rows.add(tag);
 		});
 		rows.connect_tags();
@@ -59,7 +60,7 @@ Chart = Backbone.Model.extend({
 		
 		var columns = new TagCollection();
 		_(this.get("columns")).forEach(function(data){
-			var tag = get_or_add_tag(data);
+			var tag = tags.get_or_add(data);
 			columns.add(tag);
 		});
 		columns.connect_tags();
