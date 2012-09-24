@@ -276,17 +276,18 @@ ChartView = Backbone.View.extend({
 				tag_order = column.tag_order;
 			}
 		});
-		chart_max = round_to_significant_number(chart_max,percent);
+		chart_max = round_to_significant_number(chart_max,percent, 0.05);
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
 		
-		/*
+		
 		var scale = false;
 		if(this.scales.length < 1){
 			scale = new ScaleColumn({
 				paper: this.paper
-			});	
+			});
+			this.scales.push(scale);
 		}else{
 			scale = this.scales[0];
 		}
@@ -295,20 +296,31 @@ ChartView = Backbone.View.extend({
 		_(this.scales).forEach(function(scale){
 			scale.columns = [];
 		});
-		*/
+		
 		
 		var xpos = 0;
 		xpos += this.y_label.getBBox().width;
 		
-//		scale.calculate(chart_max,this.paper.height);
-//		xpos += scale.width;
-		
+		var chart_view = this;
+		var scale_drawn = false;
 		_(this.columns).forEach(function(column){
-/*			if(!in_range_of(scale.max,column.visible_total)){
-				// make new scale
+			if(!in_range_of(scale.max,column.visible_total)){
+				scale = new ScaleColumn({
+					paper: chart_view.paper
+				});
+				chart_view.scales.push(scale);
+				chart_max = round_to_significant_number(column.visible_total,percent, 0.05);
+				scale_drawn = false;
 			}
-*/			
-//			scale.colums.push(column);
+			if(!scale_drawn){
+				scale_drawn = true;
+				xpos += column.padding;
+				scale.x = xpos;
+				scale.calculate(chart_max,column.floor - column.cieling);
+				xpos += scale.width;
+				xpos += column.padding;
+			}
+			scale.columns.push(column);
 			
 			xpos += column.padding;
 			column.x = xpos;
@@ -316,16 +328,16 @@ ChartView = Backbone.View.extend({
 			xpos = column.width + column.x + column.padding;
 		});
 		
-		/*
+		
 		// remove unused scales
 		this.scales = _(this.scales).filter(function(scale){
 			if(scale.columns.length < 1){
 				scale.remove();
 				return false;
 			}
+			scale.animate(500);
 			return true;
 		});
-		*/
 		
 		_(this.columns).forEach(function(column){
 			column.animate(750);

@@ -11,7 +11,10 @@ function make_ticks(min,max,amount){
 	return ticks;
 }
 
-function round_to_significant_number(num,percent){
+function round_to_significant_number(num,percent,increase){
+	if(num <= 0){
+		return 0;
+	}
 	if(percent || num <= 1){
 		num = round_to_significant_number(num * 100, false)/100;
 		if(num > 1){
@@ -19,7 +22,12 @@ function round_to_significant_number(num,percent){
 		}
 		return num;
 	}
-	num += num * 0.05;
+	if(increase && increase > -1 && increase < 1){
+		num += num * 0.05;
+	}
+	if(num < 5){
+		return Math.round(num);
+	}
 	return Math.ceil(num/5)*5;
 }
 

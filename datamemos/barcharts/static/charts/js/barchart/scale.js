@@ -17,6 +17,7 @@ ScaleColumn = Backbone.View.extend({
 		
 		var visible_ticks  = [];
 		var scale = this;
+		
 		_(make_ticks(0,max,5)).forEach(function(tick_value){
 			tick_value = round_to_significant_number(tick_value);
 			var existing_tick = _(scale.ticks).find(function(tick){
@@ -25,6 +26,13 @@ ScaleColumn = Backbone.View.extend({
 			});
 			if(existing_tick){
 				visible_ticks.push(existing_tick);
+			}else{
+				var tick = new Tick({
+					paper: scale.paper,
+					value: tick_value
+				});
+				scale.ticks.push(tick);
+				visible_ticks.push(tick);
 			}
 		});
 		var width = 0;
@@ -35,9 +43,11 @@ ScaleColumn = Backbone.View.extend({
 		});
 		this.width = width;
 		_(this.ticks).forEach(function(tick){
+			if(visible_ticks.indexOf(tick) == -1) tick.visible = false;
+			else tick.visible = true;
 			tick.calculate(max,height,width);
+			tick.x += scale.x;
 		});
-		
 	},
 	animate: function(duration){
 		_(this.ticks).forEach(function(tick){
@@ -68,7 +78,8 @@ Tick = Backbone.View.extend({
 		this.x = 0;
 		this.y = 0;
 		
-		this.el = paper.text(this.x,this.y,this.value);
+		this.el = this.paper.text(this.x,this.y,this.value);
+		this.el.attr("text-anchor","start");
 		
 		var string_value = "";
 		if(this.value <= 1){
@@ -79,30 +90,33 @@ Tick = Backbone.View.extend({
 		this.el.attr("text",string_value);
 	},
 	calculate: function(max,height,width){
-		this.y = ( this.value/max ) * height;
+		this.width = this.el.getBBox().width;
+		this.y = height - ( ( this.value/max ) * height );
 		if(width){
-			this.x = width/2 - this.el.getBBox().width/2;
+			this.x = width/2 - this.width/2;
 		}
 	},
 	update: function(){
+		this.updated = true;
 		this.el.attr({
 			x:this.x,
-			y:this.y,
+			y:this.y + this.el.getBBox().height,
 			opacity:0
 		});
 	},
 	animate: function(duration){
+		if(!this.updated) this.update();
 		var opacity = 1;
 		if(!this.visible){
 			opacity = 0;
 		}
 		this.el.animate({
 			x:this.x,
-			y:this.y,
-			opacity: opactiy
+			y:this.y + this.el.getBBox().height,
+			opacity: opacity
 		},duration);
 	},
 	remove: function(){
-		
+		this.el.remove();
 	}
 });
