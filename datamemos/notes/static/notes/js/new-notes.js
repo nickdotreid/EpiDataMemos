@@ -75,6 +75,7 @@ Notes = Backbone.Model.extend({
 					bookmark.get("tags").add(tag);
 				}
 			})
+			bookmark.save();
 			note = new Note();
 			note.get("bookmarks").add(bookmark);
 		}
@@ -137,7 +138,12 @@ NoteEdit = Backbone.View.extend({
 		var edit_view = this;
 		var form = this.$('form');
 		
-		
+		if(this.$('form input[name="bookmarks"]').length < 1){
+			this.$('form').append('<input name="bookmarks" type="hidden" value="" />');
+		}
+		this.$('form input[name="bookmarks"]').val(this.model.get("bookmarks").map(function(bookmark){
+			return bookmark.get("id");
+		}).join(","));
 		
 		this.$el.modal("hide");
 		this.trigger("loading");
@@ -151,9 +157,6 @@ NoteEdit = Backbone.View.extend({
 				}
 				if(data['note'] && !edit_view.model){
 					var note = edit_view.model;
-					_(note = note.get("bookmarks")).forEach(function(bookmark){
-						bookmark.save();
-					});
 					note.fetch();
 					note.trigger('note-share',note);
 				}

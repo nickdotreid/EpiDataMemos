@@ -241,19 +241,13 @@ def ajax_save_bookmark(request,bookmark_id = False):
 			else:
 				bookmark.note = False
 		bookmark.save()
-		bm_obj = bookmark.as_json()
-		bm_obj['markup'] = render_to_string("bookmarks/detail.html",{
-			"bookmark":bookmark,
-			"actionable":True,
-			"editable":True,
-			},context_instance=RequestContext(request))
 		return HttpResponse(
 			json.dumps({
 				"message":{
 					'type':'success',
 					'text':"Bookmark saved",
 				},
-				"bookmarks":[bm_obj],
+				"bookmarks":[bookmark.as_json()],
 				}),
 			'application/json')
 	return HttpResponse(

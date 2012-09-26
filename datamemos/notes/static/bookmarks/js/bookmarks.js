@@ -27,10 +27,16 @@ Bookmark = Backbone.Model.extend({
 		postdata['tags'] = this.get("tags").map(function(tag){
 			return tag.get("short");
 		}).join(",");
+		var bookmark = this;
 		$.ajax({
 			type:"POST",
 			url: this.url(),
-			data:postdata
+			data:postdata,
+			success:function(data){
+				if(data['bookmarks'] && data['bookmarks'].length > 0){
+					bookmark.set(data['bookmarks'][0]);
+				}
+			}
 		});
 	}
 });
