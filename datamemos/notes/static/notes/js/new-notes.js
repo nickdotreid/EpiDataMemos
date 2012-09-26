@@ -36,27 +36,29 @@ Notes = Backbone.Model.extend({
 					}
 				});
 			}
-			if(note.get("bookmarks")){
-				var bookmark_list = new BookmarkList();
-				bookmark_list.bind("add",function(bookmark){
-					var new_tags = [];
-					_(bookmark.tags).forEach(function(tag){
-						new_tag.push(notes_manager.tags.get_or_add(tag));
-					});
-					bookmark.set("tags",new_tags);
-					bookmark.set("chart",notes_manager.charts.find(function(chart){
-						if(chart.get("id") == bookmark.get("chart")['id']){
-							return true;
-						}
-						return false;
-					}));
+			var bookmark_list = new BookmarkList();
+			bookmark_list.bind("add",function(bookmark){
+				var new_tags = [];
+				_(bookmark.get("tags")).forEach(function(tag){
+					new_tags.push(notes_manager.tags.get_or_add(tag));
 				});
-				
-				_(note.get("bookmarks")).forEach(function(bookmark){
-					bookmark_list.add(bookmark);
-				});
-				note.set("bookmarks",bookmark_list);
-			}
+				bookmark.set("tags",new_tags);
+				bookmark.set("chart",notes_manager.charts.find(function(chart){
+					if(chart.get("id") == bookmark.get("chart")['id']){
+						return true;
+					}
+					return false;
+				}));
+			});
+			
+			_(note.get("bookmarks")).forEach(function(bookmark){
+				bookmark_list.add(bookmark);
+			});
+			note.set("bookmarks",bookmark_list);
+		});
+		
+		this.tags.bind("change:selected",function(){
+			notes_manager.notes.sort({silent:true});
 		});
 	},
 	set_chart: function(chart){
@@ -70,9 +72,16 @@ Note = Backbone.Model.extend({
 		id:1,
 		text:"",
 		author:"",
-		pub_date:""
+		pub_date:"",
+		bookmarks:[]
 	},
 	initialize: function(){
+		this.set("bookmarks",new BookmarkList());
+	},
+	get_activeness: function(){
+		return this.get("bookmarks").max(function(bookmark){
+			return bookmark.get_activeness();
+		});
 	}
 });
 
@@ -127,6 +136,12 @@ NoteList = Backbone.Collection.extend({
 				});
 			}
 		});
+	},
+	comparator:function(a,b){
+		if(a.get_activeness() > b.get_activeness()){
+			return -1;
+		}
+		return 1;
 	}
 });
 
