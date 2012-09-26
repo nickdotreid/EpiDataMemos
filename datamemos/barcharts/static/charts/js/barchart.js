@@ -120,6 +120,9 @@ ChartView = Backbone.View.extend({
 		var active_tag = this.model.get("rows").find(function(tag){
 			return tag.get("selected");
 		});
+		if(!active_tag){
+			this.model.get("rows").first().set("active",true); // totally not how to do this
+		}
 		if(percent && active_tag.get("children").length < 1 && !active_tag.get("parent")){
 			this.model.set("percent",false);
 			this.update();
