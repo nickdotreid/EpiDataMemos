@@ -63,13 +63,101 @@ Notes = Backbone.Model.extend({
 	},
 	set_chart: function(chart){
 		this.set("chart",chart);
+	},
+	edit_note: function(note){
+		if(!this.get("chart") && !note) return ;
+		if(!note){
+			var bookmark = new Bookmark({
+				chart:this.get("chart")
+			});
+			this.get("tags").forEach(function(tag){
+				if(tag.get("selected")){
+					bookmark.get("tags").add(tag);
+				}
+			})
+			note = new Note();
+			note.get("bookmarks").add(bookmark);
+		}
+		var edit_view = new NoteEdit({
+			model: note
+		});
+	}
+});
+
+NoteEdit = Backbone.View.extend({
+	events:{
+		'click .modal-footer .btn-primary':'submit',
+		'submit form':'submit',
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		var edit_view = this;
+		this.template = _.template($("#note-edit-template").html());
+		
+		this.bind('remove',function(){
+			this.$el.remove();
+		});
+		
+		var url = '/notes/create/';
+		if(this.model){
+			url = '/notes/'+this.model.get("id")+'/edit/';
+		}
+		$.ajax({
+			url:url,
+			type:"GET",
+			data_type:"JSON",
+			data:{
+				json:true
+			},
+			success: function(data){
+				if(data['form']){
+					edit_view.show_form(data['form']);
+				}
+			}
+		});
+	},
+	remove_modal: function(){
+		this.$el.remove();
+	},
+	submit: function(event){
+		event.preventDefault();
+		var edit_view = this;
+		var form = this.$('form');
+		
+		this.$el.modal("hide");
+		this.trigger("loading");
+		$.ajax({
+			url:form.attr("action"),
+			type:form.attr("method"),
+			data:form.serialize(),
+			success: function(data){
+				if(data['form']){
+					edit_view.show_form(data['form']);
+				}
+				if(data['note'] && !edit_view.note){
+					_(note.get("bookmarks")).forEach(function(bookmark){
+						bookmark.save();
+					});
+					note.fetch();
+					note.trigger('note-share',note);
+				}
+			}
+		});
+	},
+	show_form: function(markup){
+		this.setElement(this.template({
+			form: markup
+		}));
+		this.$('.form-actions').hide();
+		this.$('.modal-footer .btn-primary').html(this.$('.form-actions .btn').val());
+		this.$el.modal();
 	}
 });
 
 Note = Backbone.Model.extend({
 	defaults:{
 		editable: false,
-		id:1,
+		id:false,
 		text:"",
 		author:"",
 		pub_date:"",

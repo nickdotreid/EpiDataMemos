@@ -11,6 +11,9 @@ Homepage = Backbone.Model.extend({
 		this.manager.bind('update',function(name){
 			homepage.change_page(name);
 		});
+		this.manager.bind('note-add',function(){
+			homepage.get("notes").edit_note(false);
+		});
 		
 		this.set("tags", new TagCollection());
 		
@@ -96,7 +99,12 @@ HomepageView = Backbone.View.extend({
 		});
 	},
 	events: {
-		'click .navbar .pages a': 'page_navigate'
+		'click .navbar .pages a': 'page_navigate',
+		'click .navbar .note-add': 'add_note',
+	},
+	add_note: function(event){
+		event.preventDefault();
+		this.trigger("note-add");
 	},
 	page_navigate: function(event){
 		event.preventDefault();

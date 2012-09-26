@@ -3,6 +3,21 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script type="text/javascript" src="{{STATIC_URL}}bookmarks/js/bookmarks.js"></script>
+	<script id="note-edit-template" type="text/html">
+		<div class="modal hide fade">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		  </div>
+		  <div class="modal-body">
+		    <%= form %>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#" class="btn">Close</a>
+		    <a href="#" class="btn btn-primary">Save changes</a>
+		  </div>
+		</div>
+	</script>
 	<script id="note-template" type="text/html">
 		<div id="note-<%= id %>" note-id="<%= id %>" class="note">
 			<div class="text"><%= text %></div>
@@ -16,8 +31,8 @@
 			</div>
 		</div>
 	</script>
+	<script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/new-notes.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}bookmarks/js/bookmarks.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/homepage.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -43,7 +58,7 @@
 			</ul>
 			<ul class="nav actions pull-right">
 				<li class=""><a href="/share">Share Page</a></li>
-				<li class=""><a href="/comment">Add Note</a></li>			
+				<li class=""><a class="note-add" href="/comment">Add Note</a></li>			
 			</ul>
 		</div>
 	</div>
