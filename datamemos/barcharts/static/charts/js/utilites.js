@@ -11,12 +11,12 @@ function make_ticks(min,max,amount){
 	return ticks;
 }
 
-function round_to_significant_number(num,percent,increase){
+function round_to_significant_number(num,increase){
 	if(num <= 0){
 		return 0;
 	}
-	if(percent || num <= 1){
-		num = round_to_significant_number(num * 100, false)/100;
+	if(num <= 1){
+		num = round_to_significant_number(num * 100, increase)/100;
 		if(num > 1){
 			num = 1;
 		}

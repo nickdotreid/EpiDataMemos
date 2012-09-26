@@ -112,9 +112,9 @@ ChartView = Backbone.View.extend({
 		return this;
 	},
 	update: function(){
+		var chart_view = this;
 		var chart_max = 0;
 		var tag_order = this.tag_order;
-		var percent = this.model.get("percent");
 		
 		if(this.columns.length < 1) return;
 		
@@ -125,7 +125,7 @@ ChartView = Backbone.View.extend({
 		if(!active_tag){
 			this.model.get("rows").first().set("active",true); // totally not how to do this
 		}
-		if(percent && active_tag.get("children").length < 1 && !active_tag.get("parent")){
+		if(this.model.get("percent") && active_tag.get("children").length < 1 && !active_tag.get("parent")){
 			this.model.set("percent",false);
 			this.update();
 			return ;
@@ -138,6 +138,11 @@ ChartView = Backbone.View.extend({
 			});
 			this.scales.push(scale);
 		}
+		
+		_(this.scales).forEach(function(scale){
+			scale.columns = [];
+		});
+		
 		var scales = this.scales;
 		var new_scales = [];
 		var scale = scales[0];
@@ -145,20 +150,28 @@ ChartView = Backbone.View.extend({
 		var scale_first_set = false;
 		var draw_items = [];
 		_(this.columns).forEach(function(column){
-			var total = column.get_total(percent);
+			var total = column.get_total();
 			if(!scale_first_set){
-				scale.max = round_to_significant_number(total,percent, 0.05);
+				scale.max = round_to_significant_number(total, 0.05);
 				scale_first_set = true;
+				new_scales.push(scale);
 				draw_items.push(scale);
 			}else if(!in_range_of(scale.max,total)){
-				scale = new ScaleColumn({
-					paper: chart_view.paper
+				var existing_scale = _(scales).find(function(scale){
+					return in_range_of(scale.max,total);
 				});
+				if(existing_scale){
+					scale = existing_scale;
+				}else{
+					scale = new ScaleColumn({
+						paper: chart_view.paper
+					});					
+				}
 				new_scales.push(scale);
-				scale.max = round_to_significant_number(total,percent, 0.05);
+				scale.max = round_to_significant_number(total, 0.05);
 				draw_items.push(scale);
 			}else if(scale.max < total){
-				scale.max = round_to_significant_number(total,percent, 0.05);
+				scale.max = round_to_significant_number(total, 0.05);
 				_(scale.columns).forEach(function(col){
 					col.max = scale.max;
 				});
@@ -168,7 +181,11 @@ ChartView = Backbone.View.extend({
 			draw_items.push(column);
 		});
 		
-		if(false)	tag_order = this.columns[0].tag_order; // if column is stacked???
+		var stacked = false;
+		_(this.columns).forEach(function(col){
+			return col.is_stacked();
+		});
+		if(!stacked) tag_order = this.columns[0].get_order();
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
@@ -177,11 +194,16 @@ ChartView = Backbone.View.extend({
 		xpos += this.y_label.getBBox().width;
 		
 		var chart_view = this;
+		var bbox = {
+			x: xpos,
+			y: this.padding * 2,
+			width: undefined,
+			height: 250
+		};
 		_(draw_items).forEach(function(drawable){
-			xpos += chart_view.padding;
-			drawable.x = xpos; // probably should pass one big square
-			drawable.calculate(drawable.max,percent); // should be scales max?
-			xpos = drawable.width + drawable.x + chart_view.padding;
+			bbox.x += chart_view.padding;
+			drawable.calculate(drawable.max,bbox);
+			bbox.x = drawable.BBox.width + drawable.BBox.x + chart_view.padding;
 		});
 		
 		
@@ -253,6 +275,13 @@ ColumnView = Backbone.View.extend({
 		this.width = 0;
 		this.x = 0;
 		
+		this.BBox = {
+			x:0,
+			y:0,
+			width:0,
+			height:0
+		};
+		
 		this.cieling = options.cieling;
 		this.floor = options.floor;
 		
@@ -273,14 +302,14 @@ ColumnView = Backbone.View.extend({
 		this.floor = this.floor - this.label_title.getBBox().height - this.label_total.getBBox().height;
 	},
 	update_label: function(){
-		this.label_total.attr("text",this.current_total);
+		this.label_total.attr("text",format_number(this.current_total));
 		var total_box = this.label_total.getBBox();
-		this.label_total.attr("x",this.x + this.width/2 - total_box.width/2);
+		this.label_total.attr("x",this.BBox.x + this.BBox.width/2 - total_box.width/2);
 		
 		var xbox = this.label_title.getBBox();
-		this.label_title.attr("x",this.x + this.width/2 - xbox.width/2);
+		this.label_title.attr("x",this.BBox.x + this.BBox.width/2- xbox.width/2);
 	},
-	get_total: function(percent){
+	get_total: function(){
 		var column = this;
 		var selected = false;
 		var total = 0;
@@ -289,37 +318,41 @@ ColumnView = Backbone.View.extend({
 		
 		_(this.points).forEach(function(point_view){
 			var value = point_view.model.get("value");
-			if( percent ) value = point_view.model.get("percent");
 			if(point_view.model.get('selected')){
 				selected = true;
 				total += value;
 			}
 			if(point_view.model.get('visible')){
 				visible_total += value;
-				current_total += point_view.model.get("value");
+				current_total += point_view.model.get("number");
 			}
 		});
 		this.current_total = current_total;
 		this.visible_total = visible_total;
 		if(selected){
-			this.stacked = false;
 			return total;
 		}
-		this.stacked = true;
 		return visible_total;
 	},
-	calculate: function(total,percent){
+	is_stacked: function(){
+		var selected = _(this.points).any(function(point_view){
+			return point_view.model.get('selected');
+		});
+		this.stacked = !selected; 
+		return this.stacked;
+	},
+	calculate: function(total, BBox){
 		if(!total) total = this.get_total();
 		var column = this;
 		_(this.points).forEach(function(point_view){
-			point_view.calculate(total,column.floor - column.cieling,percent);
+			point_view.calculate(total,250);
 		});
 		if(!this.stacked){ // serial chart
-			var xpos = 0 + this.x;
+			var xpos = 0 + BBox.x;
 			var extra = 0;
 			_(this.points).forEach(function(point_view){
 				point_view.x = xpos;
-				point_view.y = column.floor - point_view.height;
+				point_view.y = ( BBox.y + BBox.height ) - point_view.height;
 				if(point_view.height > 0){
 					var offset = point_view.width/5;
 					if(column.model.get("selected")){
@@ -330,18 +363,21 @@ ColumnView = Backbone.View.extend({
 					point_view.recolor(!point_view.model.get("selected"));
 				}
 			});
-			this.width = xpos+extra - this.x;
+			this.BBox = _.clone(BBox);
+			this.BBox.width = xpos+extra - BBox.x;
 		}else{ // stacked chart
 			var ypos = 0;
 			_(this.points).forEach(function(point_view){
-				point_view.x = column.x;
-				point_view.y = column.floor - ypos - point_view.height;
+				point_view.x = BBox.x;
+				point_view.y = ( BBox.y + BBox.height ) - ypos - point_view.height;
 				if(point_view.height > 0){
 					ypos += point_view.height;
 					column.width = point_view.width;
 					point_view.recolor();
 				}
 			});
+			this.BBox = _.clone(BBox);
+			this.BBox.width = this.width;
 		}
 	},
 	get_order: function(){
@@ -410,13 +446,12 @@ PointView = Backbone.View.extend({
 		el.attr("fill",this.color);
 		this.el = el;
 	},
-	calculate: function(total,floor,percent){
+	calculate: function(total,height){
 		if(!total) return ;
 		if(this.model.get("visible")){
 			var value = this.model.get("value");
-			if(percent) value = this.model.get("percent");
-			this.height = value/total * floor;
-			this.y = floor - this.height;
+			this.height = value/total * height;
+			this.y = height - this.height;
 			return this;
 		}
 		this.height = 0;

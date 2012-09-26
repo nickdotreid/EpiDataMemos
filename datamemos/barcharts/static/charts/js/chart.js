@@ -63,12 +63,21 @@ Chart = Backbone.Model.extend({
 				return false;
 			};
 			points.add({
-				value:point['value'],
+				number:point['value'],
 				rows:_.filter(rows.models, add_tag),
 				columns:_.filter(columns.models, add_tag)
 			});
 		});
 		points.set_percents();
+		var chart = this;
+		points.forEach(function(point){
+			point.select_value(chart.get("percent"));
+		});
+		this.bind("change:percent",function(chart){
+			points.forEach(function(point){
+				point.select_value(chart.get("percent"));
+			});
+		});
 		rows.bind("tag-changed",function(){
 			points.forEach(function(point){
 				point.toggle();
@@ -84,14 +93,25 @@ Point = Backbone.Model.extend({
 	defaults: {
 		rows:[],
 		columns:[],
+		
 		value:0,
 		percent:0,
+		number:0,
+		
 		visible: false,
 		selected: false,
 		highlighted: false
 	},
 	initialize: function(){
-		var point = this;
+		
+	},
+	select_value: function(percent){
+		if(percent){
+			this.set("value",this.get("percent"));
+			return this.get("percent");
+		}
+		this.set("value",this.get("number"));
+		return this.get("number");
 	},
 	toggle: function(){
 		var visible = false;

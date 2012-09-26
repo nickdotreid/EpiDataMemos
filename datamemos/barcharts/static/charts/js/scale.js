@@ -11,9 +11,17 @@ ScaleColumn = Backbone.View.extend({
 		this.height = 0;
 		this.x = 0;
 		this.y = 0;
+		this.BBox = {
+			x:0,
+			y:0,
+			width:0,
+			height:0
+		};
 	},
-	calculate: function(max,height){
+	calculate: function(max,BBox){
 		this.max = max;
+		
+		this.BBox = _.clone(BBox);
 		
 		var visible_ticks  = [];
 		var scale = this;
@@ -38,15 +46,17 @@ ScaleColumn = Backbone.View.extend({
 		var width = 0;
 		_(visible_ticks).forEach(function(tick){
 			tick.visible = true;
-			tick.calculate(max,height);
+			tick.calculate(max,BBox.height);
 			if(tick.width > width) width = tick.width;
 		});
 		this.width = width;
+		this.BBox.width = width;
 		_(this.ticks).forEach(function(tick){
-			if(_(visible_ticks).indexOf(tick) == -1) tick.visible = false;
-			else tick.visible = true;
-			tick.calculate(max,height,width);
-			tick.x += scale.x;
+			if(_(visible_ticks).indexOf(tick) == -1){ 
+				tick.visible = false;
+			}
+			tick.calculate(max,scale.BBox.height,scale.BBox.width);
+			tick.x += scale.BBox.x;
 		});
 	},
 	animate: function(duration){
