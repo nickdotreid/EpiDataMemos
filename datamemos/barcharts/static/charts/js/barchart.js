@@ -114,9 +114,11 @@ ChartView = Backbone.View.extend({
 	update: function(){
 		var chart_max = 0;
 		var tag_order = this.tag_order;
-		var order_set = false;
 		var percent = this.model.get("percent");
 		
+		if(this.columns.length < 1) return;
+		
+		/**		FIND ACTIVE TAG		**/
 		var active_tag = this.model.get("rows").find(function(tag){
 			return tag.get("selected");
 		});
@@ -129,79 +131,70 @@ ChartView = Backbone.View.extend({
 			return ;
 		}
 		
-		_(this.columns).forEach(function(column){
-			var total = column.get_total(percent);
-			if(total > chart_max) chart_max = total;
-			if(column.stacked && !order_set){
-				order_set = true;
-				tag_order = column.tag_order;
-			}
-		});
-		chart_max = round_to_significant_number(chart_max,percent, 0.05);
-		_(this.columns).forEach(function(column){
-			column.set_order(tag_order);
-		});
-		
-		
-		var scale = false;
+		/**		SET SCALES		**/
 		if(this.scales.length < 1){
 			scale = new ScaleColumn({
 				paper: this.paper
 			});
 			this.scales.push(scale);
-		}else{
-			scale = this.scales[0];
 		}
-		scale.max = chart_max;
+		var scales = this.scales;
+		var new_scales = [];
+		var scale = scales[0];
 		
-		_(this.scales).forEach(function(scale){
-			scale.columns = [];
+		var scale_first_set = false;
+		var draw_items = [];
+		_(this.columns).forEach(function(column){
+			var total = column.get_total(percent);
+			if(!scale_first_set){
+				scale.max = round_to_significant_number(total,percent, 0.05);
+				scale_first_set = true;
+				draw_items.push(scale);
+			}else if(!in_range_of(scale.max,total)){
+				scale = new ScaleColumn({
+					paper: chart_view.paper
+				});
+				new_scales.push(scale);
+				scale.max = round_to_significant_number(total,percent, 0.05);
+				draw_items.push(scale);
+			}else if(scale.max < total){
+				scale.max = round_to_significant_number(total,percent, 0.05);
+				_(scale.columns).forEach(function(col){
+					col.max = scale.max;
+				});
+			}
+			scale.columns.push(column);
+			column.max = scale.max;
+			draw_items.push(column);
 		});
 		
+		if(false)	tag_order = this.columns[0].tag_order; // if column is stacked???
+		_(this.columns).forEach(function(column){
+			column.set_order(tag_order);
+		});
 		
 		var xpos = 0;
 		xpos += this.y_label.getBBox().width;
 		
 		var chart_view = this;
-		var scale_drawn = false;
-		_(this.columns).forEach(function(column){
-			if(!in_range_of(scale.max,column.visible_total)){
-				scale = new ScaleColumn({
-					paper: chart_view.paper
-				});
-				chart_view.scales.push(scale);
-				chart_max = round_to_significant_number(column.visible_total,percent, 0.05);
-				scale_drawn = false;
-			}
-			if(!scale_drawn){
-				scale_drawn = true;
-				xpos += column.padding;
-				scale.x = xpos;
-				scale.calculate(chart_max,column.floor - column.cieling);
-				xpos += scale.width;
-				xpos += column.padding;
-			}
-			scale.columns.push(column);
-			
-			xpos += column.padding;
-			column.x = xpos;
-			column.calculate(chart_max,percent);
-			xpos = column.width + column.x + column.padding;
+		_(draw_items).forEach(function(drawable){
+			xpos += chart_view.padding;
+			drawable.x = xpos; // probably should pass one big square
+			drawable.calculate(drawable.max,percent); // should be scales max?
+			xpos = drawable.width + drawable.x + chart_view.padding;
 		});
 		
 		
-		// remove unused scales
-		this.scales = _(this.scales).filter(function(scale){
+		_(this.scales).filter(function(scale){
 			if(scale.columns.length < 1){
 				scale.remove();
-				return false;
 			}
-			scale.animate(500);
 			return true;
 		});
+		this.scales = new_scales;
 		
-		_(this.columns).forEach(function(column){
-			column.animate(750);
+		_(draw_items).forEach(function(drawable){
+			drawable.animate(750);
 		});
 	}
 });
