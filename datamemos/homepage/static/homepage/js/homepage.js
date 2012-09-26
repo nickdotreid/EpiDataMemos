@@ -12,11 +12,17 @@ Homepage = Backbone.Model.extend({
 			homepage.change_page(name);
 		});
 		
-		this.set("charts",new Charts());
+		this.set("tags", new TagCollection());
+		
+		this.set("charts",new Charts({
+			tags:this.get("tags")
+		}));
 		this.setup_charts();
 		this.bootstrap_charts();
 		
-		this.set("notes",new Notes());
+		this.set("notes",new Notes({
+			tags:this.get("tags")
+		}));
 		this.bootstrap_notes();
 		
 		this.manager.render();

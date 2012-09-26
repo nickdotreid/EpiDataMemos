@@ -2,8 +2,11 @@ Notes = Backbone.Model.extend({
 	defaults: {
 		chart: false
 	},
-	initialize: function(){
-		this.tags = new TagCollection();
+	initialize: function(options){
+		
+		if(options && options.tags) this.tags = options.tags;
+		else this.tags = new TagCollection();
+		
 		this.notes = new NoteList();
 		this.types = new NoteTypeList();
 		

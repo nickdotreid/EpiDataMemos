@@ -3,11 +3,8 @@ Charts = Backbone.Collection.extend({
 	initialize: function(options){
 		var charts_collection = this;
 		
-		if(options && options.tags){
-			this.tags = options.tags;
-		}else{
-			this.tags = new TagCollection();
-		}
+		if(options && options.tags) this.tags = options.tags;
+		else this.tags = new TagCollection();
 		
 		this.manager = new ChartManager({
 			collection:charts_collection
