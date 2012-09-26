@@ -1,12 +1,12 @@
 ChartView = Backbone.View.extend({
+	padding:10,
+	scales:[],
+	tag_order:[],
+	columns:[],
+	pallet:make_color_pallet(),
+	template:_.template($("#barchart-template").html()),
 	initialize: function(options){
 		this.container = options.container;
-		
-		this.template = _.template($("#barchart-template").html());
-		this.pallet = make_color_pallet();
-		
-		this.scales = [];
-		this.tag_order = [];
 		
 		var chart_view = this;
 		this.model.get("rows").bind("tag-changed",function(){
@@ -22,6 +22,7 @@ ChartView = Backbone.View.extend({
 	render: function(){
 		var chart_view = this;
 		
+		/** SET UP DOM ELEMENT **/
 		this.setElement(this.template(this.model.toJSON()));
 		var container = $(this.container);
 		var existing_element = $("#chart-" + this.model.get("id") + ", .chart[chart-id="+this.model.get("id")+"]",container);
@@ -34,6 +35,7 @@ ChartView = Backbone.View.extend({
 		
 		this.el = $().appendTo("#barchart-container")[0];
 		
+		/** MAKE CHART COLORS **/
 		var pallet = this.pallet;
 		_(_(this.model.get("rows").models).filter(function(tag){
 			return !tag.get("parent");
@@ -41,7 +43,7 @@ ChartView = Backbone.View.extend({
 			tag.set_color(pallet);
 		});
 		
-		// render control field sets for columns & rows
+		/** RENDER CONTROLS **/
 		rows_control = new TagButtonField({
 			collection:this.model.get("rows")
 		});
@@ -57,14 +59,15 @@ ChartView = Backbone.View.extend({
 		var percent_control = new PercentCheckbox({
 			model: this.model
 		});
-		
 		percent_control.render();
 		percent_control.$el.appendTo(".controls",this.$el);
 		
-		
+		/** SET UP SVG **/
 		var canvas = this.$(".canvas");
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
+		this.paper = paper;
 		
+		/** RENDER LABELS **/
 		this.x_label = paper.text(0,0,this.model.get("x_label"));
 		var xbox = this.x_label.getBBox();
 		this.x_label.attr("x",paper.width/2 - xbox.width/2);
@@ -76,6 +79,7 @@ ChartView = Backbone.View.extend({
 		this.y_label.attr("x",0-(paper.height-ybox.height));
 		this.y_label.attr("y",ybox.width);
 		
+		/** MAKE COLUMNS **/
 		var chart_view = this;
 		this.columns = [];
 		this.model.get("columns").forEach(function(tag){
@@ -83,7 +87,7 @@ ChartView = Backbone.View.extend({
 				model:tag,
 				paper:paper,
 				floor:paper.height - xbox.height,
-				cieling:10
+				cieling:chart_view.padding * 2
 			});
 			chart_view.columns.push(column);
 			
@@ -104,10 +108,7 @@ ChartView = Backbone.View.extend({
 			return tag;
 		});
 		
-		this.paper = paper;
-		
 		this.trigger("rendered",this.model);
-		
 		return this;
 	},
 	update: function(){
