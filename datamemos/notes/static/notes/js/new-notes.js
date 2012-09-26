@@ -124,6 +124,8 @@ NoteEdit = Backbone.View.extend({
 		var edit_view = this;
 		var form = this.$('form');
 		
+		
+		
 		this.$el.modal("hide");
 		this.trigger("loading");
 		$.ajax({
