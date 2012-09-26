@@ -93,7 +93,7 @@ Notes = Backbone.Model.extend({
 			}
 		});
 		bookmark.save();
-		console.log("Ready to save!");
+		
 	}
 });
 

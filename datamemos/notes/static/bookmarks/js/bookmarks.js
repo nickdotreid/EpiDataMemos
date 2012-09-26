@@ -1,5 +1,11 @@
 Bookmark = Backbone.Model.extend({
+	urlRoot:'/notes/bookmark/',
+	url:function(){
+		if(this.get("id")) return this.urlRoot + this.get("id");
+		return this.urlRoot;
+	},
 	defaults:{
+		note:false,
 		chart:false,
 		tags:[]
 	},
@@ -13,6 +19,19 @@ Bookmark = Backbone.Model.extend({
 			return tag.get("selected");
 		});
 		return active.length;
+	},
+	save: function(options){
+		var postdata = {};
+		if(this.get("note")) postdata['note_id'] = this.get("note").get("id");
+		if(this.get("chart")) postdata['chart_id'] = this.get("chart").get("id");
+		postdata['tags'] = this.get("tags").map(function(tag){
+			return tag.get("short");
+		}).join(",");
+		$.ajax({
+			type:"POST",
+			url: this.url(),
+			data:postdata
+		});
 	}
 });
 
