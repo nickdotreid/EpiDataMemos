@@ -193,12 +193,20 @@ ChartView = Backbone.View.extend({
 		var xpos = 0;
 		xpos += this.y_label.getBBox().width;
 		
+		var lowest_label = this.paper.height;
+		_(this.columns).forEach(function(column){
+			var label_height = column.label_title.attr("y");
+			if(label_height < lowest_label){ 
+				lowest_label = label_height;
+			}
+		});
+		
 		var chart_view = this;
 		var bbox = {
 			x: xpos,
 			y: this.padding * 2,
 			width: undefined,
-			height: 250
+			height: lowest_label - this.padding * 2 - this.padding
 		};
 		_(draw_items).forEach(function(drawable){
 			bbox.x += chart_view.padding;
