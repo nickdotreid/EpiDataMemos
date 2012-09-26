@@ -81,6 +81,19 @@ Notes = Backbone.Model.extend({
 		var edit_view = new NoteEdit({
 			model: note
 		});
+	},
+	save_bookmark: function(){
+		if(!this.get("chart")) return ;
+		var bookmark = new Bookmark({
+			chart:this.get("chart")
+		});
+		this.get("tags").forEach(function(tag){
+			if(tag.get("selected")){
+				bookmark.get("tags").add(tag);
+			}
+		});
+		bookmark.save();
+		console.log("Ready to save!");
 	}
 });
 
