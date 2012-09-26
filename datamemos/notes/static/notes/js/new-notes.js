@@ -99,7 +99,7 @@ NoteEdit = Backbone.View.extend({
 		});
 		
 		var url = '/notes/create/';
-		if(this.model){
+		if(this.model.get("id")){
 			url = '/notes/'+this.model.get("id")+'/edit/';
 		}
 		$.ajax({
@@ -134,8 +134,9 @@ NoteEdit = Backbone.View.extend({
 				if(data['form']){
 					edit_view.show_form(data['form']);
 				}
-				if(data['note'] && !edit_view.note){
-					_(note.get("bookmarks")).forEach(function(bookmark){
+				if(data['note'] && !edit_view.model){
+					var note = edit_view.model;
+					_(note = note.get("bookmarks")).forEach(function(bookmark){
 						bookmark.save();
 					});
 					note.fetch();
