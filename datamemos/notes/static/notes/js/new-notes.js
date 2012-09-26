@@ -7,6 +7,8 @@ Notes = Backbone.Model.extend({
 		if(options && options.tags) this.tags = options.tags;
 		else this.tags = new TagCollection();
 		
+		if(options && options.charts) this.charts = options.charts;
+		
 		this.notes = new NoteList();
 		this.types = new NoteTypeList();
 		
@@ -33,6 +35,27 @@ Notes = Backbone.Model.extend({
 						note.set("type",type);
 					}
 				});
+			}
+			if(note.get("bookmarks")){
+				var bookmark_list = new BookmarkList();
+				bookmark_list.bind("add",function(bookmark){
+					var new_tags = [];
+					_(bookmark.tags).forEach(function(tag){
+						new_tag.push(notes_manager.tags.get_or_add(tag));
+					});
+					bookmark.set("tags",new_tags);
+					bookmark.set("chart",notes_manager.charts.find(function(chart){
+						if(chart.get("id") == bookmark.get("chart")['id']){
+							return true;
+						}
+						return false;
+					}));
+				});
+				
+				_(note.get("bookmarks")).forEach(function(bookmark){
+					bookmark_list.add(bookmark);
+				});
+				note.set("bookmarks",bookmark_list);
 			}
 		});
 	},

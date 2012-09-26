@@ -21,7 +21,8 @@ Homepage = Backbone.Model.extend({
 		this.bootstrap_charts();
 		
 		this.set("notes",new Notes({
-			tags:this.get("tags")
+			tags:this.get("tags"),
+			charts:this.get("charts")
 		}));
 		this.bootstrap_notes();
 		
