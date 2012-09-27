@@ -33,6 +33,7 @@ def list(request):
 		_notes = []
 		for note in query.all():
 			_note = note.as_json()
+			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
 			if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
 				_note.editable = True 
 			_notes.append(_note)
@@ -48,8 +49,10 @@ def list(request):
 def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
 	if request.is_ajax():
+		_note = note.as_json()
+		_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
 		return HttpResponse(
-			json.dumps(note.as_json()),
+			json.dumps(_note),
 			'application/json')
 	return render_to_response('notes/detail.html',{'note':note})
 	
@@ -75,14 +78,12 @@ def edit(request,note_id):
 			if 'public' in form.cleaned_data:
 				note.public = True
 			note.save()
+			_note = note.as_json()
+			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
+			if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
+				_note.editable = True
 			return HttpResponse(
-				json.dumps({
-					"message":{
-						'type':'success',
-						'text':"Your note has been updated",
-					},
-					"note":note.as_json(),
-				}),
+				json.dumps(_note),
 				'application/json')
 	if request.is_ajax():
 		return HttpResponse(
@@ -127,9 +128,13 @@ def create(request):
 				note.public = True
 			note.save()
 			save_bookmark_to_note(request,note)
+			_note = note.as_json()
+			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
+			if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
+				_note.editable = True
 			if request.is_ajax:
 				return HttpResponse(
-					json.dumps(note.as_json()),
+					json.dumps(_note),
 					'application/json')
 			return HttpResponseRedirect(reverse(detail, args=(note.id,)))
 	if request.is_ajax():
@@ -233,13 +238,15 @@ def ajax_save_bookmark(request,bookmark_id = False):
 			else:
 				bookmark.note = False
 		bookmark.save()
+		_bookmark = bookmark.as_json()
+		_bookmark['url'] = request.get_host()+reverse(save_bookmark, args=(bookmark.id,))
 		return HttpResponse(
 			json.dumps({
 				"message":{
 					'type':'success',
 					'text':"Bookmark saved",
 				},
-				"bookmarks":[bookmark.as_json()],
+				"bookmarks":[_bookmark],
 				}),
 			'application/json')
 	return HttpResponse(
