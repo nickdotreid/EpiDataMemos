@@ -151,32 +151,39 @@ ChartView = Backbone.View.extend({
 		
 		var scale_first_set = false;
 		var draw_items = [];
+		
+		new_scales.push(scale);
+		draw_items.push(scale);
+		scale.max = 0;
 		_(this.columns).forEach(function(column){
-			var total = column.get_total();
-			if(!scale_first_set){
-				scale.max = round_to_significant_number(total, 0.05);
-				scale_first_set = true;
-				new_scales.push(scale);
-				draw_items.push(scale);
-			}else if(!in_range_of(scale.max,total)){
-				var existing_scale = _(scales).find(function(scale){
-					return in_range_of(scale.max,total);
-				});
-				if(existing_scale){
-					scale = existing_scale;
-				}else{
-					scale = new ScaleColumn({
-						paper: chart_view.paper
-					});					
+			var total = round_to_significant_number(column.get_total(), 0.05);
+			if(total != 0){
+				if(!scale_first_set){
+					scale.max = total;
+					scale_first_set = true;
+					_(scale.columns).forEach(function(col){
+						col.max = scale.max;
+					});
+				}else if(!in_range_of(scale.max,total)){
+					var existing_scale = _(scales).find(function(scale){
+						return in_range_of(scale.max,total);
+					});
+					if(existing_scale){
+						scale = existing_scale;
+					}else{
+						scale = new ScaleColumn({
+							paper: chart_view.paper
+						});					
+					}
+					new_scales.push(scale);
+					draw_items.push(scale);
 				}
-				new_scales.push(scale);
-				scale.max = round_to_significant_number(total, 0.05);
-				draw_items.push(scale);
-			}else if(scale.max < total){
-				scale.max = round_to_significant_number(total, 0.05);
-				_(scale.columns).forEach(function(col){
-					col.max = scale.max;
-				});
+				if(scale.max < total){
+					scale.max = total;
+					_(scale.columns).forEach(function(col){
+						col.max = scale.max;
+					});
+				}
 			}
 			scale.columns.push(column);
 			column.max = scale.max;
