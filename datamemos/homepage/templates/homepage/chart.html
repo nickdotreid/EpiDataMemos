@@ -3,6 +3,19 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script id="bookmark-share-template" type="text/html">
+		<div class="modal hide fade">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		  </div>
+		  <div class="modal-body">
+		<div class="share-url">
+			<p class="instructions">Copy and paste this url to share this page.</p>
+			<div class="url"><%= url %></div>
+		</div>
+		  </div>
+		</div>
+	</script>
 	<script type="text/javascript" src="{{STATIC_URL}}bookmarks/js/bookmarks.js"></script>
 	<script id="note-share-template" type="text/html">
 		<div class="modal hide fade">
@@ -17,6 +30,10 @@
 				<span class="date"><%= pub_date %></span>
 				<span class="author">by <a href="mailto:<%= author %>"><%= author %></a></span>
 			</div>
+		</div>
+		<div class="share-url">
+			<p class="instructions">Copy and paste this url to share this note.</p>
+			<div class="url"><%= url %></div>
 		</div>
 		  </div>
 		</div>

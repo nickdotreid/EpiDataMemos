@@ -7,7 +7,8 @@ Bookmark = Backbone.Model.extend({
 	defaults:{
 		note:false,
 		chart:false,
-		tags:[]
+		tags:[],
+		url:""
 	},
 	initialize: function(){
 		if(this.get("tags").length<1){
@@ -21,6 +22,10 @@ Bookmark = Backbone.Model.extend({
 		return active.length;
 	},
 	save: function(options){
+		var success_func = false;
+		if(options['success']){
+			success_func = options['success'];
+		}
 		var postdata = {};
 		if(this.get("note")) postdata['note_id'] = this.get("note").get("id");
 		if(this.get("chart")) postdata['chart_id'] = this.get("chart").get("id");
@@ -35,6 +40,9 @@ Bookmark = Backbone.Model.extend({
 			success:function(data){
 				if(data['bookmarks'] && data['bookmarks'].length > 0){
 					bookmark.set(data['bookmarks'][0]);
+				}
+				if(success_func){
+					success_func();
 				}
 			}
 		});

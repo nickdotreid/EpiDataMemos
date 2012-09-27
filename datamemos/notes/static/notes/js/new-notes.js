@@ -109,12 +109,35 @@ Notes = Backbone.Model.extend({
 				bookmark.get("tags").add(tag);
 			}
 		});
-		bookmark.save();
+		bookmark.save({
+			success:function(){
+				var view = new BookmarkShare({
+					model:bookmark
+				});
+				view.render();
+			}
+		});
+	}
+});
+
+BookmarkShare = Backbone.View.extend({
+	events:{
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		this.template = _.template($("#bookmark-share-template").html());
+	},
+	render: function(){
+		this.setElement(this.template(this.model.toJSON()));
+		this.$el.modal();
+	},
+	remove_modal: function(){
+		this.$el.remove();
 	}
 });
 
 NoteShare = Backbone.View.extend({
-	event:{
+	events:{
 		'hidden': 'remove_modal'
 	},
 	initialize: function(options){
@@ -123,6 +146,9 @@ NoteShare = Backbone.View.extend({
 	render: function(){
 		this.setElement(this.template(this.model.toJSON()));
 		this.$el.modal();
+	},
+	remove_modal: function(){
+		this.$el.remove();
 	}
 });
 
@@ -214,7 +240,8 @@ Note = Backbone.Model.extend({
 		text:"",
 		author:"",
 		pub_date:"",
-		bookmarks:[]
+		bookmarks:[],
+		url:""
 	},
 	initialize: function(){
 		this.set("bookmarks",new BookmarkList());
