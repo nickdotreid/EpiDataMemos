@@ -45,13 +45,15 @@ ChartView = Backbone.View.extend({
 		
 		/** RENDER CONTROLS **/
 		rows_control = new TagButtonField({
-			collection:this.model.get("rows")
+			collection:this.model.get("rows"),
+			title: "Select a Row"
 		});
 		rows_control.render();
 		rows_control.$el.appendTo(".controls",this.$el);
 		
 		columns_control = new TagButtonField({
-			collection:this.model.get("columns")
+			collection:this.model.get("columns"),
+			title: "Select a Column"
 		});
 		columns_control.render();
 		columns_control.$el.appendTo(".controls",this.$el);

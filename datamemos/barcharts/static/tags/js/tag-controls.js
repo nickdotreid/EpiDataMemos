@@ -1,20 +1,28 @@
 TagButtonField = Backbone.View.extend({
 	initialize:function(options){
-		this['collection'] = options.collection;
-		this.template = _.template('<fieldset class="control-rows"></fieldset>');
+		if(options){
+			this['collection'] = options.collection;
+			this['title'] = "";
+			if(options['title']) this['title'] = options['title'];
+		}
+		
+		this.template = _.template('<fieldset class="control-rows"><legend><%= title %></legend></fieldset>');
 		this.row_template = _.template('<div class="btn-group row tags-row tags"></div>');
 	},
 	render:function(){
-		this.el = this.template({});
-		this.$el = $(this.el);
-		this.$el.prepend(this.render_row(this["collection"].filter(function(tag){
+		this.setElement(this.template({
+			title: this['title']
+		}));
+		this.$('legend').after(this.render_row(this["collection"].filter(function(tag){
 			return !tag.get("parent");
 		})));
 		
 	},
 	render_row: function(tags){
 		var buttonField = this;
-		var tags_row = $(this.row_template({}));
+		var tags_row = $(this.row_template({
+			title: this['title']
+		}));
 		_(tags).forEach(function(row){
 			btn = new TagButton({
 				model:row,
