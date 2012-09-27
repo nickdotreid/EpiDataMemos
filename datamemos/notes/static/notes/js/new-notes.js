@@ -183,10 +183,12 @@ NoteEdit = Backbone.View.extend({
 				if(data['form']){
 					edit_view.show_form(data['form']);
 				}
-				if(!edit_view.model.get("id")){
-					edit_view.model.set("id",data['id']);
+				if(data['id']){
+					if(!edit_view.model.get("id")){
+						edit_view.model.set("id",data['id']);
+					}
+					edit_view.trigger("saved",edit_view.model);
 				}
-				edit_view.trigger("saved",edit_view.model);
 			}
 		});
 	},
