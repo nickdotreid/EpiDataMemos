@@ -353,7 +353,7 @@ ColumnView = Backbone.View.extend({
 		if(!total) total = this.get_total();
 		var column = this;
 		_(this.points).forEach(function(point_view){
-			point_view.calculate(total,250);
+			point_view.calculate(total,BBox.height);
 		});
 		if(!this.stacked){ // serial chart
 			var xpos = 0 + BBox.x;
