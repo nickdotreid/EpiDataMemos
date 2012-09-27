@@ -116,7 +116,6 @@ ChartView = Backbone.View.extend({
 	update: function(){
 		var chart_view = this;
 		var chart_max = 0;
-		var tag_order = this.tag_order;
 		
 		if(this.columns.length < 1) return;
 		
@@ -192,9 +191,10 @@ ChartView = Backbone.View.extend({
 		
 		var stacked = false;
 		_(this.columns).forEach(function(col){
-			return col.is_stacked();
+			stacked = col.is_stacked();
 		});
-		if(!stacked) tag_order = this.columns[0].get_order();
+		var tag_order = this.tag_order;
+		if(stacked) tag_order = this.columns[0].get_order();
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
@@ -506,7 +506,7 @@ PointView = Backbone.View.extend({
 		if(this.height != 0 && this.el.attr("height") == 0 ){
 			this.el.attr("x",this.x);
 		}
-		if(this.x != this.el.attr("x")){
+		if(this.x != this.el.attr("x") && this.height != 0){
 			point.el.animate({
 				x: this.x,
 				fill: point.color,
