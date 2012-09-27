@@ -115,6 +115,13 @@ Tick = Backbone.View.extend({
 		});
 	},
 	animate: function(duration){
+		this.update();
+		var opacity = 1;
+		if(!this.visible){
+			opacity = 0;
+		}
+		this.el.attr("opacity",opacity);
+		return;
 		if(!this.updated) this.update();
 		var opacity = 1;
 		if(!this.visible){
