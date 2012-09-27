@@ -49,9 +49,7 @@ def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
 	if request.is_ajax():
 		return HttpResponse(
-			json.dumps({
-				"note":note.as_json(),
-				}),
+			json.dumps(note.as_json()),
 			'application/json')
 	return render_to_response('notes/detail.html',{'note':note})
 	
@@ -131,13 +129,7 @@ def create(request):
 			save_bookmark_to_note(request,note)
 			if request.is_ajax:
 				return HttpResponse(
-					json.dumps({
-						"message":{
-							'type':'success',
-							'text':"Your note has been saved",
-						},
-						"note":note.as_json(),
-						}),
+					json.dumps(note.as_json()),
 					'application/json')
 			return HttpResponseRedirect(reverse(detail, args=(note.id,)))
 	if request.is_ajax():

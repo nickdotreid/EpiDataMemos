@@ -56,6 +56,9 @@ Notes = Backbone.Model.extend({
 			});
 			note.set("bookmarks",bookmark_list);
 		});
+		this.notes.bind("share",function(note){
+			notes_manager.share_note(note);
+		});
 		
 		this.tags.bind("change:selected",function(){
 			notes_manager.notes.sort({silent:true});
@@ -82,6 +85,19 @@ Notes = Backbone.Model.extend({
 		var edit_view = new NoteEdit({
 			model: note
 		});
+		var notes_manager = this;
+		edit_view.bind("saved",function(note){
+			note.fetch({success:function(){
+				notes_manager.notes.add(note);
+				note.trigger("share",note);
+			}});
+		});
+	},
+	share_note: function(note){
+		var share_view = new NoteShare({
+			model:note
+		});
+		share_view.render();
 	},
 	save_bookmark: function(){
 		if(!this.get("chart")) return ;
@@ -94,7 +110,19 @@ Notes = Backbone.Model.extend({
 			}
 		});
 		bookmark.save();
-		
+	}
+});
+
+NoteShare = Backbone.View.extend({
+	event:{
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		this.template = _.template($("#note-share-template").html());
+	},
+	render: function(){
+		this.setElement(this.template(this.model.toJSON()));
+		this.$el.modal();
 	}
 });
 
@@ -155,11 +183,10 @@ NoteEdit = Backbone.View.extend({
 				if(data['form']){
 					edit_view.show_form(data['form']);
 				}
-				if(data['note'] && !edit_view.model){
-					var note = edit_view.model;
-					note.fetch();
-					note.trigger('note-share',note);
+				if(!edit_view.model.get("id")){
+					edit_view.model.set("id",data['id']);
 				}
+				edit_view.trigger("saved",edit_view.model);
 			}
 		});
 	},
@@ -174,6 +201,11 @@ NoteEdit = Backbone.View.extend({
 });
 
 Note = Backbone.Model.extend({
+	urlRoot:"/notes/",
+	url:function(){
+		if(this.get("id")) return this.urlRoot + this.get("id");
+		return this.urlRoot;
+	},
 	defaults:{
 		editable: false,
 		id:false,
@@ -189,12 +221,15 @@ Note = Backbone.Model.extend({
 		return this.get("bookmarks").max(function(bookmark){
 			return bookmark.get_activeness();
 		});
+	},
+	share: function(){
+		this.trigger("share",this);
 	}
 });
 
 NoteItem = Backbone.View.extend({
 	events:{
-		
+		'click a.share':'share'
 	},
 	initialize: function(options){
 		this.template = _.template($("#note-template").html());
@@ -211,6 +246,10 @@ NoteItem = Backbone.View.extend({
 			this.setElement(new_el);
 			this.$el.appendTo(this.$container);
 		}
+	},
+	share:function(event){
+		event.preventDefault();
+		this.model.share();
 	}
 });
 
@@ -245,9 +284,9 @@ NoteList = Backbone.Collection.extend({
 		});
 	},
 	comparator:function(a,b){
-		if(a.get_activeness() > b.get_activeness()){
+/*		if(a.get_activeness() > b.get_activeness()){
 			return -1;
-		}
+		}	*/
 		return 1;
 	}
 });
