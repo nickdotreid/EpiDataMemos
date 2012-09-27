@@ -23,7 +23,7 @@ Bookmark = Backbone.Model.extend({
 	},
 	save: function(options){
 		var success_func = false;
-		if(options['success']){
+		if(options && options['success']){
 			success_func = options['success'];
 		}
 		var postdata = {};
