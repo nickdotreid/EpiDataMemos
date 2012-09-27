@@ -324,16 +324,16 @@ ColumnView = Backbone.View.extend({
 		var current_total = 0;
 		var visible_total = 0;
 		
-		_(this.points).forEach(function(point_view){
+		_(_(this.points).filter(function(point_view){
+			return point_view.model.get('visible');
+		})).forEach(function(point_view){
 			var value = point_view.model.get("value");
 			if(point_view.model.get('selected')){
 				selected = true;
 				total += value;
 			}
-			if(point_view.model.get('visible')){
-				visible_total += value;
-				current_total += point_view.model.get("number");
-			}
+			visible_total += value;
+			current_total += point_view.model.get("number");
 		});
 		this.current_total = current_total;
 		this.visible_total = visible_total;

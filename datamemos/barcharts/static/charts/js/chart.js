@@ -148,11 +148,11 @@ PointCollection = Backbone.Collection.extend({
 					return p.get("rows")[0].get("parent") == point.get("rows")[0].get("parent");
 				});
 				if(neighbors.length > 0){
-					var total = point.get("value");
+					var total = point.get("number");
 					_(neighbors).forEach(function(p){
-						total += p.get("value");
+						total += p.get("number");
 					});
-					point.set("percent",point.get("value")/total);
+					point.set("percent",point.get("number")/total);
 					return ;
 				}
 			}
