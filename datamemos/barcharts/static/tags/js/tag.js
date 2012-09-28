@@ -83,13 +83,20 @@ TagCollection = Backbone.Collection.extend({
 		});
 		var collection = this;
 		this.on('change:selected',function(tag_selected){
+			if(this.surpress) return ;
 			if(tag_selected.get("selected")){
+				this.surpress = true;
 				_(collection.without([tag_selected])).forEach(function(tag){
 					if(tag != tag_selected){
 						tag.set("selected",false);
 					}
 				});
+				this.surpress = false;
 				collection.trigger("tag-changed",tag_selected);
+			}else{
+				if( tag_selected.get("parent") ){
+					tag_selected.get("parent").set("selected",true);
+				}
 			}
 		});
 	}
