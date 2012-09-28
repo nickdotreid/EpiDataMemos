@@ -84,32 +84,41 @@
 {% endblock %}
 
 {% block content %}
-<div class="navbar navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<ul class="nav pages pull-left">
-				<li class="home"><i></i><a href="/" name="home">Home</a></li>
-			</ul>
-			<ul class="nav actions pull-right">
-				<li class=""><a class="bookmark-add" href="/share">Share Page</a></li>
-				<li class=""><a class="note-add" href="/comment">Add Note</a></li>			
-			</ul>
-		</div>
-	</div>
-</div>
-<div id="home" class="page page-content">
-	<div class="page-inner">
-			{% include 'homepage/about.html' %}
-	</div>
-</div>
 <noscript>
 	<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
 </noscript>
-<div class="row-fluid">
-	<div id="charts-container" class="span8 charts list charts-list">
+<div id="list-area" class="row-fluid">
+	<div class="span6">
+		<div id="home" class="page page-content">
+			<div class="page-inner">
+					{% include 'homepage/about.html' %}
+			</div>
+		</div>
+	</div>
+	<div id="charts-list-container" class="span6 charts list charts-list">
 		{% for chart in charts %}
 			{% include 'charts/short.html' %}
 		{% endfor %}
+	</div>
+</div>
+<div id="app-area" class="row-fluid" style="display:none;">
+	<div class="span8">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav pages pull-left">
+						<li class="home"><i></i><a href="/" name="home">Home</a></li>
+					</ul>
+					<ul class="nav actions pull-right">
+						<li class=""><a class="bookmark-add" href="/share">Share Page</a></li>
+						<li class=""><a class="note-add" href="/comment">Add Note</a></li>			
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="chart-container" class="span8 chart-container">
+
+		</div>	
 	</div>
 	<div id="notes-container" class="span4">
 		<div class="nav notes-nav btn-group">
@@ -118,9 +127,7 @@
 			{% endfor %}
 		</div>
 		<div class="notes-list">
-			{% for note in notes %}
-			{% include 'notes/detail.html' %}
-			{% endfor %}
+			
 		</div>
 	</div>
 </div>

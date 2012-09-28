@@ -63,9 +63,10 @@ ChartManager = Backbone.View.extend({
 			});
 			return false;
 		}
+		$("#chart-container").html("");
 		var active_chart = new ChartView({
 			model:chart,
-			container:this.container
+			container:$("#chart-container")[0]
 			});
 		var chart_manager = this;
 		active_chart.bind("rendered",function(chart){

@@ -121,9 +121,16 @@ HomepageView = Backbone.View.extend({
 	render: function(){
 		this.$(".page-content").hide();
 		this.$(".navbar .pages .active").removeClass("active");
-		if(!this.model.get("page")) return ;
-		this.$("#"+this.model.get("page")).show();
-		this.$(".navbar .pages li."+this.model.get("page")+":first").addClass("active");
+		if(this.model.get("page")){
+			this.$('#app-area').hide();
+			this.$('#list-area').show();
+			
+			this.$("#"+this.model.get("page")).show();
+			this.$(".navbar .pages li."+this.model.get("page")+":first").addClass("active");
+		}else{
+			this.$('#app-area').show();
+			this.$('#list-area').hide();
+		}
 	}
 	
 });
