@@ -96,6 +96,8 @@ TagCollection = Backbone.Collection.extend({
 			}else{
 				if( tag_selected.get("parent") ){
 					tag_selected.get("parent").set("selected",true);
+				}else{
+					this.first().set("selected",true);
 				}
 			}
 		});
