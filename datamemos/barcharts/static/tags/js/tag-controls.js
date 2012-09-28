@@ -6,7 +6,7 @@ TagButtonField = Backbone.View.extend({
 			if(options['title']) this['title'] = options['title'];
 		}
 		
-		this.template = _.template('<fieldset class="control-rows"><legend><%= title %></legend></fieldset>');
+		this.template = _.template('<fieldset class="control-rows filters"><legend><%= title %></legend></fieldset>');
 		this.row_template = _.template('<div class="btn-group row tags-row tags"></div>');
 	},
 	render:function(){
@@ -57,6 +57,7 @@ TagButton = Backbone.View.extend({
 	render:function(){
 		this.$el.appendTo(this.container);
 		if(this.model.get('children').length > 0){
+			this.$el.addClass("tag-has-children");
 			var row = $(this.row_template({})).appendTo(this.fieldset);
 			row.addClass("child-row");
 			this.child_row = row;

@@ -95,6 +95,12 @@
   display: block;
   float: none;
 }
+.filters .tag-has-children {
+  padding-bottom: 12px;
+}
+.filters .tag-has-children .color {
+  display: none;
+}
 .canvas-container {
   position: relative;
   overflow: hidden;
