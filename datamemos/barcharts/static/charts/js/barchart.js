@@ -84,6 +84,8 @@ ChartView = Backbone.View.extend({
 		/** MAKE COLUMNS **/
 		var chart_view = this;
 		this.columns = [];
+		this.points = [];
+		var _points = this.points;
 		this.model.get("columns").forEach(function(tag){
 			var column = new ColumnView({
 				model:tag,
@@ -100,6 +102,7 @@ ChartView = Backbone.View.extend({
 					model:point,
 					paper:paper
 				});
+				_points.push(point_view);
 				column.points.push(point_view);
 				point_view.render();
 			});
@@ -197,6 +200,55 @@ ChartView = Backbone.View.extend({
 		if(stacked) tag_order = this.columns[0].get_order();
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
+		});
+		
+		var col_selected = _(this.columns).any(function(column_view){
+			return column_view.model.get("selected");
+		});
+		_(this.points).forEach(function(point_view){
+			if(stacked){
+				if(col_selected){
+					if(_(point_view.model.get("columns")).any(function(tag){
+						return tag.get("selected");
+					})){
+						point_view.recolor();
+					}else{
+						point_view.recolor(true);
+					}
+				}else{
+					point_view.recolor();
+				}
+			}else{
+				if(col_selected){
+					if(_(point_view.model.get("columns")).any(function(tag){
+						return tag.get("selected");
+					})){
+						if(_(point_view.model.get("rows")).any(function(tag){
+							return tag.get("selected");
+						})){
+							point_view.recolor();
+						}else{
+							point_view.recolor(true);
+						}
+					}else{
+						if(_(point_view.model.get("rows")).any(function(tag){
+							return tag.get("selected");
+						})){
+							point_view.recolor(true);
+						}else{
+							point_view.recolor(true,true);
+						}
+					}
+				}else{
+					if(_(point_view.model.get("rows")).any(function(tag){
+						return tag.get("selected");
+					})){
+						point_view.recolor();
+					}else{
+						point_view.recolor(true);
+					}
+				}
+			}
 		});
 		
 		var xpos = 0;
@@ -377,7 +429,6 @@ ColumnView = Backbone.View.extend({
 					}
 					xpos += offset;
 					extra = point_view.width - offset;
-					point_view.recolor(!point_view.model.get("selected"));
 				}
 			});
 			this.BBox = _.clone(BBox);
@@ -390,7 +441,6 @@ ColumnView = Backbone.View.extend({
 				if(point_view.height > 0){
 					ypos += point_view.height;
 					column.width = point_view.width;
-					point_view.recolor();
 				}
 			});
 			this.BBox = _.clone(BBox);
@@ -474,10 +524,14 @@ PointView = Backbone.View.extend({
 		this.height = 0;
 		return this;
 	},
-	recolor: function(desaturate){
+	recolor: function(desaturate,extra){
 		this.color = this.original_color;
 		if(desaturate){
-			var color = Raphael.hsb(this.color.h,this.color.s * 0.3,1);
+			var amount = 0.3;
+			if(extra){
+				amount = 0.1;
+			}
+			var color = Raphael.hsb(this.color.h,this.color.s * amount,1);
 			this.color = color;
 			return this;
 		}

@@ -43,12 +43,14 @@ Chart = Backbone.Model.extend({
 			rows.add(tag);
 		});
 		rows.connect_tags();
+		rows.always_selected = true;
 		this.set("rows",rows);
 		
 		var columns = new TagCollection();
 		_(this.get("columns")).forEach(function(data){
 			var tag = tags.get_or_add(data);
 			columns.add(tag);
+			tag.set("parent",false);
 		});
 		columns.connect_tags();
 		this.set("columns",columns);
@@ -79,6 +81,11 @@ Chart = Backbone.Model.extend({
 			});
 		});
 		rows.bind("tag-changed",function(){
+			points.forEach(function(point){
+				point.toggle();
+			})
+		});
+		columns.bind("tag-changed",function(){
 			points.forEach(function(point){
 				point.toggle();
 			})
