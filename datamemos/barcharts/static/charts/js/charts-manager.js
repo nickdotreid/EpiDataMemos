@@ -21,8 +21,8 @@ Charts = Backbone.Collection.extend({
 				_(this.without(chart)).forEach(function(chart){
 					chart.deactivate();
 				});
-				this.manager.show_chart(chart);
 				this.trigger("chart-changed",chart);
+				this.manager.show_chart(chart);
 			}
 		});
 	},
