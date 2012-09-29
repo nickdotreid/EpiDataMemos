@@ -103,10 +103,10 @@ Chart = Backbone.Model.extend({
 		});
 	},
 	parse: function(data){
-		
+		var tags = this.get("tags");
 		if(data['rows']){
 			var rows = this.get("rows");
-			var tags = this.get("tags");
+			rows.reset();
 			_(data['rows']).forEach(function(data){
 				var tag = tags.get_or_add(data);
 				rows.add(tag);
@@ -119,6 +119,7 @@ Chart = Backbone.Model.extend({
 		
 		if(data['columns']){
 			var columns = this.get("columns");
+			columns.reset();
 			_(data['columns']).forEach(function(data){
 				var tag = tags.get_or_add(data);
 				columns.add(tag);
@@ -132,6 +133,7 @@ Chart = Backbone.Model.extend({
 		
 		if(data['points']){
 			var points = this.get("points");
+			points.reset();
 			_(data['points']).forEach(function(point){
 				var point = point;
 				var add_tag = function(tag){
@@ -159,6 +161,7 @@ Chart = Backbone.Model.extend({
 		if(this.get("active")){
 			this.get("rows").reset();
 			this.get("columns").reset();
+			this.set("active",false);
 		}		
 	}
 });

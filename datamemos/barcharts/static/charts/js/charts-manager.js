@@ -1,4 +1,5 @@
 Charts = Backbone.Collection.extend({
+	model:Chart,
 	url:'/charts/',
 	initialize: function(options){
 		var charts_collection = this;
@@ -12,18 +13,21 @@ Charts = Backbone.Collection.extend({
 		this.manager.bind('get-chart',function(chart_id){
 			charts_collection.get_chart(chart_id);
 		});
-		this.bind('add',this.add_chart);
+		this.bind('add',function(chart){
+			charts_collection.add_chart(chart);
+		});
 		this.bind('change:active',this.activate_chart);
 	},
 	add_chart: function(chart){
-		
+		chart.set("tags",this.tags);
+		// tell chart to check its rows & columns
 	},
 	activate_chart:function(chart){
 		if(chart.get("active")){
-			this.manager.show_chart(chart.id);
 			_(this.without(chart)).forEach(function(chart){
-				chart.set("active",false);
-			})
+				chart.unload();
+			});
+			this.manager.show_chart(chart.id);
 			this.trigger("chart-changed",chart);
 		}else{
 			this.manager.list_chart(chart.id);
@@ -31,7 +35,7 @@ Charts = Backbone.Collection.extend({
 	},
 	deactivate: function(){
 		this.forEach(function(chart){
-			chart.set("active",false);
+			chart.unload();
 		});
 		this.trigger("chart-changed",false);
 	},
