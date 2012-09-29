@@ -157,11 +157,24 @@ Chart = Backbone.Model.extend({
 		
 		return data;
 	},
-	unload: function(){
-		if(this.get("active")){
-			this.get("rows").reset();
-			this.get("columns").reset();
-			this.set("active",false);
-		}		
+	activate: function(){
+		if(this.get("active")) return this;
+		if(this.get("rows").length < 1 || this.get("columns").length < 1){
+			this.fetch({
+				success:function(chart){
+					chart.activate();
+				}
+			});
+			return this;
+		}
+		this.set("active",true);
+		return this;
+	},
+	deactivate: function(){
+		if(!this.get("active")) return this;
+		this.get("rows").reset();
+		this.get("columns").reset();
+		this.set("active",false);
+		return this;		
 	}
 });

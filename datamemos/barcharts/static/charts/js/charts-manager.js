@@ -16,28 +16,19 @@ Charts = Backbone.Collection.extend({
 		this.bind('add',function(chart){
 			charts_collection.add_chart(chart);
 		});
-		this.bind('change:active',this.activate_chart);
+		this.bind('change:active',function(chart){
+			if(chart.get("active")){
+				_(this.without(chart)).forEach(function(chart){
+					chart.deactivate();
+				});
+				this.manager.show_chart(chart);
+				this.trigger("chart-changed",chart);
+			}
+		});
 	},
 	add_chart: function(chart){
 		chart.set("tags",this.tags);
 		// tell chart to check its rows & columns
-	},
-	activate_chart:function(chart){
-		if(chart.get("active")){
-			_(this.without(chart)).forEach(function(chart){
-				chart.unload();
-			});
-			this.manager.show_chart(chart.id);
-			this.trigger("chart-changed",chart);
-		}else{
-			this.manager.list_chart(chart.id);
-		}
-	},
-	deactivate: function(){
-		this.forEach(function(chart){
-			chart.unload();
-		});
-		this.trigger("chart-changed",false);
 	},
 	active: function(){
 		var active_charts = this.filter(function(chart){
@@ -47,6 +38,14 @@ Charts = Backbone.Collection.extend({
 			return active_charts[0];
 		}
 		return false;
+	},
+	deactivate: function(){
+		var active_chart = this.active();
+		if(active_chart){
+			active_chart.deactivate();
+			this.manager.list_chart(active_chart);
+		}
+		return this;
 	}
 });
 
@@ -54,20 +53,8 @@ ChartManager = Backbone.View.extend({
 	initialize:function(){
 		this.container = $(".charts-list:first")[0];
 	},
-	show_chart: function(chart_id){
-		if(!chart_id) return ;
-		var chart = this.collection.get(chart_id);
+	show_chart: function(chart){
 		if(!chart) return;
-		if(chart.get("rows").length < 1 || chart.get("columns").length < 1){
-			var chart_manager = this;
-			chart.fetch({
-				success:function(chart){
-					chart_manager.show_chart(chart.get("id"));
-				}
-			});
-			return false;
-		}
-		$("#chart-container").html("");
 		var active_chart = new ChartView({
 			model:chart,
 			container:$("#chart-container")[0]
@@ -88,9 +75,7 @@ ChartManager = Backbone.View.extend({
 		});
 		active_chart.render();
 	},
-	list_chart: function(chart_id){
-		if(!chart_id) return ;
-		var chart = this.collection.get(chart_id);
+	list_chart: function(chart){
 		if(!chart) return;
 		var list_chart = new ChartShortView({
 			model:chart,
@@ -121,6 +106,6 @@ ChartShortView = Backbone.View.extend({
 	},
 	show: function(event){
 		event.preventDefault();
-		this.model.set("active",true);
+		this.model.activate();
 	}
 });

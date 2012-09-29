@@ -18,6 +18,9 @@ ChartView = Backbone.View.extend({
 		this.model.bind("change:percent",function(){
 			chart_view.update();
 		});
+		this.model.bind("change:active",function(){
+			chart_view.$el.remove();
+		});
 	},
 	render: function(){
 		var chart_view = this;

@@ -35,7 +35,7 @@ Homepage = Backbone.Model.extend({
 		this.manager.render();
 	},
 	change_page: function(page_name){
-		if(page_name == 'home'){
+		if(page_name){
 			this.get("charts").deactivate();
 		}
 		this.set("page",page_name);
