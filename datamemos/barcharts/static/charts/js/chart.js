@@ -1,101 +1,3 @@
-Chart = Backbone.Model.extend({
-	urlRoot:'/charts/',
-	url:function(){
-		return this.urlRoot + this.get("id");
-	},
-	defaults:{
-		tags:[],
-		rows:[],
-		columns:[],
-		points:[],
-		percent:false,
-		id:1,
-		active:false
-	},
-	fetch: function(options){
-		var success_func = false;
-		if(options.success){
-			success_func = options.success;
-		}
-		var chart = this;
-		$.ajax({
-			url:this.url(),
-			data_type:"JSON",
-			data:{
-				json:true
-			},
-			success:function(data){
-				chart.set(data);
-				chart.parse_self();
-				if(success_func){
-					success_func(chart);
-				}
-			}
-		});
-	},
-	parse_self: function(){
-		var chart = this;
-		
-		var rows = new TagCollection();
-		var tags = chart.get("tags");
-		_(this.get("rows")).forEach(function(data){
-			var tag = tags.get_or_add(data);
-			rows.add(tag);
-		});
-		rows.connect_tags();
-		rows.always_selected = true;
-		this.set("rows",rows);
-		
-		var columns = new TagCollection();
-		_(this.get("columns")).forEach(function(data){
-			var tag = tags.get_or_add(data);
-			columns.add(tag);
-			tag.set("parent",false);
-		});
-		columns.connect_tags();
-		this.set("columns",columns);
-		
-		var points = new PointCollection();
-		_(this.get("points")).forEach(function(point){
-			var point = point;
-			var add_tag = function(tag){
-				if(_.indexOf(point['tags'],tag.get("short")) > -1){
-					return true;
-				}
-				return false;
-			};
-			points.add({
-				number:point['value'],
-				rows:_.filter(rows.models, add_tag),
-				columns:_.filter(columns.models, add_tag)
-			});
-		});
-		points.set_percents();
-		var chart = this;
-		points.forEach(function(point){
-			point.select_value(chart.get("percent"));
-		});
-		this.bind("change:percent",function(chart){
-			points.forEach(function(point){
-				point.select_value(chart.get("percent"));
-			});
-		});
-		rows.bind("tag-changed",function(){
-			points.forEach(function(point){
-				point.toggle();
-			})
-		});
-		columns.bind("tag-changed",function(){
-			points.forEach(function(point){
-				point.toggle();
-			})
-		});
-		this.set("points",points);
-		
-		this.trigger("loaded");
-	}
-});
-
 Point = Backbone.Model.extend({
 	defaults: {
 		rows:[],
@@ -165,5 +67,98 @@ PointCollection = Backbone.Collection.extend({
 			}
 			point.set("percent",1);
 		});
+	}
+});
+
+Chart = Backbone.Model.extend({
+	urlRoot:'/charts/',
+	url:function(){
+		return this.urlRoot + this.get("id");
+	},
+	defaults:{
+		id:false,
+		tags:new TagCollection(),
+		rows:new TagCollection(),
+		columns:new TagCollection(),
+		points:new PointCollection(),
+		percent:false,
+		active:false
+	},
+	initialize:function(){
+		var points = this.get("points");
+		this.bind("change:percent",function(chart){
+			points.forEach(function(point){
+				point.select_value(chart.get("percent"));
+			});
+		});
+		this.get("rows").bind("tag-changed",function(){
+			points.forEach(function(point){
+				point.toggle();
+			})
+		});
+		this.get("columns").bind("tag-changed",function(){
+			points.forEach(function(point){
+				point.toggle();
+			})
+		});
+	},
+	parse: function(data){
+		
+		if(data['rows']){
+			var rows = this.get("rows");
+			var tags = this.get("tags");
+			_(data['rows']).forEach(function(data){
+				var tag = tags.get_or_add(data);
+				rows.add(tag);
+			});
+			rows.connect_tags();
+			rows.always_selected = true;
+			
+			data['rows'] = rows;
+		}
+		
+		if(data['columns']){
+			var columns = this.get("columns");
+			_(data['columns']).forEach(function(data){
+				var tag = tags.get_or_add(data);
+				columns.add(tag);
+				tag.set("parent",false);
+			});
+			columns.connect_tags();
+			this.set("columns",columns);
+			
+			data['columns'] = columns;
+		}
+		
+		if(data['points']){
+			var points = this.get("points");
+			_(data['points']).forEach(function(point){
+				var point = point;
+				var add_tag = function(tag){
+					if(_.indexOf(point['tags'],tag.get("short")) > -1){
+						return true;
+					}
+					return false;
+				};
+				points.add({
+					number:point['value'],
+					rows:_.filter(rows.models, add_tag),
+					columns:_.filter(columns.models, add_tag)
+				});
+			});
+			points.set_percents();
+			points.forEach(function(point){
+				point.select_value(point.get("percent"));
+			});
+			data['points'] = points;
+		}
+		
+		return data;
+	},
+	unload: function(){
+		if(this.get("active")){
+			this.get("rows").reset();
+			this.get("columns").reset();
+		}		
 	}
 });
