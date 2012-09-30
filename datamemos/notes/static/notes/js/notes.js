@@ -1,135 +1,175 @@
-if(!note_create_uri){
-	var note_create_uri = "/notes/create/";
-}
-$(document).ready(function(){
-	$("#notes-list").bind("sort",function(event){
-		var list = $(this);
-		var container = $(".notes-container",list);
-		var notes = list.data("notes");
-		if(!notes) return ;
-		
-		var ignore_values = [];
-		$(".chart .column").each(function(){
-			ignore_values.push($(this).attr("value"));
+Note = Backbone.Model.extend({
+	urlRoot:"/notes/",
+	url:function(){
+		if(this.get("id")) return this.urlRoot + this.get("id");
+		return this.urlRoot;
+	},
+	defaults:{
+		editable: false,
+		id:false,
+		text:"",
+		author:"",
+		pub_date:"",
+		bookmarks:[],
+		url:""
+	},
+	initialize: function(){
+		this.set("bookmarks",new BookmarkList());
+	},
+	get_activeness: function(){
+		return this.get("bookmarks").max(function(bookmark){
+			return bookmark.get_activeness();
 		});
-		
-		var tags = event.tags;
-		
-		var arr_similar_count = function(arr1,arr2,ignore_arr){
-			var count = 0;
-			for(var i in arr1){
-				if(!ignore_arr || !in_array(ignore_arr,arr1[i])){
-					for( var q in arr2){
-						if(!ignore_arr || !in_array(ignore_arr,arr2[q])){
-							if(arr1[i] == arr2[q]){
-								count += 1;
-							}					
-						}
-					}			
-				}
-			}
-			return count;
+	},
+	share: function(){
+		this.trigger("share",this);
+	}
+});
+
+NoteItem = Backbone.View.extend({
+	events:{
+		'click a.share':'share'
+	},
+	initialize: function(options){
+		this.template = _.template($("#note-template").html());
+		this.container = options.container;
+		this.$container = $(this.container);
+		this.render();
+	},
+	render: function(){
+		var note_id = this.model.get("id");
+		if($("#note-"+note_id,this.$container).length > 0){
+			this.setElement($("note-"+note_id,this.$container)[0]);
+		}else{
+			var new_el = this.template(this.model.toJSON());
+			this.setElement(new_el);
+			this.$el.appendTo(this.$container);
 		}
-		
-		var bookmark_count = function(bookmark){
-			var count = 0;
-			var tag_count = arr_similar_count(tags,bookmark['tags']);
-			var parent_count = arr_similar_count(tags,bookmark['parent-tags'],ignore_values);
-			var child_count = arr_similar_count(tags,bookmark['child-tags'],ignore_values);
-			var sibling_count = arr_similar_count(tags,bookmark['sibling-tags'],ignore_values);
-			return tag_count*3 + child_count + parent_count/2 + sibling_count/2;
-		}
-		
-		var note_count = function(note){
-			var count = 0;
-			for(var i=0;i<note['bookmarks'].length;i++){
-				mark_count = bookmark_count(note['bookmarks'][i]);
-				if(mark_count > count) count = mark_count;
-			}
-			return count;
-		}
-		
-		for(var i=0;i<notes.length;i++){
-			var note = notes[i];
-			note['activity'] = note_count(note);
-		}
-		sorted_notes = notes.sort(function(a,b){
-			if(a['activity'] >= b['activity']){
-				return -1
-			}else{
-				return 1;
-			}
-		});
-		$(".note",container).removeClass("active");		
-		for(var i=0;i<sorted_notes.length;i++){
-			container.append(sorted_notes[i]['div'][0]);
-			if(sorted_notes[i]['activity'] > 0){
-				sorted_notes[i]['div'].addClass("active");
-			}
-		}
-		list.data("notes",sorted_notes);
-	}).bind("get-notes",function(event){
-		var list = $(this);
-		list.data("notes",[]);
-		$(".note",list).remove();
-		$.ajax({
-			url:"/notes/",
-			type:"GET",
-			data:{
-				chart_id:event['chart_id'],
-				type:event['note_type']
-			},
-		});
-	}).ajaxSuccess(function(event,xhr,settings){
-		var list = $(this);
-		var container = $(".notes-container",list);
-		
-		var notes = list.data("notes");
-		if(!notes) notes = [];
-		
-		var notes_index_of = function(note){
-			for(var i=0;i<notes.length;i++){
-				if(notes[i]['id'] == note['id']){
-					return i;
-				}
-			}
-			return -1;
-		}
-		
-		var data = $.parseJSON(xhr.responseText);
-		if(data['notes']){
-			for(var index in data['notes']){
-				var note = data['notes'][index];
-				var pos = notes_index_of(note);
-				if(pos >= 0){
-					notes[pos]['div'].remove();
-					notes[pos] = note;
-				}
-				note['div'] = $(note['markup']).appendTo(container);
-				if(pos < 0){
-					notes.push(note);
-				}
-			}
-			list.data("notes",notes).trigger("sort");
-		}
-	});
-	
-	$.address.change(function(event){
-		$("#note-container .notes").trigger({
-			type:"sort",
-			tags:String($.address.parameter("tags")).split(",")
-		});
-	});
-	
-	$("#notes-list .notes-nav li a").click(function(event){
+	},
+	share:function(event){
 		event.preventDefault();
-		var link = $(this);
-		$("li.active",link.parents(".notes-nav:first")).removeClass("active");
-		link.parents("li").addClass("active");
-		$("#notes-list").trigger({
-			type:"get-notes",
-			chart_id:$.address.parameter("chart"),
-			note_type:link.attr("note-type")
-			});
-	});
+		this.model.share();
+	}
+});
+
+NoteType = Backbone.Model.extend({
+	defaults:{
+		active:false,
+		name:"",
+		short:""
+	},
+	toggle: function(){
+		if(this.get("active")){
+			this.set("active",false);
+			return false;
+		}
+		this.set("active",true);
+		return true;
+	}
+});
+
+NoteTypeList = Backbone.Collection.extend({
+	model:NoteType,
+	initialize: function(options){
+		this.bind("change:active",function(note_type){
+			if(note_type.get("active")){
+				_(this.without(note_type)).forEach(function(note_type){
+					note_type.set("active",false);
+				});
+				this.trigger("note-type-changed",note_type);
+			}
+		});
+	}
+});
+
+NoteEdit = Backbone.View.extend({
+	events:{
+		'click .modal-footer .btn-primary':'submit',
+		'submit form':'submit',
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		var edit_view = this;
+		this.template = _.template($("#note-edit-template").html());
+		
+		this.bind('remove',function(){
+			this.$el.remove();
+		});
+		
+		var url = '/notes/create/';
+		if(this.model.get("id")){
+			url = '/notes/'+this.model.get("id")+'/edit/';
+		}
+		$.ajax({
+			url:url,
+			type:"GET",
+			data_type:"JSON",
+			data:{
+				json:true
+			},
+			success: function(data){
+				if(data['form']){
+					edit_view.show_form(data['form']);
+				}
+			}
+		});
+	},
+	remove_modal: function(){
+		this.$el.remove();
+	},
+	submit: function(event){
+		event.preventDefault();
+		var edit_view = this;
+		var form = this.$('form');
+		
+		if(this.$('form input[name="bookmarks"]').length < 1){
+			this.$('form').append('<input name="bookmarks" type="hidden" value="" />');
+		}
+		this.$('form input[name="bookmarks"]').val(this.model.get("bookmarks").map(function(bookmark){
+			return bookmark.get("id");
+		}).join(","));
+		
+		this.$el.modal("hide");
+		this.trigger("loading");
+		$.ajax({
+			url:form.attr("action"),
+			type:form.attr("method"),
+			data:form.serialize(),
+			success: function(data){
+				if(data['form']){
+					edit_view.show_form(data['form']);
+				}
+				if(data['id']){
+					if(!edit_view.model.get("id")){
+						edit_view.model.set("id",data['id']);
+					}
+					edit_view.trigger("saved",edit_view.model);
+				}
+			}
+		});
+	},
+	show_form: function(markup){
+		this.setElement(this.template({
+			form: markup
+		}));
+		this.$('.form-actions').hide();
+		this.$('.modal-footer .btn-primary').html(this.$('.form-actions .btn').val());
+		this.$el.modal();
+	}
+});
+
+NoteShare = Backbone.View.extend({
+	events:{
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		this.template = _.template($("#note-share-template").html());
+	},
+	render: function(){
+		this.setElement(this.template(this.model.toJSON()));
+		this.$el.modal();
+	},
+	remove_modal: function(){
+		this.$el.remove();
+	}
 });

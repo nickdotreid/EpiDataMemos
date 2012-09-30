@@ -52,3 +52,19 @@ Bookmark = Backbone.Model.extend({
 BookmarkList = Backbone.Collection.extend({
 	model:Bookmark
 });
+
+BookmarkShare = Backbone.View.extend({
+	events:{
+		'hidden': 'remove_modal'
+	},
+	initialize: function(options){
+		this.template = _.template($("#bookmark-share-template").html());
+	},
+	render: function(){
+		this.setElement(this.template(this.model.toJSON()));
+		this.$el.modal();
+	},
+	remove_modal: function(){
+		this.$el.remove();
+	}
+});
