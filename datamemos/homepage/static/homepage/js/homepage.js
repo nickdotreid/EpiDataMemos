@@ -82,14 +82,6 @@ Homepage = Backbone.Model.extend({
 		if(!notes_manager.types.any(function(note_type){ return note_type.get("active"); })){
 			notes_manager.types.first().toggle();
 		}
-		
-		$(".notes-list .note").each(function(){
-			var note_node = $(this);
-			notes_manager.notes.add({
-				id: note_node.attr("note-id"),
-				type: note_node.attr("note-type")
-			});
-		});
 	}
 });
 
