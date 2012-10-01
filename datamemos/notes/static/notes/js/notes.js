@@ -10,15 +10,38 @@ Note = Backbone.Model.extend({
 		text:"",
 		author:"",
 		pub_date:"",
-		bookmarks:[],
+		bookmarks:new BookmarkList(),
 		url:""
 	},
 	initialize: function(){
-		this.set("bookmarks",new BookmarkList());
+		
+	},
+	parse: function(data){
+		
+		var bookmarks = new BookmarkList();
+		if( this.attributes ){
+			bookmarks = this.get("bookmarks");
+		}
+		
+		if(data['bookmarks']){
+			bookmarks.reset();
+			_(data['bookmarks']).forEach(function(bm){
+				bookmarks.add(bm,{
+					parse:true
+				});
+			});
+			data['bookmarks'] = bookmarks;
+		}else{
+			data['bookmarks'] = bookmarks;
+		}
+		
+		return data;
 	},
 	get_activeness: function(){
-		return this.get("bookmarks").max(function(bookmark){
-			return bookmark.get_activeness();
+		return _(this.get("bookmarks").map(function(bookmark){
+			return bookmark.get("selected_count");
+		})).max(function(count){
+			return count;
 		});
 	},
 	share: function(){

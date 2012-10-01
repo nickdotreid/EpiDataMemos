@@ -7,18 +7,43 @@ Bookmark = Backbone.Model.extend({
 	defaults:{
 		note:false,
 		chart:false,
-		tags:[],
-		url:""
+		tags:new TagCollection(),
+		url:"",
+		selected_count:0
 	},
 	initialize: function(){
-		if(this.get("tags").length<1){
-			this.set("tags",new BookmarkList());
-		}
+		var bookmark = this;
+		bookmark.count_selected();
+		this.get("tags").bind("tag-changed",function(tag){
+			bookmark.count_selected();
+		});
 	},
-	get_activeness: function(){
-		var active = _(this.tags).filter(function(tag){
+	parse: function(data){
+		var bookmark = this;
+		
+		if(data['tags']){
+			var tags = new TagCollection();
+			_(data['tags']).forEach(function(str){
+				tags.add({
+					short: str
+				});
+			});
+			data['tags'] = tags;
+		}else{
+			data['tags'] = new TagCollection();
+		}
+		
+		if(data['chart']){
+			// add chart through reference
+		}
+		
+		return data;
+	},
+	count_selected: function(){
+		var active = this.get("tags").filter(function(tag){
 			return tag.get("selected");
 		});
+		this.set("selected_count",active.length);
 		return active.length;
 	},
 	save: function(options){

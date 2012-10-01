@@ -28,34 +28,19 @@ Notes = Backbone.Model.extend({
 			notes_manager.notes.fetch();
 		});
 		
+		var tags = this.tags;
 		this.notes.bind("add",function(note){
-			if(note.get("type") && typeof(note.get("type")) == "string"){
-				notes_manager.types.forEach(function(type){
-					if(type.get("short") == note.get("type")){
-						note.set("type",type);
-					}
+			note.get("bookmarks").forEach(function(bookmark){
+				// go through tags and connect tags to global tags
+				var new_tags = new TagCollection();
+				bookmark.get("tags").forEach(function(tag){
+					var new_tag = tags.get_or_add({
+						short: tag.get("short")
+					});
 				});
-			}
-			var bookmark_list = new BookmarkList();
-			bookmark_list.bind("add",function(bookmark){
-				var new_tags = [];
-				_(bookmark.get("tags")).forEach(function(tag){
-					new_tags.push(notes_manager.tags.get_or_add(tag));
-				});
-				bookmark.set("tags",new_tags);
-				bookmark.set("chart",notes_manager.charts.find(function(chart){
-					if(chart.get("id") == bookmark.get("chart")['id']){
-						return true;
-					}
-					return false;
-				}));
 			});
-			
-			_(note.get("bookmarks")).forEach(function(bookmark){
-				bookmark_list.add(bookmark);
-			});
-			note.set("bookmarks",bookmark_list);
 		});
+		
 		this.notes.bind("share",function(note){
 			notes_manager.share_note(note);
 		});
@@ -130,7 +115,7 @@ NoteList = Backbone.Collection.extend({
 		if( this.type ) vars.push("type="+this.type.get("short"));
 		return this.urlRoot + '?' + vars.join("&");
 	},
-	initialize: function(){
+	initialize: function(options){
 		this.type = false;
 		this.chart = false;
 	},
@@ -145,13 +130,16 @@ NoteList = Backbone.Collection.extend({
 			},
 			success:function(data){
 				_(data['notes']).forEach(function(note_node){
-					notes_list.add(note_node);
+					notes_list.add(note_node,{parse:true});
 				});
 			}
 		});
 	},
 	comparator:function(a,b){
 		if(a.get_activeness() > b.get_activeness()){
+			return -1;
+		}	
+		if(a.get("date") > b.get("date")){
 			return -1;
 		}
 		return 1;
