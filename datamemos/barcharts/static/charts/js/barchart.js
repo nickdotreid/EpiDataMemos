@@ -478,7 +478,11 @@ ColumnView = Backbone.View.extend({
 			var ypos = 0;
 			_(this.points).forEach(function(point_view){
 				point_view.x = BBox.x;
-				point_view.y = ( BBox.y + BBox.height ) - ypos - point_view.height;
+				if(point_view.height < 1){
+					point_view.y = BBox.y + BBox.height;
+				}else{
+					point_view.y = ( BBox.y + BBox.height ) - ypos - point_view.height;
+				}
 				if(point_view.height > 0){
 					ypos += point_view.height;
 					column.width = point_view.width;
