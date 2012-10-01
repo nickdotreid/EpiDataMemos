@@ -58,7 +58,7 @@ Homepage = Backbone.Model.extend({
 		$(".charts-list .chart").each(function(){
 			var chart_id = parseInt($(this).attr("chart-id"));
 			var chart = new Chart({
-				id:chart_id,
+				id:chart_id
 			});
 			charts.add(chart);
 			new ChartShortView({
