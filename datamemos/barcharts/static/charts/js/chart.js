@@ -42,6 +42,18 @@ Point = Backbone.Model.extend({
 		// check if column is selected -- if tag also selected || highlight!
 		this.set("selected",selected);
 		this.set("visible",visible);
+	},
+	check_highlight: function(){
+		var highlightable = false;
+		_(this.get("columns")).forEach(function(tag){
+			if(tag.get("selected")) highlightable = true;
+		});
+		if(!highlightable) return false;
+		highlightable = false;
+		_(this.get("rows")).forEach(function(tag){
+			if(tag.get("selected")) highlightable = true;
+		});
+		return highlightable;
 	}
 });
 

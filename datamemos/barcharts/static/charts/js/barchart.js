@@ -125,6 +125,14 @@ ChartView = Backbone.View.extend({
 		
 		if(this.columns.length < 1) return;
 		
+		/** REMOVE + ADD HIGHLIGHT **/
+		this.$('.hightlight').remove();
+		this.model.get("points").forEach(function(point){
+			if(point.check_highlight()){
+				chart_view.highlight(point);
+			}
+		});
+		
 		/**		FIND ACTIVE TAG		**/
 		var active_tag = this.model.get("rows").find(function(tag){
 			return tag.get("selected");
@@ -290,8 +298,23 @@ ChartView = Backbone.View.extend({
 		_(draw_items).forEach(function(drawable){
 			drawable.animate(750);
 		});
+	},
+	highlight: function(point){
+		new Highlight({
+			model:point,
+			container: this.$('.highlight-container')
+		})
 	}
 });
+
+Highlight = Backbone.View.extend({
+	events:{
+		
+	},
+	initialize: function(options){
+		
+	}
+})
 
 PercentCheckbox = Backbone.View.extend({
 	events:{
