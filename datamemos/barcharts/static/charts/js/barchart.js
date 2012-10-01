@@ -126,7 +126,7 @@ ChartView = Backbone.View.extend({
 		if(this.columns.length < 1) return;
 		
 		/** REMOVE + ADD HIGHLIGHT **/
-		this.$('.hightlight').remove();
+		this.$('.highlight-container .highlight').remove();
 		this.model.get("points").forEach(function(point){
 			if(point.check_highlight()){
 				chart_view.highlight(point);
