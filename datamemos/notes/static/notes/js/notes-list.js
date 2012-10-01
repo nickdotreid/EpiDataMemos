@@ -147,7 +147,11 @@ NoteList = Backbone.Collection.extend({
 });
 
 NoteListView = Backbone.View.extend({
-	initialize: function(){
+	initialize: function(options){
+		if(options && options['collection']){
+			this.collections = options['collection'];
+		}
+		
 		var note_list_view = this;
 		this.collection.bind("add",function(note){
 			var note_view = new NoteItem({
@@ -156,11 +160,27 @@ NoteListView = Backbone.View.extend({
 			});
 		});
 		this.collection.bind("reset",function(){
-			note_list_view.$el.html("");
+			note_list_view.render();
 		});
 	},
 	render: function(){
-		
+		this.$('.note').addClass("toRemove");
+		this.collection.forEach(function(note){
+			var view = this.$('#note-'+note.get("id"));
+			if(view.length < 1){
+				var note_view = new NoteItem({
+					model:note,
+					container:this.el
+				});
+				view = note_view.$el;
+			}
+			view.removeClass("toRemove");
+			this.$el.append(view);
+		});
+		this.$(".note.toRemove").remove();
+	},
+	clear: function(){
+		this.$el.html("");
 	}
 });
 
