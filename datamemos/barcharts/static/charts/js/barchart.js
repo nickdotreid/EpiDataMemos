@@ -312,7 +312,22 @@ Highlight = Backbone.View.extend({
 		
 	},
 	initialize: function(options){
+		this.template = _.template('<div class="highlight"><%= number %> of <%= total %> (<%= percent %>)</div>');
 		
+		if( options && options.container ){
+			this.container = options.container;
+		}
+		
+		this.render();
+	},
+	render: function(){
+		this.setElement(this.template({
+			number: format_number(this.model.get("number")),
+			total: format_number(this.model.get("total")),
+			percent: format_number(this.model.get("percent"),true)
+		}));
+		this.container.html("");
+		this.$el.appendTo(this.container);
 	}
 })
 

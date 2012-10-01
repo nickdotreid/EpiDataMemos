@@ -6,6 +6,7 @@ Point = Backbone.Model.extend({
 		value:0,
 		percent:0,
 		number:0,
+		total: 0,
 		
 		visible: false,
 		selected: false,
@@ -73,11 +74,13 @@ PointCollection = Backbone.Collection.extend({
 					_(neighbors).forEach(function(p){
 						total += p.get("number");
 					});
+					point.set("total",total);
 					point.set("percent",point.get("number")/total);
 					return ;
 				}
 			}
 			point.set("percent",1);
+			point.set("total",point.get("number"));
 		});
 	}
 });
