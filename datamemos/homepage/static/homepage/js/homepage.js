@@ -97,7 +97,7 @@ HomepageView = Backbone.View.extend({
 	},
 	events: {
 		'click .navbar .pages a': 'page_navigate',
-		'click .navbar .note-add': 'add_note',
+		'click .note-add': 'add_note',
 		'click .navbar .bookmark-add': 'add_bookmark'
 	},
 	add_bookmark: function(event){
