@@ -39,7 +39,7 @@ Note = Backbone.Model.extend({
 	},
 	get_activeness: function(){
 		return _(this.get("bookmarks").map(function(bookmark){
-			return bookmark.get("selected_count");
+			return bookmark.count_selected();
 		})).max(function(count){
 			return count;
 		});

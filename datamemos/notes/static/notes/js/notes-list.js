@@ -37,7 +37,9 @@ Notes = Backbone.Model.extend({
 					var new_tag = tags.get_or_add({
 						short: tag.get("short")
 					});
+					new_tags.push(new_tag);
 				});
+				bookmark.set("tags",new_tags);
 			});
 		});
 		
@@ -102,6 +104,9 @@ Notes = Backbone.Model.extend({
 				view.render();
 			}
 		});
+	},
+	sort_notes: function(){
+		this.notes.sort();
 	}
 });
 
@@ -136,13 +141,20 @@ NoteList = Backbone.Collection.extend({
 		});
 	},
 	comparator:function(a,b){
-		if(a.get_activeness() > b.get_activeness()){
+		var cmp = a.get_activeness() - b.get_activeness();
+		if( cmp > 0 ){
 			return -1;
-		}	
-		if(a.get("date") > b.get("date")){
-			return -1;
+		}else if( cmp < 0 ){
+			return 1;
 		}
-		return 1;
+		// compare weight
+		var cmp = a.get("date") - b.get("date");
+		if( cmp > 0 ){
+			return -1;
+		}else if( cmp < 0 ){
+			return 1;
+		}
+		return 0;
 	}
 });
 
@@ -164,9 +176,10 @@ NoteListView = Backbone.View.extend({
 		});
 	},
 	render: function(){
+		var note_list_view = this;
 		this.$('.note').addClass("toRemove");
 		this.collection.forEach(function(note){
-			var view = this.$('#note-'+note.get("id"));
+			var view = note_list_view.$('#note-'+note.get("id"));
 			if(view.length < 1){
 				var note_view = new NoteItem({
 					model:note,
@@ -175,7 +188,7 @@ NoteListView = Backbone.View.extend({
 				view = note_view.$el;
 			}
 			view.removeClass("toRemove");
-			this.$el.append(view);
+			note_list_view.$el.append(view);
 		});
 		this.$(".note.toRemove").remove();
 	},

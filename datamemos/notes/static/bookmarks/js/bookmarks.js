@@ -11,13 +11,6 @@ Bookmark = Backbone.Model.extend({
 		url:"",
 		selected_count:0
 	},
-	initialize: function(){
-		var bookmark = this;
-		bookmark.count_selected();
-		this.get("tags").bind("tag-changed",function(tag){
-			bookmark.count_selected();
-		});
-	},
 	parse: function(data){
 		var bookmark = this;
 		
@@ -40,11 +33,23 @@ Bookmark = Backbone.Model.extend({
 		return data;
 	},
 	count_selected: function(){
-		var active = this.get("tags").filter(function(tag){
-			return tag.get("selected");
+		var count = 0;
+		var active = this.get("tags").forEach(function(tag){
+			tag.get("siblings").forEach(function(t){
+				if(t.get("selected")){
+					count += 1;
+				}
+			})
+			if(tag.get("parent") && tag.get("parent").get("selected")){
+				count += 1;
+			}
+			if(tag.get("selected")){
+				count += 1;
+			}
 		});
-		this.set("selected_count",active.length);
-		return active.length;
+		
+		this.set("selected_count",count);
+		return count;
 	},
 	save: function(options){
 		var success_func = false;

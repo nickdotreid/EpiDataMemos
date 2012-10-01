@@ -34,8 +34,8 @@ def list(request):
 		for note in query.all():
 			_note = note.as_json()
 			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
-			if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
-				_note.editable = True 
+			if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
+				_note['editable'] = True 
 			_notes.append(_note)
 		return HttpResponse(
 			json.dumps({

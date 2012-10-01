@@ -19,6 +19,9 @@ Homepage = Backbone.Model.extend({
 		});
 		
 		this.set("tags", new TagCollection());
+		this.get("tags").bind('tag-changed',function(tag){
+			homepage.get("notes").sort_notes();
+		});
 		
 		this.set("charts",new Charts({
 			tags:this.get("tags")
