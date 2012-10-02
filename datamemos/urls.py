@@ -6,9 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^', include('homepage.urls')),
-	url(r'^barcharts/', include('barcharts.urls')),
-	url(r'^charts/(?P<chart_id>\d+)','barcharts.views.load_chart'),
+	url(r'^charts/(?P<chart_id>\d+)','homepage.views.load_chart'),
 	url(r'^charts/', include('charts.urls')),
+	url(r'^notes/(?P<note_id>\d+)','homepage.views.load_note'),
 	url(r'^notes/', include('notes.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

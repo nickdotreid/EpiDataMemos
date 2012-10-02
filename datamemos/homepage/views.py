@@ -10,24 +10,32 @@ from notes.models import Category
 import json
 
 def show_home(request):
-	return render_to_response('homepage/homepage.html',context_instance=RequestContext(request))
-
-def load_chart(request):
 	categories = Category.objects.filter(viewable=True).all()
-	notes = Note.objects.filter(type=categories[0]).all()[:5]
+	charts_query = Chart.objects
+	if request.user.is_authenticated() and request.user.is_staff:
+		charts_query = Chart.objects.filter(published=True)
 	return render_to_response('homepage/chart.html',{
-		'charts':Chart.objects.all(),
+		'charts':charts_query.all(),
 		'categories':categories,
-		'notes':notes,
 	},context_instance=RequestContext(request))
+	
+def load_chart(request,chart_id):
+	if request.is_ajax():
+		from barcharts.views import load_chart
+		return load_chart(request,chart_id)
+	chart = get_object_or_404(Chart,pk=chart_id)
+	return HttpResponseRedirect("/#charts/%i" % (chart.id))
 
 def load_note(request,note_id):
+	if request.is_ajax():
+		from notes.views import detail
+		return detail(request,note_id)
 	note = get_object_or_404(Note,pk=note_id)
 	if note.bookmark_set.count() > 0:
 		bookmark = note.bookmark_set.get()
 		tags = []
 		for tag in bookmark.tags.all():
 			tags.append(tag.short)
-		return HttpResponseRedirect("/#/?chart=%i&tags=%s&note=%i" % (bookmark.chart.id,",".join(tags),note.id))
-	return HttpResponseRedirect("/#/?note=%i" % (note.id))
+		return HttpResponseRedirect("/#charts/%i/%s" % (bookmark.chart.id,"/".join(tags)))
+	return HttpResponseRedirect("/#notes/%i" % (note.id))
 	
