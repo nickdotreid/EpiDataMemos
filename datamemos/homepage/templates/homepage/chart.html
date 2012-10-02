@@ -116,12 +116,20 @@
 				</div>
 			</div>
 		</div>
-		<div id="chart-container" class="span8 chart-container">
+		<div id="chart-container" class="chart-container">
 
 		</div>	
 	</div>
 	<div id="notes-container" class="span4">
-		<a href="#" class="note-add btn"><i></i>Add Note</a>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav actions pull-left">
+						<li><a href="#" class="note-add"><i></i>Add Note</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<div class="nav notes-nav btn-group">
 			{% for category in categories %}
 			<a class="btn note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" href="#" >{{category.name}}</a>
