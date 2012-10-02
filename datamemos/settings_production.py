@@ -19,6 +19,8 @@ if 'aws_static_url' in os.environ and 'aws_access_key' in os.environ and 'aws_se
 	AWS_ACCESS_KEY_ID = os.environ['aws_access_key']
 	AWS_SECRET_ACCESS_KEY = os.environ['aws_secret_access_key']
 	AWS_STORAGE_BUCKET_NAME = os.environ['aws_bucket_name']
+	
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 if 'SENDGRID_USERNAME' in os.environ and 'SENDGRID_PASSWORD' in os.environ:
 	EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']

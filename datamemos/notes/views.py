@@ -128,12 +128,12 @@ def create(request):
 				note.public = True
 			note.save()
 			save_bookmark_to_note(request,note)
-			send_note_email(note)
+			send_note_email(note,request.get_host())
 			if request.is_ajax:
 				_note = note.as_json()
 				_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
 				if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
-					_note.editable = True
+					_note['editable'] = True
 				return HttpResponse(
 					json.dumps(_note),
 					'application/json')
@@ -150,7 +150,14 @@ def create(request):
 
 def send_note_email(note,root_url=""):
 	from django.core.mail import send_mail
-	send_mail('Test email', 'Here is the message.', 'charts@sfhiv.org', [note.author.email], fail_silently=False)
+	subject = "Your note"
+	if(note.bookmark_set.count() > 0):
+		subject += " on " + note.bookmark_set.all()[0].chart.title
+	message = render_to_string("notes/email.html",{
+		"view_url":root_url+reverse(detail, args=(note.id,)),
+		"edit_url":root_url+reverse(edit, args=(note.id,))
+		})
+	send_mail(subject, message, 'charts@sfhiv.org', [note.author.email], fail_silently=False)
 
 def save_bookmark_to_note(request,note):
 	saved_bookmarks = 0
