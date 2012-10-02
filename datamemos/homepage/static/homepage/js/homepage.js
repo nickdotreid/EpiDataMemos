@@ -90,12 +90,19 @@ Homepage = Backbone.Model.extend({
 	setup_charts: function(){
 		var charts = this.get("charts");
 		var manager = this;
+		charts.bind("loading",function(chart){
+			manager.trigger("loading");
+		});
+		charts.bind("loaded",function(chart){
+			manager.trigger("loaded");
+		});
 		charts.bind("chart-changed",function(chart){
 			manager.get("notes").set_chart(chart);
 			if(chart){
 				manager.set("page",false);
 			}
-			manager.set_chart_url(chart,true);
+			manager.trigger("loaded");
+			manager.set_chart_url(chart);
 		});
 		this.get("tags").bind('tag-changed',function(tag){
 			manager.set_chart_url(false,true);
@@ -157,11 +164,23 @@ HomepageView = Backbone.View.extend({
 		this.model.bind('change:page',function(){
 			view.render();
 		});
+		this.model.bind("loading",function(){
+			view.show_loading();
+		});
+		this.model.bind("loaded",function(){
+			view.hide_loading();
+		});
 	},
 	events: {
 		'click .navbar .pages a': 'page_navigate',
 		'click .note-add': 'add_note',
 		'click .navbar .bookmark-add': 'add_bookmark'
+	},
+	show_loading: function(){
+		this.$('.page-loading').show();
+	},
+	hide_loading: function(){
+		this.$('.page-loading').hide();
 	},
 	add_bookmark: function(event){
 		event.preventDefault();
