@@ -35,7 +35,7 @@ Bookmark = Backbone.Model.extend({
 	count_selected: function(){
 		var count = 0;
 		var active = this.get("tags").forEach(function(tag){
-			tag.get("siblings").forEach(function(t){
+			_(tag.get("siblings")).forEach(function(t){
 				if(t.get("selected")){
 					count += 1;
 				}
