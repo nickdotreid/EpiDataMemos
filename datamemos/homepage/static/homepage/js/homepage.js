@@ -4,6 +4,19 @@ var Workspace = Backbone.Router.extend({
 		"charts/:id": "openChart",
 		"charts/:id/*tags": "openChart"
 	},
+	initialize:function(){
+		return this.bind('all', this._trackPageview);
+	},
+	_trackPageview: function() {
+		var url;
+		url = Backbone.history.getFragment();
+		if(!this.last_url || url != this.last_url){
+			this.last_url = url;
+		}else{
+			return false;
+		}
+		return _gaq.push(['_trackPageview', "/" + url]);
+	},
 	openChart: function(id,tags){
 		if(tags){
 			var shorts = tags.split("/");
