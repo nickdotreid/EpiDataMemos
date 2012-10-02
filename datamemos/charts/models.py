@@ -49,7 +49,6 @@ class Tag(Sortable):
 class Chart(models.Model):
 	title = models.CharField(max_length=200)
 	description = models.CharField(max_length=250,blank=True)
-	footnotes = models.TextField(blank=True)
 	
 	xls = models.FileField(upload_to='xls/',blank=True,null=True)
 	
@@ -68,6 +67,16 @@ class Chart(models.Model):
 		if self.published:
 			return self.title
 		return "UNPUBLISHED - " + self.title
+		
+class Footnote(Sortable):
+	
+	chart = models.ForeignKey(Chart)
+	
+	title = models.CharField(max_length=200)
+	description = models.TextField(blank=True)
+	
+	class Meta(Sortable.Meta):
+		pass
 
 class Point(models.Model):
 	value = models.IntegerField()

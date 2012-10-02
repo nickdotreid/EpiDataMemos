@@ -35,12 +35,19 @@ def load_chart(request,chart_id):
 	for row in raw_rows:
 		_rows.append(row.as_json())
 	if request.is_ajax():
+		footnotes = []
+		for footnote in chart.footnote_set.all():
+			footnotes.append({
+				'id':footnote.id,
+				'title':footnote.title,
+				'description':footnote.description
+			})
 		return HttpResponse(
 			json.dumps({
 				'id':chart.id,
 				'title':chart.title,
 				'description':chart.description,
-				'footnotes':chart.footnotes,
+				'footnotes':footnotes,
 				'x_label':chart.x_label,
 				'y_label':chart.y_label,
 				'rows':_rows,

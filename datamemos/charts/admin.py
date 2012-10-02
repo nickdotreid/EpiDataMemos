@@ -1,4 +1,4 @@
-from models import Chart, Tag, Point
+from models import Chart, Tag, Point, Footnote
 from django.contrib import admin
 
 from adminsortable.admin import SortableAdmin,SortableTabularInline
@@ -6,10 +6,16 @@ from adminsortable.admin import SortableAdmin,SortableTabularInline
 from django.core.exceptions import ObjectDoesNotExist
 from parse_data import parse_data_file
 
+class FootnoteInline(SortableTabularInline):
+	model = Footnote
+	extra = 1
+	fields = ("title","description")
+
 class ChartAdmin(admin.ModelAdmin):
 	list_display = ['title', 'pub_date' ,'published']
 	ordering = ['pub_date']
 	actions = ['parse_charts_xls']
+	inlines = [FootnoteInline]
 
 	def parse_charts_xls(self, request, queryset):
 		count = 0

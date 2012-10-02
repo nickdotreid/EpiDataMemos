@@ -38,6 +38,16 @@ ChartView = Backbone.View.extend({
 		
 		this.el = $().appendTo("#barchart-container")[0];
 		
+		/** APPEND FOOTNOTES **/
+		var footnote_template = _.template($("#footnote-template").html());
+		_(this.model.get("footnotes")).forEach(function(footnote){
+			chart_view.$('.footnotes').append(footnote_template({
+				id:footnote.id,
+				title:footnote.title,
+				description:footnote.description
+			}));
+		});
+		
 		/** MAKE CHART COLORS **/
 		var pallet = this.pallet;
 		_(_(this.model.get("rows").models).filter(function(tag){

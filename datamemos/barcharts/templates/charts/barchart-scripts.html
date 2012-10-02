@@ -11,7 +11,13 @@
 		<form class="controls"></form>
 		<div class="highlight-container"></div>
 		<div class="canvas"></div>
-		<div class="footnotes"><%= footnotes %></div>
+		<div class="footnotes"></div>
+	</div>
+</script>
+<script id="footnote-template" type="text/html">
+	<div id="footnote-<%= id %>" class="footnote">
+		<h3><%= title %></h3>
+		<div class="description"><%= description %></div>
 	</div>
 </script>
 <script id="tag-button-template" type="text/html">
