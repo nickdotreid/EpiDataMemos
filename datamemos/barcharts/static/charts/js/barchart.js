@@ -129,6 +129,8 @@ ChartView = Backbone.View.extend({
 		/** REMOVE + ADD HIGHLIGHT **/
 		this.$('.highlight-container .highlight').remove();
 		this.model.get("points").forEach(function(point){
+			point.select_value(chart_view.model.get("percent"));
+			point.toggle();
 			if(point.check_highlight()){
 				chart_view.highlight(point);
 			}
@@ -139,7 +141,8 @@ ChartView = Backbone.View.extend({
 			return tag.get("selected");
 		});
 		if(!active_tag){
-			this.model.get("rows").first().set("active",true); // totally not how to do this
+			this.model.get("rows").first().select();
+			return ;
 		}
 		if(this.model.get("percent") && active_tag.get("children").length < 1 && !active_tag.get("parent")){
 			this.model.set("percent",false);

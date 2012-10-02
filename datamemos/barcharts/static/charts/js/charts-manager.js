@@ -35,7 +35,7 @@ Charts = Backbone.Collection.extend({
 			return chart.get("active");
 		});
 		if(active_charts.length > 0){
-			return active_charts[0];
+			return active_charts.first();
 		}
 		return false;
 	},

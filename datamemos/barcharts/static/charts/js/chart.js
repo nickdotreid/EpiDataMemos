@@ -40,7 +40,6 @@ Point = Backbone.Model.extend({
 				});
 			}
 		});
-		// check if column is selected -- if tag also selected || highlight!
 		this.set("selected",selected);
 		this.set("visible",visible);
 	},
@@ -100,7 +99,9 @@ Chart = Backbone.Model.extend({
 		active:false
 	},
 	initialize:function(){
+		var chart = this;
 		var points = this.get("points");
+		
 		this.bind("change:percent",function(chart){
 			points.forEach(function(point){
 				point.select_value(chart.get("percent"));
@@ -164,9 +165,6 @@ Chart = Backbone.Model.extend({
 				});
 			});
 			points.set_percents();
-			points.forEach(function(point){
-				point.select_value(point.get("percent"));
-			});
 			data['points'] = points;
 		}
 		
