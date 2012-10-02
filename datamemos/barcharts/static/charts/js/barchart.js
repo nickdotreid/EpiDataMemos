@@ -72,6 +72,8 @@ ChartView = Backbone.View.extend({
 		var paper = Raphael(canvas[0],canvas.width(),canvas.height());
 		this.paper = paper;
 		
+		canvas.append('<div class="top-fade"></div>');
+		
 		/** RENDER LABELS **/
 		this.x_label = paper.text(0,0,this.model.get("x_label"));
 		var xbox = this.x_label.getBBox();
@@ -334,7 +336,7 @@ Highlight = Backbone.View.extend({
 		}));
 		this.container.html("");
 		this.$el.appendTo(this.container);
-		this.container.height(this.$el.height());
+		this.container.height(this.$el.height()*2);
 	}
 })
 
