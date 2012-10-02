@@ -1,9 +1,15 @@
 var Workspace = Backbone.Router.extend({
 	routes: {
 		"":"showHome",
-		"charts/:id": "openChart"
+		"charts/:id": "openChart",
+		"charts/:id/*tags": "openChart"
 	},
-	openChart: function(id){
+	openChart: function(id,tags){
+		if(tags){
+			var shorts = tags.split("/");
+			this.trigger("openChart",id,shorts);
+			return this;
+		}
 		this.trigger("openChart",id);
 	},
 	showHome: function(){
@@ -52,9 +58,17 @@ Homepage = Backbone.Model.extend({
 		this.manager.render();
 		
 		this.router = new Workspace();
-		this.router.bind('openChart',function(id){
+		this.router.bind('openChart',function(id,tag_shorts){
 			homepage.get("charts").forEach(function(chart){
 				if(id == chart.get("id")){
+					if(tag_shorts){
+						_(tag_shorts).forEach(function(short){
+							var tag = homepage.get("tags").get_or_add({
+								short:short
+							});
+							tag.select();
+						});
+					}
 					chart.activate();
 				}
 			});
@@ -66,6 +80,10 @@ Homepage = Backbone.Model.extend({
 	change_page: function(page_name){
 		if(page_name){
 			this.get("charts").deactivate();
+			this.get("tags").forEach(function(tag){
+				tag.set("selected",false);
+			});
+			this.router.navigate("");
 		}
 		this.set("page",page_name);
 	},
@@ -78,6 +96,15 @@ Homepage = Backbone.Model.extend({
 				manager.set("page",false);
 			}
 			manager.router.navigate('charts/'+chart.get("id"));
+		});
+		this.get("tags").bind('tag-changed',function(tag){
+			if(!manager.get("notes").get("chart")) return;
+			var tag_shorts = [];
+			manager.get("tags").forEach(function(tag){
+				if(tag.get("selected")) tag_shorts.push(tag.get("short"));
+			});
+			var active_chart = manager.get("notes").get("chart");
+			manager.router.navigate('charts/'+active_chart.get("id")+'/'+tag_shorts.join("/"),{replace:true});
 		});
 	},
 	bootstrap_charts: function(){

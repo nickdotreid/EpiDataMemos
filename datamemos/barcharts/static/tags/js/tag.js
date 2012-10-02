@@ -8,6 +8,9 @@ Tag = Backbone.Model.extend({
 		color:false,
 		selected:false
 	},
+	select: function(){
+		this.set("selected",true);
+	},
 	set_children: function(items){
 		var tag = this;
 		children = _(items).filter(function(row){
@@ -95,6 +98,7 @@ TagCollection = Backbone.Collection.extend({
 		var _tags = this.where({short:obj['short']});
 		if(_tags.length > 0){
 			tag = _tags[0];
+			tag.set(obj);
 		}else{
 			tag = new Tag(obj);
 			this.add(tag);
