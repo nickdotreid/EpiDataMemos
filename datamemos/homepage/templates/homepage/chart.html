@@ -85,9 +85,6 @@
 {% endblock %}
 
 {% block content %}
-<noscript>
-	<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
-</noscript>
 <div id="list-area" class="row-fluid">
 	<div class="span6">
 		<div id="home" class="page page-content">
@@ -97,6 +94,9 @@
 		</div>
 	</div>
 	<div id="charts-list-container" class="span6 charts list charts-list">
+		<noscript>
+			<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
+		</noscript>
 		{% for chart in charts %}
 			{% include 'charts/short.html' %}
 		{% endfor %}
