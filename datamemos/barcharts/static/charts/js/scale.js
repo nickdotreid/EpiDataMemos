@@ -91,13 +91,7 @@ Tick = Backbone.View.extend({
 		this.el = this.paper.text(this.x,this.y,this.value);
 		this.el.attr("text-anchor","start");
 		
-		var string_value = "";
-		if(this.value <= 1){
-			string_value = format_number(this.value,true);
-		}else{
-			string_value = format_number(this.value);
-		}
-		this.el.attr("text",string_value);
+		this.el.attr("text",format_number(this.value));
 	},
 	calculate: function(max,height,width){
 		this.width = this.el.getBBox().width;

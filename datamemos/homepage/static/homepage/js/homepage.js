@@ -1,13 +1,27 @@
+var Workspace = Backbone.Router.extend({
+	routes: {
+		"":"showHome",
+		"charts/:id": "openChart"
+	},
+	openChart: function(id){
+		this.trigger("openChart",id);
+	},
+	showHome: function(){
+		this.trigger("showHome");
+	}
+});
+
 Homepage = Backbone.Model.extend({
 	defaults:{
 		page: 'home'
 	},
 	initialize: function(){
+		var homepage = this;
+		
 		this.manager = new HomepageView({
 			model:this,
 			el:$("body")[0]
 		});
-		var homepage = this;
 		this.manager.bind('update',function(name){
 			homepage.change_page(name);
 		});
@@ -36,6 +50,18 @@ Homepage = Backbone.Model.extend({
 		this.bootstrap_notes();
 		
 		this.manager.render();
+		
+		this.router = new Workspace();
+		this.router.bind('openChart',function(id){
+			homepage.get("charts").forEach(function(chart){
+				if(id == chart.get("id")){
+					chart.activate();
+				}
+			});
+		});
+		this.router.bind("showHome",function(){
+			homepage.change_page("home");
+		});
 	},
 	change_page: function(page_name){
 		if(page_name){
@@ -51,6 +77,7 @@ Homepage = Backbone.Model.extend({
 			if(chart){
 				manager.set("page",false);
 			}
+			manager.router.navigate('charts/'+chart.get("id"));
 		});
 	},
 	bootstrap_charts: function(){
