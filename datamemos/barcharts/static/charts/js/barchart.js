@@ -177,6 +177,7 @@ ChartView = Backbone.View.extend({
 			if(total != 0){
 				if(!scale_first_set){
 					scale.max = total;
+					scale.percent = chart_view.model.get("percent");
 					scale_first_set = true;
 					_(scale.columns).forEach(function(col){
 						col.max = scale.max;
@@ -192,6 +193,7 @@ ChartView = Backbone.View.extend({
 							paper: chart_view.paper
 						});					
 					}
+					scale.percent = chart_view.model.get("percent");
 					new_scales.push(scale);
 					draw_items.push(scale);
 				}
@@ -470,9 +472,6 @@ ColumnView = Backbone.View.extend({
 				point_view.y = ( BBox.y + BBox.height ) - point_view.height;
 				if(point_view.height > 0){
 					var offset = point_view.width/5;
-					if(column.model.get("selected")){
-						offset += offset;
-					}
 					xpos += offset;
 					extra = point_view.width - offset;
 				}

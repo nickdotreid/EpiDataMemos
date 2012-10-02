@@ -5,6 +5,7 @@ ScaleColumn = Backbone.View.extend({
 		
 		this.columns = [];
 		
+		this.percent = false;
 		this.max = 0;
 		
 		this.width = 0;
@@ -37,7 +38,8 @@ ScaleColumn = Backbone.View.extend({
 			}else{
 				var tick = new Tick({
 					paper: scale.paper,
-					value: tick_value
+					value: tick_value,
+					percent: scale.percent
 				});
 				scale.ticks.push(tick);
 				visible_ticks.push(tick);
@@ -45,6 +47,9 @@ ScaleColumn = Backbone.View.extend({
 		});
 		var width = 0;
 		_(visible_ticks).forEach(function(tick){
+			if(tick.value == 0){
+				tick.percent = scale.percent;
+			}
 			tick.visible = true;
 			tick.calculate(max,BBox.height);
 			if(tick.width > width) width = tick.width;
@@ -80,6 +85,7 @@ Tick = Backbone.View.extend({
 	initialize: function(options){
 		this.paper = options.paper;
 		this.value = options.value;
+		this.percent = options.percent;
 		this.visible = false;
 		this.updated = false;
 		
@@ -90,10 +96,10 @@ Tick = Backbone.View.extend({
 		
 		this.el = this.paper.text(this.x,this.y,this.value);
 		this.el.attr("text-anchor","start");
-		
-		this.el.attr("text",format_number(this.value));
 	},
 	calculate: function(max,height,width){
+		this.el.attr("text",format_number(this.value,this.percent));
+		
 		this.width = this.el.getBBox().width;
 		this.y = height - ( ( this.value/max ) * height );
 		if(width){
