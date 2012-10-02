@@ -328,6 +328,7 @@ Highlight = Backbone.View.extend({
 		}));
 		this.container.html("");
 		this.$el.appendTo(this.container);
+		this.container.height(this.$el.height());
 	}
 })
 

@@ -238,9 +238,10 @@
 }
 .highlight-container {
   display: block;
+  margin: 3.5px 7px;
 }
 .highlight-container .highlight {
-  margin: 3.5px 7px;
+  margin: 0px;
   padding: 3.5px 7px 7px;
   font-size: 1.2em;
   text-align: center;
