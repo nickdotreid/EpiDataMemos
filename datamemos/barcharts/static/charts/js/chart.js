@@ -173,10 +173,12 @@ Chart = Backbone.Model.extend({
 		return data;
 	},
 	activate: function(){
-		if(this.get("active")) return this;
+		if(this.get("active") || this.get("loading")) return this;
 		if(this.get("rows").length < 1 || this.get("columns").length < 1){
+			this.set("loading",true);
 			this.fetch({
 				success:function(chart){
+					chart.set("loading",false);
 					chart.activate();
 				}
 			});

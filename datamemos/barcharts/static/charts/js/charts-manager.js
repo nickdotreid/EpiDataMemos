@@ -60,19 +60,6 @@ ChartManager = Backbone.View.extend({
 			container:$("#chart-container")[0]
 			});
 		var chart_manager = this;
-		active_chart.bind("rendered",function(chart){
-			var active = false;
-			this.model.get("rows").forEach(function(tag){
-				if(tag.get("selected")){
-					active = true;
-				}
-			});
-			if(!active){
-				chart.get("rows").models[0].set("selected",true);
-			}else{
-				active_chart.update();
-			}
-		});
 		active_chart.render();
 	},
 	list_chart: function(chart){

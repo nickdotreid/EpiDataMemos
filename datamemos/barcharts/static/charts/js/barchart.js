@@ -118,12 +118,7 @@ ChartView = Backbone.View.extend({
 		
 		this.trigger("rendered",this.model);
 		
-		var update = false;
-		this.model.get("tags").forEach(function(tag){
-			if(tag.get("selected")) update = true;
-		});
-		if(update) return this.update();
-		return this;
+		return this.update();
 	},
 	update: function(){
 		var chart_view = this;

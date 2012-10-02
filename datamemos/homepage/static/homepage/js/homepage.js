@@ -95,17 +95,26 @@ Homepage = Backbone.Model.extend({
 			if(chart){
 				manager.set("page",false);
 			}
-			manager.router.navigate('charts/'+chart.get("id"));
+			manager.set_chart_url(chart,true);
 		});
 		this.get("tags").bind('tag-changed',function(tag){
-			if(!manager.get("notes").get("chart")) return;
-			var tag_shorts = [];
-			manager.get("tags").forEach(function(tag){
-				if(tag.get("selected")) tag_shorts.push(tag.get("short"));
-			});
-			var active_chart = manager.get("notes").get("chart");
-			manager.router.navigate('charts/'+active_chart.get("id")+'/'+tag_shorts.join("/"),{replace:true});
+			manager.set_chart_url(false,true);
 		});
+	},
+	set_chart_url:function(chart,replace){
+		if(!chart && !this.get("notes").get("chart")) return;
+		var tag_shorts = [];
+		this.get("tags").forEach(function(tag){
+			if(tag.get("selected")) tag_shorts.push(tag.get("short"));
+		});
+		if(!chart){
+			chart = this.get("notes").get("chart");
+		}
+		var url = 'charts/'+chart.get("id");
+		if(tag_shorts.length > 0){
+			url += '/'+tag_shorts.join("/");
+		}
+		this.router.navigate(url,{replace:replace});
 	},
 	bootstrap_charts: function(){
 		var charts = this.get("charts");
