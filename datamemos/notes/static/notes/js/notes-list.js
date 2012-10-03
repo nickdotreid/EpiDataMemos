@@ -1,6 +1,7 @@
 Notes = Backbone.Model.extend({
 	defaults: {
-		chart: false
+		chart: false,
+		update: true
 	},
 	initialize: function(options){
 		
