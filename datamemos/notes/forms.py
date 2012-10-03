@@ -35,11 +35,11 @@ def make_note_form(user = False):
 		
 		text = forms.CharField(
 			widget = forms.Textarea,
-			label = 'Your note or insite to share',
+			label = 'Text for note',
 		)
 		
 		public = forms.BooleanField(
-			label = 'Do you want to list this comment publicly?',
+			label = 'Do you want to list this note publicly?',
 			required = False,
 		)
 		
