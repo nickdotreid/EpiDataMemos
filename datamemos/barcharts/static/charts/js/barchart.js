@@ -15,6 +15,9 @@ ChartView = Backbone.View.extend({
 		this.model.get("columns").bind("tag-changed",function(){
 			chart_view.update();
 		});
+		this.model.bind("change:update",function(chart){
+			chart_view.update();
+		});
 		this.model.bind("change:percent",function(){
 			chart_view.update();
 		});
@@ -133,6 +136,9 @@ ChartView = Backbone.View.extend({
 		return this.update();
 	},
 	update: function(){
+		if(!this.model.get("update")){
+			return ;
+		}
 		var chart_view = this;
 		var chart_max = 0;
 		
@@ -573,6 +579,11 @@ PointView = Backbone.View.extend({
 		el.attr("stroke-width",0);
 		el.attr("fill",this.color);
 		this.el = el;
+		
+		var point = this.model;
+		el.click(function(){
+			point.select();
+		});
 	},
 	calculate: function(total,height){
 		if(!total) return ;

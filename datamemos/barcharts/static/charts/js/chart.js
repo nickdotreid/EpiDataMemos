@@ -43,6 +43,10 @@ Point = Backbone.Model.extend({
 		this.set("selected",selected);
 		this.set("visible",visible);
 	},
+	select: function(){
+		this.set("selected",true);
+		this.trigger("point:selected",this);
+	},
 	check_highlight: function(){
 		var highlightable = false;
 		_(this.get("columns")).forEach(function(tag){
@@ -92,11 +96,13 @@ Chart = Backbone.Model.extend({
 	defaults:{
 		id:false,
 		tags:new TagCollection(),
+		cached_tags: [],
 		rows:new TagCollection(),
 		columns:new TagCollection(),
 		points:new PointCollection(),
 		percent:false,
-		active:false
+		active:false,
+		update: true
 	},
 	initialize:function(){
 		var chart = this;
@@ -117,6 +123,10 @@ Chart = Backbone.Model.extend({
 				point.toggle();
 			})
 		});
+		
+		this.get("points").bind("point:selected",function(point){
+			chart.reveal(point);
+		})
 	},
 	parse: function(data){
 		var tags = this.get("tags");
@@ -193,5 +203,11 @@ Chart = Backbone.Model.extend({
 		this.get("columns").reset();
 		this.set("active",false);
 		return this;		
+	},
+	reveal: function(point){
+		_(_.union(point.get("rows"),point.get("columns"))).forEach(function(tag){
+			tag.select();
+		});
+		this.set("update",true);
 	}
 });
