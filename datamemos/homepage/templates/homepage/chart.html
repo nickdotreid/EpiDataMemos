@@ -134,19 +134,19 @@
 		</div>	
 	</div>
 	<div id="notes-container" class="span4">
-		<div class="navbar">
+		<div class="navbar notes-nav">
 			<div class="navbar-inner">
 				<div class="container">
-					<ul class="nav actions pull-left">
-						<li><a href="#" class="note-add"><i></i>Add Note</a></li>
+					<ul class="nav">
+						{% for category in categories %}
+						<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" >
+							<i></i>
+							<a href="#" >{{category.name}}</a>
+						</li>
+						{% endfor %}
 					</ul>
 				</div>
 			</div>
-		</div>
-		<div class="nav notes-nav btn-group">
-			{% for category in categories %}
-			<a class="btn note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" href="#" >{{category.name}}</a>
-			{% endfor %}
 		</div>
 		<div class="notes-list">
 			

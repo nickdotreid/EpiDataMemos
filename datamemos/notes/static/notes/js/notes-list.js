@@ -199,7 +199,7 @@ NoteListView = Backbone.View.extend({
 
 NoteTypeButton = Backbone.View.extend({
 	events: {
-		"click": "select"
+		"click a": "select"
 	},
 	initialize:function(){
 		var button = this;
