@@ -11,7 +11,8 @@ Note = Backbone.Model.extend({
 		author:"",
 		pub_date:"",
 		bookmarks:new BookmarkList(),
-		url:""
+		url:"",
+		activeness:0
 	},
 	initialize: function(){
 		
@@ -38,11 +39,13 @@ Note = Backbone.Model.extend({
 		return data;
 	},
 	get_activeness: function(){
-		return _(this.get("bookmarks").map(function(bookmark){
+		var activeness =  _(this.get("bookmarks").map(function(bookmark){
 			return bookmark.count_selected();
 		})).max(function(count){
 			return count;
 		});
+		this.set("activeness",activeness);
+		return activeness;
 	},
 	share: function(){
 		this.trigger("share",this);
@@ -58,6 +61,13 @@ NoteItem = Backbone.View.extend({
 		this.container = options.container;
 		this.$container = $(this.container);
 		this.render();
+		
+		var view = this;
+		this.model.bind("change:activeness",function(note){
+			if(note.get("activeness") > 1) view.$el.addClass("active-more");
+			if(note.get("activeness") > 0) view.$el.addClass("active");
+			else view.$el.removeClass("active").removeClass("active-more");
+		});
 	},
 	render: function(){
 		var note_id = this.model.get("id");
