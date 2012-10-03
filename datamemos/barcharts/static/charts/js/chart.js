@@ -226,6 +226,7 @@ Chart = Backbone.Model.extend({
 		_(_.union(point.get("rows"),point.get("columns"))).forEach(function(tag){
 			tag.select();
 		});
+		this.set("cached_tags",[]);
 		this.set("update",true);
 	},
 	peak: function(point){
@@ -273,6 +274,7 @@ Chart = Backbone.Model.extend({
 		this.set("cached_tags",[]);
 		var chart = this;
 		this.update_delay = setTimeout(function(){
+			chart.set("cached_tags",[]);
 			chart.set("update",true);
 		},500);
 	}
