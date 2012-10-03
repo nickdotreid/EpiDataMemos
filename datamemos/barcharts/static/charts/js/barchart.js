@@ -11,6 +11,7 @@ ChartView = Backbone.View.extend({
 		var chart_view = this;
 		this.model.get("tags").bind("tag-changed",function(){
 			chart_view.update();
+			chart_view.highlight();
 		});
 		
 		this.model.bind("change:update",function(chart){
@@ -135,22 +136,19 @@ ChartView = Backbone.View.extend({
 	},
 	update: function(){
 		if(!this.model.get("update")){
+			console.log("NO UPDATE");
 			return ;
+		}else{
+			var shorts = [];
+			this.model.get("tags").forEach(function(tag){
+				if(tag.get("selected")) shorts.push(tag.get("short"));
+			});
+			console.log("UPDATE: "+shorts.join(","));
 		}
 		var chart_view = this;
 		var chart_max = 0;
 		
 		if(this.columns.length < 1) return;
-		
-		/** REMOVE + ADD HIGHLIGHT **/
-		this.$('.highlight-container .highlight').remove();
-		this.model.get("points").forEach(function(point){
-			point.select_value(chart_view.model.get("percent"));
-			point.toggle();
-			if(point.check_highlight()){
-				chart_view.highlight(point);
-			}
-		});
 		
 		/**		FIND ACTIVE TAG		**/
 		var active_tag = this.model.get("rows").find(function(tag){
@@ -321,11 +319,19 @@ ChartView = Backbone.View.extend({
 			drawable.animate(750);
 		});
 	},
-	highlight: function(point){
-		new Highlight({
-			model:point,
-			container: this.$('.highlight-container')
-		})
+	highlight: function(){
+		var chart_view = this;
+		this.$('.highlight-container .highlight').remove();
+		this.model.get("points").forEach(function(point){
+			point.select_value(chart_view.model.get("percent"));
+			point.toggle();
+			if(point.check_highlight()){
+				new Highlight({
+					model:point,
+					container: chart_view.$('.highlight-container')
+				});
+			}
+		});
 	}
 });
 
@@ -581,6 +587,12 @@ PointView = Backbone.View.extend({
 		var point = this.model;
 		el.click(function(){
 			point.select();
+		});
+		el.mouseover(function(){
+			point.highlight();
+		});
+		el.mouseout(function(){
+			point.unhighlight();
 		});
 	},
 	calculate: function(total,height){

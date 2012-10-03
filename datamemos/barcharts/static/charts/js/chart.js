@@ -47,6 +47,20 @@ Point = Backbone.Model.extend({
 		this.set("selected",true);
 		this.trigger("point:selected",this);
 	},
+	highlight: function(){
+		var point = this;
+		this.trigger("point:highlight",this);
+		if(this.highlight_delay){
+			clearTimeout(this.highlight_delay);
+		}
+		this.highlight_delay = setTimeout(function(){
+			point.set("highlighted",true);
+		},500);
+	},
+	unhighlight: function(){
+		this.set("highlighted",false);
+		this.trigger("point:unhighlight",this);
+	},
 	check_highlight: function(){
 		var highlightable = false;
 		_(this.get("columns")).forEach(function(tag){
@@ -123,10 +137,13 @@ Chart = Backbone.Model.extend({
 				point.toggle();
 			})
 		});
-		
 		this.get("points").bind("point:selected",function(point){
 			chart.reveal(point);
-		})
+		}).bind("point:highlight",function(point){
+			chart.peak(point);
+		}).bind("point:unhighlight",function(point){
+			chart.unpeak(point);
+		});
 	},
 	parse: function(data){
 		var tags = this.get("tags");
@@ -205,9 +222,53 @@ Chart = Backbone.Model.extend({
 		return this;		
 	},
 	reveal: function(point){
+		if(!this.get("active")) return ;
 		_(_.union(point.get("rows"),point.get("columns"))).forEach(function(tag){
 			tag.select();
 		});
 		this.set("update",true);
+	},
+	peak: function(point){
+		if(!this.get("active")) return ;
+		var cached = this.get("cached_tags");
+		var set_cache = true;
+		if(cached.length > 0){
+			set_cache = false;
+		}
+		this.set("update",false);
+		if(set_cache){
+			cached = [];
+			var shorts = [];
+			_(this.get("tags").filter(function(tag){
+				return tag.get("selected");
+			})).forEach(function(tag){
+				cached.push(tag);
+				shorts.push(tag.get("short"));
+			});
+			this.set("cached_tags",cached);
+		}
+		shorts = [];
+		_(_.union(point.get("rows"),point.get("columns"))).forEach(function(tag){
+			tag.select();
+			shorts.push(tag.get("short"));
+		});
+		console.log("PEAKING TO " + shorts.join(","));
+	},
+	unpeak: function(point){
+		if(!this.get("active")) return ;
+		var cached = this.get("cached_tags");
+		_(this.get("tags").filter(function(tag){
+			return tag.get("selected");
+		})).forEach(function(tag){
+			tag.set("selected",false);
+		});
+		var shorts = [];
+		_(cached).forEach(function(tag){
+			tag.set("selected",true);
+			shorts.push(tag.get("short"));
+		});
+		this.set("cached_tags",[]);
+		this.set("update",true);
+		
 	}
 });
