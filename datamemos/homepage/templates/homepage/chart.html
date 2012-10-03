@@ -39,16 +39,10 @@
 		</div>
 	</script>
 	<script id="note-edit-template" type="text/html">
-		<div class="modal hide fade">
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		  </div>
-		  <div class="modal-body">
-		    <%= form %>
-		  </div>
-		  <div class="modal-footer">
-		    <a href="#" class="btn btn-primary">Save changes</a>
-		  </div>
+		<div class="note-add-form-container">
+			<a href="#" class="close-btn btn"><i></i>Close</a>
+			<%= form %>
+			<a href="#" class="close-btn btn"><i></i>Close</a>
 		</div>
 	</script>
 	<script id="note-template" type="text/html">
@@ -139,7 +133,7 @@
 				<div class="container">
 					<ul class="nav">
 						{% for category in categories %}
-						<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" >
+						<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public %}note-type-public="true"{% endif %}>
 							<i></i>
 							<a href="#" >{{category.name}}</a>
 						</li>
@@ -147,6 +141,9 @@
 					</ul>
 				</div>
 			</div>
+		</div>
+		<div class="note-add-container">
+			<a href="#" class="note-add btn">Add Note</a>
 		</div>
 		<div class="notes-list">
 			

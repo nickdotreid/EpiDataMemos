@@ -44,9 +44,7 @@ Homepage = Backbone.Model.extend({
 		this.manager.bind('update',function(name){
 			homepage.change_page(name);
 		});
-		this.manager.bind('note-add',function(){
-			homepage.get("notes").edit_note(false);
-		});
+		
 		this.manager.bind('bookmark-add',function(){
 			homepage.get("notes").save_bookmark();
 		});
@@ -66,6 +64,10 @@ Homepage = Backbone.Model.extend({
 			tags:this.get("tags"),
 			charts:this.get("charts")
 		}));
+		new NoteContainer({
+			model:this.get("notes"),
+			el:$("#notes-container")[0]
+		});
 		this.bootstrap_notes();
 		
 		this.manager.render();
@@ -159,6 +161,9 @@ Homepage = Backbone.Model.extend({
 				name:note_type_node.html(),
 				active:note_type_node.hasClass("active")
 			});
+			if(note_type_node.attr("note-type-public")){
+				note_type.set("public",true);
+			}
 			new NoteTypeButton({
 				model:note_type,
 				el:this
@@ -186,7 +191,6 @@ HomepageView = Backbone.View.extend({
 	},
 	events: {
 		'click .navbar .pages a': 'page_navigate',
-		'click .note-add': 'add_note',
 		'click .navbar .bookmark-add': 'add_bookmark'
 	},
 	show_loading: function(){
@@ -201,7 +205,6 @@ HomepageView = Backbone.View.extend({
 	},
 	add_note: function(event){
 		event.preventDefault();
-		this.trigger("note-add");
 	},
 	page_navigate: function(event){
 		event.preventDefault();

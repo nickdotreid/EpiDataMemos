@@ -79,7 +79,8 @@ NoteType = Backbone.Model.extend({
 	defaults:{
 		active:false,
 		name:"",
-		short:""
+		short:"",
+		public:false
 	},
 	toggle: function(){
 		if(this.get("active")){
@@ -109,11 +110,15 @@ NoteEdit = Backbone.View.extend({
 	events:{
 		'click .modal-footer .btn-primary':'submit',
 		'submit form':'submit',
-		'hidden': 'remove_modal'
+		'hidden': 'remove'
 	},
 	initialize: function(options){
 		var edit_view = this;
 		this.template = _.template($("#note-edit-template").html());
+		
+		this.loading_div = '<div class="loading"></div>';
+		
+		this.setElement(this.loading_div);
 		
 		this.bind('remove',function(){
 			this.$el.remove();
@@ -137,8 +142,9 @@ NoteEdit = Backbone.View.extend({
 			}
 		});
 	},
-	remove_modal: function(){
+	remove: function(){
 		this.$el.remove();
+		this.trigger("remove");
 	},
 	submit: function(event){
 		event.preventDefault();
@@ -152,8 +158,8 @@ NoteEdit = Backbone.View.extend({
 			return bookmark.get("id");
 		}).join(","));
 		
-		this.$el.modal("hide");
-		this.trigger("loading");
+		this.$el.remove();
+		this.setElement(this.loading_div);
 		$.ajax({
 			url:form.attr("action"),
 			type:form.attr("method"),
@@ -166,18 +172,25 @@ NoteEdit = Backbone.View.extend({
 					if(!edit_view.model.get("id")){
 						edit_view.model.set("id",data['id']);
 					}
+					edit_view.trigger("remove");
 					edit_view.trigger("saved",edit_view.model);
+				}
+			},
+			error: function(data){
+				if(data['form']){
+					edit_view.show_form(data['form']);
 				}
 			}
 		});
 	},
 	show_form: function(markup){
+		this.$el.remove();
 		this.setElement(this.template({
 			form: markup
 		}));
-		this.$('.form-actions').hide();
-		this.$('.modal-footer .btn-primary').html(this.$('.form-actions .btn').val());
-		this.$el.modal();
+		if(this.container){
+			this.$el.appendTo(this.container);
+		}
 	}
 });
 

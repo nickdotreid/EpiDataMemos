@@ -79,6 +79,7 @@ Notes = Backbone.Model.extend({
 				note.trigger("share",note);
 			}});
 		});
+		return edit_view;
 	},
 	share_note: function(note){
 		var share_view = new NoteShare({
@@ -107,6 +108,22 @@ Notes = Backbone.Model.extend({
 	},
 	sort_notes: function(){
 		this.notes.sort();
+	}
+});
+
+NoteContainer = Backbone.View.extend({
+	events:{
+		'click .note-add': 'note_new'
+	},
+	note_new: function(event){
+		event.preventDefault();
+		var button = $(event.currentTarget);
+		var view = this.model.edit_note(false);
+		view.container = button.parents('.note-add-container:first');
+		button.hide();
+		view.bind('remove',function(){
+			button.show();
+		});
 	}
 });
 
