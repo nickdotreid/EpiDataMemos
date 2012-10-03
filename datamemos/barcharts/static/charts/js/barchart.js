@@ -9,12 +9,10 @@ ChartView = Backbone.View.extend({
 		this.container = options.container;
 		
 		var chart_view = this;
-		this.model.get("rows").bind("tag-changed",function(){
+		this.model.get("tags").bind("tag-changed",function(){
 			chart_view.update();
 		});
-		this.model.get("columns").bind("tag-changed",function(){
-			chart_view.update();
-		});
+		
 		this.model.bind("change:update",function(chart){
 			chart_view.update();
 		});

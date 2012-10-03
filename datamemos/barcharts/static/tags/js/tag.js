@@ -68,30 +68,44 @@ TagCollection = Backbone.Collection.extend({
 	initialize: function(){
 		var collection = this;
 		this.on('change:selected',function(tag_selected){
-			if(collection.surpress) return ;
-			if(!collection.connected){
-				collection.trigger("tag-changed",tag_selected);
-				return;
-			}
-			if(tag_selected.get("selected")){
-				this.surpress = true;
-				_(collection.without([tag_selected])).forEach(function(tag){
-					if(tag != tag_selected){
-						tag.set("selected",false);
-					}
-				});
-				this.surpress = false;
-				collection.trigger("tag-changed",tag_selected);
-			}else{
-				if( tag_selected.get("parent") ){
-					tag_selected.get("parent").set("selected",true);
-				}else if(this.always_selected){
-					this.first().set("selected",true);
-				}else{
-					collection.trigger("tag-changed",tag_selected);
-				}
-			}
+			collection.broadcast_change(tag_selected);
 		});
+	},
+	broadcast_change: function(tag_selected,send_now){
+		var collection = this;
+		if(this.surpress) return ;
+		if(this.delay && !send_now){
+			clearTimeout(this.delay);
+			this.delay = false;
+		}
+		if(!send_now){
+			this.delay = setTimeout(function(){
+				collection.broadcast_change(tag_selected,true);
+			},100);
+			return ;
+		}
+		if(!this.connected){
+			this.trigger("tag-changed",tag_selected);
+			return;
+		}
+		if(tag_selected.get("selected")){
+			this.surpress = true;
+			_(collection.without([tag_selected])).forEach(function(tag){
+				if(tag != tag_selected){
+					tag.set("selected",false);
+				}
+			});
+			this.surpress = false;
+			this.trigger("tag-changed",tag_selected);
+		}else{
+			if( tag_selected.get("parent") ){
+				tag_selected.get("parent").set("selected",true);
+			}else if(this.always_selected){
+				this.first().set("selected",true);
+			}else{
+				this.trigger("tag-changed",tag_selected);
+			}
+		}
 	},
 	get_or_add: function(obj){
 		var tag = false;
