@@ -230,6 +230,9 @@ Chart = Backbone.Model.extend({
 	},
 	peak: function(point){
 		if(!this.get("active")) return ;
+		if(this.update_delay){
+			clearTimeout(this.update_delay);
+		}
 		var cached = this.get("cached_tags");
 		var set_cache = true;
 		if(cached.length > 0){
@@ -268,7 +271,9 @@ Chart = Backbone.Model.extend({
 			shorts.push(tag.get("short"));
 		});
 		this.set("cached_tags",[]);
-		this.set("update",true);
-		
+		var chart = this;
+		this.update_delay = setTimeout(function(){
+			chart.set("update",true);
+		},500);
 	}
 });
