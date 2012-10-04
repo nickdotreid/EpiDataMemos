@@ -135,6 +135,7 @@ ChartView = Backbone.View.extend({
 		return this.update();
 	},
 	update: function(){
+		if(!this.model.get("active")) return;
 		if(!this.model.get("update")){
 			console.log("NO UPDATE");
 			return ;
@@ -143,7 +144,7 @@ ChartView = Backbone.View.extend({
 			this.model.get("tags").forEach(function(tag){
 				if(tag.get("selected")) shorts.push(tag.get("short"));
 			});
-			console.log("UPDATE: "+shorts.join(","));
+			console.log("UPDATE '"+this.model.get("title")+"': "+shorts.join(","));
 		}
 		var chart_view = this;
 		var chart_max = 0;
