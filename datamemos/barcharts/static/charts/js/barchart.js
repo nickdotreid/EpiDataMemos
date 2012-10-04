@@ -132,8 +132,6 @@ ChartView = Backbone.View.extend({
 			return tag;
 		});
 		
-		this.trigger("rendered",this.model);
-		
 		return this.update();
 	},
 	update: function(){
@@ -166,6 +164,11 @@ ChartView = Backbone.View.extend({
 			this.update();
 			return ;
 		}
+		
+		this.model.get("points").forEach(function(point){
+			point.toggle();
+			point.select_value(chart_view.model.get("percent"));
+		});
 		
 		/**		SET SCALES		**/
 		if(this.scales.length < 1){
