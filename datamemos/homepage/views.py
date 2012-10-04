@@ -13,7 +13,7 @@ import json
 def show_home(request):
 	categories = Category.objects.filter(viewable=True).all()
 	charts_query = Chart.objects
-	if request.user.is_authenticated() and request.user.is_staff:
+	if not request.user.is_staff:
 		charts_query = Chart.objects.filter(published=True)
 	return render_to_response('homepage/chart.html',{
 		'charts':charts_query.all(),
