@@ -35,7 +35,11 @@
 <script id="highlight-template" type="text/html">
 	<div class="highlight">
 		<div class="row title"><%= row %> in <%= column %></div>
+		<%	if(under_threshold){	%>
+		<div class="row numbers warning">Less than <%= threshold %> <%= units %></div>
+		<%	}else{	%>
 		<div class="row numbers"><%= number %> of <%= total %> <%= units %> (<%= percent %>)</div>
+		<% } %>
 	</div>
 </script>
 <script type="text/javascript" src="{{STATIC_URL}}charts/js/chart.js"></script>

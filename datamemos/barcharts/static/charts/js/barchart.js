@@ -232,7 +232,6 @@ ChartView = Backbone.View.extend({
 			stacked = col.is_stacked();
 		});
 		var tag_order = this.tag_order;
-		if(stacked) tag_order = this.columns[0].get_order();
 		_(this.columns).forEach(function(column){
 			column.set_order(tag_order);
 		});
@@ -333,7 +332,8 @@ ChartView = Backbone.View.extend({
 				new Highlight({
 					model:point,
 					container: chart_view.$('.highlight-container'),
-					units: chart_view.model.get("units")
+					units: chart_view.model.get("units"),
+					threshold: 5
 				});
 			}
 		});
@@ -356,16 +356,27 @@ Highlight = Backbone.View.extend({
 			this.units = options.units;
 		}
 		
+		this.threshold = 0;
+		if(options && options.threshold){
+			this.threshold = options.threshold;
+		}
+		
 		this.render();
 	},
 	render: function(){
+		var under_threshold = false;
+		if(this.threshold >= this.model.get("number")){
+			under_threshold = true;
+		}
 		this.setElement(this.template({
 			row: this.model.get("rows")[0].get("name"),
 			column: this.model.get("columns")[0].get("name"),
 			number: format_number(this.model.get("number")),
 			total: format_number(this.model.get("total")),
 			percent: format_number(this.model.get("percent"),true),
-			units: this.units
+			units: this.units,
+			threshold: this.threshold,
+			under_threshold: under_threshold
 		}));
 		this.container.html("");
 		this.$el.appendTo(this.container);
