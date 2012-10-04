@@ -256,7 +256,6 @@ Chart = Backbone.Model.extend({
 			tag.select();
 			shorts.push(tag.get("short"));
 		});
-		console.log("PEAKING TO " + shorts.join(","));
 	},
 	unpeak: function(point){
 		if(!this.get("active")) return ;

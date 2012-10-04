@@ -137,14 +137,12 @@ ChartView = Backbone.View.extend({
 	update: function(){
 		if(!this.model.get("active")) return;
 		if(!this.model.get("update")){
-			console.log("NO UPDATE");
 			return ;
 		}else{
 			var shorts = [];
 			this.model.get("tags").forEach(function(tag){
 				if(tag.get("selected")) shorts.push(tag.get("short"));
 			});
-			console.log("UPDATE '"+this.model.get("title")+"': "+shorts.join(","));
 		}
 		var chart_view = this;
 		var chart_max = 0;
