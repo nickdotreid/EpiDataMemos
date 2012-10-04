@@ -91,12 +91,14 @@ ChartView = Backbone.View.extend({
 		var xbox = this.x_label.getBBox();
 		this.x_label.attr("x",paper.width/2 - xbox.width/2);
 		this.x_label.attr("y",paper.height - xbox.height);
+		this.x_label.attr({ "font-size": 12, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
 		
 		this.y_label = paper.text(0,0,this.model.get("y_label"));
 		this.y_label.transform('r-90');
 		var ybox = this.y_label.getBBox();
-		this.y_label.attr("x",0-(paper.height-ybox.height));
+		this.y_label.attr("x",0-(paper.height/2-ybox.height/2));
 		this.y_label.attr("y",ybox.width);
+		this.y_label.attr({ "font-size": 12, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
 		
 		/** MAKE COLUMNS **/
 		var chart_view = this;
@@ -448,6 +450,8 @@ ColumnView = Backbone.View.extend({
 		this.update_label();
 		this.label_total.attr("y",this.floor - this.label_total.getBBox().height);
 		this.label_title.attr("y",this.floor - this.label_total.getBBox().height - this.label_title.getBBox().height);
+		this.label_total.attr({ "font-size": 12, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
+		this.label_title.attr({ "font-size": 14, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
 		this.floor = this.floor - this.label_title.getBBox().height - this.label_total.getBBox().height;
 	},
 	update_label: function(){
@@ -526,6 +530,9 @@ ColumnView = Backbone.View.extend({
 			});
 			this.BBox = _.clone(BBox);
 			this.BBox.width = this.width;
+		}
+		if(this.BBox.width < this.label_title.getBBox().width){
+			this.BBox.width = this.label_title.getBBox().width;
 		}
 	},
 	get_order: function(){
