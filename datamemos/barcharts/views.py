@@ -50,6 +50,7 @@ def load_chart(request,chart_id):
 				'footnotes':footnotes,
 				'x_label':chart.x_label,
 				'y_label':chart.y_label,
+				'units': chart.units,
 				'rows':_rows,
 				'columns':_columns,
 				'points':_points,

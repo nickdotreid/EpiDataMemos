@@ -329,7 +329,8 @@ ChartView = Backbone.View.extend({
 			if(point.check_highlight()){
 				new Highlight({
 					model:point,
-					container: chart_view.$('.highlight-container')
+					container: chart_view.$('.highlight-container'),
+					units: chart_view.model.get("units")
 				});
 			}
 		});
@@ -341,19 +342,27 @@ Highlight = Backbone.View.extend({
 		
 	},
 	initialize: function(options){
-		this.template = _.template('<div class="highlight"><%= number %> of <%= total %> (<%= percent %>)</div>');
+		this.template = _.template($("#highlight-template").html());
 		
 		if( options && options.container ){
 			this.container = options.container;
+		}
+		
+		this.units = "People";
+		if(options && options.units){
+			this.units = options.units;
 		}
 		
 		this.render();
 	},
 	render: function(){
 		this.setElement(this.template({
+			row: this.model.get("rows")[0].get("name"),
+			column: this.model.get("columns")[0].get("name"),
 			number: format_number(this.model.get("number")),
 			total: format_number(this.model.get("total")),
-			percent: format_number(this.model.get("percent"),true)
+			percent: format_number(this.model.get("percent"),true),
+			units: this.units
 		}));
 		this.container.html("");
 		this.$el.appendTo(this.container);
