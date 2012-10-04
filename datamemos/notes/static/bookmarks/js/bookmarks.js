@@ -10,7 +10,8 @@ Bookmark = Backbone.Model.extend({
 		tags:new TagCollection(),
 		url:"",
 		title:"",
-		selected_count:0
+		selected_count:0,
+		highlight:false
 	},
 	parse: function(data){
 		var bookmark = this;
@@ -77,12 +78,26 @@ Bookmark = Backbone.Model.extend({
 				}
 			}
 		});
+	},
+	select: function(){
+		this.trigger("bookmark:selected",this);
+	},
+	highlight: function(on){
+		if(on){
+			this.set("highlight",true);
+		}else{
+			this.set("highlight",false);
+		}
 	}
 });
 
 BookmarkView = Backbone.View.extend({
 	events:{
-		
+		'mouseover': 'highlight',
+		'mouseout' : 'unhighlight',
+		'click a.edit': 'edit',
+		'click' : 'select',
+		'click a': 'select'
 	},
 	initialize: function(options){
 		this.template = _.template($("#bookmark-list-template").html());
@@ -99,6 +114,19 @@ BookmarkView = Backbone.View.extend({
 			title: title
 		}));
 		if(this.container) this.$el.appendTo(this.container);
+	},
+	edit: function(event){
+		event.preventDefault();
+	},
+	select: function(event){
+		event.preventDefault();
+		this.model.select();
+	},
+	highlight: function(event){
+		this.model.highlight(true);
+	},
+	unhighlight: function(event){
+		this.model.highlight(false);
 	}
 });
 

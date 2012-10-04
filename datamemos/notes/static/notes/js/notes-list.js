@@ -1,7 +1,8 @@
 Notes = Backbone.Model.extend({
 	defaults: {
 		chart: false,
-		update: true
+		update: true,
+		cached_tags: []
 	},
 	initialize: function(options){
 		
@@ -20,6 +21,9 @@ Notes = Backbone.Model.extend({
 			notes_manager.notes.chart = notes_manager.get("chart");
 			notes_manager.notes.fetch();
 		});
+		this.bind("change:update",function(){
+			notes_manager.notes.update = notes_manager.get("update");
+		});
 		this.types.bind("note-type-changed",function(type){
 			notes_manager.notes.type = type;
 			notes_manager.notes.fetch();
@@ -37,6 +41,41 @@ Notes = Backbone.Model.extend({
 					new_tags.push(new_tag);
 				});
 				bookmark.set("tags",new_tags);
+			});
+			note.get("bookmarks").bind("change:highlight",function(bookmark){
+				if(bookmark.get("highlight")){
+					notes_manager.set("update",false);
+					var cached = tags.filter(function(tag){
+						return tag.get("selected");
+					});
+					notes_manager.set("cached_tags",cached);
+					_(cached).forEach(function(tag){
+						tag.set("selected",false);
+					});
+					bookmark.get("tags").forEach(function(tag){
+						tag.set("selected",true);
+					});
+				}else{
+					var cached = notes_manager.get("cached_tags");
+					if(cached.length < 1) return ;
+					notes_manager.set("update",true);
+					
+					bookmark.get("tags").forEach(function(tag){
+						tag.set("selected",false);
+					});
+					_(cached).forEach(function(tag){
+						tag.set("selected",true);
+					});
+					notes_manager.set("cached_tags",[]);
+				}
+			}).bind("bookmark:selected",function(bookmark){
+				notes_manager.set("cached_tags",[]);
+				tags.forEach(function(tag){
+					tag.set("selected",false);
+				});
+				bookmark.get("tags").forEach(function(tag){
+					tag.set("selected",true);
+				});
 			});
 		});
 		
@@ -142,6 +181,7 @@ NoteList = Backbone.Collection.extend({
 	initialize: function(options){
 		this.type = false;
 		this.chart = false;
+		this.update = true;
 	},
 	fetch:function(options){
 		var notes_list = this;
@@ -195,6 +235,7 @@ NoteListView = Backbone.View.extend({
 		});
 	},
 	render: function(){
+		if(!this.collection.update) return;
 		var note_list_view = this;
 		this.$('.note').addClass("toRemove");
 		this.collection.forEach(function(note){
