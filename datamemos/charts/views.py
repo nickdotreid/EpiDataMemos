@@ -85,10 +85,12 @@ def row_to_object(row):
 	return _row
 	
 def list(request):
-	charts = Chart.objects.all()
+	charts = Chart.objects
+	if not request.user.is_staff:
+		charts = Chart.objects.filter(public=True)
 	if request.is_ajax():
 		_charts = []
-		for chart in charts:
+		for chart in charts.all():
 			_charts.append({
 				'id':chart.id,
 				'title':chart.title,
@@ -103,7 +105,7 @@ def list(request):
 				}),
 			'application/json')
 	return render_to_response('charts/chart_list.html',{
-		'charts':charts,
+		'charts':charts.all(),
 		},context_instance=RequestContext(request))
 	
 def detail(request,chart_id):
