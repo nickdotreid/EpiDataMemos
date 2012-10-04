@@ -11,6 +11,7 @@ ChartView = Backbone.View.extend({
 		var chart_view = this;
 		this.model.get("tags").bind("tag-changed",function(){
 			chart_view.update();
+			chart_view.color();
 			chart_view.highlight();
 		});
 		
@@ -236,55 +237,6 @@ ChartView = Backbone.View.extend({
 			column.set_order(tag_order);
 		});
 		
-		var col_selected = _(this.columns).any(function(column_view){
-			return column_view.model.get("selected");
-		});
-		_(this.points).forEach(function(point_view){
-			if(stacked){
-				if(col_selected){
-					if(_(point_view.model.get("columns")).any(function(tag){
-						return tag.get("selected");
-					})){
-						point_view.recolor();
-					}else{
-						point_view.recolor(true);
-					}
-				}else{
-					point_view.recolor();
-				}
-			}else{
-				if(col_selected){
-					if(_(point_view.model.get("columns")).any(function(tag){
-						return tag.get("selected");
-					})){
-						if(_(point_view.model.get("rows")).any(function(tag){
-							return tag.get("selected");
-						})){
-							point_view.recolor();
-						}else{
-							point_view.recolor(true);
-						}
-					}else{
-						if(_(point_view.model.get("rows")).any(function(tag){
-							return tag.get("selected");
-						})){
-							point_view.recolor(true);
-						}else{
-							point_view.recolor(true,true);
-						}
-					}
-				}else{
-					if(_(point_view.model.get("rows")).any(function(tag){
-						return tag.get("selected");
-					})){
-						point_view.recolor();
-					}else{
-						point_view.recolor(true);
-					}
-				}
-			}
-		});
-		
 		var xpos = 0;
 		xpos += this.y_label.getBBox().width;
 		
@@ -336,6 +288,61 @@ ChartView = Backbone.View.extend({
 					threshold: 5
 				});
 			}
+		});
+	},
+	color: function(){
+		var stacked = false;
+		_(this.columns).forEach(function(col){
+			stacked = col.is_stacked();
+		});
+		var col_selected = _(this.columns).any(function(column_view){
+			return column_view.model.get("selected");
+		});
+		_(this.points).forEach(function(point_view){
+			if(stacked){
+				if(col_selected){
+					if(_(point_view.model.get("columns")).any(function(tag){
+						return tag.get("selected");
+					})){
+						point_view.recolor();
+					}else{
+						point_view.recolor(true);
+					}
+				}else{
+					point_view.recolor();
+				}
+			}else{
+				if(col_selected){
+					if(_(point_view.model.get("columns")).any(function(tag){
+						return tag.get("selected");
+					})){
+						if(_(point_view.model.get("rows")).any(function(tag){
+							return tag.get("selected");
+						})){
+							point_view.recolor();
+						}else{
+							point_view.recolor(true);
+						}
+					}else{
+						if(_(point_view.model.get("rows")).any(function(tag){
+							return tag.get("selected");
+						})){
+							point_view.recolor(true);
+						}else{
+							point_view.recolor(true,true);
+						}
+					}
+				}else{
+					if(_(point_view.model.get("rows")).any(function(tag){
+						return tag.get("selected");
+					})){
+						point_view.recolor();
+					}else{
+						point_view.recolor(true);
+					}
+				}
+			}
+			point_view.animate_color(250);
 		});
 	}
 });
@@ -676,7 +683,6 @@ PointView = Backbone.View.extend({
 				point.el.animate({
 					y: this.y,
 					height: this.height,
-					fill: point.color,
 					callback:function(){
 						point.el.animate({
 							x: point.x
@@ -686,7 +692,6 @@ PointView = Backbone.View.extend({
 			}else{
 				point.el.animate({
 					x: this.x,
-					fill: point.color,
 					callback:function(){
 						point.el.animate({
 							height: point.height,
@@ -699,9 +704,13 @@ PointView = Backbone.View.extend({
 			point.el.animate({
 				height:point.height,
 				y:point.y,
-				fill:point.color
 			},duration);
 		}
+	},
+	animate_color: function(duration){
+		this.el.animate({
+			fill:this.color
+		},duration);
 	},
 	in_position: function(){
 		if(this.x != this.el.attr("x")) return false;
