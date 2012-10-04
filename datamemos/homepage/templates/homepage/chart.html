@@ -70,8 +70,9 @@
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes-list.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/homepage.js"></script>
 	<script type="text/javascript">
+		var ChartApp = false;
 		$(document).ready(function(){
-			var homepage = new Homepage();
+			ChartApp = new Homepage();
 			Backbone.history.start();
 		});
 	</script>

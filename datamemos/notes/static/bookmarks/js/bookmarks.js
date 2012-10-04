@@ -18,9 +18,10 @@ Bookmark = Backbone.Model.extend({
 		if(data['tags']){
 			var tags = new TagCollection();
 			_(data['tags']).forEach(function(str){
-				tags.add({
-					short: str
+				var tag = ChartApp.get("tags").get_or_add({
+					short:str
 				});
+				tags.add(tag);
 			});
 			data['tags'] = tags;
 		}else{
