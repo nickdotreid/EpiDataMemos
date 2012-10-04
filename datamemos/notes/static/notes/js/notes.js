@@ -127,7 +127,8 @@ NoteEdit = Backbone.View.extend({
 	events:{
 		'click .modal-footer .btn-primary':'submit',
 		'submit form':'submit',
-		'hidden': 'remove'
+		'hidden': 'remove',
+		'click .close-btn':'click_to_remove'
 	},
 	initialize: function(options){
 		var edit_view = this;
@@ -162,6 +163,10 @@ NoteEdit = Backbone.View.extend({
 	remove: function(){
 		this.$el.remove();
 		this.trigger("remove");
+	},
+	click_to_remove: function(event){
+		event.preventDefault();
+		this.remove();
 	},
 	submit: function(event){
 		event.preventDefault();

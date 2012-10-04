@@ -43,3 +43,33 @@
   clear: both;
   margin: 3.5px auto;
 }
+.note-add-container .note-add.btn {
+  display: block;
+  margin: 7px auto;
+}
+.note-add-form-container {
+  margin: 7px 0px;
+}
+.note-add-form-container form.note {
+  margin: 0px;
+}
+.note-add-form-container .close-btn {
+  display: block;
+  font-size: 0.8em;
+  margin: 0px;
+  position: relative;
+  color: #FFF;
+  text-align: center;
+  background-color: #444;
+}
+.note-add-form-container .close-btn i {
+  position: absolute;
+  top: 3px;
+  left: 15px;
+  width: 15px;
+  height: 15px;
+  display: block;
+  background-image: url('../../bootstrap/img/glyphicons-halflings-white.png');
+  background-repeat: no-repeat;
+  background-position: -314px 0;
+}
