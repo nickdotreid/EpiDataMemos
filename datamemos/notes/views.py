@@ -29,8 +29,6 @@ def list(request):
 		query = query.filter(type=category)
 	if not request.user.is_staff:
 		query = query.filter(public=True)
-	else:
-		query = query.filter(public=False)
 	if request.is_ajax():
 		_notes = []
 		for note in query.all():
