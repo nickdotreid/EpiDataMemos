@@ -13,10 +13,6 @@ Notes = Backbone.Model.extend({
 		this.notes = new NoteList();
 		this.types = new NoteTypeList();
 		
-		new NoteListView({
-			collection: this.notes,
-			el: $(".notes-list")[0]
-		});
 		
 		var notes_manager = this;
 		
@@ -42,6 +38,11 @@ Notes = Backbone.Model.extend({
 				});
 				bookmark.set("tags",new_tags);
 			});
+		});
+		
+		new NoteListView({
+			collection: this.notes,
+			el: $(".notes-list")[0]
 		});
 		
 		this.notes.bind("share",function(note){
