@@ -3,6 +3,12 @@
 {% block scripts %}
 {{block.super}}
 	{% include 'charts/barchart-scripts.html' %}
+	<script id="bookmark-list-template" type="text/html">
+		<div class="bookmark-list-item bookmark">
+			<i></i>
+			<span class="title"><%= title %></span>
+		</div>
+	</script>
 	<script id="bookmark-share-template" type="text/html">
 		<div class="modal hide fade">
 		  <div class="modal-header">

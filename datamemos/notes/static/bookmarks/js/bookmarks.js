@@ -9,6 +9,7 @@ Bookmark = Backbone.Model.extend({
 		chart:false,
 		tags:new TagCollection(),
 		url:"",
+		title:"",
 		selected_count:0
 	},
 	parse: function(data){
@@ -76,6 +77,28 @@ Bookmark = Backbone.Model.extend({
 				}
 			}
 		});
+	}
+});
+
+BookmarkView = Backbone.View.extend({
+	events:{
+		
+	},
+	initialize: function(options){
+		this.template = _.template($("#bookmark-list-template").html());
+		if(options && options.container) this.container = options.container;
+		var title = this.model.get("title");
+		if(!title || title==""){
+			var title_arr = [];
+			this.model.get("tags").forEach(function(tag){
+				title_arr.push(tag.get("name"));
+			});
+			title = title_arr.join(",");
+		}
+		this.setElement(this.template({
+			title: title
+		}));
+		if(this.container) this.$el.appendTo(this.container);
 	}
 });
 

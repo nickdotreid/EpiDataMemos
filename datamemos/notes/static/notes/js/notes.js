@@ -78,6 +78,13 @@ NoteItem = Backbone.View.extend({
 			this.setElement(new_el);
 			this.$el.appendTo(this.$container);
 		}
+		var bookmark_container = this.$('.bookmarks');
+		this.model.get("bookmarks").forEach(function(bookmark){
+			new BookmarkView({
+				model:bookmark,
+				container:bookmark_container
+			});
+		});
 	},
 	share:function(event){
 		event.preventDefault();
