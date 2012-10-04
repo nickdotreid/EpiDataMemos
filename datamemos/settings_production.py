@@ -28,3 +28,6 @@ if 'SENDGRID_USERNAME' in os.environ and 'SENDGRID_PASSWORD' in os.environ:
 	EMAIL_PORT = 587
 	EMAIL_USE_TLS = True
 	EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+	
+if 'GOOGLE_ANALYTICS_ID' in os.environ:
+	GOOGLE_ANALYTICS_ID = os.environ['GOOGLE_ANALYTICS_ID']

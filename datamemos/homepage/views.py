@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
 
 from django.template import RequestContext
 
@@ -17,6 +18,7 @@ def show_home(request):
 	return render_to_response('homepage/chart.html',{
 		'charts':charts_query.all(),
 		'categories':categories,
+		'google_analytics_id':settings.GOOGLE_ANALYTICS_ID
 	},context_instance=RequestContext(request))
 	
 def load_chart(request,chart_id):
