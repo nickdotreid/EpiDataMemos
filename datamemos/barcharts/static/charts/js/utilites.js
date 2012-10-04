@@ -28,7 +28,7 @@ function round_to_significant_number(num,increase){
 	if(num < 5){
 		return Math.round(num);
 	}
-	return Math.ceil(num/5)*5;
+	return Math.ceil(num/10)*10;
 }
 
 function in_range_of(a,b){
