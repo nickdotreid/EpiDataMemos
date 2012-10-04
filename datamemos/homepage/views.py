@@ -5,7 +5,7 @@ from django.conf import settings
 from django.template import RequestContext
 
 from charts.models import Chart
-from notes.models import Note
+from notes.models import Note, Bookmark
 from notes.models import Category
 
 import json
@@ -41,3 +41,12 @@ def load_note(request,note_id):
 		return HttpResponseRedirect("/#charts/%i/%s" % (bookmark.chart.id,"/".join(tags)))
 	return HttpResponseRedirect("/#notes/%i" % (note.id))
 	
+def load_bookmark(request,bookmark_id):
+	if request.is_ajax():
+		from notes.views import bookmark_save
+		return bookmark_save(request,bookmark_id)
+	bookmark = get_object_or_404(Bookmark,pk=bookmark_id)
+	tags = []
+	for tag in bookmark.tags.all():
+		tags.append(tag.short)
+	return HttpResponseRedirect("/#charts/%i/%s" % (bookmark.chart.id,"/".join(tags)))

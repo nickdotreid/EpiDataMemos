@@ -1,5 +1,5 @@
 Bookmark = Backbone.Model.extend({
-	urlRoot:'/notes/bookmark/',
+	urlRoot:'/bookmark/',
 	url:function(){
 		if(this.get("id")) return this.urlRoot + this.get("id");
 		return this.urlRoot;
