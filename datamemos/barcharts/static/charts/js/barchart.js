@@ -110,7 +110,7 @@ ChartView = Backbone.View.extend({
 			var column = new ColumnView({
 				model:tag,
 				paper:paper,
-				floor:paper.height - xbox.height,
+				floor:paper.height - xbox.height - chart_view.padding,
 				cieling:chart_view.padding * 2
 			});
 			chart_view.columns.push(column);
