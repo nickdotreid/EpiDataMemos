@@ -96,7 +96,7 @@ Tick = Backbone.View.extend({
 		
 		this.el = this.paper.text(this.x,this.y,this.value);
 		this.el.attr("text-anchor","start");
-		this.el.attr({ "font-size": 10, "font-family": "Arial, Helvetica, sans-serif" });
+		this.el.attr({ "font-size": 14, "font-family": "Arial, Helvetica, sans-serif" });
 	},
 	calculate: function(max,height,width){
 		this.el.attr("text",format_number(this.value,this.percent));
