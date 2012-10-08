@@ -705,7 +705,7 @@ PointView = Backbone.View.extend({
 		}else{
 			point.el.animate({
 				height:point.height,
-				y:point.y,
+				y:point.y
 			},duration);
 		}
 	},
