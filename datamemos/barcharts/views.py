@@ -42,9 +42,18 @@ def load_chart(request,chart_id):
 				'title':footnote.title,
 				'description':footnote.description
 			})
+		author = False
+		if chart.author:
+			author = chart.author.email
+		timestamp = False
+		if chart.pub_date:
+			import time
+			timestamp = time.mktime(chart.pub_date.timetuple())
 		return HttpResponse(
 			json.dumps({
 				'id':chart.id,
+				'author':author,
+				'date': timestamp,
 				'title':chart.title,
 				'description':chart.description,
 				'footnotes':footnotes,
