@@ -238,7 +238,7 @@ ChartView = Backbone.View.extend({
 		});
 		
 		var xpos = 0;
-		xpos += this.y_label.getBBox().width;
+		xpos += this.y_label.getBBox().width + this.padding;
 		
 		var lowest_label = this.paper.height;
 		_(this.columns).forEach(function(column){
