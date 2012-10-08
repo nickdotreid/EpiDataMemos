@@ -79,7 +79,6 @@
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		{% if google_analytics_id and not user.is_staff %}_gaq.push(['_setAccount', 'UA-35249294-1']);{% endif %}
-		_gaq.push(['_trackPageview']);
 
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
