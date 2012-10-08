@@ -28,7 +28,19 @@ function round_to_significant_number(num,increase){
 	if(num < 5){
 		return Math.round(num);
 	}
-	return Math.ceil(num/10)*10;
+	var multi = Math.pow(10,find_size(num));
+	return Math.ceil(num/multi)*multi;
+}
+
+function find_size(num){
+	var places = 0;
+	level = function(num){
+		places += 1;
+		num = num/10;
+		if(num>10) level(num);
+	}
+	level(num);
+	return places;
 }
 
 function in_range_of(a,b){

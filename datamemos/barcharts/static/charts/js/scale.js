@@ -28,7 +28,7 @@ ScaleColumn = Backbone.View.extend({
 		var scale = this;
 		
 		_(make_ticks(0,max,5)).forEach(function(tick_value){
-			tick_value = round_to_significant_number(tick_value);
+			tick_value = tick_value;
 			var existing_tick = _(scale.ticks).find(function(tick){
 				if(tick_value == tick.value) return true;
 				return false;
