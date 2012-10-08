@@ -468,9 +468,11 @@ ColumnView = Backbone.View.extend({
 		this.label_total = this.paper.text(0,0,"foo");
 		this.update_label();
 		this.label_total.attr("y",this.floor - this.label_total.getBBox().height);
-		this.label_title.attr("y",this.floor - this.label_total.getBBox().height - this.label_title.getBBox().height);
 		this.label_total.attr({ "font-size": 14, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
+		
+		this.label_title.attr("y",this.floor - this.label_total.getBBox().height - this.label_title.getBBox().height);
 		this.label_title.attr({ "font-size": 16, "font-family": "Arial, Helvetica, sans-serif", "text-anchor":"start" });
+		
 		this.floor = this.floor - this.label_title.getBBox().height - this.label_total.getBBox().height;
 	},
 	update_label: function(){
