@@ -7,6 +7,7 @@
 	top:0px;
 	left:0px;
 	margin:0px;
+	padding-bottom:30px;
 	background-color:#FFF;
 	.description,.title{
 		margin:0px @spaceSize;
@@ -22,28 +23,6 @@
 			line-height:13px;
 			font-style:italic;
 			border:0px;
-		}
-	}
-}
-
-/* GRID */
-.grid{
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:1;
-	width:100%;
-	height:100%;
-	border-right:1px solid @gridColor;
-	border-left:1px solid @gridColor;
-	.tick{
-		position:absolute;
-		top:0px;
-		left:0px;
-		border-top:1px solid @gridColor;
-		width:100%;
-		.label{
-			display:none;
 		}
 	}
 }
@@ -110,7 +89,7 @@
 	height:400px;
 	width:auto;
 	display:block;
-	margin:7px 7px 30px;
+	margin:@spaceSize;
 	position:relative;
 	top:0px;
 	left:0px;
@@ -203,6 +182,18 @@
 			z-index:7;
 			background-image:none;
 		}
+	}
+}
+
+.chart .footnote{
+	margin:@spaceSize;
+	.footnote-title{
+		font-size:16px;
+		line-height:18px;
+		margin:0px;
+	}
+	.description{
+		margin:0px;
 	}
 }
 
