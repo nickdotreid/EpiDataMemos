@@ -225,6 +225,7 @@ NoteListView = Backbone.View.extend({
 		
 		var note_list_view = this;
 		this.collection.bind("add",function(note){
+			note_list_view.$('.nonotes').remove();
 			var note_view = new NoteItem({
 				model:note,
 				container:note_list_view.el
@@ -237,6 +238,7 @@ NoteListView = Backbone.View.extend({
 	render: function(){
 		if(!this.collection.update) return;
 		var note_list_view = this;
+		this.$('.nonotes').remove();
 		this.$('.note').addClass("toRemove");
 		this.collection.forEach(function(note){
 			var view = note_list_view.$('#note-'+note.get("id"));
@@ -251,6 +253,9 @@ NoteListView = Backbone.View.extend({
 			note_list_view.$el.append(view);
 		});
 		this.$(".note.toRemove").remove();
+		if(this.collection.length < 1){
+			this.$el.append("<div class='nonotes alert alert-warning'>No Notes</div>")
+		}
 	},
 	clear: function(){
 		this.$el.html("");
