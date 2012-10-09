@@ -284,7 +284,7 @@ ChartView = Backbone.View.extend({
 				if( point_view.model == point) return true;
 				return false;
 			});
-			if(point.check_highlight()){
+			if(point_view && point.check_highlight()){
 				new Highlight({
 					model:point,
 					view: point_view,
@@ -376,6 +376,11 @@ Highlight = Backbone.View.extend({
 		if(options && options.threshold){
 			this.threshold = options.threshold;
 		}
+		
+		var highlight = this;
+		this.model.bind('point:unhighlight',function(){
+			highlight.$el.remove();
+		});
 		
 		this.render();
 	},
