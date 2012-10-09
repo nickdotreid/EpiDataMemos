@@ -553,6 +553,10 @@ ColumnView = Backbone.View.extend({
 			this.BBox.width = this.width;
 		}
 		if(this.BBox.width < this.label_title.getBBox().width){
+			var diff = (this.label_title.getBBox().width - this.BBox.width)/2;
+			_(this.points).forEach(function(point_view){
+				point_view.x += diff;
+			});
 			this.BBox.width = this.label_title.getBBox().width;
 		}
 	},
