@@ -280,10 +280,15 @@ ChartView = Backbone.View.extend({
 		this.model.get("points").forEach(function(point){
 			point.select_value(chart_view.model.get("percent"));
 			point.toggle();
+			var point_view = _(chart_view.points).find(function(point_view){
+				if( point_view.model == point) return true;
+				return false;
+			});
 			if(point.check_highlight()){
 				new Highlight({
 					model:point,
-					container: chart_view.$('.highlight-container'),
+					view: point_view,
+					container: chart_view.$('.canvas'),
 					units: chart_view.model.get("units"),
 					threshold: 5
 				});
@@ -358,6 +363,10 @@ Highlight = Backbone.View.extend({
 			this.container = options.container;
 		}
 		
+		if( options && options.view ){
+			this.view = options.view;
+		}
+		
 		this.units = "People";
 		if(options && options.units){
 			this.units = options.units;
@@ -385,9 +394,27 @@ Highlight = Backbone.View.extend({
 			threshold: this.threshold,
 			under_threshold: under_threshold
 		}));
-		this.container.html("");
+		$('.highlight',this.container).remove();
 		this.$el.appendTo(this.container);
-		this.container.height(this.$el.height()*2);
+		var xpos = 0;
+		var ypos = 0;
+		
+		if(this.view.x > this.$el.width() + 14){
+			xpos = this.view.x - this.$el.width() - 7;
+		}else{
+			xpos = this.view.x + this.view.width + 7; 
+		}
+		
+		if(this.view.y > this.$el.height() + 14){
+			ypos = this.view.y - this.$el.height() - 7;
+		}else{
+			ypos = 7;
+		}
+		
+		this.$el.css({
+			top: ypos + 'px',
+			left: xpos + 'px'
+		})
 	}
 })
 

@@ -95,6 +95,15 @@
   top: 0px;
   left: 0px;
 }
+.canvas .highlight {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 230px;
+  display: block;
+  background-color: #FFF;
+  border: #000 3px solid;
+}
 .chart .footnote {
   margin: 7px;
 }
