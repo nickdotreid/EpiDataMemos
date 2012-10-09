@@ -723,27 +723,15 @@ PointView = Backbone.View.extend({
 			this.el.attr("x",this.x);
 		}
 		if(this.x != this.el.attr("x") && this.height != 0){
-			if( this.y < this.el.attr("y")){
-				point.el.animate({
-					y: this.y,
-					height: this.height,
-					callback:function(){
-						point.el.animate({
-							x: point.x
-						},duration);
-					}
-				},duration);				
-			}else{
-				point.el.animate({
-					x: this.x,
-					callback:function(){
-						point.el.animate({
-							height: point.height,
-							y: point.y
-						},duration);
-					}
-				},duration);				
-			}
+			point.el.animate({
+				x: this.x,
+				callback:function(){
+					point.el.animate({
+						height: point.height,
+						y: point.y
+					},duration);
+				}
+			},duration);
 		}else{
 			point.el.animate({
 				height:point.height,
