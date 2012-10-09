@@ -104,6 +104,21 @@
   background-color: #FFF;
   border: #000 3px solid;
 }
+.canvas .highlight .numbers,
+.canvas .highlight .title {
+  display: block;
+  clear: both;
+  text-align: center;
+}
+.canvas .highlight .numbers {
+  margin: 3.5px 7px 7px;
+}
+.canvas .highlight .title {
+  margin: 7px 7px 3.5px;
+}
+.canvas .highlight .warning {
+  font-style: italic;
+}
 .chart .footnote {
   margin: 7px;
 }

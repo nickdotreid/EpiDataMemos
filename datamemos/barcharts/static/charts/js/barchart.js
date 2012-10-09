@@ -277,23 +277,29 @@ ChartView = Backbone.View.extend({
 	highlight: function(){
 		var chart_view = this;
 		this.$('.highlight-container .highlight').remove();
+		var highlight = false;
 		this.model.get("points").forEach(function(point){
 			point.select_value(chart_view.model.get("percent"));
 			point.toggle();
-			var point_view = _(chart_view.points).find(function(point_view){
-				if( point_view.model == point) return true;
-				return false;
-			});
-			if(point_view && point.check_highlight()){
-				new Highlight({
-					model:point,
-					view: point_view,
-					container: chart_view.$('.canvas'),
-					units: chart_view.model.get("units"),
-					threshold: 5
+			if(point.check_highlight()){
+				var point_view = _(chart_view.points).find(function(point_view){
+					if( point_view.model == point) return true;
+					return false;
 				});
+				if( point_view ){
+					highlight = new Highlight({
+						model:point,
+						view: point_view,
+						container: chart_view.$('.canvas'),
+						units: chart_view.model.get("units"),
+						threshold: 5
+					});					
+				}
 			}
 		});
+		if(!highlight){
+			this.$('.canvas .hightlight').remove();
+		}
 	},
 	color: function(){
 		var stacked = false;
