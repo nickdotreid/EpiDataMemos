@@ -104,7 +104,7 @@ Tick = Backbone.View.extend({
 		this.width = this.el.getBBox().width;
 		this.y = height - ( ( this.value/max ) * height ) + this.el.getBBox().height;
 		if(width){
-			this.x = width/2 - this.width/2;
+			this.x = width - this.width;
 		}
 	},
 	update: function(){
