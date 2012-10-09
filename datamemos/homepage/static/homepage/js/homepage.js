@@ -125,13 +125,13 @@ Homepage = Backbone.Model.extend({
 	},
 	set_chart_url:function(chart,replace){
 		if(!chart && !this.get("notes").get("chart")) return;
+		if(!chart){
+			chart = this.get("notes").get("chart");
+		}
 		var tag_shorts = [];
 		this.get("tags").forEach(function(tag){
 			if(tag.get("selected")) tag_shorts.push(tag.get("short"));
 		});
-		if(!chart){
-			chart = this.get("notes").get("chart");
-		}
 		var url = 'charts/'+chart.get("id");
 		if(tag_shorts.length > 0){
 			url += '/'+tag_shorts.join("/");
