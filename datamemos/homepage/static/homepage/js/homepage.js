@@ -128,6 +128,7 @@ Homepage = Backbone.Model.extend({
 		if(!chart){
 			chart = this.get("notes").get("chart");
 		}
+		if(!chart.get("active")) return;
 		var tag_shorts = [];
 		this.get("tags").forEach(function(tag){
 			if(tag.get("selected")) tag_shorts.push(tag.get("short"));
