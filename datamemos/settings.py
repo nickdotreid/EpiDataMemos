@@ -89,8 +89,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 	'south',
 	'adminsortable',
-	'notes',
 	'charts',
+	'notes',
 	'barcharts',
 	'homepage',
 )
