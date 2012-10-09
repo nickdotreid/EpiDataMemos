@@ -293,7 +293,11 @@ ChartView = Backbone.View.extend({
 						container: chart_view.$('.canvas'),
 						units: chart_view.model.get("units"),
 						threshold: 5
-					});					
+					});
+					
+					chart_view.model.get("tags").bind("tag-changed",function(){
+						highlight.remove();
+					});	
 				}
 			}
 		});
@@ -385,10 +389,13 @@ Highlight = Backbone.View.extend({
 		
 		var highlight = this;
 		this.model.bind('point:unhighlight',function(){
-			highlight.$el.remove();
+			highlight.remove();
 		});
 		
 		this.render();
+	},
+	remove: function(){
+		this.$el.remove();
 	},
 	render: function(){
 		var under_threshold = false;
