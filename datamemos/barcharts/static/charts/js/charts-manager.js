@@ -7,6 +7,9 @@ Charts = Backbone.Collection.extend({
 		if(options && options.tags) this.tags = options.tags;
 		else this.tags = new TagCollection();
 		
+		if(options && options.percent_tag) this.percent_tag = options.percent_tag;
+		else this.percent_tag = this.tags.get_or_add({short:'percent'});
+		
 		this.manager = new ChartManager({
 			collection:charts_collection
 		});
@@ -28,6 +31,10 @@ Charts = Backbone.Collection.extend({
 	},
 	add_chart: function(chart){
 		chart.set("tags",this.tags);
+		chart.set("percent_tag",this.percent_tag);
+		this.percent_tag.bind("change:selected",function(tag){
+			chart.set("percent",tag.get("selected"));
+		});
 		// tell chart to check its rows & columns
 	},
 	active: function(){

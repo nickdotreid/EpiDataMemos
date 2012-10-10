@@ -123,6 +123,7 @@ Chart = Backbone.Model.extend({
 		var points = this.get("points");
 		
 		this.bind("change:percent",function(chart){
+			if(chart.get("percent_tag")) chart.get("percent_tag").set("selected",chart.get("percent"));
 			points.forEach(function(point){
 				point.select_value(chart.get("percent"));
 			});
