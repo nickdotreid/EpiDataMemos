@@ -99,11 +99,25 @@ Notes = Backbone.Model.extend({
 		});
 		
 		this.tags.bind("change:selected",function(){
-			notes_manager.notes.sort({silent:true});
+			if(notes_manager.get("update")) notes_manager.notes.sort({silent:true});
 		});
 	},
 	set_chart: function(chart){
 		this.set("chart",chart);
+	},
+	view_note: function(note){
+		if(!note || !note.get("id")) return ;
+		var notes_manager = this;
+		this.set("note",note);
+		var note_view = new NoteItem({
+			model: note,
+			container: $("#note-view-container")[0],
+			show_close: true
+		});
+		note_view.bind('remove',function(){
+			$("#note-view-container").html("").hide();
+			notes_manager.set("note",false);
+		});
 	},
 	edit_note: function(note){
 		if(!this.get("chart") && !note) return ;
@@ -128,8 +142,7 @@ Notes = Backbone.Model.extend({
 		edit_view.bind("saved",function(note){
 			note.fetch({success:function(){
 				notes_manager.notes.add(note);
-				notes_manager.set("note",false);
-				note.trigger("share",note);
+				notes_manager.view_note(note);
 			}});
 		});
 		return edit_view;

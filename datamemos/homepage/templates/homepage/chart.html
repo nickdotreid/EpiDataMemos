@@ -53,6 +53,7 @@
 	</script>
 	<script id="note-template" type="text/html">
 		<div id="note-<%= id %>" note-id="<%= id %>" class="note">
+			<% if(show_close){ %><a href="#" class="close"><i></i>Close</a><% } %>
 			<div class="text"><%= text %></div>
 			<div class="bookmarks bookmarks-list"></div>
 			<div class="meta">
@@ -150,6 +151,7 @@
 		<div class="note-add-container">
 			<a href="#" class="note-add btn">Add Note</a>
 		</div>
+		<div id="note-view-container"></div>
 		<div class="notes-list">
 			
 		</div>

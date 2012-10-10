@@ -49,14 +49,22 @@ Note = Backbone.Model.extend({
 	},
 	share: function(){
 		this.trigger("share",this);
+	},
+	edit: function(){
+		
 	}
 });
 
 NoteItem = Backbone.View.extend({
 	events:{
-		'click a.share':'share'
+		'click a.share':'share',
+		'click a.edit': 'edit',
+		'click a.close': 'remove'
 	},
 	initialize: function(options){
+		if(options && options.show_close) this.show_close = true;
+		else this.show_close = false;
+		
 		this.template = _.template($("#note-template").html());
 		this.container = options.container;
 		this.$container = $(this.container);
@@ -74,7 +82,12 @@ NoteItem = Backbone.View.extend({
 		if($("#note-"+note_id,this.$container).length > 0){
 			this.setElement($("note-"+note_id,this.$container)[0]);
 		}else{
-			var new_el = this.template(this.model.toJSON());
+			var model_vars = this.model.toJSON();
+			
+			if(this.show_close) model_vars['show_close'] = true;
+			else model_vars['show_close'] = false;
+			
+			var new_el = this.template(model_vars);
 			this.setElement(new_el);
 			this.$el.appendTo(this.$container);
 		}
@@ -86,9 +99,19 @@ NoteItem = Backbone.View.extend({
 			});
 		});
 	},
-	share:function(event){
+	share: function(event){
 		event.preventDefault();
 		this.model.share();
+		this.trigger("note:share",this.model);
+	},
+	edit: function(event){
+		event.preventDefault();
+		this.model.edit();
+		this.trigger("note:edit",this.model);
+	},
+	remove: function(event){
+		event.preventDefault();
+		this.trigger("remove");		
 	}
 });
 
