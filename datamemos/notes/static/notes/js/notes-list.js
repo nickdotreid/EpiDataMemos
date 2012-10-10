@@ -1,6 +1,7 @@
 Notes = Backbone.Model.extend({
 	defaults: {
 		chart: false,
+		note: false,
 		update: true,
 		cached_tags: []
 	},
@@ -79,9 +80,18 @@ Notes = Backbone.Model.extend({
 			});
 		});
 		
-		new NoteListView({
+		var note_list_view = new NoteListView({
 			collection: this.notes,
 			el: $(".notes-list")[0]
+		});
+		this.bind('change:note',function(){
+			if(notes_manager.get("note")) note_list_view.$el.hide();
+			else note_list_view.$el.show();
+		});
+		
+		this.bind('change:note',function(){
+			if(notes_manager.get("note")) notes_manager.set("update",false);
+			else notes_manager.set("update",true);
 		});
 		
 		this.notes.bind("share",function(note){
@@ -110,6 +120,7 @@ Notes = Backbone.Model.extend({
 			note = new Note();
 			note.get("bookmarks").add(bookmark);
 		}
+		this.set("note",note);
 		var edit_view = new NoteEdit({
 			model: note
 		});
@@ -117,6 +128,7 @@ Notes = Backbone.Model.extend({
 		edit_view.bind("saved",function(note){
 			note.fetch({success:function(){
 				notes_manager.notes.add(note);
+				notes_manager.set("note",false);
 				note.trigger("share",note);
 			}});
 		});
