@@ -33,12 +33,6 @@ def load_note(request,note_id):
 		from notes.views import detail
 		return detail(request,note_id)
 	note = get_object_or_404(Note,pk=note_id)
-	if note.bookmark_set.count() > 0:
-		bookmark = note.bookmark_set.get()
-		tags = []
-		for tag in bookmark.tags.all():
-			tags.append(tag.short)
-		return HttpResponseRedirect("/#charts/%i/%s" % (bookmark.chart.id,"/".join(tags)))
 	return HttpResponseRedirect("/#notes/%i" % (note.id))
 	
 def load_bookmark(request,bookmark_id):

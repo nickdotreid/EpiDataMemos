@@ -2,7 +2,8 @@ var Workspace = Backbone.Router.extend({
 	routes: {
 		"":"showHome",
 		"charts/:id": "openChart",
-		"charts/:id/*tags": "openChart"
+		"charts/:id/*tags": "openChart",
+		"notes/:id": "openNote",
 	},
 	initialize:function(){
 		return this.bind('all', this._trackPageview);
@@ -24,6 +25,9 @@ var Workspace = Backbone.Router.extend({
 			return this;
 		}
 		this.trigger("openChart",id);
+	},
+	openNote: function(id){
+		this.trigger("openNote",id);
 	},
 	showHome: function(){
 		this.trigger("showHome");
@@ -88,9 +92,37 @@ Homepage = Backbone.Model.extend({
 				}
 			});
 		});
+		this.router.bind('openNote',function(id){
+			homepage.trigger("loading");
+			var note = homepage.get("notes").notes.get(id);
+			if(note){
+				homepage.show_note(note);
+			}else{
+				note = new Note({
+					id:id
+				});
+				homepage.get("notes").notes.add(note);
+				note.fetch({
+					success:function(){
+						homepage.show_note(note);
+					}
+				})
+			}
+		});
 		this.router.bind("showHome",function(){
 			homepage.change_page("home");
 		});
+	},
+	show_note: function(note){
+		if(!note) return;
+		this.get("notes").view_note(note);
+		if(note.get("bookmarks").length > 0){
+			var bookmark = note.get("bookmarks").first();
+			var chart_id = bookmark.get("chart")['id'];
+			var chart = this.get("charts").get(chart_id);
+			this.set_chart_url(chart,true);
+			chart.activate();
+		}
 	},
 	change_page: function(page_name){
 		if(page_name){
