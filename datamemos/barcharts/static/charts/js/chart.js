@@ -114,6 +114,7 @@ Chart = Backbone.Model.extend({
 		rows:new TagCollection(),
 		columns:new TagCollection(),
 		points:new PointCollection(),
+		lock_percent:false,
 		percent:false,
 		active:false,
 		update: true

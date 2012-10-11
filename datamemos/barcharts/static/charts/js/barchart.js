@@ -74,11 +74,13 @@ ChartView = Backbone.View.extend({
 		columns_control.render();
 		this.$('.controls').append(columns_control.el);
 		
-		var percent_control = new PercentCheckbox({
-			model: this.model
-		});
-		percent_control.render();
-		this.$('.controls').append(percent_control.el);
+		if(!this.model.get("lock_percent")){
+			var percent_control = new PercentCheckbox({
+				model: this.model
+			});
+			percent_control.render();
+			this.$('.controls').append(percent_control.el);			
+		}
 		
 		/** SET UP SVG **/
 		var canvas = this.$(".canvas");
@@ -158,10 +160,16 @@ ChartView = Backbone.View.extend({
 			this.model.get("rows").first().select();
 			return ;
 		}
-		if(this.model.get("percent") && active_tag.get("children").length < 1 && !active_tag.get("parent")){
-			this.model.set("percent",false);
-			this.update();
-			return ;
+		if(active_tag.get("children").length < 1 && !active_tag.get("parent")){
+			if(this.model.get("percent")){
+				this.model.set("percent",false);
+//				this.update();
+//				return ;				
+			}
+		}else{
+			if(this.model.get("lock_percent") && !this.model.get("percent")){
+				this.model.set("percent",true);
+			}
 		}
 		
 		this.model.get("points").forEach(function(point){
