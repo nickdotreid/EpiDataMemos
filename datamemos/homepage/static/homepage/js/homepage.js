@@ -101,9 +101,9 @@ Homepage = Backbone.Model.extend({
 				note = new Note({
 					id:id
 				});
-				homepage.get("notes").notes.add(note);
 				note.fetch({
 					success:function(){
+						homepage.get("notes").notes.add(note);
 						homepage.show_note(note);
 					}
 				})
@@ -120,8 +120,12 @@ Homepage = Backbone.Model.extend({
 			var bookmark = note.get("bookmarks").first();
 			var chart_id = bookmark.get("chart")['id'];
 			var chart = this.get("charts").get(chart_id);
-			this.set_chart_url(chart,true);
+			bookmark.get("tags").forEach(function(tag){
+				tag.select();
+			});
 			chart.activate();
+			this.set_chart_url(chart,true);
+			
 		}
 	},
 	change_page: function(page_name){
