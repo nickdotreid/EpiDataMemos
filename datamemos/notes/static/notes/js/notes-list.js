@@ -98,6 +98,9 @@ Notes = Backbone.Model.extend({
 		this.notes.bind("share",function(note){
 			notes_manager.share_note(note);
 		});
+		this.notes.bind("edit",function(note){
+			notes_manager.edit_note(note);
+		});
 		
 		this.tags.bind("change:selected",function(){
 			if(notes_manager.get("update")) notes_manager.notes.sort({silent:true});
@@ -137,7 +140,8 @@ Notes = Backbone.Model.extend({
 		}
 		this.set("note",note);
 		var edit_view = new NoteEdit({
-			model: note
+			model: note,
+			container: $("#note-view-container")[0]
 		});
 		var notes_manager = this;
 		edit_view.bind("saved",function(note){
@@ -189,7 +193,6 @@ NoteContainer = Backbone.View.extend({
 		event.preventDefault();
 		var button = $(event.currentTarget);
 		var view = this.model.edit_note(false);
-		view.container = button.parents('.note-add-container:first');
 		button.hide();
 		view.bind('remove',function(){
 			button.show();

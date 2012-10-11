@@ -51,7 +51,7 @@ Note = Backbone.Model.extend({
 		this.trigger("share",this);
 	},
 	edit: function(){
-		
+		this.trigger("edit",this);
 	}
 });
 
@@ -161,6 +161,14 @@ NoteEdit = Backbone.View.extend({
 		
 		this.setElement(this.loading_div);
 		
+		if(options && options.container){
+			this.container = options.container;
+			this.$container = $(this.container);
+			
+			this.$container.show().html("");
+			this.$el.appendTo(this.container);
+		}
+		
 		this.bind('remove',function(){
 			this.$el.remove();
 		});
@@ -234,6 +242,7 @@ NoteEdit = Backbone.View.extend({
 			form: markup
 		}));
 		if(this.container){
+			this.$container.show().html("");
 			this.$el.appendTo(this.container);
 		}
 	}
