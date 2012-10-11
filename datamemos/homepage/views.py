@@ -34,6 +34,13 @@ def load_note(request,note_id):
 		return detail(request,note_id)
 	note = get_object_or_404(Note,pk=note_id)
 	return HttpResponseRedirect("/#notes/%i" % (note.id))
+
+def edit_note(request,note_id):
+	if request.is_ajax():
+		from notes.views import edit
+		return edit(request,note_id)
+	note = get_object_or_404(Note,pk=note_id)
+	return HttpResponseRedirect("/#notes/%i/edit/" % (note.id))
 	
 def load_bookmark(request,bookmark_id):
 	if request.is_ajax():

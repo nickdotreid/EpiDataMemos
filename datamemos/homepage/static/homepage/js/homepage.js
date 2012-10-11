@@ -4,6 +4,7 @@ var Workspace = Backbone.Router.extend({
 		"charts/:id": "openChart",
 		"charts/:id/*tags": "openChart",
 		"notes/:id": "openNote",
+		"notes/:id/edit/": "editNote",
 	},
 	initialize:function(){
 		return this.bind('all', this._trackPageview);
@@ -28,6 +29,9 @@ var Workspace = Backbone.Router.extend({
 	},
 	openNote: function(id){
 		this.trigger("openNote",id);
+	},
+	editNote: function(id){
+		this.trigger("openNote",id,true);
 	},
 	showHome: function(){
 		this.trigger("showHome");
@@ -92,11 +96,11 @@ Homepage = Backbone.Model.extend({
 				}
 			});
 		});
-		this.router.bind('openNote',function(id){
+		this.router.bind('openNote',function(id,edit){
 			homepage.trigger("loading");
 			var note = homepage.get("notes").notes.get(id);
 			if(note){
-				homepage.show_note(note);
+				homepage.show_note(note,edit);
 			}else{
 				note = new Note({
 					id:id
@@ -104,7 +108,7 @@ Homepage = Backbone.Model.extend({
 				note.fetch({
 					success:function(){
 						homepage.get("notes").notes.add(note);
-						homepage.show_note(note);
+						homepage.show_note(note,edit);
 					}
 				})
 			}
@@ -113,9 +117,12 @@ Homepage = Backbone.Model.extend({
 			homepage.change_page("home");
 		});
 	},
-	show_note: function(note){
+	show_note: function(note,edit){
 		if(!note) return;
-		this.get("notes").view_note(note);
+		
+		if(edit) this.get("notes").edit_note(note);
+		else this.get("notes").view_note(note);
+		
 		if(note.get("bookmarks").length > 0){
 			var bookmark = note.get("bookmarks").first();
 			var chart_id = bookmark.get("chart")['id'];
