@@ -35,14 +35,14 @@ Notes = Backbone.Model.extend({
 		this.notes.bind("add",function(note){
 			note.get("bookmarks").forEach(function(bookmark){
 				// go through tags and connect tags to global tags
-				var new_tags = new TagCollection();
+				var new_tags = [];
 				bookmark.get("tags").forEach(function(tag){
 					var new_tag = tags.get_or_add({
 						short: tag.get("short")
 					});
 					new_tags.push(new_tag);
 				});
-				bookmark.set("tags",new_tags);
+				bookmark.get("tags").reset(new_tags);
 			});
 			note.get("bookmarks").bind("change:highlight",function(bookmark){
 				if(bookmark.get("highlight")){
