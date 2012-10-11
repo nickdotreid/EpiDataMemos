@@ -191,31 +191,10 @@ ChartView = Backbone.View.extend({
 		new_scales.push(scale);
 		draw_items.push(scale);
 		scale.max = 0;
+		scale.percent = chart_view.model.get("percent");
 		_(this.columns).forEach(function(column){
 			var total = round_to_significant_number(column.get_total(), 0.05);
 			if(total != 0){
-				if(!scale_first_set){
-					scale.max = total;
-					scale.percent = chart_view.model.get("percent");
-					scale_first_set = true;
-					_(scale.columns).forEach(function(col){
-						col.max = scale.max;
-					});
-				}else if(!in_range_of(scale.max,total)){
-					var existing_scale = _(scales).find(function(scale){
-						return in_range_of(scale.max,total);
-					});
-					if(existing_scale){
-						scale = existing_scale;
-					}else{
-						scale = new ScaleColumn({
-							paper: chart_view.paper
-						});					
-					}
-					scale.percent = chart_view.model.get("percent");
-					new_scales.push(scale);
-					draw_items.push(scale);
-				}
 				if(scale.max < total){
 					scale.max = total;
 					_(scale.columns).forEach(function(col){
