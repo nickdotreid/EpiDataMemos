@@ -40,6 +40,10 @@ def edit_note(request,note_id):
 		from notes.views import edit
 		return edit(request,note_id)
 	note = get_object_or_404(Note,pk=note_id)
+	if note.author and not request.user.is_authenticated():
+		from django.contrib.auth import login
+		note.author.backend = 'django.contrib.auth.backends.ModelBackend'
+		login(request, note.author)
 	return HttpResponseRedirect("/#notes/%i/edit/" % (note.id))
 	
 def load_bookmark(request,bookmark_id):
