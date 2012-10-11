@@ -24,6 +24,7 @@ Notes = Backbone.Model.extend({
 		});
 		this.bind("change:update",function(){
 			notes_manager.notes.update = notes_manager.get("update");
+			if( notes_manager.notes.update ) notes_manager.notes.sort();
 		});
 		this.types.bind("note-type-changed",function(type){
 			notes_manager.notes.type = type;
@@ -144,6 +145,9 @@ Notes = Backbone.Model.extend({
 				notes_manager.notes.add(note);
 				notes_manager.view_note(note);
 			}});
+		});
+		edit_view.bind("remove",function(){
+			notes_manager.set("note",false);
 		});
 		return edit_view;
 	},
