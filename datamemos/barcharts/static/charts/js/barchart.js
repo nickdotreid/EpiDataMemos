@@ -65,20 +65,20 @@ ChartView = Backbone.View.extend({
 			title: "Select a Row"
 		});
 		rows_control.render();
-		rows_control.$el.appendTo(".controls",this.$el);
+		this.$('.controls').append(rows_control.el);
 		
 		columns_control = new TagButtonField({
 			collection:this.model.get("columns"),
 			title: "Select a Column"
 		});
 		columns_control.render();
-		columns_control.$el.appendTo(".controls",this.$el);
+		this.$('.controls').append(columns_control.el);
 		
 		var percent_control = new PercentCheckbox({
 			model: this.model
 		});
 		percent_control.render();
-		percent_control.$el.appendTo(".controls",this.$el);
+		this.$('.controls').append(percent_control.el);
 		
 		/** SET UP SVG **/
 		var canvas = this.$(".canvas");
