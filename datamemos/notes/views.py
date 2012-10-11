@@ -36,6 +36,8 @@ def list(request):
 			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
 			if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
 				_note['editable'] = True 
+			if request.user.is_authenticated() and request.user.is_staff:
+				_note['managable'] = True
 			_notes.append(_note)
 		return HttpResponse(
 			json.dumps({
@@ -53,6 +55,8 @@ def detail(request, note_id):
 		_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
 		if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
 			_note['editable'] = True
+		if request.user.is_authenticated() and request.user.is_staff:
+			_note['managable'] = True
 		return HttpResponse(
 			json.dumps(_note),
 			'application/json')
@@ -82,8 +86,10 @@ def edit(request,note_id):
 			note.save()
 			_note = note.as_json()
 			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
-			if request.user.is_authenticated() and (note.author == request.user or user.is_staff):
+			if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
 				_note.editable = True
+			if request.user.is_authenticated() and request.user.is_staff:
+				_note['managable'] = True
 			return HttpResponse(
 				json.dumps(_note),
 				'application/json')

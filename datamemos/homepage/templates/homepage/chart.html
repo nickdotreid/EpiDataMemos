@@ -63,6 +63,7 @@
 			<div class="actions">
 				<a href="#" class="share">Share</a>
 				<% if(editable){ %><a href="#" class="edit">Edit</a><% } %>
+				<% if(managable){ %>{{weight}}<a href="#" class="weight weight-increase">Up</a><a href="#" class="weight weight-decrease">Down</a><% } %>
 			</div>
 		</div>
 	</script>

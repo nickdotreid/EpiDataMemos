@@ -6,6 +6,7 @@ Note = Backbone.Model.extend({
 	},
 	defaults:{
 		editable: false,
+		managable: false,
 		id:false,
 		text:"",
 		author:"",
@@ -52,6 +53,13 @@ Note = Backbone.Model.extend({
 	},
 	edit: function(){
 		this.trigger("edit",this);
+	},
+	inc_weight: function(amount){
+		if(!amount) return;
+		var new_amount = this.get("weight") + amount;
+		this.save({
+			weight: new_amount
+		});
 	}
 });
 
@@ -59,7 +67,8 @@ NoteItem = Backbone.View.extend({
 	events:{
 		'click a.share':'share',
 		'click a.edit': 'edit',
-		'click a.close': 'remove'
+		'click a.close': 'remove',
+		'click a.weight': 'inc_weight'
 	},
 	initialize: function(options){
 		if(options && options.show_close) this.show_close = true;
@@ -112,6 +121,12 @@ NoteItem = Backbone.View.extend({
 	remove: function(event){
 		event.preventDefault();
 		this.trigger("remove");		
+	},
+	inc_weight: function(event){
+		event.preventDefault();
+		var amount = 1;
+		if($(event.currentTarget).hasClass("weight-decrease")) amount = -1;
+		this.model.inc_weight(amount);
 	}
 });
 
