@@ -4,7 +4,7 @@ var Workspace = Backbone.Router.extend({
 		"charts/:id": "openChart",
 		"charts/:id/*tags": "openChart",
 		"notes/:id": "openNote",
-		"notes/:id/edit/": "editNote",
+		"notes/:id/edit/": "editNote"
 	},
 	initialize:function(){
 		return this.bind('all', this._trackPageview);
