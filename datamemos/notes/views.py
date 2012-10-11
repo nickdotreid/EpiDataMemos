@@ -51,6 +51,8 @@ def detail(request, note_id):
 	if request.is_ajax():
 		_note = note.as_json()
 		_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
+		if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
+			_note['editable'] = True
 		return HttpResponse(
 			json.dumps(_note),
 			'application/json')

@@ -137,6 +137,10 @@ Notes = Backbone.Model.extend({
 			bookmark.save();
 			note = new Note();
 			note.get("bookmarks").add(bookmark);
+		}else if(!note.get("editable")){
+			this.view_note(note);
+			alert("You don't have permission to edit this message.");
+			return ;
 		}
 		this.set("note",note);
 		var edit_view = new NoteEdit({
