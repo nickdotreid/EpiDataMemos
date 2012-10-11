@@ -13,6 +13,15 @@ Bookmark = Backbone.Model.extend({
 		selected_count:0,
 		highlight:false
 	},
+	initialize: function(options){
+		var bookmark = this;
+		this.get("tags").bind('change:name',function(tag){
+			if(bookmark.get("title") == "") bookmark.trigger("update");
+		});
+		this.bind('change:title',function(){
+			bookmark.trigger("update");
+		});
+	},
 	parse: function(data){
 		var bookmark = this;
 		
@@ -100,8 +109,18 @@ BookmarkView = Backbone.View.extend({
 		'click a': 'select'
 	},
 	initialize: function(options){
+		var view = this;
+		this.model.bind('update',function(){
+			view.render();
+		});
+		
 		this.template = _.template($("#bookmark-list-template").html());
 		if(options && options.container) this.container = options.container;
+		this.render();
+	},
+	render: function(){
+		this.$el.remove();
+		
 		var title = this.model.get("title");
 		if(!title || title==""){
 			var title_arr = [];
@@ -110,9 +129,11 @@ BookmarkView = Backbone.View.extend({
 			});
 			title = title_arr.join(",");
 		}
+		
 		this.setElement(this.template({
 			title: title
 		}));
+		
 		if(this.container) this.$el.appendTo(this.container);
 	},
 	edit: function(event){
