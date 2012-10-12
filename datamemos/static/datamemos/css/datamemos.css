@@ -3190,6 +3190,9 @@ body {
 form .requiredField .asteriskField {
   color: #b00005;
 }
+.navbar {
+  clear: both;
+}
 .wrapper.container {
   width: 1090px;
   padding-top: 35px;
@@ -3241,6 +3244,22 @@ form .requiredField .asteriskField {
 }
 #form-note .form-actions {
   margin-bottom: 0px;
+}
+.dph {
+  font-size: 1.1em;
+}
+.dph .line {
+  display: block;
+}
+.dph-logo {
+  display: block;
+  float: left;
+  margin-right: 14px;
+  width: 110px;
+  height: 110px;
+  background-image: url('../../homepage/i/sf-city-seal.png');
+  background-repeat: no-repeat;
+  background-position: top left;
 }
 .page {
   background-color: #FFF;
