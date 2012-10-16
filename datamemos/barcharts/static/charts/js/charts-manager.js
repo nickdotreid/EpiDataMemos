@@ -57,23 +57,26 @@ Charts = Backbone.Collection.extend({
 });
 
 ChartManager = Backbone.View.extend({
-	initialize:function(){
-		this.container = $(".charts-list:first")[0];
+	initialize:function(options){
+		if(options && options.container) this.setElement(options.container);
+		else this.setElement($(".charts-list:first")[0]);
 	},
 	show_chart: function(chart){
 		if(!chart) return;
+		this.$(".chart.short").hide();
 		var active_chart = new ChartView({
 			model:chart,
-			container:$("#chart-container")[0]
+			container:this.el
 			});
 		var chart_manager = this;
 		active_chart.render();
 	},
 	list_chart: function(chart){
 		if(!chart) return;
+		this.$(".chart.short").show();
 		var list_chart = new ChartShortView({
 			model:chart,
-			container:this.container
+			container:this.el
 		});
 		list_chart.render();
 	}

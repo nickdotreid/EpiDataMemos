@@ -99,64 +99,40 @@
 {% endblock %}
 
 {% block content %}
-<div id="list-area" class="row-fluid">
-	<div class="span6">
-		<div id="home" class="page page-content">
-			<div class="page-inner">
-					{% include 'homepage/about.html' %}
-			</div>
-		</div>
-	</div>
-	<div id="charts-list-container" class="span6 charts list charts-list">
-		<noscript>
-			<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
-		</noscript>
-		{% for chart in charts %}
-			{% include 'charts/short.html' %}
-		{% endfor %}
+<div id="home" class="page-column main page page-content">
+	<div class="page-inner">
+			{% include 'homepage/about.html' %}
 	</div>
 </div>
-<div id="app-area" class="row-fluid" style="display:none;">
-	<div class="span8">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<div class="container">
-					<ul class="nav pages pull-left">
-						<li class="home"><i></i><a href="/" name="home">Home</a></li>
-					</ul>
-					<ul class="nav actions pull-right">
-						<li class=""><a class="bookmark-add" href="/share">Share Page</a></li>		
-					</ul>
-				</div>
+<div id="charts-container" class="page-column charts list charts-list">
+	<noscript>
+		<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
+	</noscript>
+	{% for chart in charts %}
+		{% include 'charts/short.html' %}
+	{% endfor %}
+</div>
+<div id="notes-container" class="page-column">
+	<div class="navbar notes-nav">
+		<div class="navbar-inner">
+			<div class="container">
+				<ul class="nav">
+					{% for category in categories %}
+					<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public %}note-type-public="true"{% endif %}>
+						<i></i>
+						<a href="#" >{{category.name}}</a>
+					</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
-		<div id="chart-container" class="chart-container">
-
-		</div>	
 	</div>
-	<div id="notes-container" class="span4">
-		<div class="navbar notes-nav">
-			<div class="navbar-inner">
-				<div class="container">
-					<ul class="nav">
-						{% for category in categories %}
-						<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public %}note-type-public="true"{% endif %}>
-							<i></i>
-							<a href="#" >{{category.name}}</a>
-						</li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="note-add-container">
-			<a href="#" class="note-add btn">Add Note</a>
-		</div>
-		<div id="note-view-container"></div>
-		<div class="notes-list">
-			
-		</div>
+	<div class="note-add-container">
+		<a href="#" class="note-add btn">Add Note</a>
+	</div>
+	<div id="note-view-container"></div>
+	<div class="notes-list">
+		
 	</div>
 </div>
-<div class="loading page-loading" style="display:none;"><div class="text"><i></i>Loading</div></div>
 {% endblock %}

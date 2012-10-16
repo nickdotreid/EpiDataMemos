@@ -39,8 +39,6 @@ ChartView = Backbone.View.extend({
 			this.$el.appendTo(container);
 		}
 		
-		this.el = $().appendTo("#barchart-container")[0];
-		
 		/** APPEND FOOTNOTES **/
 		var footnote_template = _.template($("#footnote-template").html());
 		_(this.model.get("footnotes")).forEach(function(footnote){

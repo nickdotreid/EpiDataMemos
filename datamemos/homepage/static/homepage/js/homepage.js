@@ -258,14 +258,16 @@ HomepageView = Backbone.View.extend({
 		this.$(".page-content").hide();
 		this.$(".navbar .pages .active").removeClass("active");
 		if(this.model.get("page")){
-			this.$('#app-area').hide();
-			this.$('#list-area').show();
+			this.$('#notes-container').hide();
+			this.$('#charts-container').show().removeClass("main");
+			this.$('#home').show().addClass("main");
 			
 			this.$("#"+this.model.get("page")).show();
 			this.$(".navbar .pages li."+this.model.get("page")+":first").addClass("active");
 		}else{
-			this.$('#app-area').show();
-			this.$('#list-area').hide();
+			this.$('#notes-container').show().removeClass("main");
+			this.$('#charts-container').show().addClass("main");
+			this.$('#home').hide();
 		}
 	}
 	
