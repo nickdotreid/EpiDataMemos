@@ -63,7 +63,7 @@ ChartManager = Backbone.View.extend({
 	},
 	show_chart: function(chart){
 		if(!chart) return;
-		this.$(".chart.short").hide();
+		this.$(".chart-short").hide();
 		var active_chart = new ChartView({
 			model:chart,
 			container:this.el
@@ -73,7 +73,7 @@ ChartManager = Backbone.View.extend({
 	},
 	list_chart: function(chart){
 		if(!chart) return;
-		this.$(".chart.short").show();
+		this.$(".chart-short").show();
 		var list_chart = new ChartShortView({
 			model:chart,
 			container:this.el
