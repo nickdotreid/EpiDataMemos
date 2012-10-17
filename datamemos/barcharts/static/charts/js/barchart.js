@@ -145,6 +145,8 @@ ChartView = Backbone.View.extend({
 			return tag;
 		});
 		
+		chart_view.color();
+		chart_view.highlight();
 		return this.update();
 	},
 	update: function(){
