@@ -260,6 +260,8 @@ HomepageView = Backbone.View.extend({
 		if(this.model.get("page")){
 			this.$('#notes-container').hide();
 			this.$('#charts-container').show().removeClass("main");
+			this.$("#chart-nav").hide();
+			this.$("#chart-list-nav").show();
 			this.$('#home').show().addClass("main");
 			
 			this.$("#"+this.model.get("page")).show();
@@ -267,6 +269,8 @@ HomepageView = Backbone.View.extend({
 		}else{
 			this.$('#notes-container').show().removeClass("main");
 			this.$('#charts-container').show().addClass("main");
+			this.$("#chart-nav").show();
+			this.$("#chart-list-nav").hide();
 			this.$('#home').hide();
 		}
 	}
