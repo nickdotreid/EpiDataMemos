@@ -174,9 +174,7 @@ ChartView = Backbone.View.extend({
 		}
 		if(active_tag.get("children").length < 1 && !active_tag.get("parent")){
 			if(this.model.get("percent")){
-				this.model.set("percent",false);
-//				this.update();
-//				return ;				
+				this.model.set("percent",false);				
 			}
 		}else{
 			if(this.model.get("lock_percent") && !this.model.get("percent")){
@@ -205,17 +203,17 @@ ChartView = Backbone.View.extend({
 		var new_scales = [];
 		var scale = scales[0];
 		
-		var scale_first_set = false;
 		var draw_items = [];
 		
 		new_scales.push(scale);
 		draw_items.push(scale);
 		scale.percent = chart_view.model.get("percent");
+		
 		_(this.columns).forEach(function(column){
 			var total = round_to_significant_number(column.get_total(), 0.05);
 			if(!chart_view.model.get("percent") && total < chart_view.model.get('threshold')*3) total = chart_view.model.get("threshold")*3;
 			if(total != 0){
-				if(scale.max < total || !in_range_of(scale.max,total)){
+				if(scale.max < total || (scale.columns.length < 1 && !in_range_of(scale.max,total))){
 					scale.max = total;
 					_(scale.columns).forEach(function(col){
 						col.max = scale.max;
