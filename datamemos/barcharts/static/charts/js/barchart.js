@@ -22,13 +22,16 @@ ChartView = Backbone.View.extend({
 			chart_view.update();
 		});
 		this.model.bind("change:active",function(){
-			chart_view.$el.remove();
+			if(!chart_view.model.get("active")) chart_view.$el.remove();
 		});
-	},
-	render: function(){
-		var chart_view = this;
 		
-		/** SET UP DOM ELEMENT **/
+		this.model.bind("loaded",function(){
+			chart_view.render();
+		});
+		
+		this.setup();
+	},
+	setup: function(){
 		this.setElement(this.template(this.model.toJSON()));
 		var container = $(this.container);
 		var existing_element = $("#chart-" + this.model.get("id") + ", .chart[chart-id="+this.model.get("id")+"]",container);
@@ -38,6 +41,15 @@ ChartView = Backbone.View.extend({
 		}else{
 			this.$el.appendTo(container);
 		}
+	},
+	render: function(){
+		if(this.model.get("loading")){
+			this.$el.html("LOADING");
+			return ;
+		}
+		this.setup();
+		
+		var chart_view = this;
 		
 		/** APPEND FOOTNOTES **/
 		var footnote_template = _.template($("#footnote-template").html());

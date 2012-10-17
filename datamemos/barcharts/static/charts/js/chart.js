@@ -117,7 +117,10 @@ Chart = Backbone.Model.extend({
 		lock_percent:false,
 		percent:false,
 		active:false,
-		update: true
+		update: true,
+		title:"",
+		description:"",
+		author:""
 	},
 	initialize:function(){
 		var chart = this;
@@ -200,18 +203,16 @@ Chart = Backbone.Model.extend({
 		return data;
 	},
 	activate: function(){
-		if(this.get("active") || this.get("loading")) return this;
 		if(this.get("rows").length < 1 || this.get("columns").length < 1){
 			this.set("loading",true);
 			this.trigger("loading");
 			this.fetch({
 				success:function(chart){
-					chart.trigger("loaded");
 					chart.set("loading",false);
+					chart.trigger("loaded");
 					chart.activate();
 				}
 			});
-			return this;
 		}
 		this.set("active",true);
 		return this;

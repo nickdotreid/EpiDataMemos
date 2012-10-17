@@ -24,8 +24,8 @@ Charts = Backbone.Collection.extend({
 				_(this.without(chart)).forEach(function(chart){
 					chart.deactivate();
 				});
-				this.trigger("chart-changed",chart);
 				this.manager.show_chart(chart);
+				this.trigger("chart-changed",chart);
 			}
 		});
 	},
@@ -35,7 +35,6 @@ Charts = Backbone.Collection.extend({
 		this.percent_tag.bind("change:selected",function(tag){
 			chart.set("percent",tag.get("selected"));
 		});
-		// tell chart to check its rows & columns
 	},
 	active: function(){
 		var active_charts = this.filter(function(chart){
