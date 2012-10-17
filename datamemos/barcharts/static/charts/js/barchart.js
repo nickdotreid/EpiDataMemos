@@ -208,12 +208,12 @@ ChartView = Backbone.View.extend({
 		
 		new_scales.push(scale);
 		draw_items.push(scale);
-		scale.max = 0;
 		scale.percent = chart_view.model.get("percent");
 		_(this.columns).forEach(function(column){
 			var total = round_to_significant_number(column.get_total(), 0.05);
+			if(!chart_view.model.get("percent") && total < chart_view.model.get('threshold')*3) total = chart_view.model.get("threshold");
 			if(total != 0){
-				if(scale.max < total){
+				if(scale.max < total || !in_range_of(scale.max,total)){
 					scale.max = total;
 					_(scale.columns).forEach(function(col){
 						col.max = scale.max;
@@ -289,7 +289,7 @@ ChartView = Backbone.View.extend({
 						view: point_view,
 						container: chart_view.$('.canvas'),
 						units: chart_view.model.get("units"),
-						threshold: 5
+						threshold: chart_view.model.get("threshold")
 					});
 					
 					chart_view.model.get("tags").bind("tag-changed",function(){

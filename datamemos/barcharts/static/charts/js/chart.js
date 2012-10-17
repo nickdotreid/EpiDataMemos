@@ -120,7 +120,8 @@ Chart = Backbone.Model.extend({
 		update: true,
 		title:"",
 		description:"",
-		author:""
+		author:"",
+		threshold:5
 	},
 	initialize:function(){
 		var chart = this;
