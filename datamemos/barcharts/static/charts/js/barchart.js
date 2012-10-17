@@ -299,7 +299,7 @@ ChartView = Backbone.View.extend({
 					});
 					chart_view.model.get("columns").bind("change:selected",function(){
 						highlight.remove();
-					});	
+					});
 				}
 			}
 		});
