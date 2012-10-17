@@ -449,7 +449,7 @@ PercentCheckbox = Backbone.View.extend({
 			checkbox.render();
 		});
 		
-		this.model.get("rows").bind("tag-changed",function(tag){
+		this.model.get("rows").bind("change:selected",function(tag){
 			if(tag.get("children").length < 1 && !tag.get("parent")){
 				checkbox.$el.hide();
 				checkbox.trigger("percent-toggle");
