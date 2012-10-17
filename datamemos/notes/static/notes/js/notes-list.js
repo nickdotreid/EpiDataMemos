@@ -12,14 +12,17 @@ Notes = Backbone.Model.extend({
 		
 		if(options && options.charts) this.charts = options.charts;
 		
-		this.notes = new NoteList();
 		this.types = new NoteTypeList();
+		this.notes = new NoteList();
 		
 		
 		var notes_manager = this;
 		
 		this.bind("change:chart",function(){
 			notes_manager.notes.chart = notes_manager.get("chart");
+			notes_manager.types.forEach(function(type){
+				if( type.get("active") ) notes_manager.notes.type = type;
+			});
 			notes_manager.notes.fetch();
 		});
 		this.bind("change:update",function(){
