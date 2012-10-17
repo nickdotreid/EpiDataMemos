@@ -44,7 +44,7 @@ ChartView = Backbone.View.extend({
 	},
 	render: function(){
 		if(this.model.get("loading")){
-			this.$el.html("LOADING");
+			this.$el.addClass("loading");
 			return ;
 		}
 		this.setup();

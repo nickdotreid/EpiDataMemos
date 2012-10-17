@@ -25,6 +25,20 @@
 .chart .meta {
   margin: 7px 14px;
 }
+.chart.loading {
+  background-image: url('../../datamemos/i/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 50px;
+}
+.chart.loading .description,
+.chart.loading .title,
+.chart.loading .controls,
+.chart.loading .footnote,
+.chart.loading .canvas,
+.chart.loading .meta {
+  display: none;
+}
 .filters {
   display: block;
   clear: both;
