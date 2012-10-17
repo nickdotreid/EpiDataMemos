@@ -294,7 +294,10 @@ ChartView = Backbone.View.extend({
 						threshold: chart_view.model.get("threshold")
 					});
 					
-					chart_view.model.get("tags").bind("tag-changed",function(){
+					chart_view.model.get("rows").bind("change:selected",function(){
+						highlight.remove();
+					});
+					chart_view.model.get("columns").bind("change:selected",function(){
 						highlight.remove();
 					});	
 				}
