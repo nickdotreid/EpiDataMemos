@@ -13,7 +13,8 @@ Note = Backbone.Model.extend({
 		pub_date:"",
 		bookmarks:new BookmarkList(),
 		url:"",
-		activeness:0
+		activeness:0,
+		type:""
 	},
 	initialize: function(){
 		
@@ -197,7 +198,8 @@ NoteEdit = Backbone.View.extend({
 			type:"GET",
 			data_type:"JSON",
 			data:{
-				json:true
+				json:true,
+				category:edit_view.model.get("type")
 			},
 			success: function(data){
 				if(data['form']){

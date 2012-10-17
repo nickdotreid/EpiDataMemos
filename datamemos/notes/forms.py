@@ -7,7 +7,7 @@ from charts.models import Chart, Tag
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-def make_note_form(user = False):	
+def make_note_form(user = False, category = False):	
 	class NoteForm(ModelForm):
 		if user and user.is_staff:
 			categories = Category.objects
@@ -19,7 +19,9 @@ def make_note_form(user = False):
 		else:
 			type_widget = forms.HiddenInput
 		initial = None
-		if categories.count() > 0:
+		if category:
+			initial = category
+		elif categories.count() > 0:
 			initial = categories.all()[0]
 		type = forms.ModelChoiceField(
 			widget = type_widget,

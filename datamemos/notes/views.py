@@ -102,13 +102,19 @@ def edit(request,note_id):
 				}),
 			'application/json')
 	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
-		
+
+def get_note_form(request):
+	if request.user.is_authenticated() and request.user.is_staff:
+		if request.GET and 'category' in request.GET:
+			cat = get_object_or_None(Category,short=request.GET['category'])
+			if cat:
+				NoteForm = make_note_form(request.user,category=cat)
+		return make_note_form(request.user)
+	return make_note_form()
+	
 
 def create(request):
-	if request.user.is_authenticated():
-		NoteForm = make_note_form(request.user)
-	else:
-		NoteForm = make_note_form()
+	NoteForm = get_note_form(request)
 	form = NoteForm()
 	if request.method == 'POST':
 		form = NoteForm(request.POST)
