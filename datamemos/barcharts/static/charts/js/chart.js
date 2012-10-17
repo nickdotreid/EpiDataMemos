@@ -133,16 +133,39 @@ Chart = Backbone.Model.extend({
 				point.select_value(chart.get("percent"));
 			});
 		});
-		this.get("rows").bind("tag-changed",function(){
+		this.get("rows").bind("change:selected",function(tag){
+			if(chart.get("active")){
+				if(tag.get("selected")){
+					chart.get("rows").without(tag).forEach(function(tag){
+						tag.set("selected",false);
+					});
+					chart.trigger("chart:changed",chart);					
+				}else{
+					if(chart.get("rows").find(function(tag){
+						if(tag.get("selected")) return true;
+						return false;
+					})){
+						return ;
+					}
+					if(tag.get("parent")){
+						tag.get("parent").select();
+						return ;
+					}
+					chart.get("rows").first().select();
+				}			
+			}
+		});
+		this.get("columns").bind("change:selected",function(){
+			if(chart.get("active")){
+				chart.trigger("chart:changed",chart);
+			}
+		});
+		this.bind('chart:changed',function(chart){
 			points.forEach(function(point){
 				point.toggle();
-			})
+			});
 		});
-		this.get("columns").bind("tag-changed",function(){
-			points.forEach(function(point){
-				point.toggle();
-			})
-		});
+		
 		this.get("points").bind("point:selected",function(point){
 			chart.reveal(point);
 		}).bind("point:highlight",function(point){
@@ -161,7 +184,6 @@ Chart = Backbone.Model.extend({
 				rows.add(tag);
 			});
 			rows.connect_tags();
-			rows.always_selected = true;
 			
 			data['rows'] = rows;
 		}

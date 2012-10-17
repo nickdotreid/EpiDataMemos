@@ -9,7 +9,7 @@ ChartView = Backbone.View.extend({
 		this.container = options.container;
 		
 		var chart_view = this;
-		this.model.get("tags").bind("tag-changed",function(){
+		this.model.bind("chart:changed",function(){
 			chart_view.update();
 			chart_view.color();
 			chart_view.highlight();
