@@ -118,7 +118,7 @@
 			<div class="container">
 				<ul class="nav">
 					{% for category in categories %}
-					<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public %}note-type-public="true"{% endif %}>
+					<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
 						<i></i>
 						<a href="#" >{{category.name}}</a>
 					</li>

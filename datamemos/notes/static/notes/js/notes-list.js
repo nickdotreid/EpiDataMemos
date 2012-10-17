@@ -28,6 +28,10 @@ Notes = Backbone.Model.extend({
 		});
 		this.types.bind("note-type-changed",function(type){
 			notes_manager.notes.type = type;
+			
+			if(type.get("public")) $('.note-add').show();
+			else $('.note-add').hide();
+			
 			notes_manager.notes.fetch();
 		});
 		
