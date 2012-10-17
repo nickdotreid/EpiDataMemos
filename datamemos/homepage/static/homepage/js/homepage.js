@@ -58,7 +58,7 @@ Homepage = Backbone.Model.extend({
 		});
 		
 		this.set("tags", new TagCollection());
-		this.get("tags").bind('tag-changed',function(tag){
+		this.get("tags").bind('change:selected',function(tag){
 			homepage.get("notes").sort_notes();
 		});
 		
@@ -162,7 +162,7 @@ Homepage = Backbone.Model.extend({
 			manager.trigger("loaded");
 			manager.set_chart_url(chart);
 		});
-		this.get("tags").bind('tag-changed',function(tag){
+		this.get("tags").bind('change:selected',function(tag){
 			manager.set_chart_url(false,true);
 		});
 	},
