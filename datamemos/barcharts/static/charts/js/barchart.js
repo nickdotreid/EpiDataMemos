@@ -213,7 +213,7 @@ ChartView = Backbone.View.extend({
 		scale.percent = chart_view.model.get("percent");
 		_(this.columns).forEach(function(column){
 			var total = round_to_significant_number(column.get_total(), 0.05);
-			if(!chart_view.model.get("percent") && total < chart_view.model.get('threshold')*3) total = chart_view.model.get("threshold");
+			if(!chart_view.model.get("percent") && total < chart_view.model.get('threshold')*3) total = chart_view.model.get("threshold")*3;
 			if(total != 0){
 				if(scale.max < total || !in_range_of(scale.max,total)){
 					scale.max = total;
