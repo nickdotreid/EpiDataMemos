@@ -59,6 +59,7 @@ class Chart(models.Model):
 	columns = models.ManyToManyField(Tag, blank=True)
 	
 	lock_percent = models.BooleanField(default=False)
+	threshold = models.PositiveIntegerField(blank=True, null=True)
 	
 	x_label = models.CharField(max_length=250,blank=True)
 	y_label = models.CharField(max_length=250,blank=True)

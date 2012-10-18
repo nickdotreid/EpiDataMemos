@@ -56,6 +56,7 @@ def load_chart(request,chart_id):
 				'date': timestamp,
 				'title':chart.title,
 				'lock_percent':chart.lock_percent,
+				'threshold':chart.threshold,
 				'description':chart.description,
 				'footnotes':footnotes,
 				'x_label':chart.x_label,
