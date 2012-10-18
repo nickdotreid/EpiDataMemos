@@ -32,9 +32,6 @@ Notes = Backbone.Model.extend({
 		this.types.bind("note-type-changed",function(type){
 			notes_manager.notes.type = type;
 			
-			if(type.get("public")) $('.note-add').show();
-			else $('.note-add').hide();
-			
 			notes_manager.notes.fetch();
 		});
 		
@@ -93,8 +90,13 @@ Notes = Backbone.Model.extend({
 			el: $(".notes-list")[0]
 		});
 		this.bind('change:note',function(){
-			if(notes_manager.get("note")) note_list_view.$el.hide();
-			else note_list_view.$el.show();
+			if(notes_manager.get("note")){
+				note_list_view.$el.hide();
+				$(".notes-nav").hide();
+			}else{
+				note_list_view.$el.show();
+				$(".notes-nav").show();
+			}
 		});
 		
 		this.bind('change:note',function(){
