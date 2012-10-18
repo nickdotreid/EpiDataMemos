@@ -78,6 +78,37 @@ def get_chart_values(chart):
 		'rows':_rows,
 	}
 
+
+def jsonify_chart_values(chart):
+	chart_data = get_chart_values(chart)
+	columns = chart_data['columns']
+	rows = chart_data['rows']
+	_points = []
+	_rows = []
+	raw_rows = []
+	_columns = []
+	for col in chart.columns.all():
+		_columns.append(col.as_json())
+		for point in col.point_set.all():
+			_points.append(point.as_json())
+			for row in point.tags.all():
+				if row not in raw_rows and chart not in row.chart_set.all():
+					raw_rows.append(row)
+					if row.parent and row.parent not in raw_rows and chart not in row.parent.chart_set.all():
+						raw_rows.append(row.parent)
+	def sort_rows(a,b):
+		if(a.order>b.order):
+			return 1
+		return -1
+	raw_rows.sort(sort_rows)
+	for row in raw_rows:
+		_rows.append(row.as_json())
+	return {
+		'columns':_columns,
+		'rows':_rows,
+		'points':_points,
+	}
+
 def row_to_object(row):
 	_row = {}
 	_row['name'] = row.name
