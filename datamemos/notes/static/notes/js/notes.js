@@ -58,9 +58,19 @@ Note = Backbone.Model.extend({
 	inc_weight: function(amount){
 		if(!amount) return;
 		var new_amount = this.get("weight") + amount;
-		this.save({
-			weight: new_amount
-		});
+		var note = this;
+		$.ajax({
+			url:'/notes/'+this.get("id")+'/weight/',
+			type:'POST',
+			data:{
+				amount:amount
+			},
+			success:function(data){
+				if(data['weight'] != undefined){
+					note.set('weight',data['weight']);
+				}
+			}
+		})
 	}
 });
 
@@ -85,6 +95,10 @@ NoteItem = Backbone.View.extend({
 			if(note.get("activeness") > 1) view.$el.addClass("active-more");
 			if(note.get("activeness") > 0) view.$el.addClass("active");
 			else view.$el.removeClass("active").removeClass("active-more");
+		});
+		
+		this.model.bind("change:weight",function(note){
+			view.$('.actions .weight').show();
 		});
 	},
 	render: function(){
@@ -127,6 +141,7 @@ NoteItem = Backbone.View.extend({
 		event.preventDefault();
 		var amount = 1;
 		if($(event.currentTarget).hasClass("weight-decrease")) amount = -1;
+		this.$('.actions .weight').hide();
 		this.model.inc_weight(amount);
 	}
 });

@@ -229,6 +229,12 @@ NoteList = Backbone.Collection.extend({
 		this.type = false;
 		this.chart = false;
 		this.update = true;
+		
+		var list = this;
+		this.bind('change:weight',function(){
+			list.sort();
+		});
+		
 	},
 	fetch:function(options){
 		var notes_list = this;

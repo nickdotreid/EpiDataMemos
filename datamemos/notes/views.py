@@ -103,6 +103,27 @@ def edit(request,note_id):
 			'application/json')
 	return render_to_response('notes/form_page.html',{'form':form},context_instance=RequestContext(request))
 
+def change_weight(request,note_id):
+	note = get_object_or_404(Note,pk=note_id)
+	if not request.user.is_staff:
+		return HttpResponse(
+			json.dumps({
+				"message":{
+					'type':'error',
+					'text':"You don't have permission to edit this note.",
+				},
+				}),
+			'application/json')
+	if request.method == 'POST' and 'amount' in request.POST:
+		note.weight += int(request.POST['amount'])
+		note.save()
+	return HttpResponse(
+		json.dumps({
+			"weight":note.weight,
+			}),
+		'application/json')
+	return HttpResponseRedirect(reverse(detail, args=(note.id,)))
+
 def get_note_form(request):
 	if request.user.is_authenticated() and request.user.is_staff:
 		if request.GET and 'category' in request.GET:
