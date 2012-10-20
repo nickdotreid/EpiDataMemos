@@ -187,21 +187,15 @@ ChartView = Backbone.View.extend({
 			point.select_value(chart_view.model.get("percent"));
 		});
 		
-		/**		SET SCALES		**/
-		if(this.scales.length < 1){
-			scale = new ScaleColumn({
-				paper: this.paper
-			});
-			this.scales.push(scale);
-		}
-		
 		_(this.scales).forEach(function(scale){
 			scale.columns = [];
-		});
-		
+		});		
 		var scales = this.scales;
 		var new_scales = [];
-		var scale = scales[0];
+		var scale = new ScaleColumn({
+			paper: this.paper
+		});
+		this.scales.push(scale);
 		
 		var draw_items = [];
 		
