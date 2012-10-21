@@ -57,6 +57,10 @@ Homepage = Backbone.Model.extend({
 			homepage.get("notes").save_bookmark();
 		});
 		
+		this.manager.bind('note-add',function(){
+			homepage.get("notes").edit_note();
+		});
+		
 		this.set("tags", new TagCollection());
 		this.get("tags").bind('change:selected',function(tag){
 			homepage.get("notes").sort_notes();
@@ -235,7 +239,8 @@ HomepageView = Backbone.View.extend({
 	},
 	events: {
 		'click .navbar .pages a': 'page_navigate',
-		'click .navbar .bookmark-add': 'add_bookmark'
+		'click .navbar .bookmark-add': 'add_bookmark',
+		'click .navbar .note-add': 'add_note'
 	},
 	show_loading: function(){
 		this.$('.page-loading').show();
@@ -249,6 +254,7 @@ HomepageView = Backbone.View.extend({
 	},
 	add_note: function(event){
 		event.preventDefault();
+		this.trigger("note-add");
 	},
 	page_navigate: function(event){
 		event.preventDefault();
@@ -260,18 +266,22 @@ HomepageView = Backbone.View.extend({
 		if(this.model.get("page")){
 			this.$('#notes-container').hide();
 			this.$('#charts-container').show().removeClass("main");
-			this.$("#chart-nav").hide();
-			this.$("#chart-list-nav").show();
 			this.$('#home').show().addClass("main");
 			
 			this.$("#"+this.model.get("page")).show();
 			this.$(".navbar .pages li."+this.model.get("page")+":first").addClass("active");
+			
+			$("#main-nav .home-nav").show();
+			$("#main-nav .chart-nav").hide();
+			$("#main-nav .chart-actions").hide();
 		}else{
 			this.$('#notes-container').show().removeClass("main");
 			this.$('#charts-container').show().addClass("main");
-			this.$("#chart-nav").show();
-			this.$("#chart-list-nav").hide();
 			this.$('#home').hide();
+			
+			$("#main-nav .home-nav").hide();
+			$("#main-nav .chart-nav").show();
+			$("#main-nav .chart-actions").show();
 		}
 	}
 	
