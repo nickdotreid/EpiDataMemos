@@ -13,89 +13,77 @@ Notes = Backbone.Model.extend({
 		if(options && options.charts) this.charts = options.charts;
 		
 		this.types = new NoteTypeList();
-		this.notes = new NoteList();
-		
 		
 		var notes_manager = this;
 		
 		this.bind("change:chart",function(){
-			notes_manager.notes.chart = notes_manager.get("chart");
-			notes_manager.types.forEach(function(type){
-				if( type.get("active") ) notes_manager.notes.type = type;
+			this.types.forEach(function(type){
+				type.get("notes").type = type;
+				type.get("notes").chart = notes_manager.get("chart");
+				type.get("notes").fetch();
 			});
-			notes_manager.notes.fetch();
 		});
 		this.bind("change:update",function(){
-			notes_manager.notes.update = notes_manager.get("update");
-			if( notes_manager.notes.update ) notes_manager.notes.sort();
-		});
-		this.types.bind("note-type-changed",function(type){
-			notes_manager.notes.type = type;
-			
-			notes_manager.notes.fetch();
+			notes_manager.sort_notes();
 		});
 		
 		var tags = this.tags;
-		this.notes.bind("add",function(note){
-			note.get("bookmarks").forEach(function(bookmark){
-				// go through tags and connect tags to global tags
-				var new_tags = [];
-				bookmark.get("tags").forEach(function(tag){
-					var new_tag = tags.get_or_add({
-						short: tag.get("short")
+		this.types.bind("add",function(type){
+			type.get("notes").bind("add",function(note){
+				note.get("bookmarks").forEach(function(bookmark){
+					// go through tags and connect tags to global tags
+					var new_tags = [];
+					bookmark.get("tags").forEach(function(tag){
+						var new_tag = tags.get_or_add({
+							short: tag.get("short")
+						});
+						new_tags.push(new_tag);
 					});
-					new_tags.push(new_tag);
+					bookmark.get("tags").reset(new_tags);
 				});
-				bookmark.get("tags").reset(new_tags);
-			});
-			note.get("bookmarks").bind("change:highlight",function(bookmark){
-				if(bookmark.get("highlight")){
-					notes_manager.set("update",false);
-					var cached = tags.filter(function(tag){
-						return tag.get("selected");
-					});
-					notes_manager.set("cached_tags",cached);
-					_(cached).forEach(function(tag){
-						tag.set("selected",false);
-					});
-					bookmark.get("tags").forEach(function(tag){
-						tag.set("selected",true);
-					});
-				}else{
-					var cached = notes_manager.get("cached_tags");
-					if(cached.length < 1) return ;
-					notes_manager.set("update",true);
-					
-					bookmark.get("tags").forEach(function(tag){
-						tag.set("selected",false);
-					});
-					_(cached).forEach(function(tag){
-						tag.set("selected",true);
-					});
+				note.get("bookmarks").bind("change:highlight",function(bookmark){
+					if(bookmark.get("highlight")){
+						notes_manager.set("update",false);
+						var cached = tags.filter(function(tag){
+							return tag.get("selected");
+						});
+						notes_manager.set("cached_tags",cached);
+						_(cached).forEach(function(tag){
+							tag.set("selected",false);
+						});
+						bookmark.get("tags").forEach(function(tag){
+							tag.set("selected",true);
+						});
+					}else{
+						var cached = notes_manager.get("cached_tags");
+						if(cached.length < 1) return ;
+						notes_manager.set("update",true);
+
+						bookmark.get("tags").forEach(function(tag){
+							tag.set("selected",false);
+						});
+						_(cached).forEach(function(tag){
+							tag.set("selected",true);
+						});
+						notes_manager.set("cached_tags",[]);
+					}
+				}).bind("bookmark:selected",function(bookmark){
 					notes_manager.set("cached_tags",[]);
-				}
-			}).bind("bookmark:selected",function(bookmark){
-				notes_manager.set("cached_tags",[]);
-				tags.forEach(function(tag){
-					tag.set("selected",false);
-				});
-				bookmark.get("tags").forEach(function(tag){
-					tag.set("selected",true);
+					tags.forEach(function(tag){
+						tag.set("selected",false);
+					});
+					bookmark.get("tags").forEach(function(tag){
+						tag.set("selected",true);
+					});
 				});
 			});
 		});
 		
-		var note_list_view = new NoteListView({
-			collection: this.notes,
-			el: $(".notes-list")[0]
-		});
 		this.bind('change:note',function(){
 			if(notes_manager.get("note")){
-				note_list_view.$el.hide();
-				$(".notes-nav").hide();
+				$("#note-types-list").hide();
 			}else{
-				note_list_view.$el.show();
-				$(".notes-nav").show();
+				$("#note-types-list").show();
 			}
 		});
 		
@@ -104,15 +92,8 @@ Notes = Backbone.Model.extend({
 			else notes_manager.set("update",true);
 		});
 		
-		this.notes.bind("share",function(note){
-			notes_manager.share_note(note);
-		});
-		this.notes.bind("edit",function(note){
-			notes_manager.edit_note(note);
-		});
-		
 		this.tags.bind("change:selected",function(){
-			if(notes_manager.get("update")) notes_manager.notes.sort({silent:true});
+			if(notes_manager.get("update")) notes_manager.sort_notes({silent:true});
 		});
 	},
 	set_chart: function(chart){
@@ -145,7 +126,7 @@ Notes = Backbone.Model.extend({
 			})
 			bookmark.save();
 			note = new Note({
-				type:this.notes.type.get("short")
+				type:this.types.find(function(type){ return type.get("active"); }).get("short")
 			});
 			note.get("bookmarks").add(bookmark);
 		}else if(!note.get("editable")){
@@ -195,78 +176,11 @@ Notes = Backbone.Model.extend({
 			}
 		});
 	},
-	sort_notes: function(){
-		this.notes.sort();
-	}
-});
-
-NoteContainer = Backbone.View.extend({
-	events:{
-		'click .note-add': 'note_new'
-	},
-	note_new: function(event){
-		event.preventDefault();
-		var button = $(event.currentTarget);
-		var view = this.model.edit_note(false);
-		button.hide();
-		view.bind('remove',function(){
-			button.show();
+	sort_notes: function(options){
+		if(!this.update) return;
+		this.types.forEach(function(type){
+			type.get("notes").sort(options);
 		});
-	}
-});
-
-NoteList = Backbone.Collection.extend({
-	model:Note,
-	urlRoot:'/notes/',
-	url: function(){
-		var vars = [];
-		if( this.chart ) vars.push("chart_id="+this.chart.id);
-		else vars.push("limit=10");
-		if( this.type ) vars.push("type="+this.type.get("short"));
-		return this.urlRoot + '?' + vars.join("&");
-	},
-	initialize: function(options){
-		this.type = false;
-		this.chart = false;
-		this.update = true;
-		
-		var list = this;
-		this.bind('change:weight',function(){
-			list.sort();
-		});
-		
-	},
-	fetch:function(options){
-		var notes_list = this;
-		this.reset();
-		$.ajax({
-			url:this.url(),
-			data_type:"JSON",
-			data:{
-				json:true
-			},
-			success:function(data){
-				_(data['notes']).forEach(function(note_node){
-					notes_list.add(note_node,{parse:true});
-				});
-			}
-		});
-	},
-	comparator:function(a,b){
-		var cmp = a.get_activeness() - b.get_activeness();
-		if( cmp > 0 ){
-			return -1;
-		}else if( cmp < 0 ){
-			return 1;
-		}
-		// compare weight
-		var cmp = a.get("date") - b.get("date");
-		if( cmp > 0 ){
-			return -1;
-		}else if( cmp < 0 ){
-			return 1;
-		}
-		return 0;
 	}
 });
 
@@ -315,7 +229,7 @@ NoteListView = Backbone.View.extend({
 	}
 });
 
-NoteTypeButton = Backbone.View.extend({
+NoteTypeView = Backbone.View.extend({
 	events: {
 		"click a": "select"
 	},
@@ -323,6 +237,10 @@ NoteTypeButton = Backbone.View.extend({
 		var button = this;
 		this.model.bind("change:active",function(){
 			button.render();
+		});
+		var notesList = new NoteListView({
+			collection:this.model.get("notes"),
+			el: this.$('.notes-list')[0]
 		});
 	},
 	select: function(event){

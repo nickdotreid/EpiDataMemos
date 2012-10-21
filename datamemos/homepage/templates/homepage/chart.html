@@ -68,6 +68,7 @@
 		</div>
 	</script>
 	<script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap-modal.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap-collapse.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}notes/js/notes-list.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}homepage/js/homepage.js"></script>
@@ -139,22 +140,17 @@
 </section>
 <section id="notes-container" class="page-column">
 	<div id="note-view-container"></div>
-	<div class="navbar notes-nav">
-		<div class="navbar-inner">
-			<div class="container">
-				<ul class="nav nav-categories">
-					{% for category in categories %}
-					<li class="note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
-						<i></i>
-						<a href="#" >{{category.name}}</a>
-					</li>
-					{% endfor %}
-				</ul>
+	<div id="note-types-list" class="accordion">
+		{% for category in categories %}
+		<div class="accordion-group note-type" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
+					{{category.name}}
+				</a>
 			</div>
+			<div id="note-type-list-{{category.short}}" class="notes-list accordion-body collapse {%if forloop.first %}in{% endif %}"></div>
 		</div>
-	</div>
-	<div class="notes-list">
-		
+		{% endfor %}
 	</div>
 </section>
 {% endblock %}

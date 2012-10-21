@@ -76,10 +76,7 @@ Homepage = Backbone.Model.extend({
 			tags:this.get("tags"),
 			charts:this.get("charts")
 		}));
-		new NoteContainer({
-			model:this.get("notes"),
-			el:$("#notes-container")[0]
-		});
+
 		this.bootstrap_notes();
 		
 		this.manager.render();
@@ -202,7 +199,7 @@ Homepage = Backbone.Model.extend({
 	},
 	bootstrap_notes: function(){
 		var notes_manager = this.get("notes");
-		$(".notes-nav .note-type").each(function(){
+		$("#note-types-list .note-type").each(function(){
 			var note_type_node = $(this);
 			var note_type = new NoteType({
 				short:note_type_node.attr("note-type"),
@@ -212,7 +209,7 @@ Homepage = Backbone.Model.extend({
 			if(note_type_node.attr("note-type-public")){
 				note_type.set("public",true);
 			}
-			new NoteTypeButton({
+			new NoteTypeView({
 				model:note_type,
 				el:this
 			});

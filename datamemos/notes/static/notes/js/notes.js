@@ -146,12 +146,77 @@ NoteItem = Backbone.View.extend({
 	}
 });
 
+NoteList = Backbone.Collection.extend({
+	model:Note,
+	urlRoot:'/notes/',
+	url: function(){
+		var vars = [];
+		if( this.chart ) vars.push("chart_id="+this.chart.id);
+		else vars.push("limit=10");
+		if( this.type ) vars.push("type="+this.type.get("short"));
+		return this.urlRoot + '?' + vars.join("&");
+	},
+	initialize: function(options){
+		if(options && options.type) this.type = options.type;
+		else this.type = false;
+		
+		this.chart = false;
+		this.update = true;
+		
+		var list = this;
+		this.bind('change:weight',function(){
+			list.sort();
+		});
+		
+	},
+	fetch:function(options){
+		var notes_list = this;
+		var type = notes_list.type;
+		this.reset();
+		$.ajax({
+			url:this.url(),
+			data_type:"JSON",
+			data:{
+				json:true
+			},
+			success:function(data){
+				_(data['notes']).forEach(function(note_node){
+					if(type.get("short") == note_node['type']){
+						type.get("notes").add(note_node,{parse:true});
+					}
+				});
+			}
+		});
+	},
+	comparator:function(a,b){
+		var cmp = a.get_activeness() - b.get_activeness();
+		if( cmp > 0 ){
+			return -1;
+		}else if( cmp < 0 ){
+			return 1;
+		}
+		// compare weight
+		var cmp = a.get("date") - b.get("date");
+		if( cmp > 0 ){
+			return -1;
+		}else if( cmp < 0 ){
+			return 1;
+		}
+		return 0;
+	}
+});
+
 NoteType = Backbone.Model.extend({
 	defaults:{
 		active:false,
 		name:"",
 		short:"",
-		public:false
+		public:false,
+		notes: new NoteList()
+	},
+	initialize: function(options){
+		this.set("notes",new NoteList());
+		this.get("notes").type = this;
 	},
 	toggle: function(){
 		if(this.get("active")){
@@ -160,6 +225,17 @@ NoteType = Backbone.Model.extend({
 		}
 		this.set("active",true);
 		return true;
+	}
+});
+
+NoteTypeView = Backbone.View.extend({
+	initialize: function(options){
+		
+	},
+	render: function(){
+		if(this.model.get("active")){
+			this.$('.notes-list').show();
+		}
 	}
 });
 
