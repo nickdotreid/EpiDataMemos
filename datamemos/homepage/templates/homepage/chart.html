@@ -100,7 +100,7 @@
 {% endblock %}
 
 {% block content %}
-<header>
+<div class="header header-top">
 	<i class="dph-logo dph-logo-big">&nbsp;</i>
 	<div class="dph">
 		<span class="line">City and County of San Francisco</span>
@@ -124,30 +124,30 @@
 			</ul>
 		</div>
 	</div>
-</header>
-<section id="home" class="page-column main page page-content">
+</div>
+<div id="home" class="page-column main page page-content">
 	<div class="page-inner">
 			{% include 'homepage/about.html' %}
 	</div>
-</section>
-<section id="charts-container" class="page-column charts list charts-list">
+</div>
+<div id="charts-container" class="page-column charts list charts-list">
 	<noscript>
 		<div class="alert alert-error">Javascript not enabled. This site will not work as expected.</div>
 	</noscript>
 	{% for chart in charts %}
 		{% include 'charts/short.html' %}
 	{% endfor %}
-</section>
-<section id="notes-container" class="page-column">
+</div>
+<div id="notes-container" class="page-column">
 	<div id="note-view-container"></div>
 	<div id="note-types-list" class="accordion">
 		{% for category in categories %}
 		<div class="accordion-group note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
+			<div class="accordion-heading note-type-heading">
+				<a class="accordion-toggle note-type-title" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
 					{{category.name}}
-					<div class="notes-count"><span class="count-active"></span> of <span class="count-total"></span></div>
 				</a>
+				<div class="notes-count"><span class="count-active"></span> of <span class="count-total"></span></div>
 			</div>
 			<div id="note-type-list-{{category.short}}" class="notes-list-container accordion-body collapse {%if forloop.first %}in{% endif %}">
 				<div class="accordion-inner notes-list"></div>
@@ -155,5 +155,5 @@
 		</div>
 		{% endfor %}
 	</div>
-</section>
+</div>
 {% endblock %}

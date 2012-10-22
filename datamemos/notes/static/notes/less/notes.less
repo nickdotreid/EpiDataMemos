@@ -87,6 +87,20 @@
 	}
 }
 
-.note-type .notes-count{
-	float:right;
+.note-type-heading{
+	position:relative;
 }
+
+.note-type .notes-count{
+	position:absolute;
+	top:2px;
+	right:0px;
+}
+
+.note-type .notes-list{
+	display:none;
+}
+.note-type.active .notes-list{
+	display:block;
+}
+

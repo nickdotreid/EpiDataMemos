@@ -136,7 +136,7 @@ Chart = Backbone.Model.extend({
 		this.get("rows").bind("change:selected",function(tag){
 			if(chart.get("active")){
 				if(tag.get("selected")){
-					chart.get("rows").without(tag).forEach(function(tag){
+					_(chart.get("rows").without(tag)).forEach(function(tag){
 						tag.set("selected",false);
 					});
 					chart.trigger("chart:changed",chart);					
@@ -158,7 +158,7 @@ Chart = Backbone.Model.extend({
 		this.get("columns").bind("change:selected",function(tag){
 			if(chart.get("active")){
 				if(tag.get("selected")){
-					chart.get("columns").without(tag).forEach(function(tag){
+					_(chart.get("columns").without(tag)).forEach(function(tag){
 						tag.set("selected",false);
 					});
 				}
