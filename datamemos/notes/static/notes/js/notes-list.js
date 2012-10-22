@@ -177,7 +177,7 @@ Notes = Backbone.Model.extend({
 		});
 	},
 	sort_notes: function(options){
-		if(!this.update) return;
+		if(!this.get("update")) return;
 		this.types.forEach(function(type){
 			type.get("notes").sort(options);
 		});
