@@ -272,7 +272,7 @@ NoteEdit = Backbone.View.extend({
 			this.container = options.container;
 			this.$container = $(this.container);
 			
-			this.$container.show().html("");
+			this.$container.html("");
 			this.$el.appendTo(this.container);
 		}
 		
@@ -350,7 +350,7 @@ NoteEdit = Backbone.View.extend({
 			form: markup
 		}));
 		if(this.container){
-			this.$container.show().html("");
+			this.$container.html("");
 			this.$el.appendTo(this.container);
 		}
 	}

@@ -199,10 +199,15 @@ Homepage = Backbone.Model.extend({
 	},
 	bootstrap_notes: function(){
 		var notes_manager = this.get("notes");
+		var homepage = this;
 		
 		$('#note-types-list .collapse').collapse({
 			toggle: false,
 			parent: "#note-types-list"
+		});
+		
+		notes_manager.bind('change:note',function(){
+			homepage.trigger("page:refresh");
 		});
 		
 		$("#note-types-list .note-type").each(function(){
@@ -235,6 +240,9 @@ HomepageView = Backbone.View.extend({
 	initialize: function(){
 		var view = this;
 		this.model.bind('change:page',function(){
+			view.render();
+		});
+		this.model.bind('page:refresh',function(){
 			view.render();
 		});
 		this.model.bind("loading",function(){
@@ -282,7 +290,13 @@ HomepageView = Backbone.View.extend({
 			$("#main-nav .chart-nav").hide();
 			$("#main-nav .chart-actions").hide();
 		}else{
-			this.$('#note-types-list').show();
+			if(this.model.get("notes") && this.model.get("notes").get("note")){
+				this.$('#note-types-list').hide();
+				this.$("#note-view-container").show();
+			}else{
+				this.$('#note-types-list').show();
+				this.$("#note-view-container").hide();
+			}
 			this.$('#charts-container').show().addClass("main");
 			this.$('#home').hide();
 			

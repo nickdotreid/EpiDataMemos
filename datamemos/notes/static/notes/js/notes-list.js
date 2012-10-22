@@ -80,14 +80,6 @@ Notes = Backbone.Model.extend({
 		});
 		
 		this.bind('change:note',function(){
-			if(notes_manager.get("note")){
-				$("#note-types-list").hide();
-			}else{
-				$("#note-types-list").show();
-			}
-		});
-		
-		this.bind('change:note',function(){
 			if(notes_manager.get("note")) notes_manager.set("update",false);
 			else notes_manager.set("update",true);
 		});
@@ -109,7 +101,7 @@ Notes = Backbone.Model.extend({
 			show_close: true
 		});
 		note_view.bind('remove',function(){
-			$("#note-view-container").html("").hide();
+			$("#note-view-container").html("");
 			notes_manager.set("note",false);
 		});
 	},

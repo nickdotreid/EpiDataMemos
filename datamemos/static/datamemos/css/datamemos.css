@@ -3804,8 +3804,11 @@ form .requiredField .asteriskField {
 .navbar {
   clear: both;
 }
-.wrapper.container {
+.container,
+.navbar .container {
   width: 1090px;
+}
+.wrapper.container {
   padding-top: 35px;
 }
 #app-area .navbar {
@@ -3821,7 +3824,6 @@ form .requiredField .asteriskField {
   width: 575px;
 }
 #footer {
-  background-color: #FFF;
   display: block;
   clear: both;
   position: relative;
