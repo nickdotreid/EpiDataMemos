@@ -1,6 +1,5 @@
 .bookmark {
   display: block;
-  position: relative;
   overflow: hidden;
   clear: both;
   background-color: #AAA;
@@ -13,7 +12,7 @@
 .bookmark .actions {
   display: block;
   clear: both;
-  margin: 0px 0px 3px 25px;
+  margin: 0px 0px 3px 0px;
 }
 .bookmark .bookmark-chart,
 .bookmark .tag {
@@ -43,9 +42,7 @@
   float: right;
 }
 .bookmark i {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  display: none;
   width: 15px;
   height: 15px;
   background-image: url('../../bootstrap/img/glyphicons-halflings.png');
