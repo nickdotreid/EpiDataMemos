@@ -43,7 +43,6 @@ Notes = Backbone.Model.extend({
 				});
 				note.get("bookmarks").bind("change:highlight",function(bookmark){
 					if(bookmark.get("highlight")){
-						notes_manager.set("update",false);
 						var cached = tags.filter(function(tag){
 							return tag.get("selected");
 						});
@@ -55,9 +54,7 @@ Notes = Backbone.Model.extend({
 							tag.set("selected",true);
 						});
 					}else{
-						var cached = notes_manager.get("cached_tags");
-						if(cached.length < 1) return ;
-						notes_manager.set("update",true);
+						if(notes_manager.get("cached_tags").length < 1) return ;
 
 						bookmark.get("tags").forEach(function(tag){
 							tag.set("selected",false);
@@ -177,6 +174,10 @@ Notes = Backbone.Model.extend({
 });
 
 NoteListView = Backbone.View.extend({
+	events:{
+		'mouseover':'freeze',
+		'mouseout':'unfreeze'
+	},
 	initialize: function(options){
 		if(options && options['collection']){
 			this.collections = options['collection'];
@@ -193,6 +194,12 @@ NoteListView = Backbone.View.extend({
 		this.collection.bind("reset",function(){
 			note_list_view.render();
 		});
+	},
+	freeze: function(){
+		this.collection.freeze(true);
+	},
+	unfreeze: function(){
+		this.collection.freeze(false);
 	},
 	render: function(){
 		if(!this.collection.update) return;
@@ -244,6 +251,7 @@ NoteTypeView = Backbone.View.extend({
 		$(window).scroll(function(event){
 			if(button.model.get("active")) button.resize(event);
 		});
+		this.update_count();
 		this.resize();
 	},
 	update_count: function(){

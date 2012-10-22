@@ -169,6 +169,11 @@ NoteList = Backbone.Collection.extend({
 		});
 		
 	},
+	freeze: function(freeze){
+		if(freeze == undefined) freeze = true;
+		if(freeze) this.update = false;
+		else this.update = true;
+	},
 	fetch:function(options){
 		var notes_list = this;
 		var type = notes_list.type;
