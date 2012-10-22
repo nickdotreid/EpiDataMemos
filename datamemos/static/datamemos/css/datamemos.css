@@ -3809,7 +3809,7 @@ form .requiredField .asteriskField {
   width: 1090px;
 }
 .wrapper.container {
-  padding-top: 35px;
+  margin-top: 55px;
 }
 #app-area .navbar {
   margin-bottom: 0px;

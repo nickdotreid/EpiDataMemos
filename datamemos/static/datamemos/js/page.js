@@ -18,7 +18,10 @@ $(document).ready(function(){
 			stick_it = false;
 		}
 		if(stick_it){
-			var new_y = $(window).scrollTop();			
+			var new_y = $(window).scrollTop();
+			if($(".navbar-fixed-top").length > 0){
+				new_y += $('.navbar-fixed-top').height();
+			}		
 			sticky.siblings(':visible').each(function(){
 				var sib = $(this);
 				if((sib).hasClass("sticky")) return ;
