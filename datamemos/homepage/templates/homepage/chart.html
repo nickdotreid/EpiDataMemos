@@ -99,24 +99,24 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}charts/css/barchart.css" />
 {% endblock %}
 
+{% block navbar %}
+<ul class="nav pages home-nav">
+	<li><a href="#about">About</a></li>
+	<li><a href="#howto">How to Use</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+<ul class="nav chart-nav pages">
+	<li class="home"><a href="#home" name="home"><i>&nbsp;</i>Home</a></li>
+	<li class="list"><a href="#list" name="list"><i>&nbsp;</i>List</a></li>
+</ul>
+<ul class="nav actions chart-actions pull-right">
+	<li ><a href="#" class="add bookmark-add"><i>&nbsp;</i>Share</a></li>
+	<li ><a href="#" class="add note-add"><i>&nbsp;</i>New Note</a></li>
+</ul>
+{% endblock %}
+
+
 {% block content %}
-<div id="main-nav" class="navbar">
-	<div class="navbar-inner">
-		<ul class="nav pages home-nav">
-			<li><a href="#about">About</a></li>
-			<li><a href="#howto">How to Use</a></li>
-			<li><a href="#contact">Contact</a></li>
-		</ul>
-		<ul class="nav chart-nav pages">
-			<li class="home"><a href="#home" name="home"><i>&nbsp;</i>Home</a></li>
-			<li class="list"><a href="#list" name="list"><i>&nbsp;</i>List</a></li>
-		</ul>
-		<ul class="nav actions chart-actions pull-right">
-			<li ><a href="#" class="add bookmark-add"><i>&nbsp;</i>Share</a></li>
-			<li ><a href="#" class="add note-add"><i>&nbsp;</i>New Note</a></li>
-		</ul>
-	</div>
-</div>
 <div id="home" class="page-column main page page-content">
 	<div class="page-inner">
 			<i class="dph-logo dph-logo-big">&nbsp;</i>
@@ -136,22 +136,20 @@
 		{% include 'charts/short.html' %}
 	{% endfor %}
 </div>
-<div id="notes-container" class="page-column">
-	<div id="note-view-container"></div>
-	<div id="note-types-list" class="accordion sticky">
-		{% for category in categories %}
-		<div class="accordion-group note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
-			<div class="accordion-heading note-type-heading">
-				<a class="accordion-toggle note-type-title" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
-					{{category.name}}
-				</a>
-				<div class="notes-count"><span class="count-active"></span> of <span class="count-total"></span></div>
-			</div>
-			<div id="note-type-list-{{category.short}}" class="notes-list-container accordion-body collapse {%if forloop.first %}in{% endif %}">
-				<div class="accordion-inner notes-list"></div>
-			</div>
+<div id="note-types-list" class="accordion sticky page-column">
+	{% for category in categories %}
+	<div class="accordion-group note-type {%if forloop.first %}active{% endif %}" note-type="{{category.short}}" {% if category.public or user.is_staff %}note-type-public="true"{% endif %}>
+		<div class="accordion-heading note-type-heading">
+			<a class="accordion-toggle note-type-title" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
+				{{category.name}}
+			</a>
+			<div class="notes-count"><span class="count-active"></span> of <span class="count-total"></span></div>
 		</div>
-		{% endfor %}
+		<div id="note-type-list-{{category.short}}" class="notes-list-container accordion-body collapse {%if forloop.first %}in{% endif %}">
+			<div class="accordion-inner notes-list"></div>
+		</div>
 	</div>
+	{% endfor %}
 </div>
+<div id="note-view-container" class="page-column sticky"></div>
 {% endblock %}

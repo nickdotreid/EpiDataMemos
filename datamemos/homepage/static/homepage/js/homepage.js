@@ -271,7 +271,7 @@ HomepageView = Backbone.View.extend({
 		this.$(".page-content").hide();
 		this.$(".navbar .pages .active").removeClass("active");
 		if(this.model.get("page")){
-			this.$('#notes-container').hide();
+			this.$('#note-types-list').hide();
 			this.$('#charts-container').show().removeClass("main");
 			this.$('#home').show().addClass("main");
 			
@@ -282,7 +282,7 @@ HomepageView = Backbone.View.extend({
 			$("#main-nav .chart-nav").hide();
 			$("#main-nav .chart-actions").hide();
 		}else{
-			this.$('#notes-container').show().removeClass("main");
+			this.$('#note-types-list').show();
 			this.$('#charts-container').show().addClass("main");
 			this.$('#home').hide();
 			
@@ -290,6 +290,7 @@ HomepageView = Backbone.View.extend({
 			$("#main-nav .chart-nav").show();
 			$("#main-nav .chart-actions").show();
 		}
+		$(".sticky").trigger("sticky:reset");
 	}
 	
 });

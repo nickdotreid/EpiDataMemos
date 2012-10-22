@@ -17,6 +17,13 @@
 	{% endblock %}
 </head>
 <body>
+	<div id="main-nav" class="navbar">
+		<div class="navbar-inner">
+			{% block navbar %}
+
+			{% endblock %}
+		</div>
+	</div>
 	<div class="wrapper container">
 	{% block content %}
 	

@@ -274,8 +274,11 @@ NoteTypeView = Backbone.View.extend({
 		});
 		collapse.height(new_height);
 		
-		if(collapse.height() < this.$('.collapse .notes-list').height()) collapse.addClass("scrollable");
-		else collapse.removeClass("scrollable");
+		if(new_height < this.$('.collapse .notes-list').height()){
+			collapse.height(new_height).addClass("scrollable");
+		}else{
+			collapse.height(this.$(".collapse .notes-list").height()).removeClass("scrollable");
+		}
 	},
 	select: function(event){
 		event.preventDefault();

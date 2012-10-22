@@ -3828,6 +3828,12 @@ form .requiredField .asteriskField {
   padding: 70px 20px 20px;
   margin: 0px;
 }
+.sticky {
+  position: static;
+}
+.sticky-stuck {
+  position: absolute;
+}
 .notes-nav {
   margin: 0px;
 }
