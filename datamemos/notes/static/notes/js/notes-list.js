@@ -264,16 +264,18 @@ NoteTypeView = Backbone.View.extend({
 	},
 	resize:function(event){
 		var accordion = this.$el.parents(".accordion:first");
-		var offset = this.$('.collapse').offset().top - window.scrollY;
+		var collapse = this.$('.collapse');
+		var _window = $(window);
+		var offset = collapse.offset().top - _window.scrollTop();
 		if(offset < 0) offset = 0;
-		var new_height = $(window).height() - offset;
+		var new_height = _window.height() - offset;
 		this.$el.nextAll('.note-type').each(function(){
 			new_height -= $(this).height();
 		});
-		this.$('.collapse').height(new_height);
+		collapse.height(new_height);
 		
-		if(this.$('.collapse').height() < this.$('.collapse .notes-list').height()) this.$('.collapse').addClass("scrollable");
-		else this.$('.collapse').removeClass("scrollable");
+		if(collapse.height() < this.$('.collapse .notes-list').height()) collapse.addClass("scrollable");
+		else collapse.removeClass("scrollable");
 	},
 	select: function(event){
 		event.preventDefault();
