@@ -231,7 +231,8 @@ NoteListView = Backbone.View.extend({
 
 NoteTypeView = Backbone.View.extend({
 	events: {
-		"click a": "select"
+		"click a": "select",
+		"shown": "resize"
 	},
 	initialize:function(){
 		var button = this;
@@ -242,6 +243,23 @@ NoteTypeView = Backbone.View.extend({
 			collection:this.model.get("notes"),
 			el: this.$('.notes-list')[0]
 		});
+		$(window).scroll(function(event){
+			if(button.model.get("active")) button.resize(event);
+		})
+	},
+	resize:function(event){
+		var accordion = this.$el.parents(".accordion:first");
+		var offset = this.$('.collapse').offset().top - window.scrollY;
+		if(offset < 0) offset = 0;
+		var new_height = $(window).height() - offset;
+		this.$el.nextAll('.note-type').each(function(){
+			new_height -= $(this).height();
+		});
+		
+		if(new_height < $('.collapse .notes-list').height()) this.$('.collapse').css("overflow","scroll");
+		else this.$('.collapse').css("overflow","hidden");
+		
+		this.$('.collapse').height(new_height);
 	},
 	select: function(event){
 		event.preventDefault();
