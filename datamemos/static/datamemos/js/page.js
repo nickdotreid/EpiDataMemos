@@ -12,8 +12,13 @@ $(document).ready(function(){
 	}).bind("sticky:scroll",function(){
 		var sticky = $(this);
 		if(!sticky.is(":visible")) return ;
-		if($(window).scrollTop() > sticky.data("top")){
-			var new_y = $(window).scrollTop();
+		var stick_it = false;
+		if($(window).scrollTop() > sticky.data("top")) stick_it = true;
+		if(!sticky.hasClass('sticky-stuck') && sticky.height() > $(window).height() && sticky.offset().top + sticky.height() >= $(window).height() + $(window).scrollTop()){
+			stick_it = false;
+		}
+		if(stick_it){
+			var new_y = $(window).scrollTop();			
 			sticky.siblings(':visible').each(function(){
 				var sib = $(this);
 				if((sib).hasClass("sticky")) return ;
