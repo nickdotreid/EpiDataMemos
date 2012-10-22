@@ -136,15 +136,13 @@ Homepage = Backbone.Model.extend({
 			
 		}
 	},
-	change_page: function(page_name){
-		if(page_name){
-			this.get("charts").deactivate();
-			this.get("tags").forEach(function(tag){
-				tag.set("selected",false);
-			});
-			this.router.navigate("");
-		}
-		this.set("page",page_name);
+	show_home: function(){
+		this.get("charts").deactivate();
+		this.get("tags").forEach(function(tag){
+			tag.set("selected",false);
+		});
+		this.router.navigate("");
+		this.set("page","home");
 	},
 	setup_charts: function(){
 		var charts = this.get("charts");
@@ -253,7 +251,7 @@ HomepageView = Backbone.View.extend({
 		});
 	},
 	events: {
-		'click .navbar .pages a': 'page_navigate',
+		'click .navbar .pages .home a': 'show_home',
 		'click .navbar .bookmark-add': 'add_bookmark',
 		'click .navbar .note-add': 'add_note'
 	},
@@ -271,9 +269,9 @@ HomepageView = Backbone.View.extend({
 		event.preventDefault();
 		this.trigger("note-add");
 	},
-	page_navigate: function(event){
+	show_home: function(event){
 		event.preventDefault();
-		this.trigger("update",$(event.currentTarget).attr("name"));
+		this.model.show_home();
 	},
 	render: function(){
 		this.$(".page-content").hide();
