@@ -259,8 +259,8 @@ NoteTypeView = Backbone.View.extend({
 		});
 		this.$('.collapse').height(new_height);
 		
-		if(this.$('.collapse').height() < this.$('.collapse .notes-list').height()) this.$('.collapse').css("overflow","scroll");
-		else this.$('.collapse').css("overflow","hidden");
+		if(this.$('.collapse').height() < this.$('.collapse .notes-list').height()) this.$('.collapse').addClass("scrollable");
+		else this.$('.collapse').removeClass("scrollable");
 	},
 	select: function(event){
 		event.preventDefault();

@@ -2510,9 +2510,6 @@ table [class*=span],
   padding: 9px 15px;
   border-top: 1px solid #e5e5e5;
 }
-.accordion-body {
-  overflow: hidden;
-}
 .modal-open .modal .dropdown-menu {
   z-index: 2050;
 }

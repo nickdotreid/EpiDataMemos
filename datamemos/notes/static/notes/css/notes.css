@@ -47,6 +47,12 @@
   display: block;
   margin: 7px auto;
 }
+.notes-list-container {
+  overflow: hidden;
+}
+.notes-list-container.scrollable {
+  overflow: scroll;
+}
 .note-add-form-container {
   margin: 7px 0px;
 }
