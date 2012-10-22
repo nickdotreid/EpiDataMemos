@@ -115,7 +115,7 @@ Homepage = Backbone.Model.extend({
 			}
 		});
 		this.router.bind("showHome",function(){
-			homepage.change_page("home");
+			homepage.show_home();
 		});
 	},
 	show_note: function(note,edit){
@@ -252,6 +252,7 @@ HomepageView = Backbone.View.extend({
 	},
 	events: {
 		'click .navbar .pages .home a': 'show_home',
+		'click .navbar .pages.home-nav a':'show_section',
 		'click .navbar .bookmark-add': 'add_bookmark',
 		'click .navbar .note-add': 'add_note'
 	},
@@ -271,7 +272,20 @@ HomepageView = Backbone.View.extend({
 	},
 	show_home: function(event){
 		event.preventDefault();
+		$(window).scrollTop(0);
 		this.model.show_home();
+	},
+	show_section: function(event){
+		event.preventDefault();
+		var selector = $(event.currentTarget).attr("href");
+		$(selector).each(function(){
+			var y_pos = $(this).offset().top;
+			$('html,body').animate({
+				scrollTop:y_pos
+			},{
+				duration:500
+			});
+		});
 	},
 	render: function(){
 		this.$(".page-content").hide();
