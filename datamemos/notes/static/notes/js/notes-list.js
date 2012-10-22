@@ -204,7 +204,9 @@ NoteListView = Backbone.View.extend({
 	},
 	render: function(){
 		if(!this.collection.update) return;
-		
+		this.$el.parents(".scrollable").each(function(){
+			this.scrollTop = 0;
+		});
 		var note_list_view = this;
 		this.$('.nonotes').remove();
 		this.$('.note').addClass("toRemove");
