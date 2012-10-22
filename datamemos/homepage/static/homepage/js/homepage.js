@@ -40,7 +40,7 @@ var Workspace = Backbone.Router.extend({
 
 Homepage = Backbone.Model.extend({
 	defaults:{
-		page: 'home'
+		home: true
 	},
 	initialize: function(){
 		var homepage = this;
@@ -60,7 +60,7 @@ Homepage = Backbone.Model.extend({
 		this.manager.bind('note-add',function(){
 			homepage.get("notes").edit_note();
 		});
-		
+				
 		this.set("tags", new TagCollection());
 		this.get("tags").bind('change:selected',function(tag){
 			homepage.get("notes").sort_notes();
@@ -141,8 +141,9 @@ Homepage = Backbone.Model.extend({
 		this.get("tags").forEach(function(tag){
 			tag.set("selected",false);
 		});
+		this.set("home",true);
 		this.router.navigate("");
-		this.set("page","home");
+		this.trigger("page:refresh");
 	},
 	setup_charts: function(){
 		var charts = this.get("charts");
@@ -154,10 +155,8 @@ Homepage = Backbone.Model.extend({
 			manager.trigger("loaded");
 		});
 		charts.bind("chart-changed",function(chart){
+			manager.set("home",false);
 			manager.get("notes").set_chart(chart);
-			if(chart){
-				manager.set("page",false);
-			}
 			manager.trigger("loaded");
 			manager.set_chart_url(chart);
 		});
@@ -237,7 +236,7 @@ Homepage = Backbone.Model.extend({
 HomepageView = Backbone.View.extend({
 	initialize: function(){
 		var view = this;
-		this.model.bind('change:page',function(){
+		this.model.bind('change:home',function(){
 			view.render();
 		});
 		this.model.bind('page:refresh',function(){
@@ -278,19 +277,19 @@ HomepageView = Backbone.View.extend({
 	show_section: function(event){
 		event.preventDefault();
 		var selector = $(event.currentTarget).attr("href");
+		var y_pos = 0;
 		$(selector).each(function(){
-			var y_pos = $(this).offset().top;
-			$('html,body').animate({
-				scrollTop:y_pos
-			},{
-				duration:500
-			});
+			y_pos = $(this).offset().top;
+		});
+		$('html,body').animate({
+			scrollTop:y_pos
+		},{
+			duration:500
 		});
 	},
 	render: function(){
-		this.$(".page-content").hide();
 		this.$(".navbar .pages .active").removeClass("active");
-		if(this.model.get("page")){
+		if(this.model.get("home")){
 			this.$('#note-types-list').hide();
 			this.$('#charts-container').show().removeClass("main");
 			this.$('#home').show().addClass("main");
