@@ -31,6 +31,21 @@ ChartView = Backbone.View.extend({
 		
 		this.setup();
 	},
+	canvas_clicked:function(){
+		var tag = this.model.get("columns").find(function(tag){
+			if(tag.get("selected")) return true;
+			return false;
+		});
+		if(!tag){
+			var tag = this.model.get("rows").find(function(tag){
+				if(tag.get("selected")) return true;
+				return false;
+			});
+		}
+		if(tag){
+			tag.select(false);
+		}
+	},
 	setup: function(){
 		this.setElement(this.template(this.model.toJSON()));
 		var container = $(this.container);
@@ -98,6 +113,13 @@ ChartView = Backbone.View.extend({
 		this.paper = paper;
 		
 		canvas.append('<div class="top-fade"></div>');
+		
+		var bg_box = paper.rect(0,0,paper.width,paper.height);
+		bg_box.attr("fill","#FFF");
+		bg_box.attr("stroke-width",0);
+		bg_box.click(function(){
+			chart_view.canvas_clicked();
+		});
 		
 		/** RENDER LABELS **/
 		this.x_label = paper.text(0,0,this.model.get("x_label"));

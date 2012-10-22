@@ -8,8 +8,10 @@ Tag = Backbone.Model.extend({
 		color:false,
 		selected:false
 	},
-	select: function(){
-		this.set("selected",true);
+	select: function(select){
+		if(select == undefined) select = true;
+		if(select) this.set("selected",true);
+		else this.set("selected",false);
 	},
 	set_children: function(items){
 		var tag = this;
