@@ -204,6 +204,7 @@ NoteListView = Backbone.View.extend({
 	},
 	render: function(){
 		if(!this.collection.update) return;
+		
 		var note_list_view = this;
 		this.$('.nonotes').remove();
 		this.$('.note').addClass("toRemove");
@@ -245,7 +246,8 @@ NoteTypeView = Backbone.View.extend({
 		});
 		$(window).scroll(function(event){
 			if(button.model.get("active")) button.resize(event);
-		})
+		});
+		this.resize();
 	},
 	resize:function(event){
 		var accordion = this.$el.parents(".accordion:first");
@@ -255,11 +257,10 @@ NoteTypeView = Backbone.View.extend({
 		this.$el.nextAll('.note-type').each(function(){
 			new_height -= $(this).height();
 		});
-		
-		if(new_height < $('.collapse .notes-list').height()) this.$('.collapse').css("overflow","scroll");
-		else this.$('.collapse').css("overflow","hidden");
-		
 		this.$('.collapse').height(new_height);
+		
+		if(this.$('.collapse').height() < this.$('.collapse .notes-list').height()) this.$('.collapse').css("overflow","scroll");
+		else this.$('.collapse').css("overflow","hidden");
 	},
 	select: function(event){
 		event.preventDefault();
