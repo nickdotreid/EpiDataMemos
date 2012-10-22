@@ -3882,11 +3882,19 @@ form .requiredField .asteriskField {
 #form-note .form-actions {
   margin-bottom: 0px;
 }
-.dph {
+.brand-title {
   font-size: 1.1em;
+  padding-left: 120px;
+  position: relative;
 }
-.dph .line {
+.brand-title .line {
   display: block;
+}
+.brand-title .logo {
+  float: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 .logo {
   display: block;
