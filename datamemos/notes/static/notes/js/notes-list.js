@@ -246,10 +246,21 @@ NoteTypeView = Backbone.View.extend({
 			collection:this.model.get("notes"),
 			el: this.$('.notes-list')[0]
 		});
+		this.model.get("notes").bind("reset",function(){
+			button.update_count();
+		});
 		$(window).scroll(function(event){
 			if(button.model.get("active")) button.resize(event);
 		});
 		this.resize();
+	},
+	update_count: function(){
+		this.$('.notes-count .count-total').html(this.model.get("notes").length);
+		var active_notes = this.model.get("notes").filter(function(note){
+			if(note.get("activeness") > 0) return true;
+			return false;
+		});
+		this.$('.notes-count .count-active').html(active_notes.length);
 	},
 	resize:function(event){
 		var accordion = this.$el.parents(".accordion:first");

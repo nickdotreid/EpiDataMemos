@@ -146,6 +146,7 @@
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" data-parent="#note-types-list" href="#note-type-list-{{category.short}}">
 					{{category.name}}
+					<div class="notes-count"><span class="count-active"></span> of <span class="count-total"></span></div>
 				</a>
 			</div>
 			<div id="note-type-list-{{category.short}}" class="notes-list-container accordion-body collapse {%if forloop.first %}in{% endif %}">

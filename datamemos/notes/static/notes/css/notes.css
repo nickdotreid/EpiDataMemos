@@ -79,3 +79,6 @@
   background-repeat: no-repeat;
   background-position: -314px 0;
 }
+.note-type .notes-count {
+  float: right;
+}
