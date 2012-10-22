@@ -199,6 +199,12 @@ Homepage = Backbone.Model.extend({
 	},
 	bootstrap_notes: function(){
 		var notes_manager = this.get("notes");
+		
+		$('#note-types-list .collapse').collapse({
+			toggle: false,
+			parent: "#note-types-list"
+		});
+		
 		$("#note-types-list .note-type").each(function(){
 			var note_type_node = $(this);
 			var note_type = new NoteType({
@@ -214,7 +220,11 @@ Homepage = Backbone.Model.extend({
 				el:this
 			});
 			notes_manager.types.add(note_type);
+			
+			if(note_type_node.hasClass('active')) $(".collapse",note_type_node).collapse('show');
+			else $(".collapse",note_type_node).collapse('hide');
 		});
+		
 		if(!notes_manager.types.any(function(note_type){ return note_type.get("active"); })){
 			if(notes_manager.types.length > 0)	notes_manager.types.first().toggle();
 		}
