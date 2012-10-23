@@ -167,9 +167,10 @@ ChartView = Backbone.View.extend({
 			return tag;
 		});
 		
+		this.update();
 		chart_view.color();
 		chart_view.highlight();
-		return this.update();
+		return this;
 	},
 	update: function(){
 		if(!this.model.get("active")) return;
