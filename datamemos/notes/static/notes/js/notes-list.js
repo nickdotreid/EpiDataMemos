@@ -62,7 +62,7 @@ Notes = Backbone.Model.extend({
 						bookmark.get("tags").forEach(function(tag){
 							tag.set("selected",false);
 						});
-						_(cached).forEach(function(tag){
+						_(notes_manager.get("cached_tags")).forEach(function(tag){
 							tag.set("selected",true);
 						});
 						notes_manager.set("cached_tags",[]);
