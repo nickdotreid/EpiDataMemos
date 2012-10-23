@@ -50,7 +50,7 @@ Note = Backbone.Model.extend({
 		return activeness;
 	},
 	share: function(){
-		this.trigger("share",this);
+		this.trigger("note:share",this);
 	},
 	edit: function(){
 		this.trigger("edit",this);
@@ -126,12 +126,10 @@ NoteItem = Backbone.View.extend({
 	share: function(event){
 		event.preventDefault();
 		this.model.share();
-		this.trigger("note:share",this.model);
 	},
 	edit: function(event){
 		event.preventDefault();
 		this.model.edit();
-		this.trigger("note:edit",this.model);
 	},
 	remove: function(event){
 		event.preventDefault();

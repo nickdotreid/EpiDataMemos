@@ -29,6 +29,9 @@ Notes = Backbone.Model.extend({
 		
 		var tags = this.tags;
 		this.types.bind("add",function(type){
+			type.get("notes").bind("note:share",function(note){
+				notes_manager.share_note(note);
+			});
 			type.get("notes").bind("add",function(note){
 				note.get("bookmarks").forEach(function(bookmark){
 					// go through tags and connect tags to global tags
