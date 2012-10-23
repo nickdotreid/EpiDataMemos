@@ -134,7 +134,9 @@ Notes = Backbone.Model.extend({
 		var notes_manager = this;
 		edit_view.bind("saved",function(note){
 			note.fetch({success:function(){
-				notes_manager.notes.add(note);
+				notes_manager.types.forEach(function(type){
+					if(note.get("type") == type.get("short")) type.get("notes").add(note);
+				});
 				notes_manager.view_note(note);
 			}});
 		});
