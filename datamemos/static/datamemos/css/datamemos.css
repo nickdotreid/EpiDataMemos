@@ -3882,6 +3882,26 @@ form .requiredField .asteriskField {
 #form-note .form-actions {
   margin-bottom: 0px;
 }
+.nav.actions a.note-add i {
+  display: block;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 3px;
+  background-image: url("../../bootstrap/img/glyphicons-halflings.png");
+  background-position: -409px -98px;
+  background-repeat: no-repeat;
+}
+.nav.actions a.bookmark-add i {
+  display: block;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 3px;
+  background-image: url("../../bootstrap/img/glyphicons-halflings.png");
+  background-position: -337px -98px;
+  background-repeat: no-repeat;
+}
 .brand-title {
   font-size: 1.1em;
   padding-left: 120px;
