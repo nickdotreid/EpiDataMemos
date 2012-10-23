@@ -238,7 +238,7 @@ NoteListView = Backbone.View.extend({
 
 NoteTypeView = Backbone.View.extend({
 	events: {
-		"click a": "select",
+		"click .note-type-heading a": "select",
 		"shown": "resize"
 	},
 	initialize:function(){

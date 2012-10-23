@@ -18,6 +18,9 @@ import json
 from forms import make_note_form, BookmarkForm
 from django.template import RequestContext
 
+def get_note_url(note,request):
+	return 'http://'+request.get_host()+reverse(detail, args=(note.id,))
+
 def list(request):
 	query = Note.objects
 	if 'chart_id' in request.GET:
@@ -33,7 +36,7 @@ def list(request):
 		_notes = []
 		for note in query.all():
 			_note = note.as_json()
-			_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
+			_note['url'] = get_note_url(note,request)
 			if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
 				_note['editable'] = True 
 			if request.user.is_authenticated() and request.user.is_staff:
@@ -52,7 +55,7 @@ def detail(request, note_id):
 	note = get_object_or_404(Note,pk=note_id)
 	if request.is_ajax():
 		_note = note.as_json()
-		_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
+		_note['url'] = get_note_url(note,request)
 		if request.user.is_authenticated() and (note.author == request.user or request.user.is_staff):
 			_note['editable'] = True
 		if request.user.is_authenticated() and request.user.is_staff:
@@ -163,7 +166,7 @@ def create(request):
 				note.public = True
 			note.save()
 			save_bookmark_to_note(request,note)
-			send_note_email(note,request.get_host())
+			send_note_email(note,'http://' + request.get_host())
 			if request.is_ajax:
 				_note = note.as_json()
 				_note['url'] = request.get_host()+reverse(detail, args=(note.id,))
@@ -286,7 +289,7 @@ def ajax_save_bookmark(request,bookmark_id = False):
 				bookmark.note = False
 		bookmark.save()
 		_bookmark = bookmark.as_json()
-		_bookmark['url'] = request.get_host()+reverse(save_bookmark, args=(bookmark.id,))
+		_bookmark['url'] = 'http://'+request.get_host()+reverse(save_bookmark, args=(bookmark.id,))
 		return HttpResponse(
 			json.dumps({
 				"message":{
