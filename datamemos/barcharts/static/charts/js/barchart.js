@@ -723,7 +723,13 @@ PointView = Backbone.View.extend({
 		}
 		return this;
 	},
+	round_attrs: function(){
+		this.x = Math.ceil(this.x);
+		this.y = Math.ceil(this.y);
+		this.height = Math.ceil(this.height);
+	},
 	update: function(){
+		this.round_attrs();
 		this.updated = true;
 		this.el.attr({
 			height:this.height,
@@ -736,6 +742,7 @@ PointView = Backbone.View.extend({
 		}
 	},
 	animate: function(duration){
+		this.round_attrs();
 		if(!this.updated) this.update();
 		if(this.in_position()) return true;
 		var point = this;
