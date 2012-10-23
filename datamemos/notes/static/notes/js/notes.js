@@ -221,6 +221,12 @@ NoteType = Backbone.Model.extend({
 		this.set("notes",new NoteList());
 		this.get("notes").type = this;
 	},
+	select: function(select){
+		if(select == undefined) select = true;
+		if(select) this.set("active",true);
+		else this.set("active",false);
+		return this.get("active");
+	},
 	toggle: function(){
 		if(this.get("active")){
 			this.set("active",false);
