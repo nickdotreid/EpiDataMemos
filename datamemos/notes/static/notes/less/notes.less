@@ -5,7 +5,7 @@
 	background-image:url('../i/white70.png');
 	background-repeat:repeat;
 	background-position:top left;
-	margin:@spaceSize 0px;
+	margin:0px 0px @spaceSize;
 	padding:@spaceSize 0px 0px;
 	&.active{
 		background-color:#FFF;
@@ -65,25 +65,25 @@
 	form.note{
 		margin:0px;
 	}
-	.close-btn{
+}
+.note-add-form-container .close-btn, .note .close{
+	display:block;
+	font-size:0.8em;
+	margin:0px;
+	position:relative;
+	color:#FFF;
+	text-align:center;
+	background-color:#444;
+	i{
+		position:absolute;
+		top:3px;
+		left:15px;
+		width:15px;
+		height:15px;
 		display:block;
-		font-size:0.8em;
-		margin:0px;
-		position:relative;
-		color:#FFF;
-		text-align:center;
-		background-color:#444;
-		i{
-			position:absolute;
-			top:3px;
-			left:15px;
-			width:15px;
-			height:15px;
-			display:block;
-			background-image:url('../../bootstrap/img/glyphicons-halflings-white.png');
-			background-repeat:no-repeat;
-			background-position:-314px 0;	
-		}
+		background-image:url('../../bootstrap/img/glyphicons-halflings-white.png');
+		background-repeat:no-repeat;
+		background-position:-314px 0;	
 	}
 }
 
@@ -102,5 +102,6 @@
 }
 .note-type.active .notes-list{
 	display:block;
+	padding-top:@spaceSize;
 }
 
