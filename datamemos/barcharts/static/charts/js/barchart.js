@@ -174,6 +174,18 @@ ChartView = Backbone.View.extend({
 	},
 	update: function(){
 		if(!this.model.get("active")) return;
+		if(!this.model.get("update")) return;
+		if(this.updateTimeout){
+			clearTimeout(this.updateTimeout);
+			this.updateTimeout = false;
+		}
+		var barchart = this;
+		this.updateTimeout = setTimeout(function(){
+			barchart.update_real();
+		},100);
+	},
+	update_real: function(){
+		this.updateTimeout = false;
 		if(!this.model.get("update")){
 			return ;
 		}else{
@@ -287,6 +299,9 @@ ChartView = Backbone.View.extend({
 		_(draw_items).forEach(function(drawable){
 			drawable.animate(750);
 		});
+		
+		chart_view.color();
+		chart_view.highlight();
 	},
 	highlight: function(){
 		var chart_view = this;
