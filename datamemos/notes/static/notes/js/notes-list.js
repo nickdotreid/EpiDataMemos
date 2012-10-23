@@ -253,6 +253,9 @@ NoteTypeView = Backbone.View.extend({
 		this.model.get("notes").bind("reset",function(){
 			button.update_count();
 		});
+		this.model.get("notes").bind("add",function(){
+			button.update_count();
+		});
 		$(window).scroll(function(event){
 			if(button.model.get("active")) button.resize(event);
 		});
