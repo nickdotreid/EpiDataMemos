@@ -2,7 +2,8 @@
   display: block;
   overflow: hidden;
   clear: both;
-  background-color: #AAA;
+  cursor: pointer;
+  background-color: #DDD;
   margin: 3px;
   padding: 3px 0px 0px;
 }
@@ -12,7 +13,10 @@
 .bookmark .actions {
   display: block;
   clear: both;
-  margin: 0px 0px 3px 0px;
+  margin: 0px 7px 3px;
+}
+.bookmark .text {
+  color: #08C;
 }
 .bookmark .bookmark-chart,
 .bookmark .tag {
@@ -48,6 +52,12 @@
   background-image: url('../../bootstrap/img/glyphicons-halflings.png');
   background-repeat: no-repeat;
   background-position: 0px -49px;
+}
+.bookmark.hover {
+  background-color: #CCC;
+}
+.bookmark.highlight {
+  background-color: #AAA;
 }
 .note .bookmark {
   margin: 3px 7px;

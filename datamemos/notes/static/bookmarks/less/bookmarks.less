@@ -2,13 +2,17 @@
 	display:block;
 	overflow:hidden;
 	clear:both;
-	background-color:#AAA;
+	cursor:pointer;
+	background-color:#DDD;
 	margin:3px;
 	padding:3px 0px 0px;
 	.text,.bookmark-chart,.tags,.actions{
 		display:block;
 		clear:both;
-		margin:0px 0px 3px 0px;
+		margin:0px 7px 3px;
+	}
+	.text{
+		color:#08C;
 	}
 	.bookmark-chart,.tag{
 		font-size:0.8em;
@@ -44,6 +48,13 @@
 		background-repeat:no-repeat;
 		background-position:0px -49px;
 	}
+}
+
+.bookmark.hover{
+	background-color:#CCC;
+}
+.bookmark.highlight{
+	background-color:#AAA;
 }
 
 .note .bookmark{

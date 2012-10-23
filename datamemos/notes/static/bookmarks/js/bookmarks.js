@@ -144,14 +144,17 @@ BookmarkView = Backbone.View.extend({
 		this.model.select();
 	},
 	highlight: function(event){
+		this.$el.addClass("hover");
 		var view = this;
 		var bookmark = this.model;
 		this.hoverTimeout = setTimeout(function(){
 			view.hoverTimeout = false;
+			view.$el.addClass("highlight");
 			bookmark.highlight(true);
 		},200);
 	},
 	unhighlight: function(event){
+		this.$el.removeClass("hover").removeClass("highlight");
 		if(this.hoverTimeout)	clearTimeout(this.hoverTimeout);
 		else	this.model.highlight(false);
 	}
