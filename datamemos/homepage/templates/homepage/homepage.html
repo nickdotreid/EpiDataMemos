@@ -1,7 +1,11 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div>
-	<h2>Welcome to the chart sharing system. Please have a nice day.</h2>
+<span class="line">City and County of San Francisco</span>
+<span class="line">Department of Public Health</span>
+<h1><em>Interactive</em>HIV Epidemiology Report</h1>
+<div class="plateau">
+	<p>Explore the data of HIV in San Francisco.</p>
+	<p>Comment on the data and share it with friends.</p>
+	<img class="middle" src="{{STATIC_URL}}homepage/i/homepagegraphic.png" />
 </div>
-{% endblock %}
+{% include 'homepage/about.html' %}
+{% include 'homepage/howto.html' %}
+{% include 'homepage/contact.html' %}
