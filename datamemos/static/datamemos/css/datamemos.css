@@ -3851,6 +3851,17 @@ form .requiredField .asteriskField {
 .sticky-stuck {
   position: absolute;
 }
+.instructions {
+  padding: 0px 7px;
+}
+.instruction {
+  overflow: hidden;
+  margin: 7px 0px;
+  padding: 0px;
+}
+.instruction .instruction-inner {
+  margin: 7px;
+}
 .instruction img {
   display: block;
   clear: both;
