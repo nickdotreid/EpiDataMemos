@@ -3796,7 +3796,7 @@ input[type="submit"].btn.btn-mini {
 body {
   font-family: Verdana, Arial, Sans-Serif;
   font-size: 14px;
-  background-color: #EFEFEF;
+  background-color: #FFF;
 }
 .middle {
   display: block;
@@ -3824,6 +3824,7 @@ form .requiredField .asteriskField {
 }
 .wrapper.container {
   padding-top: 55px;
+  background-color: #EFEFEF;
 }
 #app-area .navbar {
   margin-bottom: 0px;
@@ -3834,7 +3835,13 @@ form .requiredField .asteriskField {
   width: 325px;
   margin-right: 7px;
 }
-.page-column.main {
+#home.page-column {
+  width: 550px;
+}
+#charts-container.page-column {
+  width: 525px;
+}
+#charts-container.page-column.main {
   width: 750px;
 }
 #footer {
@@ -3843,7 +3850,6 @@ form .requiredField .asteriskField {
   position: relative;
   margin: 20px 0px 0px;
   padding: 30px 20px 20px;
-  background-color: #FFF;
 }
 .sticky {
   position: static;
