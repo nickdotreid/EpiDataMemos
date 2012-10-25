@@ -381,6 +381,9 @@ a:hover {
 .affix {
   position: fixed;
 }
+.row {
+  margin-left: 0px;
+}
 p {
   margin: 0 0 9px;
 }
@@ -3803,6 +3806,8 @@ body {
   margin-top: 14px;
   padding-bottom: 7px;
   border-bottom: 1px #CCC solid;
+  font-size: 1.3em;
+  line-height: 1.1em;
 }
 #templates {
   display: none;
@@ -3845,6 +3850,11 @@ form .requiredField .asteriskField {
 }
 .sticky-stuck {
   position: absolute;
+}
+.instruction img {
+  display: block;
+  clear: both;
+  margin: 0px auto;
 }
 .notes-nav {
   margin: 0px;
