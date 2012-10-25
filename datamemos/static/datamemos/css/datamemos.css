@@ -3823,7 +3823,7 @@ form .requiredField .asteriskField {
   width: 1090px;
 }
 .wrapper.container {
-  padding-top: 55px;
+  padding: 55px 0px;
   background-color: #EFEFEF;
 }
 #app-area .navbar {
