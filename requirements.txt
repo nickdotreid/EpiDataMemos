@@ -1,13 +1,13 @@
-Django==1.4.1
-South==0.7.6
 boto==2.5.2
 dj-database-url==0.2.1
+Django==1.4.1
 django-admin-sortable==1.4.4
 django-annoying==0.7.6
-django-boto==0.1.6b
+django-boto==0.1.6b0
 django-crispy-forms==1.1.4
 django-storages==1.1.5
 gunicorn==0.14.6
 psycopg2==2.4.5
-wsgiref==0.1.2
+South==0.7.6
+waitress==0.8.9
 xlrd==0.8.0
