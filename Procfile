@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT datamemos.wsgi:application
+web: waitress-serve --port=$PORT wsgi:application
