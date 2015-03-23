@@ -53,7 +53,7 @@ Note = Backbone.Model.extend({
 		this.trigger("note:share",this);
 	},
 	edit: function(){
-		this.trigger("edit",this);
+		this.trigger("note:edit",this);
 	},
 	inc_weight: function(amount){
 		if(!amount) return;
