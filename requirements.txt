@@ -9,5 +9,5 @@ django-storages==1.1.5
 gunicorn==0.14.6
 psycopg2==2.4.5
 South==0.7.6
-waitress==0.8.9
+waitress==1.4.0
 xlrd==0.8.0
