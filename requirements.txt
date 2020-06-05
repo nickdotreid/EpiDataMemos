@@ -1,6 +1,6 @@
 boto==2.5.2
 dj-database-url==0.2.1
-Django==1.4.1
+Django==1.11.29
 django-admin-sortable==1.4.4
 django-annoying==0.7.6
 django-boto==0.1.6b0
